@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20200317104543 extends AbstractMigration
+final class Version20200317195155 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -27,7 +27,7 @@ final class Version20200317104543 extends AbstractMigration
         $this->addSql('CREATE TABLE team_player (team_id INT NOT NULL, player_id INT NOT NULL, INDEX IDX_EE023DBC296CD8AE (team_id), INDEX IDX_EE023DBC99E6F5DF (player_id), PRIMARY KEY(team_id, player_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE game (id INT AUTO_INCREMENT NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, name VARCHAR(255) NOT NULL, description VARCHAR(255) DEFAULT NULL, url VARCHAR(255) DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE player (id INT AUTO_INCREMENT NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, username VARCHAR(180) NOT NULL, roles JSON NOT NULL, password VARCHAR(255) NOT NULL, twitch_name VARCHAR(255) DEFAULT NULL, twitch_id VARCHAR(255) DEFAULT NULL, email VARCHAR(255) NOT NULL, UNIQUE INDEX UNIQ_98197A65F85E0677 (username), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE registration (id INT AUTO_INCREMENT NOT NULL, player_id INT NOT NULL, competition_id INT NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, elo INT DEFAULT NULL, is_sub TINYINT(1) NOT NULL, priority INT NOT NULL, is_confirmed TINYINT(1) NOT NULL, INDEX IDX_62A8A7A799E6F5DF (player_id), INDEX IDX_62A8A7A77B39D312 (competition_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE registration (id INT AUTO_INCREMENT NOT NULL, player_id INT NOT NULL, competition_id INT NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, elo INT DEFAULT NULL, is_sub TINYINT(1) DEFAULT NULL, priority INT DEFAULT NULL, is_confirmed TINYINT(1) DEFAULT NULL, INDEX IDX_62A8A7A799E6F5DF (player_id), INDEX IDX_62A8A7A77B39D312 (competition_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE round (id INT AUTO_INCREMENT NOT NULL, competition_id INT NOT NULL, winner_id INT DEFAULT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, bracket_level INT NOT NULL, bracket_order INT NOT NULL, best_of INT NOT NULL, lobby_name VARCHAR(255) DEFAULT NULL, lobby_password VARCHAR(255) DEFAULT NULL, INDEX IDX_C5EEEA347B39D312 (competition_id), INDEX IDX_C5EEEA345DFCD4B8 (winner_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE round_team (round_id INT NOT NULL, team_id INT NOT NULL, INDEX IDX_6157B7BFA6005CA0 (round_id), INDEX IDX_6157B7BF296CD8AE (team_id), PRIMARY KEY(round_id, team_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('ALTER TABLE competition ADD CONSTRAINT FK_B50A2CB1E48FD905 FOREIGN KEY (game_id) REFERENCES game (id)');
