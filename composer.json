@@ -20,7 +20,7 @@
         "symfony/maker-bundle": "^1.14",
         "symfony/monolog-bundle": "^3.1",
         "symfony/notifier": "5.0.*",
-        "symfony/orm-pack": "*",
+        "symfony/orm-pack": "^1.0",
         "symfony/process": "5.0.*",
         "symfony/security-bundle": "5.0.*",
         "symfony/serializer-pack": "*",
