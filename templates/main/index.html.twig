@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div id="main">
+        <a href="{{ path('create_game') }}"> Create Game</a>
+        <a href="{{ path('create_competition') }}"> Create Tournament</a>
+        <div id="Games">
+            <br/>Games
+            {% for game in games %}
+                <div>{{ game.name }}: {{ game.description }}</div>
+            {% else %}
+                <p>No games</p>
+            {% endfor %}
+        </div>
+        <div id="Competitions">
+            <br/>Competitions
+            {% for competition in competitions %}
+                <div>{{ competition.name }}: {{ competition.description }} - {{ competition.game.name }}</div>
+            {% else %}
+                <p>No competitions</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
