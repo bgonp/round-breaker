@@ -12,10 +12,9 @@ use Doctrine\ORM\Mapping as ORM;
 class Team extends Base
 {
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Competition", inversedBy="teams")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToMany(targetEntity="App\Entity\Competition", mappedBy="teams")
      */
-    private $competition;
+    private $competitions;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -52,18 +51,6 @@ class Team extends Base
         parent::__construct();
         $this->rounds = new ArrayCollection();
         $this->players = new ArrayCollection();
-    }
-
-    public function getCompetition(): ?Competition
-    {
-        return $this->competition;
-    }
-
-    public function setCompetition(?Competition $competition): self
-    {
-        $this->competition = $competition;
-
-        return $this;
     }
 
     public function getLobbyName(): ?string
@@ -163,6 +150,34 @@ class Team extends Base
     {
         if ($this->players->contains($player)) {
             $this->players->removeElement($player);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Competition[]
+     */
+    public function getCompetitions(): Collection
+    {
+        return $this->competitions;
+    }
+
+    public function addCompetition(Competition $competition): self
+    {
+        if (!$this->competitions->contains($competition)) {
+            $this->competitions[] = $competition;
+            $competition->addTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCompetition(Competition $competition): self
+    {
+        if ($this->competitions->contains($competition)) {
+            $this->competitions->removeElement($competition);
+            $competition->addTeam($this);
         }
 
         return $this;

@@ -1,13 +1,15 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    {% include 'header.html' %}
+    {% if games %}
     <form method="post">
         <label for="inputName">Name</label>
         <input type="text" name="name" id="inputName" class="form-control" required autofocus>
         <label for="inputDescription">Description</label>
         <input type="text" name="description" id="inputDescription" class="form-control" required autofocus>
-        <label for="games">Game:</label>
 
+        <label for="game">Game:</label>
         <select name="game">
             {% for game in games %}
             <option value="{{ game.name }}">{{ game.name }}</option>
@@ -17,4 +19,7 @@
             Create Competition
         </button>
     </form>
+    {% else %}
+        Can't make competitions if there are no games.
+    {% endif %}
 {% endblock %}

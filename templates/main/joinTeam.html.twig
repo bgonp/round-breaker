@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% include 'header.html' %}
+    {% if teams %}
+        <form method="post">
+            <div id="Teams">
+                Teams
+                {% for team in teams %}
+                    <div>
+                        <input type="radio" name="team" id="{{ team.name }}" value="{{ team.name }}">
+                        <label for="{{ team.name }}">{{ team.name }} - </label>
+                        Players:
+                        {% for player in team.players %}
+                            {{ player.username }}
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p>No teams</p>
+                {% endfor %}
+            </div>
+            <button class="btn btn-lg btn-primary" type="submit">
+                Join Team
+            </button>
+        </form>
+    {% else %}
+        Can't join teams if there are no teams.
+    {% endif %}
+{% endblock %}

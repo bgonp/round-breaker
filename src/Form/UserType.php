@@ -16,7 +16,9 @@ class UserType extends AbstractType
     {
         $builder
             ->add('email', EmailType::class)
-            ->add('twitch_name', TextType::class)
+            ->add('twitch_name', TextType::class, [
+                'required' => false,
+            ])
             ->add('username', TextType::class)
             ->add('plainPassword', RepeatedType::class, array(
                 'type' => PasswordType::class,

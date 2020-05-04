@@ -52,7 +52,7 @@ class Competition extends Base
     private $registrations;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Team", mappedBy="competition")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Team", inversedBy="competitions")
      */
     private $teams;
 
@@ -196,7 +196,6 @@ class Competition extends Base
     {
         if (!$this->teams->contains($team)) {
             $this->teams[] = $team;
-            $team->setCompetition($this);
         }
 
         return $this;
@@ -206,10 +205,6 @@ class Competition extends Base
     {
         if ($this->teams->contains($team)) {
             $this->teams->removeElement($team);
-            // set the owning side to null (unless already changed)
-            if ($team->getCompetition() === $this) {
-                $team->setCompetition(null);
-            }
         }
 
         return $this;
