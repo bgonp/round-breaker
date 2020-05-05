@@ -1,7 +1,10 @@
 api_platform:
     mapping:
-        paths: ['%kernel.project_dir%/src/Entity']
+        paths:
+            - '%kernel.project_dir%/config/api_platform/resources'
     patch_formats:
         json: ['application/merge-patch+json']
     swagger:
         versions: [3]
+    title: 'Round Breaker API'
+    show_webby: false
