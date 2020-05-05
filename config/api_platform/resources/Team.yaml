@@ -1,0 +1,12 @@
+App\Entity\Team:
+  attributes:
+    normalization_context:
+      groups: ['team_read']
+    denormalization_context:
+      groups: ['team_write']
+  collectionOperations:
+    get:
+      method: 'GET'
+  itemOperations:
+    get:
+      method: 'GET'

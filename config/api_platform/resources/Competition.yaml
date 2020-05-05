@@ -1,0 +1,18 @@
+App\Entity\Competition:
+  attributes:
+    normalization_context:
+      groups: ['competition_read']
+    denormalization_context:
+      groups: ['competition_write']
+  collectionOperations:
+    get:
+      method: 'GET'
+  itemOperations:
+    get:
+      method: 'GET'
+  properties:
+    rounds:
+      subresource:
+        subresourceClass: 'App\Entity\Round'
+        collection: true
+        maxDepth: 1
