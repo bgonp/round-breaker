@@ -1,0 +1,22 @@
+App\Entity\Round:
+  attributes:
+    normalization_context:
+      groups: ['round_read']
+    denormalization_context:
+      groups: ['round_write']
+  collectionOperations:
+    get:
+      method: 'GET'
+      normalization_context:
+        groups: ['round_read']
+  itemOperations:
+    get:
+      method: 'GET'
+    put:
+      method: 'PUT'
+  properties:
+    teams:
+      subresource:
+        subresourceClass: 'App\Entity\Team'
+        collection: true
+        maxDepth: 1

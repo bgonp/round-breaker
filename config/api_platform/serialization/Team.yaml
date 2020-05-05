@@ -1,0 +1,14 @@
+App\Entity\Team:
+  attributes:
+    id:
+      groups: ['team_read', 'round_read']
+    competition:
+      groups: ['team_read']
+    lobbyName:
+      groups: ['team_read']
+    lobbyPassword:
+      groups: ['team_read']
+    rank:
+      groups: ['team_read']
+    name:
+      groups: ['team_read']
