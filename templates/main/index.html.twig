@@ -3,12 +3,13 @@
 {% block body %}
     {% include 'header.html' %}
     <div id="main">
+        {% if is_granted('ROLE_ADMIN') %}
         <a href="{{ path('create_game') }}">Create Game</a>
         <a href="{{ path('create_competition') }}">Create Competition</a>
+        {% endif %}
         <a href="{{ path('join_competition') }}">Join Competition</a>
-        <a href="{{ path('create_team') }}">Create Team</a>
-        <a href="{{ path('join_team') }}">Join Team</a>
-        <a href="{{ path('app_logout') }}">Logout</a>
+        <!-- <a href="{{ path('create_team') }}">Create Team</a>
+        <a href="{{ path('join_team') }}">Join Team</a> -->
         <div id="Games">
             <br/>Games
             {% for game in games %}

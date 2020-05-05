@@ -4,14 +4,19 @@
     {% include 'header.html' %}
     {% if competition %}
         <div>
-        Competition:
-        {{ competition.name }}
+            Competition:
+            {{ competition.name }}
         </div>
         <div>
-        Teams:
-        {% for team in competition.teams %}
-            {{ team.name }}
-        {% endfor %}
+            <!-- Teams:
+            {# {% for team in competition.teams %}
+                {{ team.name }}
+            {% endfor %} #}
+            -->
+            Players:
+            {% for registration in competition.registrations %}
+                {{ registration.player.username }}
+            {% endfor %}
         </div>
     {% else %}
         No competition selected.

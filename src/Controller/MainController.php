@@ -8,6 +8,7 @@ use App\Entity\Game;
 use App\Entity\Player;
 use App\Entity\Competition;
 use App\Entity\Team;
+use App\Entity\Registration;
 use Symfony\Component\HttpFoundation\Request;
 
 class MainController extends AbstractController
@@ -146,9 +147,13 @@ class MainController extends AbstractController
         if ($request->request->has('competition')) {
             $em = $this->getDoctrine()->getManager();
             $competition = $em->getRepository(Competition::class)->findOneBy(['name' => $request->request->get('competition')]);
-            $team = $em->getRepository(Team::class)->findOneBy(['name' => $request->request->get('team')]);
-            if ($team && $competition) {
-                $competition->addTeam($team);
+            //$team = $em->getRepository(Team::class)->findOneBy(['name' => $request->request->get('team')]);
+            if (/*$team &&*/ $competition) {
+                $registration = new Registration();
+                $registration->setPlayer($em->getRepository(Player::class)->findOneBy(['username' => $this->getUser()->getUsername()]));
+                $competition->addRegistration($registration);
+                //$competition->addTeam($team);
+                $em->persist($registration);
                 $em->persist($competition);
                 $em->flush();
             }
