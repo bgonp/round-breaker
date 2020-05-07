@@ -36,7 +36,7 @@ class Player extends Base implements UserInterface
     private $plainPassword;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $twitch_name;
 
