@@ -29,5 +29,5 @@ document.getElementById('twitch_params').addEventListener('submit', e => {
 });
 
 client.on('chat', (channel, userstate, message, self) => {
-    container.innerHTML += '<li><strong>'+userstate['display-name']+'</strong>: '+message+'</li>';
+    container.innerHTML += '<li><strong>'+userstate['display-name']+' ('+userstate['username']+')'+'</strong>: '+message+'</li>';
 });
