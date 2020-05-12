@@ -30,7 +30,7 @@ class Team extends Base
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $rank;
+    private $ranking;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -92,12 +92,12 @@ class Team extends Base
 
     public function getRank(): ?int
     {
-        return $this->rank;
+        return $this->ranking;
     }
 
-    public function setRank(?int $rank): self
+    public function setRank(?int $ranking): self
     {
-        $this->rank = $rank;
+        $this->ranking = $ranking;
 
         return $this;
     }
