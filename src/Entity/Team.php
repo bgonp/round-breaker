@@ -90,12 +90,12 @@ class Team extends Base
         return $this;
     }
 
-    public function getRank(): ?int
+    public function getRanking(): ?int
     {
         return $this->ranking;
     }
 
-    public function setRank(?int $ranking): self
+    public function setRanking(?int $ranking): self
     {
         $this->ranking = $ranking;
 
