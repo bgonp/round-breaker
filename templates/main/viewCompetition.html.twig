@@ -7,15 +7,20 @@
             Competition:
             {{ competition.name }}
         </div>
+        {% if competition.creator.username == app.user.username and competition.isOpen and competition.isIndividual == false %}
+            <a href="{{ path('randomize_teams', {competition: competition.name}) }}">Randomize Teams</a>
+        {% endif %}
         <div>
-            <!-- Teams:
-            {# {% for team in competition.teams %}
-                {{ team.name }}
-            {% endfor %} #}
-            -->
             Players:
             {% for registration in competition.registrations %}
                 {{ registration.player.username }}
+            {% endfor %}
+            <br>Teams:
+            {% for team in competition.teams %}
+                {{ team.name }}:
+                {% for player in team.players %}
+                    {{ player.username }}
+                {% endfor %}
             {% endfor %}
         </div>
     {% else %}

@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Competition;
 use App\Entity\Game;
+use App\Entity\Player;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -16,9 +17,13 @@ class CompetitionFixtures extends Fixture implements DependentFixtureInterface
         $competition = new Competition();
         $competition->setName('Competición de prueba #1');
         $competition->setGame($game);
+        $competition->setCreator($manager->getRepository(Player::class)->findOneBy(['username' => "Tester01"]));
         $competition->setHeldAt(new \DateTime());
         $competition->setIsOpen(false);
-        $competition->setIsFinished(true);
+        $competition->setIsFinished(false);
+        $competition->setIsIndividual(false);
+        $competition->setPlayersPerTeam(3);
+        $competition->setMaxPlayers(12);
         $manager->persist($competition);
         $manager->flush();
     }

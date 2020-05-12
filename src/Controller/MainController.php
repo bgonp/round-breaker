@@ -67,6 +67,11 @@ class MainController extends AbstractController
                 $competition->setDescription($request->request->get('description'));
                 $competition->setIsOpen(true);
                 $competition->setIsFinished(false);
+                $user = $this->getUser()->getUsername();
+                $user = $em->getRepository(Player::class)->findOneBy(['username' => $user]);
+                $competition->setCreator($user);
+                $competition->setMaxPlayers($request->request->get('players'));
+                $competition->setIsIndividual($request->request->get('individual') ? 1 : 0);
                 $competition->setGame($em->getRepository(Game::class)->findOneBy(['name' => $request->request->get('game')]));
                 $em->persist($competition);
                 $em->flush();
@@ -80,6 +85,91 @@ class MainController extends AbstractController
                 'competitions' => $entityManager->getRepository(Competition::Class)->findAll()
             ]);
         }
+    }
+
+    /**
+     * @Route("/main/joinCompetition", name="join_competition")
+     */
+    public function joinCompetition(Request $request)
+    {
+        if ($request->request->has('competition')) {
+            $em = $this->getDoctrine()->getManager();
+            $competition = $em->getRepository(Competition::class)->findOneBy(['name' => $request->request->get('competition')]);
+            //$team = $em->getRepository(Team::class)->findOneBy(['name' => $request->request->get('team')]);
+            if (/*$team &&*/ $competition && count($competition->getRegistrations()) < $competition->getMaxPlayers()) {
+                $registration = new Registration();
+                $player = $em->getRepository(Player::class)->findOneBy(['username' => $this->getUser()->getUsername()]);
+                $registration->setPlayer($player);
+                $competition->addRegistration($registration);
+                if ($competition->getIsIndividual()) {
+                    $team = new Team();
+                    $team->addPlayer($player);
+                    $team->setName($player->getUsername());
+                    $team->setCompetition($competition);
+                    $em->persist($team);
+                }
+                //$competition->addTeam($team);
+                $em->persist($registration);
+                $em->persist($competition);
+                $em->flush();
+            }
+            return $this->redirectToRoute('main');
+        } else {
+            $entityManager = $this->getDoctrine()->getManager();
+            return $this->render('main/joinCompetition.html.twig', [
+                'controller_name' => 'MainController',
+                'competitions' => $entityManager->getRepository(Competition::Class)->findAll(),
+                'player' => $entityManager->getRepository(Player::class)->findOneBy(['username' => $this->getUser()->getUsername()])
+            ]);
+        }
+    }
+
+    /**
+     * @Route("/main/competitions/{competition}", name="view_competition")
+     */
+    public function viewCompetition(String $competition)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        return $this->render('main/viewCompetition.html.twig', [
+            'controller_name' => 'MainController',
+            'competition' => $entityManager->getRepository(Competition::Class)->findOneBy(['name' => $competition]),
+        ]);
+    }
+
+    /**
+     * @Route("/main/competitions/{competition}/randomize", name="randomize_teams")
+     */
+    public function randomizeTeams(String $competition)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $competition = $em->getRepository(Competition::Class)->findOneBy(['name' => $competition]);
+        $user = $this->getUser()->getUsername();
+        $user = $em->getRepository(Player::class)->findOneBy(['username' => $user]);
+        if ($competition->getIsOpen() && $competition->getCreator() == $user && !$competition->getIsIndividual()) {
+            $registrations = $competition->getRegistrations()->toArray();
+            $teamNum = floor(count($registrations)/$competition->getPlayersPerTeam());
+            $teamNum = $teamNum > $competition->getMaxPlayers()/$competition->getPlayersPerTeam() ? $competition->getMaxPlayers()/$competition->getPlayersPerTeam() : $teamNum;
+            if ($teamNum % 2 != 0) {
+                $teamNum = $teamNum-1;
+            }
+            $registrations = array_slice($registrations, 0, $competition->getPlayersPerTeam()*$teamNum);
+            for($i = 0; $i < $teamNum; $i++) {
+                $team = new Team();
+                $team->setName("Team " . ($i+1));
+                $team->setCompetition($competition);
+                for($j = 0; $j < $competition->getPlayersPerTeam(); $j++) {
+                    $randomRegistration = array_rand($registrations);
+                    $team->addPlayer($registrations[$randomRegistration]->getPlayer());
+                    unset($registrations[$randomRegistration]);
+                }
+                $em->persist($team);
+            }
+            $competition->setIsOpen(false);
+            $em->persist($competition);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('view_competition', array('competition' => $competition->getName()));
     }
 
     /**
@@ -136,47 +226,5 @@ class MainController extends AbstractController
                 'players' => $entityManager->getRepository(Player::Class)->findAll()
             ]);
         }
-    }
-
-    /**
-     * @Route("/main/joinCompetition", name="join_competition")
-     */
-    public function joinCompetition(Request $request)
-    {
-
-        if ($request->request->has('competition')) {
-            $em = $this->getDoctrine()->getManager();
-            $competition = $em->getRepository(Competition::class)->findOneBy(['name' => $request->request->get('competition')]);
-            //$team = $em->getRepository(Team::class)->findOneBy(['name' => $request->request->get('team')]);
-            if (/*$team &&*/ $competition) {
-                $registration = new Registration();
-                $registration->setPlayer($em->getRepository(Player::class)->findOneBy(['username' => $this->getUser()->getUsername()]));
-                $competition->addRegistration($registration);
-                //$competition->addTeam($team);
-                $em->persist($registration);
-                $em->persist($competition);
-                $em->flush();
-            }
-            return $this->redirectToRoute('main');
-        } else {
-            $entityManager = $this->getDoctrine()->getManager();
-            return $this->render('main/joinCompetition.html.twig', [
-                'controller_name' => 'MainController',
-                'competitions' => $entityManager->getRepository(Competition::Class)->findAll(),
-                'player' => $entityManager->getRepository(Player::class)->findOneBy(['username' => $this->getUser()->getUsername()])
-            ]);
-        }
-    }
-
-    /**
-     * @Route("/main/competitions/{competition}", name="view_competition")
-     */
-    public function viewCompetition(String $competition)
-    {
-        $entityManager = $this->getDoctrine()->getManager();
-        return $this->render('main/viewCompetition.html.twig', [
-            'controller_name' => 'MainController',
-            'competition' => $entityManager->getRepository(Competition::Class)->findOneBy(['name' => $competition]),
-        ]);
     }
 }
