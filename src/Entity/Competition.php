@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CompetitionRepository")
@@ -52,7 +53,7 @@ class Competition extends Base
     private $registrations;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Team", inversedBy="competitions")
+     * @ORM\OneToMany(targetEntity="App\Entity\Team", mappedBy="competition")
      */
     private $teams;
 
@@ -60,6 +61,32 @@ class Competition extends Base
      * @ORM\OneToMany(targetEntity="App\Entity\Round", mappedBy="competition")
      */
     private $rounds;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Player", inversedBy="competitions")
+     */
+    private $creator;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isIndividual;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $playersPerTeam;
+
+    /**
+     * @ORM\Column(type="integer")
+     * @Assert\Range(
+     *      min = 2,
+     *      max = 64,
+     *      minMessage = "You must have at least {{ limit }} players",
+     *      maxMessage = "You cannot have more than {{ limit }} players"
+     * )
+     */
+    private $maxPlayers;
 
     public function __construct()
     {
@@ -77,6 +104,18 @@ class Competition extends Base
     public function setIsOpen(bool $isOpen): self
     {
         $this->isOpen = $isOpen;
+
+        return $this;
+    }
+
+    public function getIsIndividual(): ?bool
+    {
+        return $this->isIndividual;
+    }
+
+    public function setIsIndividual(bool $isIndividual): self
+    {
+        $this->isIndividual = $isIndividual;
 
         return $this;
     }
@@ -153,6 +192,42 @@ class Competition extends Base
         return $this;
     }
 
+    public function getCreator(): ?Player
+    {
+        return $this->creator;
+    }
+
+    public function setCreator(?Player $creator): self
+    {
+        $this->creator = $creator;
+
+        return $this;
+    }
+
+    public function getMaxPlayers(): ?int
+    {
+        return $this->maxPlayers;
+    }
+
+    public function setMaxPlayers(?int $maxPlayers): self
+    {
+        $this->maxPlayers = $maxPlayers;
+
+        return $this;
+    }
+
+    public function getPlayersPerTeam(): ?int
+{
+    return $this->playersPerTeam;
+}
+
+    public function setPlayersPerTeam(?int $playersPerTeam): self
+    {
+        $this->playersPerTeam = $playersPerTeam;
+
+        return $this;
+    }
+
     /**
      * @return Collection|Registration[]
      */
@@ -196,6 +271,7 @@ class Competition extends Base
     {
         if (!$this->teams->contains($team)) {
             $this->teams[] = $team;
+            $team->setCompetition($this);
         }
 
         return $this;
@@ -205,6 +281,10 @@ class Competition extends Base
     {
         if ($this->teams->contains($team)) {
             $this->teams->removeElement($team);
+            // set the owning side to null (unless already changed)
+            if ($team->getCompetition() === $this) {
+                $team->setCompetition(null);
+            }
         }
 
         return $this;

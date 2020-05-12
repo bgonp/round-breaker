@@ -60,12 +60,17 @@ class Player extends Base implements UserInterface
      */
     private $teams;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Competition", mappedBy="player")
+     */
+    private $competitionsCreated;
+
     public function __construct()
     {
         parent::__construct();
         $this->registrations = new ArrayCollection();
         $this->teams = new ArrayCollection();
-        $this->competitions = new ArrayCollection();
+        $this->competitionsCreated = new ArrayCollection();
     }
 
     /**
@@ -239,5 +244,13 @@ class Player extends Base implements UserInterface
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection|Competition[]
+     */
+    public function getCompetitionsCreated(): Collection
+    {
+        return $this->competitionsCreated;
     }
 }
