@@ -24,6 +24,11 @@ class PlayerFixtures extends Fixture
             $player->setPassword($this->encoder->encodePassword($player, 'randompassword'));
             $manager->persist($player);
         }
+        $admin = new Player();
+        $admin->setUsername('admin');
+        $admin->setEmail('admin@admin.com');
+        $admin->setPassword($this->encoder->encodePassword($admin, 'randompassword'));
+        $manager->persist($admin);
         $manager->flush();
     }
 }

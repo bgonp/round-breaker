@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Repository\CompetitionRepository;
+use App\Repository\TeamRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Entity\Game;
 use App\Entity\Competition;
