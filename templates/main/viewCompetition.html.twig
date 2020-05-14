@@ -15,13 +15,15 @@
             {% for registration in competition.registrations %}
                 {{ registration.player.username }}
             {% endfor %}
-            <br>Teams:
-            {% for team in teams %}
-                {{ team.name }}:
-                {% for player in team.players %}
-                    {{ player.username }}
+            {% if competition.isIndividual == false %}
+                <br>Teams:
+                {% for team in teams %}
+                    {{ team.name }}:
+                    {% for player in team.players %}
+                        {{ player.username }}
+                    {% endfor %}
                 {% endfor %}
-            {% endfor %}
+            {% endif %}
         </div>
     {% else %}
         No competition selected.

@@ -8,6 +8,7 @@ use App\Entity\Competition;
 use App\Entity\Player;
 use App\Entity\Team;
 use App\Repository\CompetitionRepository;
+use App\Repository\PlayerRepository;
 use App\Repository\TeamRepository;
 
 class TeamService
@@ -18,14 +19,27 @@ class TeamService
 	/** @var TeamRepository */
 	private $teamRepository;
 
-	public function __construct(CompetitionRepository $competitionRepository, TeamRepository $teamRepository)
+    /** @var PlayerRepository */
+    private $playerRepository;
+
+	public function __construct(CompetitionRepository $competitionRepository, TeamRepository $teamRepository, PlayerRepository $playerRepository)
 	{
 		$this->competitionRepository = $competitionRepository;
 		$this->teamRepository = $teamRepository;
+        $this->playerRepository = $playerRepository;
 	}
 
+	public function createTeam(string $name) {
+        $team = new Team();
+        $team->setName($name);
+        $user = $this->getUser()->getUsername();
+        $user = $this->playerRepository->findOneBy(['username' => $user]);
+        $user->addTeam($team);
+        $this->teamRepository->save($team);
+        $this->playerRepository->save($user);
+    }
+
 	public function randomize(Player $player, Competition $competition) {
-		$competition = $this->competitionRepository->findOneBy(['name' => $competition]);
 		if ($competition->getIsOpen() && $competition->getCreator()->equals($player) && !$competition->getIsIndividual()) {
 			$registrations = $competition->getRegistrations()->toArray();
 			$teamNum = floor(count($registrations)/$competition->getPlayersPerTeam());
@@ -33,7 +47,6 @@ class TeamService
 			if ($teamNum % 2 != 0) {
 				$teamNum = $teamNum-1;
 			}
-			$registrations = array_slice($registrations, 0, $competition->getPlayersPerTeam()*$teamNum);
 			for($i = 0; $i < $teamNum; $i++) {
 				$team = new Team();
 				$team->setName("Team " . ($i+1));

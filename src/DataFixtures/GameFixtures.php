@@ -12,6 +12,7 @@ class GameFixtures extends Fixture
     {
         $game = new Game();
         $game->setName('Rocket League');
+        $game->setDescription('Car Balls');
         $manager->persist($game);
         $manager->flush();
     }
