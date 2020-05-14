@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Registration extends Base
 {
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Player", inversedBy="registrations")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Player", inversedBy="registrations", fetch="EAGER")
      * @ORM\JoinColumn(nullable=false)
      */
     private $player;

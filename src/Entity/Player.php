@@ -61,7 +61,7 @@ class Player extends Base implements UserInterface
     private $teams;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Competition", mappedBy="player")
+     * @ORM\OneToMany(targetEntity="App\Entity\Competition", mappedBy="creator")
      */
     private $competitionsCreated;
 

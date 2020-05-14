@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Repository\CompetitionRepository;
+use App\Repository\TeamRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Game;
@@ -127,19 +129,23 @@ class MainController extends AbstractController
     /**
      * @Route("/main/competitions/{competition}", name="view_competition")
      */
-    public function viewCompetition(String $competition)
-    {
-        $entityManager = $this->getDoctrine()->getManager();
+    public function viewCompetition(
+    	string $competition,
+		CompetitionRepository $competitionRepository,
+		TeamRepository $teamRepository
+	) {
+    	$competition = $competitionRepository->findOneBy(['name' => $competition]);
         return $this->render('main/viewCompetition.html.twig', [
             'controller_name' => 'MainController',
-            'competition' => $entityManager->getRepository(Competition::Class)->findOneBy(['name' => $competition]),
+            'competition' => $competition,
+			'teams' => $teamRepository->findCompleteTeamsFromCompetition($competition)
         ]);
     }
 
     /**
      * @Route("/main/competitions/{competition}/randomize", name="randomize_teams")
      */
-    public function randomizeTeams(String $competition)
+    public function randomizeTeams(string $competition)
     {
         $em = $this->getDoctrine()->getManager();
         $competition = $em->getRepository(Competition::Class)->findOneBy(['name' => $competition]);

@@ -63,7 +63,7 @@ class Competition extends Base
     private $rounds;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Player", inversedBy="competitions")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Player", inversedBy="competitionsCreated")
      */
     private $creator;
 

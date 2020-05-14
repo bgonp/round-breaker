@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {% include 'header.html' %}
+    {% include 'header.html.twig' %}
     {% if competition %}
         <div>
             Competition:
@@ -16,7 +16,7 @@
                 {{ registration.player.username }}
             {% endfor %}
             <br>Teams:
-            {% for team in competition.teams %}
+            {% for team in teams %}
                 {{ team.name }}:
                 {% for player in team.players %}
                     {{ player.username }}
