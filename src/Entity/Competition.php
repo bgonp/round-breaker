@@ -63,7 +63,7 @@ class Competition extends Base
     private $rounds;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Player", inversedBy="competitions")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Player", inversedBy="competitionsCreated")
      */
     private $creator;
 
@@ -217,9 +217,9 @@ class Competition extends Base
     }
 
     public function getPlayersPerTeam(): ?int
-{
-    return $this->playersPerTeam;
-}
+	{
+		return $this->playersPerTeam;
+	}
 
     public function setPlayersPerTeam(?int $playersPerTeam): self
     {

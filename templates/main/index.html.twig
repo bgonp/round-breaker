@@ -1,15 +1,15 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {% include 'header.html' %}
+    {% include 'header.html.twig' %}
     <div id="main">
         {% if is_granted('ROLE_ADMIN') %}
-        <a href="{{ path('create_game') }}">Create Game</a>
-        <a href="{{ path('create_competition') }}">Create Competition</a>
+        <a href="{{ path('game_new') }}">Create Game</a>
+        <a href="{{ path('competition_new') }}">Create Competition</a>
         {% endif %}
-        <a href="{{ path('join_competition') }}">Join Competition</a>
-        <!-- <a href="{{ path('create_team') }}">Create Team</a>
-        <a href="{{ path('join_team') }}">Join Team</a> -->
+        <a href="{{ path('competition_join') }}">Join Competition</a>
+        <!-- <a href="{{ path('team_new') }}">Create Team</a>
+        <a href="{{ path('team_join') }}">Join Team</a> -->
         <div id="Games">
             <br/>Games
             {% for game in games %}
@@ -21,7 +21,7 @@
         <div id="Competitions">
             <br/>Competitions
             {% for competition in competitions %}
-                <div><a href="{{ path('view_competition', {competition: competition.name}) }}">{{ competition.name }}</a>: {{ competition.description }} - {{ competition.game.name }}</div>
+                <div><a href="{{ path('competition_show', {id: competition.id}) }}">{{ competition.name }}</a>: {{ competition.description }} - {{ competition.game.name }}</div>
             {% else %}
                 <p>No competitions</p>
             {% endfor %}

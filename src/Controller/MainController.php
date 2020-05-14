@@ -2,6 +2,10 @@
 
 namespace App\Controller;
 
+use App\Repository\CompetitionRepository;
+use App\Repository\PlayerRepository;
+use App\Repository\TeamRepository;
+use App\Service\TeamService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Game;
@@ -14,7 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 class MainController extends AbstractController
 {
     /**
-     * @Route("/main", name="main")
+     * @Route("/", name="main", methods={"GET"})
      */
     public function main()
     {
@@ -27,7 +31,7 @@ class MainController extends AbstractController
     }
 
     /**
-     * @Route("/main/createGame", name="create_game")
+     * @Route("/game/new", name="game_new", methods={"GET"})
      */
     public function createGame(Request $request)
     {
@@ -53,7 +57,7 @@ class MainController extends AbstractController
     }
 
     /**
-     * @Route("/main/createCompetition", name="create_competition")
+     * @Route("/competition/new", name="competition_new")
      */
     public function createCompetition(Request $request)
     {
@@ -88,7 +92,7 @@ class MainController extends AbstractController
     }
 
     /**
-     * @Route("/main/joinCompetition", name="join_competition")
+     * @Route("/competition/join", name="competition_join")
      */
     public function joinCompetition(Request $request)
     {
@@ -125,55 +129,39 @@ class MainController extends AbstractController
     }
 
     /**
-     * @Route("/main/competitions/{competition}", name="view_competition")
+     * @Route("/competition/{id}", name="competition_show", methods={"GET"})
      */
-    public function viewCompetition(String $competition)
-    {
-        $entityManager = $this->getDoctrine()->getManager();
+    public function viewCompetition(
+    	Competition $competition,
+		CompetitionRepository $competitionRepository,
+		TeamRepository $teamRepository
+	) {
+    	$teams = $teamRepository->findCompleteTeamsFromCompetition($competition);
         return $this->render('main/viewCompetition.html.twig', [
             'controller_name' => 'MainController',
-            'competition' => $entityManager->getRepository(Competition::Class)->findOneBy(['name' => $competition]),
+            'competition' => $competition,
+			'teams' => $teams
         ]);
     }
 
     /**
-     * @Route("/main/competitions/{competition}/randomize", name="randomize_teams")
+     * @Route("/competition/{id}/randomize", name="competition_randomize")
      */
-    public function randomizeTeams(String $competition)
-    {
+    public function randomizeTeams(
+    	Competition $competition,
+		PlayerRepository $playerRepository,
+		TeamService $teamService
+	) {
         $em = $this->getDoctrine()->getManager();
-        $competition = $em->getRepository(Competition::Class)->findOneBy(['name' => $competition]);
         $user = $this->getUser()->getUsername();
-        $user = $em->getRepository(Player::class)->findOneBy(['username' => $user]);
-        if ($competition->getIsOpen() && $competition->getCreator() == $user && !$competition->getIsIndividual()) {
-            $registrations = $competition->getRegistrations()->toArray();
-            $teamNum = floor(count($registrations)/$competition->getPlayersPerTeam());
-            $teamNum = $teamNum > $competition->getMaxPlayers()/$competition->getPlayersPerTeam() ? $competition->getMaxPlayers()/$competition->getPlayersPerTeam() : $teamNum;
-            if ($teamNum % 2 != 0) {
-                $teamNum = $teamNum-1;
-            }
-            $registrations = array_slice($registrations, 0, $competition->getPlayersPerTeam()*$teamNum);
-            for($i = 0; $i < $teamNum; $i++) {
-                $team = new Team();
-                $team->setName("Team " . ($i+1));
-                $team->setCompetition($competition);
-                for($j = 0; $j < $competition->getPlayersPerTeam(); $j++) {
-                    $randomRegistration = array_rand($registrations);
-                    $team->addPlayer($registrations[$randomRegistration]->getPlayer());
-                    unset($registrations[$randomRegistration]);
-                }
-                $em->persist($team);
-            }
-            $competition->setIsOpen(false);
-            $em->persist($competition);
-            $em->flush();
-        }
+        $user = $playerRepository->findOneBy(['username' => $user]);
+        $teamService->randomize($user, $competition);
 
-        return $this->redirectToRoute('view_competition', array('competition' => $competition->getName()));
+        return $this->redirectToRoute('competition_show', ['id' => $competition->getId()]);
     }
 
     /**
-     * @Route("/main/createTeam", name="create_team")
+     * @Route("/team/new", name="team_new")
      */
     public function createTeam(Request $request)
     {
@@ -202,7 +190,7 @@ class MainController extends AbstractController
     }
 
     /**
-     * @Route("/main/joinTeam", name="join_team")
+     * @Route("/team/join", name="team_join")
      */
     public function joinTeam(Request $request)
     {

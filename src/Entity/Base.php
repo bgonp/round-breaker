@@ -67,4 +67,9 @@ abstract class Base
 
         return $this;
     }
+
+	public function equals(Base $object): bool
+	{
+		return get_class($object) === get_called_class() && $this->getId() === $object->getId();
+    }
 }

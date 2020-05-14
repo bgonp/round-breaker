@@ -1,14 +1,14 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {% include 'header.html' %}
+    {% include 'header.html.twig' %}
     {% if competition %}
         <div>
             Competition:
             {{ competition.name }}
         </div>
         {% if competition.creator.username == app.user.username and competition.isOpen and competition.isIndividual == false %}
-            <a href="{{ path('randomize_teams', {competition: competition.name}) }}">Randomize Teams</a>
+            <a href="{{ path('competition_randomize', {id: competition.id}) }}">Randomize Teams</a>
         {% endif %}
         <div>
             Players:
@@ -16,7 +16,7 @@
                 {{ registration.player.username }}
             {% endfor %}
             <br>Teams:
-            {% for team in competition.teams %}
+            {% for team in teams %}
                 {{ team.name }}:
                 {% for player in team.players %}
                     {{ player.username }}

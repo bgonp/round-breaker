@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Competition;
 use App\Entity\Team;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -17,6 +18,25 @@ class TeamRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Team::class);
+    }
+
+    /** @return Team[] */
+	public function findCompleteTeamsFromCompetition(Competition $competition): array
+	{
+		return $this->createQueryBuilder('t')
+			->select('t', 'p')
+			->join('t.players', 'p')
+			->where('t.competition = :competition')
+			->setParameter('competition', $competition)
+			->getQuery()->execute();
+    }
+
+	public function save(Team $team, bool $flush = true)
+	{
+		$this->getEntityManager()->persist($team);
+		if ($flush) {
+			$this->getEntityManager()->flush();
+		}
     }
 
     // /**
