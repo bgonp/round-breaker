@@ -8,7 +8,7 @@
             {{ competition.name }}
         </div>
         {% if competition.creator.username == app.user.username and competition.isOpen and competition.isIndividual == false %}
-            <a href="{{ path('randomize_teams', {competition: competition.name}) }}">Randomize Teams</a>
+            <a href="{{ path('competition_randomize', {id: competition.id}) }}">Randomize Teams</a>
         {% endif %}
         <div>
             Players:
@@ -21,7 +21,7 @@
                 {% for player in team.players %}
                     {{ player.username }}
                 {% endfor %}
-            {% endfor %}
+            {% endif %}
         </div>
     {% else %}
         No competition selected.

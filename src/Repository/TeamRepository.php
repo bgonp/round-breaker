@@ -31,6 +31,14 @@ class TeamRepository extends ServiceEntityRepository
 			->getQuery()->execute();
     }
 
+	public function save(Team $team, bool $flush = true)
+	{
+		$this->getEntityManager()->persist($team);
+		if ($flush) {
+			$this->getEntityManager()->flush();
+		}
+    }
+
     // /**
     //  * @return Team[] Returns an array of Team objects
     //  */

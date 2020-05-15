@@ -19,6 +19,14 @@ class RegistrationRepository extends ServiceEntityRepository
         parent::__construct($registry, Registration::class);
     }
 
+    public function save(Registration $registration, bool $flush = true)
+    {
+        $this->getEntityManager()->persist($registration);
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
     // /**
     //  * @return Registration[] Returns an array of Registration objects
     //  */

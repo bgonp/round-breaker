@@ -36,6 +36,14 @@ class PlayerRepository extends ServiceEntityRepository implements PasswordUpgrad
         $this->_em->flush();
     }
 
+    public function save(Player $player, bool $flush = true)
+    {
+        $this->getEntityManager()->persist($player);
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
     // /**
     //  * @return Player[] Returns an array of Player objects
     //  */

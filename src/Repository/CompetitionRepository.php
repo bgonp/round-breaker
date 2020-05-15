@@ -20,6 +20,14 @@ class CompetitionRepository extends ServiceEntityRepository
         parent::__construct($registry, Competition::class);
     }
 
+	public function save(Competition $competition, bool $flush = true): void
+	{
+		$this->getEntityManager()->persist($competition);
+		if ($flush) {
+			$this->getEntityManager()->flush();
+		}
+    }
+
     // /**
     //  * @return Competition[] Returns an array of Competition objects
     //  */

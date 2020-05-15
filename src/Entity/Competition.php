@@ -217,9 +217,9 @@ class Competition extends Base
     }
 
     public function getPlayersPerTeam(): ?int
-{
-    return $this->playersPerTeam;
-}
+	{
+		return $this->playersPerTeam;
+	}
 
     public function setPlayersPerTeam(?int $playersPerTeam): self
     {

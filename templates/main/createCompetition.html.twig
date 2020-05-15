@@ -1,17 +1,19 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {% include 'header.html' %}
+    {% include 'header.html.twig' %}
     {% if games %}
     <form method="post">
         <label for="inputName">Name</label>
         <input type="text" name="name" id="inputName" class="form-control" required autofocus>
         <label for="inputDescription">Description</label>
-        <input type="text" name="description" id="inputDescription" class="form-control" required autofocus>
-        <label for="inputPlayers">Max Player Count</label>
-        <input type="int" name="players" id="inputPlayers" class="form-control" required autofocus>
-        <input type="checkbox" name="individual" id="inputIndividual" checked>
-        <label for="inputIndividual">Individual Comp</label><br>
+        <input type="text" name="description" id="inputDescription" class="form-control" required>
+        <label for="inputMaxPlayers">Max Player Count</label>
+        <input type="int" name="maxPlayers" id="inputMaxPlayers" class="form-control" required>
+        <label for="inputPlayersPerTeam">Players Per Team</label>
+        <input type="int" name="playersPerTeam" id="inputPlayersPerTeam" class="form-control" required>
+        <input type="checkbox" name="individual" id="inputIndividual" onclick="document.getElementById('inputPlayersPerTeam').disabled=this.checked;">
+        <label for="inputIndividual">Individual</label><br>
 
         <label for="game">Game:</label>
         <select name="game">
