@@ -1,0 +1,55 @@
+@font-face {
+    font-family: deporte;
+    src: url(../fonts/octin.ttf);
+  }
+
+  @font-face {
+    font-family: broken;
+    src: url(../fonts/BrokenGlass.ttf);
+  }
+.titulo {
+    color:#f7921e;
+    font-size: 1.8vw;
+    font-family: deporte;
+    letter-spacing: 2.5px;
+}
+
+.cards {
+    font-size: 1.2em;
+    font-family: deporte;
+    letter-spacing: 2px;
+}
+.menu {
+    font-size: 1em;
+    font-family: deporte;
+    letter-spacing: 2px;
+}
+
+a {
+    color:#f7921e !important;
+}
+
+a:hover {
+    color:#4cd365 !important;
+}
+
+.rrss {
+    opacity: .65;
+}
+
+h1 {
+    color:#f7921e;
+    font-family: deporte;
+    letter-spacing: 2.5px;
+}
+
+.broken{
+    font-size: 1.5em;
+    font-family: broken;
+    letter-spacing: 2px;
+}
+/*.prueba {
+    background: url('../img/tile3.png') repeat bottom right;
+}*/
+
+
