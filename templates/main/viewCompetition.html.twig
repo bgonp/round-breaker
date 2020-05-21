@@ -17,11 +17,12 @@
             {% endfor %}
             <br>Teams:
             {% for team in teams %}
-                {{ team.name }}:
+                {{ team.name }}:<br>
                 {% for player in team.players %}
-                    {{ player.username }}
+                    {{ player.username }}<br>
                 {% endfor %}
-            {% endif %}
+                <br>
+            {% endfor %}
         </div>
     {% else %}
         No competition selected.
