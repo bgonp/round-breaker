@@ -1,0 +1,142 @@
+.single.bracket {
+	position: relative;
+	padding-bottom: 20px;
+	margin: 0 auto 20px;
+	max-width: 100%;
+}
+.single.fullscreen {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: #E5E5E5;
+    margin: 0;
+    overflow: auto;
+    z-index: 100;
+}
+.single.bracket.fullscreen .scrollable-x {
+	overflow: visible;
+}
+.single.fullscreen .bracket-container,
+.single.fullscreen .bets {
+    position: absolute;
+    top: 80px;
+    left: 0;
+    width: 100%;
+    border-collapse: collapse;
+}
+.single.bracket .bracket {
+	margin-bottom: 20px;
+}
+.single.bracket .bracket tr.spacer {
+    height: 20px;
+}
+.single.bracket .bracket th {
+    font-family: deporte, 'Coda', sans-serif;
+    letter-spacing: 2px;
+	font-weight: 400;
+	font-size: 1.3rem;
+	text-align: center;
+    background: #000;
+    color: #FFF;
+    border: 2px solid #E5E5E5;
+    box-shadow: 0 1px 10px rgba(0,0,0,0.05);
+}
+.single.bracket .bracket td {
+    border: 4px solid transparent;
+    padding: 0;
+}
+.single.bracket .bracket .line.br {
+    border-right-color:#000;
+}
+.single.bracket .bracket .line.win {
+    border-right-color: black;
+}
+.single.bracket .bracket .line.bb {
+    border-bottom-color:#000;
+}
+.single.bracket .bracket .line {
+	padding: 0 15px;
+}
+
+.single.bracket .bracket .match span,
+.single.bracket .bracket .match a,
+.single.bracket .bracket .match a:hover,
+.single.bracket .bracket .match a:active,
+.single.bracket .bracket .match a:focus {
+	position: relative;
+	display: block;
+    color: #f7921e;
+	font-size: 1.25rem;
+	padding: 12px;
+	width: 270px;
+    font-family: deporte;
+    letter-spacing: 2px;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	text-decoration: none;
+	overflow: hidden;
+	z-index: 1;
+}
+.single.bracket .bracket .match span::before,
+.single.bracket .bracket .match span::after,
+.single.bracket .bracket .match a::before,
+.single.bracket .bracket .match a::after {
+	content: '';
+	position: absolute;
+	transform: skewX(-15deg);
+	top: 0;
+	right: 32px;
+	bottom: 0;
+	width: 300px;
+	background: #000;
+    z-index: -1;
+}
+.single.bracket .bracket .match span::before,
+.single.bracket .bracket .match a::before {
+	background: #4cd365;
+	right: 21px;
+}
+
+.single.bracket .bracket .match span {
+	background:#000;
+	background-image: url('../img/skew.png');
+	background-position: bottom right;
+	background-repeat: no-repeat;
+	
+}
+
+.single.bracket .bracket .match.t1 .win-2,
+.single.bracket .bracket .match.t2 .win-1 {
+	background:#6c757d;
+	color: #E5E5E5;
+	background-image: url('../img/skew.png');
+	background-position: bottom right;
+	background-repeat: no-repeat;
+}
+
+.single.bracket .bracket .match.t1 .win-2::after,
+.single.bracket .bracket .match.t2 .win-1::after {
+	background:#6c757d
+}
+.bracket-zoom,
+.bracket-zoom:hover,
+.bracket-zoom:active,
+.bracket-zoom:focus {
+	position: absolute;
+	right: 25px;
+	bottom: 50px;
+	font-size: 1.6rem;
+	color: #EE0000;
+}
+.single.bracket.fullscreen .bracket-zoom {
+	position: fixed;
+	right: 35px;
+	bottom: 35px;
+}
+.single.bracket.no-button .bracket-zoom {
+	display: none;
+}
+
+.scrollable-x {	overflow-x: scroll; }

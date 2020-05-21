@@ -1,0 +1,1412 @@
+body {
+	font-family: 'Montserrat', sans-serif;
+	color: #1A1A1A;
+	background: #E5E5E5;
+}
+h1,h2,h3,h4 {
+	font-family: 'Coda', sans-serif;
+}
+a,
+a:hover,
+a:active,
+a:focus {
+	color: #EE0000;
+}
+hr {
+	margin: 20px 0;
+}
+.numero {
+	font-family: 'Oswald', sans-serif;
+}
+
+.bg-white {		background: #FFFFFF; }
+.bg-bright {	background: #E5E5E5; }
+.bg-orange {	background: #EE0000; }
+.bg-dark {		background: #1A1A1A; }
+.bg-black {		background: #000000; }
+
+.shadowed { box-shadow: 0 1px 10px rgba(0,0,0,0.05); }
+
+.scrollable-x {	overflow-x: scroll; }
+
+.form-control:focus {
+    border-color: #EE0000;
+    box-shadow: 0 0 0 0.2rem rgba(255, 102, 0, 0.25);
+}
+.rosdrilist .lateral {
+	position: relative;
+	font-size: 0;
+	text-align: center;
+}
+.boton {
+	display: inline-block;
+	background: #EE0000;
+	border: none;
+	border-radius: 2px;
+	color: #FFF;
+	text-decoration: none;
+	font-size: 1rem;
+	line-height: 1;
+	text-align: center;
+	padding: 5px;
+	margin: 0 2px 0 0;
+	box-sizing: border-box;
+	box-shadow: 0 1px 15px rgba(0,0,0,0.05);
+	cursor: pointer;
+	transition: background 0.1s;
+	vertical-align: bottom;
+}
+.boton i {
+	display: block;
+}
+.boton:hover,
+.boton:active,
+.boton:focus {
+	color: #FFF;
+	background: #EE0000;
+	text-decoration: none;
+}
+.boton.grande {
+	padding: 10px 30px;
+}
+.boton.full {
+	display: block;
+	width: 100%;
+	text-align: center;
+	margin: 0 0 20px;
+	padding: 17px;
+	border-radius: 2px;
+}
+.boton.twitch {
+	background: #6441a5;
+}
+.boton.twitch i {
+	display: inline-block;
+	margin-right: 10px;
+}
+.boton.negro {
+	background: #000;
+}
+
+.tabs {
+	font-size: 0;
+	margin-bottom: 20px;
+}
+.tabs .tab-button,
+.tabs .tab-button:hover,
+.tabs .tab-button:active,
+.tabs .tab-button:focus {
+	display: inline-block;
+	color: #EE0000;
+	font-size: 1rem;
+	line-height: 1;
+	width: 50%;
+	text-align: center;
+	padding: 15px 0;
+	text-decoration: none;
+	border: 1px solid transparent;
+	border-bottom-color: #EE0000;
+}
+.tabs .tab-button.selected {
+	color: #FFF;
+	background: #EE0000;
+	border-color: #EE0000;
+	border-bottom-color: transparent;
+}
+
+.agregar-item {
+	display: block;
+	width: 100%;
+	color: #1A1A1A;
+	background: #FFF;
+	text-align: center;
+	margin: 0 0 20px;
+	padding: 12px;
+	border-radius: 2px;
+	transition: all 0.1s;
+}
+.agregar-item:hover,
+.agregar-item:active,
+.agregar-item:focus {
+	color: #FFF;
+	background: #EE0000;
+	text-decoration: none;
+}
+.agregar-item i,
+.agregar-item span {
+	margin-right: 5px;
+	vertical-align: middle;
+}
+
+.background-full {
+	position: absolute!important;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: -1;
+}
+.background-full.black::before,
+.background-full::after {
+	content: '';
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	width: 3000px;
+	transform: skewX(15deg);
+	transform-origin: 100% 100%;
+	box-shadow: 0 1px 10px rgba(0,0,0,0.05);
+}
+.background-full.black::before {
+	transform: skewX(15deg) translate(3px, 0);
+}
+.background-full.white::after {
+	background: #FFF;
+}
+.background-full.black::after {
+	background: #000;
+}
+.background-full.black::before {
+	background: #EE0000;
+}
+.background-full.left::before,
+.background-full.left::after {
+	right: 100%;
+}
+.background-full.right::before,
+.background-full.right::after {
+	right: 0;
+}
+
+.current-competition {
+	position: relative;
+	padding: 25px 40px;
+	margin-bottom: 40px;
+	text-align: center;
+}
+.current-competition.hay-competicion-0 {
+	display: none;
+}
+.current-competition a,
+.current-competition a:hover,
+.current-competition a:active,
+.current-competition a:focus {
+	display: block;
+	color: #FFF;
+	text-decoration: none;
+}
+.current-competition h3 {
+	margin: 0;
+}
+.current-competition .titulo {
+	margin-bottom: 15px;
+	color: #EE0000;
+}
+.current-competition .nombre-competicion {
+	margin-bottom: 10px;
+}
+.current-competition .loading-bar.pasada-1 {
+	display: none;
+}
+.current-competition .loading-bar {
+	padding: 0 40px;
+	margin-top: 15px;
+}
+.current-competition .loading-bar .barra {
+	position: relative;
+	display: block;
+	height: 12px;
+	background: #FFF;
+}
+.current-competition .loading-bar .barra .progreso {
+	position: absolute;
+	left: 0;
+	top: 0;
+	height: 100%;
+	background: #EE0000;
+}
+.current-competition .loading-bar .barra .progreso::after {
+	content: '';
+	position: absolute;
+	right: 0;
+	top: 0;
+	border-top: 12px solid #FFF;
+	border-left: 3px solid transparent;
+}
+.current-competition .loading-bar .restante {
+	text-align: right;
+	line-height: 1;
+	margin-top: 5px;
+}
+.rosdrihome {
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+.rosdrihome .seccion {
+    margin-bottom: 40px;
+}
+.rosdrihome .avatar {
+    float: right;
+    width: 120px;
+    height: 120px;
+    max-width: 50%;
+    max-height: 50%;
+    margin: 0 0 20px 20px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+.rosdrihome .avatar img {
+    width: 100%;
+    height: 100%;
+}
+
+.rosdrisingle {
+	padding: 0;
+	border-bottom: 1px solid rgba(0,0,0,0.1);
+	margin: 0 0 20px;
+}
+.rosdrisingle .campos {
+	margin: 0 0 4px;
+}
+.rosdrisingle .botones {
+	position: relative;
+	font-size: 0;
+	text-align: center;
+	margin: 0 0 20px;
+}
+.rosdrisingle .form-group {
+	margin-bottom: 16px;
+}
+.rosdrisingle .form-check-inline {
+	margin: 0 0 16px;
+}
+.rosdrisingle .form-group label {
+	position: relative;
+	line-height: 1;
+}
+.rosdrisingle .form-group label .recalcular-rango,
+.rosdrisingle .form-group label .ayuda {
+	position: absolute;
+	top: 50%;
+	left: 100%;
+	transform: translate(-50%,-50%);
+	margin-left: 16px;
+	font-size: 1.3rem;
+	text-shadow: 0 1px 10px rgba(0,0,0,0.05);
+}
+
+.mi-competicion {
+    padding: 0 0 4px;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    margin: 0 0 20px;
+}
+.mi-competicion h3 {
+    text-align: center;
+    line-height: 1;
+    margin: 0 0 16px;
+}
+.mi-competicion .nombre,
+.mi-competicion .fecha {
+    display: inline-block;
+    margin: 0 10px;
+    vertical-align: middle;
+}
+.mi-competicion .fecha {
+    font-size: 1.2rem
+}
+.mi-competicion .hay-sala-0 {
+    display: none;
+}
+.mi-competicion .hay-sala-1 input {
+    background: #FFF;
+    font-weight: 600;
+}
+
+.bootstrap-select .dropdown-menu {
+	padding: 0;
+	border-radius: 2px;
+}
+.bootstrap-select .dropdown-menu li a {
+	padding: 2px 15px;
+}
+.bootstrap-select .dropdown-toggle .filter-option-inner > *,
+.bootstrap-select .dropdown-menu li a span.text > * {
+	display: inline-block;
+	vertical-align: bottom;
+	margin-right: 3px;
+	line-height: 1.4;
+}
+.ui-menu,
+.bootstrap-select>.dropdown-toggle,
+.btn-light:not(:disabled):not(.disabled).active,
+.btn-light:not(:disabled):not(.disabled):active,
+.show>.btn-light.dropdown-toggle {
+	background: #FFF;
+	border-radius: 2px;
+	border: 1px solid #ced4da;
+}
+.bootstrap-select>.dropdown-toggle.disabled {
+    background-color: #e9ecef;
+    opacity: 1;
+}
+.dropdown-item.active,
+.dropdown-item:active {
+	background: #EE0000;
+}
+.dropdown-item:focus,
+.dropdown-item:hover,
+.ui-menu .ui-state-focus,
+.ui-menu .ui-state-active {
+	padding: ;
+	margin: 0;
+	background: #E5E5E5;
+}
+.ui-menu {
+	margin-top: 2px;
+}
+.ui-menu .ui-menu-item {
+	padding: 0;
+}
+.ui-menu .ui-menu-item-wrapper {
+	padding: 3px 12px;
+}
+
+.selected-message {
+	padding-bottom: 4px;
+	border-bottom: 1px solid rgba(0,0,0,0.1);
+	margin-bottom: 20px;
+}
+
+.lightbox-content,
+.loading,
+#mensaje {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background: rgba(0,0,0,0.5);
+	z-index: 1000;
+}
+.lightbox-content > .contenido,
+.lightbox-content > p,
+#mensaje > p {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+	width: 500px;
+	max-width: 100%;
+	padding: 20px 40px;
+	margin: 0;
+	background: #FFF;
+	border-radius: 2px;
+}
+.lightbox-content .imagen {
+	position: absolute;
+	top: 50%;
+	left: 0;
+	transform: translate(0,-50%);
+	width: 100%;
+	text-align: center;
+}
+.lightbox-content .imagen img {
+	width: 95%;
+	max-width: 600px;
+}
+#mensaje.mensaje-ok p {
+	box-shadow: inset 3px 0 #28a745;
+}
+#mensaje.mensaje-error p {
+	box-shadow: inset 3px 0 #FF1111;
+}
+.lightbox-content.rango-actual .contenido {
+	text-align: center;
+}
+.lightbox-content.rango-actual .contenido img {
+	width: 40px;
+}
+.lightbox-content.rango-actual .contenido p {
+	margin: 0;
+}
+.loading::after {
+	content: '';
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+	height: 100px;
+	width: 100px;
+	border: 15px solid transparent;
+	border-right-color: #EE0000;
+	border-left-color: #EE0000;
+	border-radius: 50%;
+	animation-name: rotarZ;
+	animation-timing-function: linear;
+	animation-duration: 2s;
+	animation-iteration-count: infinite;
+}
+
+#page-header {
+	position: relative;
+	font-family: 'Coda', sans-serif;
+	color: #FFF;
+	padding: 25px 0;
+	background: rgba(0,0,0,0.7);
+	overflow: hidden;
+}
+#page-header .logo-container a,
+#page-header .logo-container a:hover,
+#page-header .logo-container a:active,
+#page-header .logo-container a:focus {
+	margin: 0;
+	color: #FFF;
+	text-decoration: none;
+}
+#page-header .titulo {
+	font-size: 2.5rem;
+	margin-bottom: 0;
+	line-height: 1;
+}
+#page-header .logo {
+	position: relative;
+	display: inline-block;
+}
+#page-header .logo:hover {
+	animation-delay: 0.2s;
+	animation-duration: 1s;
+	animation-name: rotarY;
+	animation-iteration-count: 1;
+}
+#page-header .logo .main-logo {
+	position: relative;
+    transition: all 1s ease;
+	width: 100px;
+}
+#page-header .logo .easter-egg {
+    position: absolute;
+    top: 50%;
+    right: 50%;
+    bottom: 50%;
+    left: 50%;
+    height: 0;
+    width: 0;
+    opacity: 0;
+    transition: all 1s ease;
+}
+.pozo #page-header .logo .main-logo {
+	opacity: 0;
+}
+.pozo #page-header .logo .easter-egg {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 1;
+}
+#page-header .menu ul {
+	padding: 0;
+	margin: 0;
+	list-style: none;
+}
+#page-header .menu .menu-item a {
+	font-size: 1.1rem;
+	color: #FFF;
+	transition: color 0.1s;
+	line-height: 1;
+}
+body.page-keys #page-header .menu .menu-item.keys a,
+body.page-key #page-header .menu .menu-item.keys a,
+body.page-competitions #page-header .menu .menu-item.competitions a,
+body.page-competition #page-header .menu .menu-item.competitions a,
+body.page-players #page-header .menu .menu-item.players a,
+body.page-player #page-header .menu .menu-item.players a,
+body.page-home #page-header .menu .menu-item.home a,
+body.page-dashboard #page-header .menu .menu-item.dashboard a,
+#page-header .menu .menu-item a:hover,
+#page-header .menu .menu-item a:active,
+#page-header .menu .menu-item a:focus {
+	text-decoration: none;
+	color: #EE0000;
+}
+#page-header .video-background {
+	position: absolute;
+	top: -300px;
+	left: 0;
+	right: 0;
+	width: 100%;
+	z-index: -1;
+}
+#page-header .header-background {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	width: 100%;
+	min-height: 100%;
+	z-index: -1;
+}
+#page-header .black.background {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: #000;
+	z-index: -2;
+}
+
+#page-title {
+	position: relative;
+	text-align: center;
+	border-bottom: 1px solid #EE0000;
+	background: #FFF;
+}
+#page-title h2 {
+	padding-top: 10px;
+	padding-bottom: 10px;
+	margin: 0;
+}
+
+#page-main {
+	padding: 20px 0 0;
+	background: #E5E5E5;
+}
+
+#main-content {
+	position: relative;
+	z-index: 50;
+}
+#main-sidebar {
+	position: relative;
+	z-index: 10;
+}
+
+#main-sidebar ul {
+	list-style: none;
+	padding: 0;
+}
+
+#page-footer {
+	padding: 20px 0;
+	background: #000;
+	border-top: 1px solid #EE0000;
+}
+#page-footer ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+#page-footer .widget a,
+#page-footer .widget {
+	background: none;
+	color: #FFF;
+	margin: 0;
+}
+
+.widget {
+	position: relative;
+	display: block;
+	margin-bottom: 20px;
+	background: #FFF;
+	border-radius: 2px;
+	overflow: hidden;
+}
+.widget-title {
+	color: #212529;
+	font-family: 'Coda', sans-serif;
+	font-size: 1.6rem;
+	text-align: center;
+	padding: 10px 0;
+	border-bottom: 1px solid #EE0000;
+}
+.widget-title a,
+.widget-title a:hover,
+.widget-title a:active,
+.widget-title a:focus {
+	color: #212529;
+	text-decoration: none;
+}
+.widget-tabs {
+	margin: 0;
+}
+.widget-tabs .tab-button,
+.widget-tabs .tab-button:hover,
+.widget-tabs .tab-button:active,
+.widget-tabs .tab-button:focus {
+	border-top: none;
+}
+.widget-content {
+	position: relative;
+}
+.widget.twitch .widget-title .fas {
+	font-size: 1.4rem;
+	margin: 2px 0 -2px 10px;
+	color: #F00;
+	text-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+}
+.widget.patrocina .widget-content,
+.widget.registro .widget-content {
+	padding: 15px;
+}
+.widget.patrocina .widget-content img {
+	display: block;
+	margin: 0 auto;
+	max-width: 100%;
+}
+.widget.social .boton-social {
+	position: relative;
+	text-align: center;
+}
+.widget.social .boton-social a {
+	display: block;
+	color: #FFF;
+	padding: 12px 0;
+	font-size: 1.6rem;
+	line-height: 1;
+	transition: opacity 0.1s;
+}
+.widget.social .boton-social a:hover,
+.widget.social .boton-social a:active,
+.widget.social .boton-social a:focus {
+	opacity: 0.8;
+}
+.widget.social .boton-social.twitter a {
+	background: #1da1f2;
+}
+.widget.social .boton-social.instagram a {
+	background: #c13584;
+}
+.widget.social .boton-social.discord a {
+	background: #7289da;
+}
+.widget.social .boton-social.youtube a {
+	background: #ff0000;
+}
+.widget.social .boton-social.twitch a {
+	background: #6441a5;
+}
+.widget.social.is-live-0 .boton-social.youtube,
+.widget.social.is-live-1 .boton-social.twitch {
+	display: none;
+}
+.widget.video .widget-content {
+	height: 0;
+	padding-bottom: 56.3%;
+}
+.widget.video .widget-content iframe {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+.widget.twitter .widget-content iframe {
+	display: block!important;
+}
+.widget.registro .boton {
+	width: 100%;
+}
+.widget.registro .boton.negro {
+	margin: 0;
+}
+
+.rosdrilist.no-confirmable-0 .boton .fa-folder,
+.rosdrilist.no-confirmable-1 .boton .fa-folder-open,
+.rosdrilist.cerrada-0 .boton .fa-lock,
+.rosdrilist.cerrada-1 .boton .fa-unlock {
+	display: none;
+}
+.rosdrilist.sin-confirmar-0 .boton.confirmar,
+.rosdrilist.no-entregada-1 .boton.entregar,
+.rosdrilist.cerrada-0 .boton.abrir,
+.rosdrilist.disponible-0 .boton.banear,
+.rosdrilist.no-confirmable-0 .boton.confirmable,
+.rosdrilist.team.rank-8 .boton.descalificar {
+	color: #EE0000;
+	background: #FFF;
+	box-shadow: inset 0 0 0 2px #EE0000;
+}
+
+.team-competition-title a,
+.team-competition-title a:hover,
+.team-competition-title a:focus,
+.team-competition-title a:active {
+	color: #000;
+	text-decoration: none;
+}
+
+.rosdrilist {
+	position: relative;
+	margin: 0 0 20px 0;
+}
+.rosdrilist.myteam {
+	padding-bottom: 20px;
+	border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+.rosdrilist .datos {
+	position: relative;
+	margin-bottom: 0;
+	list-style: none;
+	font-size: 0;
+	padding: 15px 15px 15px 0;
+	margin: 0;
+	color: #FFF;
+	vertical-align: bottom;
+	z-index: 1;
+}
+.rosdrilist .datos-jugador {
+	padding: 0;
+}
+.rosdrilist .datos .un-dato {
+	position: relative;
+	font-size: 1rem;
+	z-index: 10;
+}
+.rosdrilist .datos .un-dato a,
+.rosdrilist .datos .un-dato a:hover,
+.rosdrilist .datos .un-dato a:active,
+.rosdrilist .datos .un-dato a:focus {
+	color: #FFF;
+	text-decoration: none;
+}
+.rosdrilist .datos li.un-dato:not(.inclinado) {
+	margin-right: 5px;
+}
+.rosdrilist .datos li.un-dato.rango {
+	margin: 0 0 0 -3px;
+}
+.rosdrilist .un-dato.suscriptor-0,
+.rosdrilist .un-dato.video-0,
+.rosdrilist .un-dato.disponible-1 {
+	display: none!important;
+}
+.rosdrilist .datos .un-dato.discord a {
+	display: inline-block;
+	padding: 2px 10px;
+	margin: 0 0 10px;
+	background: #7289da;
+	border-radius: 2px;
+}
+.rosdrilist.team .competition-titile a,
+.rosdrilist.team .competition-titile a:hover,
+.rosdrilist.team .competition-titile a:active,
+.rosdrilist.team .competition-titile a:focus {
+	color: inherit;
+	text-decoration: none;
+}
+.rosdrilist.team .datos li.un-dato.discord a i {
+	display: inline-block;
+	vertical-align: middle;
+	margin: 0 8px 0 0;
+}
+.rosdrilist .lateral {
+	position: relative;
+	display: inline-block;
+	margin: 0;
+	list-style: none;
+}
+.rosdrilist .botones,
+.rosdrilist .estado {
+	position: relative;
+	padding: 15px 32px 15px 15px;
+	margin: 0;
+	white-space: nowrap;
+}
+.rosdrilist .botones li,
+.rosdrilist .estado li {
+	display: inline-block;
+	vertical-align: middle;
+	text-align: center;
+}
+.rosdrilist .estado li span,
+.rosdrilist .estado li a,
+.rosdrilist .estado li a:hover,
+.rosdrilist .estado li a:active,
+.rosdrilist .estado li a:focus {
+	display: block;
+	font-size: 0.9rem;
+	font-weight: 600;
+	color: #000;
+	line-height: 1.2;
+	text-decoration: none;
+}
+.rosdrilist .estado .si-confirmado span,
+.rosdrilist.cerrada-0 .estado li a,
+.rosdrilist.no-confirmable-0 .estado li a {
+	color: #EE0000;
+}
+.rosdrilist.team .nombre-equipo {
+	width: 80%;
+}
+.rosdrilist.key .datos li.un-dato,
+.rosdrilist.registration .datos li.un-dato,
+.rosdrilist.player .datos li.un-dato,
+.rosdrilist.team .datos-jugador li.un-dato {
+	display: inline-block;
+	vertical-align: middle;
+}
+.rosdrilist.key .datos li.un-dato.twitch a,
+.rosdrilist.registration .datos li.un-dato.twitch a,
+.rosdrilist.player .datos li.un-dato.twitch a,
+.rosdrilist.team .datos-jugador li.un-dato.twitch a {
+	display: block;
+	padding: 3px 5px;
+	background: #6441a5;
+	border-radius: 2px;
+}
+.rosdrilist .un-dato.inclinado {
+	position: absolute;
+	top: 50%;
+	right: 0;
+	transform: rotate(75deg);
+	transform-origin: 50% 50%;
+	margin: -12px 0 0 0;
+	z-index: 10;
+}
+.rosdrilist .lateral .un-dato.inclinado {
+	right: 100%;
+	margin-right: 8px;
+	white-space: nowrap;
+}
+.rosdrilist .un-dato.inclinado,
+.rosdrilist .un-dato.inclinado a,
+.rosdrilist .un-dato.inclinado a:hover,
+.rosdrilist .un-dato.inclinado a:active,
+.rosdrilist .un-dato.inclinado a:focus {
+	font-size: 1rem;
+	color: #EE0000;
+	font-weight: 600;
+	text-decoration: none;
+}
+.rosdrilist.key .datos li.un-dato i,
+.rosdrilist.registration .datos li.un-dato i,
+.rosdrilist.player .datos li.un-dato i,
+.rosdrilist.team .datos li.un-dato i {
+	display: block;
+}
+.rosdrilist .datos li.un-dato.rango img {
+	height: 1.6rem;
+}
+.page-dashboard.subpage .rosdrilist li.un-dato.competicion,
+.page-competition .rosdrilist li.un-dato.competicion,
+.page-competition .team-competition-title,
+.rosdrisingle .mi-competicion.tiene-nombre-0,
+.rosdrilist .estado.confirmado-0 .si-confirmado,
+.rosdrilist .estado.confirmado-1 .no-confirmado,
+.rosdrilist .un-dato.tiene-nombre-1,
+.rosdrilist li.un-dato.jugador-0,
+.rosdrilist li.un-dato.plataforma-0,
+.rosdrilist.key .datos li.un-dato.plataforma-0,
+.rosdrilist.key .datos li.un-dato.plataforma i,
+.rosdrilist.registration .datos li.un-dato.plataforma i,
+.rosdrilist.player .datos li.un-dato.plataforma i,
+.rosdrilist.team .datos li.un-dato.plataforma i,
+.rosdrilist.team.rank-0 .un-dato.puesto {
+	display: none!important;
+}
+.rosdrilist.key .datos li.un-dato.plataforma-1 i.fa-steam,
+.rosdrilist.key .datos li.un-dato.plataforma-2 i.fa-playstation,
+.rosdrilist.key .datos li.un-dato.plataforma-3 i.fa-xbox,
+.rosdrilist.key .datos li.un-dato.plataforma-4 i.fa-nintendo-switch,
+.rosdrilist.registration .datos li.un-dato.plataforma-1 i.fa-steam,
+.rosdrilist.registration .datos li.un-dato.plataforma-2 i.fa-playstation,
+.rosdrilist.registration .datos li.un-dato.plataforma-3 i.fa-xbox,
+.rosdrilist.registration .datos li.un-dato.plataforma-4 i.fa-nintendo-switch,
+.rosdrilist.player .datos li.un-dato.plataforma-1 i.fa-steam,
+.rosdrilist.player .datos li.un-dato.plataforma-2 i.fa-playstation,
+.rosdrilist.player .datos li.un-dato.plataforma-3 i.fa-xbox,
+.rosdrilist.player .datos li.un-dato.plataforma-4 i.fa-nintendo-switch,
+.rosdrilist.team .datos li.un-dato.plataforma-1 i.fa-steam,
+.rosdrilist.team .datos li.un-dato.plataforma-2 i.fa-playstation,
+.rosdrilist.team .datos li.un-dato.plataforma-3 i.fa-xbox,
+.rosdrilist.team .datos li.un-dato.plataforma-4 i.fa-nintendo-switch {
+	display: inline-block!important;
+}
+.rosdrisingle .input-group-append .boton,
+.rosdrilist .input-group-append .boton {
+	padding: 6px 12px;
+}
+
+.boton-new-player,
+.boton-new-player:hover,
+.boton-new-player:active,
+.boton-new-player:focus {
+	position: absolute;
+	top: 100%;
+	left: 5px;
+	right: 5px;
+	padding: 5px 10px;
+	margin: 2px 0;
+	background: #EE0000;
+	border-radius: 2px;
+	text-align: center;
+	text-decoration: none;
+	color: #FFF;
+	z-index: 10;
+}
+.boton-edit-player,
+.boton-edit-player:hover,
+.boton-edit-player:active,
+.boton-edit-player:focus {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding: 6px 12px;
+    color: #EE0000;
+    text-decoration: none;
+}
+
+.rosdrisingle.bracket {
+	position: relative;
+	padding-bottom: 20px;
+	margin: 0 auto 20px;
+	max-width: 100%;
+}
+.rosdrisingle.fullscreen {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: #E5E5E5;
+    margin: 0;
+    overflow: auto;
+    z-index: 100;
+}
+.rosdrisingle.bracket.fullscreen .scrollable-x {
+	overflow: visible;
+}
+.rosdrisingle.fullscreen .bracket-container,
+.rosdrisingle.fullscreen .rosdribets {
+    position: absolute;
+    top: 80px;
+    left: 0;
+    width: 100%;
+    border-collapse: collapse;
+}
+.rosdrisingle.bracket .rosdribracket {
+	margin-bottom: 20px;
+}
+.rosdrisingle.bracket .rosdribracket tr.spacer {
+    height: 20px;
+}
+.rosdrisingle.bracket .rosdribracket th {
+    font-family: deporte, 'Coda', sans-serif;
+    letter-spacing: 2px;
+	font-weight: 400;
+	font-size: 1.3rem;
+	text-align: center;
+    background: #000;
+    color: #FFF;
+    border: 2px solid #E5E5E5;
+    box-shadow: 0 1px 10px rgba(0,0,0,0.05);
+}
+.rosdrisingle.bracket .rosdribracket td {
+    border: 4px solid transparent;
+    padding: 0;
+}
+.rosdrisingle.bracket .rosdribracket .line.br {
+    border-right-color:#000;
+}
+.rosdrisingle.bracket .rosdribracket .line.win {
+    border-right-color: black;
+}
+.rosdrisingle.bracket .rosdribracket .line.bb {
+    border-bottom-color:#000;
+}
+.rosdrisingle.bracket .rosdribracket .line {
+	padding: 0 15px;
+}
+
+/*.rosdrisingle.bracket .rosdribracket .match {
+    border-bottom-color:#6c757d;
+}*/
+
+.rosdrisingle.bracket .rosdribracket .match span,
+.rosdrisingle.bracket .rosdribracket .match a,
+.rosdrisingle.bracket .rosdribracket .match a:hover,
+.rosdrisingle.bracket .rosdribracket .match a:active,
+.rosdrisingle.bracket .rosdribracket .match a:focus {
+	position: relative;
+	display: block;
+    color: #f7921e;
+	font-size: 1.25rem;
+	padding: 10px;
+	width: 260px;
+    font-family: deporte;
+    letter-spacing: 2px;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	text-decoration: none;
+	overflow: hidden;
+	z-index: 1;
+}
+.rosdrisingle.bracket .rosdribracket .match span::before,
+.rosdrisingle.bracket .rosdribracket .match span::after,
+.rosdrisingle.bracket .rosdribracket .match a::before,
+.rosdrisingle.bracket .rosdribracket .match a::after {
+	content: '';
+	position: absolute;
+	transform: skewX(-15deg);
+	top: 0;
+	right: 24px;
+	bottom: 0;
+	width: 300px;
+	background: #000;
+    z-index: -1;
+}
+.rosdrisingle.bracket .rosdribracket .match span::before,
+.rosdrisingle.bracket .rosdribracket .match a::before {
+	background: #4cd365;
+	right: 13px;
+}
+
+.rosdrisingle.bracket .rosdribracket .match span {
+	background:#000
+}
+
+.rosdrisingle.bracket .rosdribracket .match.t1 .win-2,
+.rosdrisingle.bracket .rosdribracket .match.t2 .win-1 {
+	background:#6c757d;
+	color: #E5E5E5;
+}
+
+.rosdrisingle.bracket .rosdribracket .match.t1 .win-2::after,
+.rosdrisingle.bracket .rosdribracket .match.t2 .win-1::after {
+	background:#6c757d
+}
+.rosdribracket-zoom,
+.rosdribracket-zoom:hover,
+.rosdribracket-zoom:active,
+.rosdribracket-zoom:focus {
+	position: absolute;
+	right: 25px;
+	bottom: 50px;
+	font-size: 1.6rem;
+	color: #EE0000;
+}
+.rosdrisingle.bracket.fullscreen .rosdribracket-zoom {
+	position: fixed;
+	right: 35px;
+	bottom: 35px;
+}
+.rosdrisingle.bracket.no-button .rosdribracket-zoom {
+	display: none;
+}
+
+.rosdribets {
+	display: inline-block;
+	text-align: center;
+	width: 650px;
+}
+.rosdribets h3 {
+	margin-bottom: 0;
+}
+.rosdribets .bets-header,
+.rosdribets .bets-body {
+	max-width: 650px;
+	margin: 8px auto 0;
+}
+.rosdribets .nums-equipos {
+	white-space: nowrap;
+	font-size: 0;
+	line-height: 1;
+	margin-bottom: 3px;
+}
+.rosdribets .nums-equipos .num-equipo {
+	display: inline-block;
+	width: 50%;
+	font-size: 1rem;
+	font-weight: 600;
+	padding: 0 20px 0 19px;
+	text-align: left;
+}
+.rosdribets .nums-equipos .num-equipo-1 {
+	text-align: right;
+}
+.rosdribets .equipos {
+	position: relative;
+	margin-bottom: 15px;
+	font-size: 0;
+	overflow: hidden;
+}
+.rosdribets .equipos .versus {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    color: #FFF;
+    background: #E5E5E5;
+    z-index: 10;
+    width: 60px;
+    font-size: 2rem;
+    font-weight: 600;
+    line-height: 180px;
+    text-align: center;
+    text-shadow: 3px 0 #000, -3px 0 #EE0000;
+    *text-shadow: 3px 0 #003d92, -3px 0 #EE0000; /* TODO: A BORRAR */
+    overflow: hidden;
+}
+.rosdribets .equipos .versus::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    bottom: -1px;
+    left: 50%;
+    transform: translate(-50%,0) skewX(15deg);
+    transform-origin: 50% 50%;
+    border-left: 50px solid #000;
+    *border-left: 50px solid #003d92; /* TODO: A BORRAR */
+    border-right: 50px solid #EE0000;
+    width: 110px;
+    z-index: -1;
+}
+.rosdribets .equipo {
+	display: inline-block;
+    color: #FFF;
+    font-family:  'Coda';
+    font-size: 1.5rem;
+    font-weight: 400;
+    padding: 5px 22px 12px;
+    width: 44%;
+    margin: 0 3%;
+    white-space: nowrap;
+}
+.rosdribets .equipo-1 {
+    background: #000;
+    *background: #003d92; /* TODO: A BORRAR */
+    text-align: right;
+}
+.rosdribets .equipo-2 {
+    background: #EE0000;
+    text-align: left;
+}
+.rosdribets .equipo-1 .integrantes img {
+	*display: none; /* TODO: A BORRAR */
+    margin: -2px 0 -2px 5px;
+    height: 26px;
+}
+.rosdribets .equipo-2 .integrantes img {
+	*display: none; /* TODO: A BORRAR */
+    margin: -2px 5px -2px 0;
+    height: 26px;
+}
+.rosdribets .integrantes {
+	font-size: 1rem;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.rosdribets .porcentajes {
+	font-size: 0;
+	margin-bottom: 10px;
+	padding: 0 3%;
+}
+.rosdribets .integrantes .hay-jugador-0 {
+	display: none;
+}
+.rosdribets .porcentajes .barra {
+	position: relative;
+	display: inline-block;
+	width: 100%;
+    text-align: center;
+	vertical-align: middle;
+	white-space: nowrap;
+	overflow: hidden;
+}
+.rosdribets .porcentajes .barra .porcentaje-1 {
+	display: inline-block;
+	height: 22px;
+	background: #000;
+	*background: #003d92; /* TODO: A BORRAR */
+}
+.rosdribets .porcentajes .barra .porcentaje-2 {
+	position: relative;
+	display: inline-block;
+	height: 22px;
+	background: #EE0000;
+}
+.rosdribets .porcentajes .barra .porcentaje-2::after {
+	content: '';
+	display: inline-block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	border-left: 5px solid #000;
+	*border-left: 5px solid #003d92; /* TODO: A BORRAR */
+	border-right: 5px solid #EE0000;
+    transform: translate(-50%,0) skewX(15deg);
+}
+.rosdribets .porcentajes .porcentaje-n {
+	color: #FFF;
+	font-size: 1rem;
+	font-weight: 600;
+}
+.rosdribets .titulo {
+	font-weight: 600;
+	margin-bottom: 5px;
+}
+.rosdribets .apuestas {
+	margin: 15px 0;
+}
+.rosdribets .apuesta.ganador- {
+	opacity: 0;
+}
+.rosdribets .apuesta > span {
+	display: inline-block;
+	width: 200px;
+	padding: 0 5px;
+	text-align: left;
+}
+.rosdribets .apuesta > span:first-child {
+	text-align: right;
+	font-weight: 600;
+}
+.rosdribets .apuesta > span span {
+	display: inline-block;
+	width: 30px;
+	text-align: center;
+}
+.rosdribets .apuesta > span span:first-child {
+	display: inline-block;
+	width: 38px;
+}
+
+.mydata-section {
+    padding-bottom: 20px;
+    text-align: center;
+}
+.mydata-section.mykeys {
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+.mydata-section h3 {
+    color: #EE0000;
+    margin: 0;
+}
+.mydata-section p {
+    margin: 0;
+}
+
+.rosdrisingle.dashboard.mydata .form-group.user-id:not(.platform-1) .id-steam,
+.rosdrisingle.dashboard.mydata .form-group.user-id.platform-1 .id-others {
+	display: none;
+}
+
+.myregistration {
+	position: relative;
+	padding-bottom:  20px;
+	border-bottom: 1px solid rgba(0,0,0,0.1);
+	margin-bottom: 20px;
+}
+.myregistration .boton.inscripciones-abiertas {
+    position: relative;
+    margin: 0;
+}
+.myregistration .boton.inscripciones-abiertas span {
+    display: block;
+}
+.myregistration .boton.inscripciones-abiertas .titulo {
+    font-family: 'Coda', sans-serif;
+    font-size: 1.75rem;
+    margin-bottom: 12px;
+}
+.myregistration .inscripciones-abiertas-form {
+    background: #FFF;
+    padding: 17px 15px 15px;
+    margin-top: -2px;
+    border-bottom-left-radius: 2px;
+    border-bottom-right-radius: 2px;
+}
+.myregistration .inscripciones-abiertas-form .botones {
+	text-align: center;
+}
+.myregistration .exclamation {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 50px;
+	height: 50px;
+	margin: -15px;
+	text-align: center;
+	color: #EE0000;
+}
+.myregistration .exclamation i {
+	position: relative;
+	font-size: 2rem;
+	line-height: 50px;
+}
+.myregistration .exclamation::before {
+	content: '';
+	display: block;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	border-radius: 50%;
+	background: #FFF;
+	box-shadow: 0 1px 10px rgba(0,0,0,0.05);
+	animation-duration: 1s;
+	animation-name: latido;
+	animation-iteration-count: infinite;
+}
+
+.form-control {
+	border-radius: 2px;
+}
+.form-control[type="date"]{
+	height: 38px;
+}
+
+.grecaptcha-badge {
+	position: absolute!important;
+	bottom: 0!important;
+	box-shadow: none!important;
+	margin: -5px;
+}
+
+@media (min-width: 992px) {
+	.main-column-half .background-full.black::before,
+	.main-column-half .background-full::after {
+		width: 200px;
+	}
+	.main-column-half .rosdrilist .datos {
+		background: #000;
+		padding-left: 15px;
+		border-radius: 2px;
+		margin-right: 35px;
+	}
+}
+@media (max-width: 991px) {
+	.boton.full-peq {
+		width: 100%;
+	}
+	.rosdrihome .current-competition {
+		padding-left: 0;
+		text-align: left;
+	}
+	.rosdrihome .current-competition .loading-bar {
+		padding-left: 0;
+	}
+}
+
+@keyframes rotarY {
+	0% {transform: rotate3d(0,1,0,0deg);}
+	100% {transform: rotate3d(0,1,0,720deg);}
+}
+@keyframes rotarZ {
+	0% {transform: rotate(0deg);}
+	100% {transform: rotate(360deg);}
+}
+@keyframes latido {
+	0% {transform: scale(1);}
+	50% {transform: scale(1.1);}
+	100% {transform: scale(1);}
+}

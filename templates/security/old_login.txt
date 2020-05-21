@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Log in!{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xl-2 bg-secondary pt-2 d-none d-xl-block">
+          <!--Blank filler for sides over xl-->
+        </div>
+        <div class="col-lg-6 pt2">
+            Aagsasm
+        </div>
+        <div class="col pt-2">
+            <div class="bg-primary p-1">
+                <div class="card bg-light mb-3" style="max-width: 18rem;">
+                    <div class="card-header text-center cards">¡Únete a roundbreaker!</div>
+                    <div class="card-body">
+                        <h5 class="card-title">Inicia sesión como jugador para gestionar tus inscripciones</h5>
+                        <form method="post">
+                            {% if error %}
+                            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                            {% endif %}
+                        
+                            {% if app.user %}
+                            <div class="mb-3">
+                                You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
+                            </div>
+                            {% endif %}
+                            <label for="inputUsername" class="d-none">Username</label>
+                            <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="m-2 col-6 form-control"
+                            placeholder="Usuario" required autofocus>
+                            <div class="form-group">
+                                <label for="inputPassword" class="d-none">Password</label>
+                                <input type="password" name="password" id="inputPassword" class="m-2 col-6 form-control" placeholder="Contraseña" required>
+                            </div>
+                            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                            <button class="ml-2 mb-2 btn btn-lg btn-primary btn-dark" type="submit">
+                                Log in
+                            </button>
+                        </form>   
+                    </div>
+                </div>
+                <div class="card bg-light mb-3" style="max-width: 18rem;">
+                    <div class="card-header text-center cards">¡lo más jugado!</div>
+                    <div class="card-body">
+                      <h5 class="card-title">Light card title</h5>
+                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    </div>
+                  </div>     
+            </div>  
+        </div>
+        <div class="col-xl-2 bg-secondary py-2 d-none d-xl-block">
+            <!--Blank filler for sides over xl-->
+        </div>
+      </div>
+  </div>
+
+    {#
+        Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
+        See https://symfony.com/doc/current/security/remember_me.html
+
+        <div class="checkbox mb-3">
+            <label>
+                <input type="checkbox" name="_remember_me"> Remember me
+            </label>
+        </div>
+    #}
+
+
+
+{% endblock %}
