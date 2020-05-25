@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
-    {% include 'header.html.twig' %}
+{% block content %}
+<div class="row m-3">
     {% if competitions %}
         <form method="post">
             <label for="competition">Competitions:</label>
@@ -24,4 +24,5 @@
     {% else %}
         Can't join competitions if there are no competitions.
     {% endif %}
+</div>    
 {% endblock %}
