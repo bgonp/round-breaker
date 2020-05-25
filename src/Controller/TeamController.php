@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Competition;
 use App\Repository\PlayerRepository;
 use App\Repository\TeamRepository;
+use App\Service\CompetitionService;
 use App\Service\TeamService;
 use App\Service\PlayerService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -69,11 +70,12 @@ class TeamController extends AbstractController
     public function randomizeTeams(
         Competition $competition,
         PlayerRepository $playerRepository,
-        TeamService $teamService
+        TeamService $teamService,
+        CompetitionService $competitionService
     ) {
         $user = $this->getUser()->getUsername();
         $user = $playerRepository->findOneBy(['username' => $user]);
-        $teamService->randomize($user, $competition);
+        $teamService->randomize($user, $competition, $competitionService);
 
         return $this->redirectToRoute('competition_show', ['id' => $competition->getId()]);
     }

@@ -28,12 +28,20 @@ class CompetitionController extends AbstractController
             $competition = $competitionRepository->findOneBy(['name' => $request->request->get('name')]);
             $user = $this->getUser()->getUsername();
             $user = $playerRepository->findOneBy(['username' => $user]);
+            $playersPerTeam = $request->request->get('playersPerTeam');
+            $teamNum = $request->request->get('teamNum');
+            if ($playersPerTeam > 5 || $playersPerTeam < 1) {
+                $playersPerTeam = 1;
+            }
+            if (!is_int(log($teamNum, 2)) || $teamNum < 2 || $teamNum > 16) {
+                $teamNum = 2;
+            }
             if (!$competition) {
                 $competitionService->createCompetition(
                     $request->request->get('name'),
                     $request->request->get('description'),
                     $user,
-                    $request->request->get('maxPlayers'),
+                    ($playersPerTeam * $teamNum),
                     $request->request->get('individual') ? true : false,
                     $request->request->get('playersPerTeam'),
                     $gameRepository->findOneBy(['name' => $request->request->get('game')])

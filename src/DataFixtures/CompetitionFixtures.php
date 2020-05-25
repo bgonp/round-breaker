@@ -20,7 +20,7 @@ class CompetitionFixtures extends Fixture implements DependentFixtureInterface
         $competition->setCreator($manager->getRepository(Player::class)->findOneBy(['username' => "Tester01"]));
         $competition->setHeldAt(new \DateTime());
         $competition->setIsOpen(false);
-        $competition->setIsFinished(false);
+        $competition->setIsFinished(true);
         $competition->setIsIndividual(false);
         $competition->setPlayersPerTeam(3);
         $competition->setMaxPlayers(12);

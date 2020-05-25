@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class GameController extends AbstractController
 {
     /**
-     * @Route("/game/new", name="game_new", methods={"POST"})
+     * @Route("/game/new", name="game_new")
      */
     public function createGame(
         Request $request,

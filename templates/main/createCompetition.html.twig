@@ -8,10 +8,17 @@
         <input type="text" name="name" id="inputName" class="form-control" required autofocus>
         <label for="inputDescription">Description</label>
         <input type="text" name="description" id="inputDescription" class="form-control" required>
-        <label for="inputMaxPlayers">Max Player Count</label>
-        <input type="int" name="maxPlayers" id="inputMaxPlayers" class="form-control" required>
+        <!-- <label for="inputMaxPlayers">Max Player Count</label>
+        <input type="int" name="maxPlayers" id="inputMaxPlayers" class="form-control" required> -->
         <label for="inputPlayersPerTeam">Players Per Team</label>
-        <input type="int" name="playersPerTeam" id="inputPlayersPerTeam" class="form-control" required>
+        <input type="number" name="playersPerTeam" id="inputPlayersPerTeam" class="form-control" max="5" min="1" required>
+        <label for="inputTeamNum">Number of Teams</label>
+        <select id="inputTeamNum" name="teamNum">
+            <option value="2">2</option>
+            <option value="4">4</option>
+            <option value="8">8</option>
+            <option value="16">16</option>
+        </select>
         <input type="checkbox" name="individual" id="inputIndividual" onclick="document.getElementById('inputPlayersPerTeam').disabled=this.checked;">
         <label for="inputIndividual">Individual</label><br>
 

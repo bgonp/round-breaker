@@ -74,6 +74,12 @@ class Competition extends Base
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\Range(
+     *      min = 1,
+     *      max = 5,
+     *      minMessage = "You must have at least {{ limit }} players",
+     *      maxMessage = "You cannot have more than {{ limit }} players"
+     * )
      */
     private $playersPerTeam;
 

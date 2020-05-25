@@ -6,10 +6,12 @@ namespace App\Service;
 
 use App\Entity\Competition;
 use App\Entity\Player;
+use App\Entity\Round;
 use App\Entity\Team;
 use App\Repository\CompetitionRepository;
 use App\Repository\PlayerRepository;
 use App\Repository\TeamRepository;
+use App\Service\CompetitionService;
 
 class TeamService
 {
@@ -39,14 +41,14 @@ class TeamService
         $this->playerRepository->save($user);
     }
 
-	public function randomize(Player $player, Competition $competition) {
+	public function randomize(Player $player, Competition $competition, CompetitionService $competitionService) {
 		if ($competition->getIsOpen() && $competition->getCreator()->equals($player) && !$competition->getIsIndividual()) {
 			$registrations = $competition->getRegistrations()->toArray();
-			$teamNum = floor(count($registrations)/$competition->getPlayersPerTeam());
-			$teamNum = $teamNum > $competition->getMaxPlayers()/$competition->getPlayersPerTeam() ? $competition->getMaxPlayers()/$competition->getPlayersPerTeam() : $teamNum;
-			if ($teamNum % 2 != 0) {
-				$teamNum = $teamNum-1;
-			}
+			$teamNum = pow(2, intval(log(floor(count($registrations)/$competition->getPlayersPerTeam()), 2)));
+			$maxTeamNum = $competition->getMaxPlayers()/$competition->getPlayersPerTeam();
+			if ($teamNum == 1) $teamNum = 0;
+			if ($teamNum > $maxTeamNum) $teamNum = $maxTeamNum;
+			$teams = [];
 			for($i = 0; $i < $teamNum; $i++) {
 				$team = new Team();
 				$team->setName("Team " . ($i+1));
@@ -56,8 +58,10 @@ class TeamService
 					$team->addPlayer($registrations[$randomRegistration]->getPlayer());
 					unset($registrations[$randomRegistration]);
 				}
+				$teams[] = $team;
 				$this->teamRepository->save($team, false);
 			}
+			$competitionService->createRounds($competition, $teams);
 			$competition->setIsOpen(false);
 			$this->competitionRepository->save($competition);
 		}
