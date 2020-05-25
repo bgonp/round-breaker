@@ -23,7 +23,22 @@
 
 <body>
     {% include 'navbar.html.twig' %}
-    {% block body %}{% endblock %}
+    <div class="container-fluid">
+        <div class="row bg-secondary">
+            <div class="col-xl-12 form-control-sm d-none d-xl-block"></div>
+        </div>
+        <div class="row">
+            <div class="col-xl-2 bg-secondary pt-2 d-none d-xl-block">
+                <!--Blank filler for sides over xl-->
+            </div>
+            <div class="col-md-12 col-xl-8 p-0">
+                {% block content %}{% endblock %}
+            </div>
+            <div class="col-xl-2 bg-secondary pt-2 d-none d-xl-block">
+                <!--Blank filler for sides over xl-->
+            </div>
+        </div>
+    </div>
     {% include 'footer.html.twig' %}
     {% block javascripts %}{% endblock %}
 </body>

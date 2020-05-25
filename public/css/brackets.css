@@ -44,7 +44,7 @@
     box-shadow: 0 1px 10px rgba(0,0,0,0.05);
 }
 .single.bracket .bracket td {
-    border: 4px solid transparent;
+    border: 3px solid transparent;
     padding: 0;
 }
 .single.bracket .bracket .line.br {
@@ -104,16 +104,15 @@
 	background-image: url('../img/skew.png');
 	background-position: bottom right;
 	background-repeat: no-repeat;
-	
 }
 
 .single.bracket .bracket .match.t1 .win-2,
 .single.bracket .bracket .match.t2 .win-1 {
-	background:#6c757d;
+	/* background:#6c757d; */
 	color: #E5E5E5;
-	background-image: url('../img/skew.png');
-	background-position: bottom right;
-	background-repeat: no-repeat;
+	/* background-image: url('../img/skew.png'); */
+	/* background-position: bottom right; */
+	/* background-repeat: no-repeat; */
 }
 
 .single.bracket .bracket .match.t1 .win-2::after,
