@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
-    {% include 'header.html.twig' %}
+{% block content %}
+<div class="row m-3">
     <div id="main">
         {% if is_granted('ROLE_ADMIN') %}
         <a href="{{ path('game_new') }}">Create Game</a>
@@ -11,20 +11,22 @@
         <!-- <a href="{{ path('team_new') }}">Create Team</a>
         <a href="{{ path('team_join') }}">Join Team</a> -->
         <div id="Games">
-            <br/>Games
+            <br />Games
             {% for game in games %}
-                <div>{{ game.name }}: {{ game.description }}</div>
+            <div>{{ game.name }}: {{ game.description }}</div>
             {% else %}
-                <p>No games</p>
+            <p>No games</p>
             {% endfor %}
         </div>
         <div id="Competitions">
-            <br/>Competitions
+            <br />Competitions
             {% for competition in competitions %}
-                <div><a href="{{ path('competition_show', {id: competition.id}) }}">{{ competition.name }}</a>: {{ competition.description }} - {{ competition.game.name }}</div>
+            <div><a href="{{ path('competition_show', {id: competition.id}) }}">{{ competition.name }}</a>:
+                {{ competition.description }} - {{ competition.game.name }}</div>
             {% else %}
-                <p>No competitions</p>
+            <p>No competitions</p>
             {% endfor %}
         </div>
     </div>
-{% endblock %}
+</div>
+{% endblock %}  

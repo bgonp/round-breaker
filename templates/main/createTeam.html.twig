@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
-    {% include 'header.html.twig' %}
+{% block content %}
+<div class="row m-3">
     <form method="post">
         <label for="inputName">Name</label>
         <input type="text" name="name" id="inputName" class="form-control" required autofocus>
@@ -10,4 +10,5 @@
             Create Team
         </button>
     </form>
+</div>    
 {% endblock %}
