@@ -1,30 +1,32 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
+{% block content %}
+<div class="row m-3">
     {% include 'header.html.twig' %}
     {% if competition %}
-        <div>
-            Competition:
-            {{ competition.name }}
-        </div>
-        {% if competition.creator.username == app.user.username and competition.isOpen and competition.isIndividual == false %}
-            <a href="{{ path('competition_randomize', {id: competition.id}) }}">Randomize Teams</a>
-        {% endif %}
-        <div>
-            Players:
-            {% for registration in competition.registrations %}
-                {{ registration.player.username }}
-            {% endfor %}
-            <br>Teams:
-            {% for team in teams %}
-                {{ team.name }}:<br>
-                {% for player in team.players %}
-                    {{ player.username }}<br>
-                {% endfor %}
-                <br>
-            {% endfor %}
-        </div>
-    {% else %}
-        No competition selected.
+    <div>
+        Competition:
+        {{ competition.name }}
+    </div>
+    {% if competition.creator.username == app.user.username and competition.isOpen and competition.isIndividual == false %}
+    <a href="{{ path('competition_randomize', {id: competition.id}) }}">Randomize Teams</a>
     {% endif %}
+    <div>
+        Players:
+        {% for registration in competition.registrations %}
+        {{ registration.player.username }}
+        {% endfor %}
+        <br>Teams:
+        {% for team in teams %}
+        {{ team.name }}:<br>
+        {% for player in team.players %}
+        {{ player.username }}<br>
+        {% endfor %}
+        <br>
+        {% endfor %}
+    </div>
+    {% else %}
+    No competition selected.
+    {% endif %}
+</div>
 {% endblock %}
