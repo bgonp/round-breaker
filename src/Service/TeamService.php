@@ -15,33 +15,23 @@ use App\Service\CompetitionService;
 
 class TeamService
 {
-	/** @var CompetitionRepository */
-	private $competitionRepository;
+	private CompetitionRepository $competitionRepository;
 
-	/** @var TeamRepository */
-	private $teamRepository;
+	private TeamRepository $teamRepository;
 
-    /** @var PlayerRepository */
-    private $playerRepository;
+    private PlayerRepository $playerRepository;
 
-	public function __construct(CompetitionRepository $competitionRepository, TeamRepository $teamRepository, PlayerRepository $playerRepository)
+    private CompetitionService $competitionService;
+
+	public function __construct(CompetitionRepository $competitionRepository, TeamRepository $teamRepository, PlayerRepository $playerRepository, CompetitionService $competitionService)
 	{
 		$this->competitionRepository = $competitionRepository;
 		$this->teamRepository = $teamRepository;
         $this->playerRepository = $playerRepository;
-	}
-
-	public function createTeam(string $name) {
-        $team = new Team();
-        $team->setName($name);
-        $user = $this->getUser()->getUsername();
-        $user = $this->playerRepository->findOneBy(['username' => $user]);
-        $user->addTeam($team);
-        $this->teamRepository->save($team);
-        $this->playerRepository->save($user);
+        $this->competitionService = $competitionService;
     }
 
-	public function randomize(Player $player, Competition $competition, CompetitionService $competitionService) {
+	public function randomize(Player $player, Competition $competition) {
 		if ($competition->getIsOpen() && $competition->getCreator()->equals($player) && !$competition->getIsIndividual()) {
 			$registrations = $competition->getRegistrations()->toArray();
 			$teamNum = pow(2, intval(log(floor(count($registrations)/$competition->getPlayersPerTeam()), 2)));
@@ -61,7 +51,7 @@ class TeamService
 				$teams[] = $team;
 				$this->teamRepository->save($team, false);
 			}
-			$competitionService->createRounds($competition, $teams);
+			$this->competitionService->createRounds($competition, $teams);
 			$competition->setIsOpen(false);
 			$this->competitionRepository->save($competition);
 		}

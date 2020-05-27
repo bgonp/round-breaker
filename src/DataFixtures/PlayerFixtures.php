@@ -27,6 +27,7 @@ class PlayerFixtures extends Fixture
         $admin = new Player();
         $admin->setUsername('admin');
         $admin->setEmail('admin@admin.com');
+        $admin->setRoles(['ROLE_ADMIN']);
         $admin->setPassword($this->encoder->encodePassword($admin, 'randompassword'));
         $manager->persist($admin);
         $manager->flush();

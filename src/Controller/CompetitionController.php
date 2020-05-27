@@ -10,12 +10,24 @@ use App\Service\CompetitionService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Entity\Competition;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Route("/competition")
+ */
 class CompetitionController extends AbstractController
 {
     /**
-     * @Route("/competition/new", name="competition_new")
+     * @Route("/", name="competition_list", methods={"GET"})
+     */
+    public function index(): Response
+    {
+        // TODO
+    }
+
+    /**
+     * @Route("/new", name="competition_new")
      */
     public function createCompetition(
         Request $request,
@@ -59,6 +71,7 @@ class CompetitionController extends AbstractController
 
     /**
      * @Route("/competition/join", name="competition_join")
+     * TODO: Mover a registrationController
      */
     public function joinCompetition(
         Request $request,
@@ -85,7 +98,7 @@ class CompetitionController extends AbstractController
     }
 
     /**
-     * @Route("/competition/{id}", name="competition_show", methods={"GET"})
+     * @Route("/{id}", name="competition_show", methods={"GET"})
      */
     public function viewCompetition(
         Competition $competition,

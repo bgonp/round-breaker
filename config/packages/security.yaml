@@ -45,8 +45,8 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/login, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/game/new, role: ROLE_ADMIN }
         - { path: ^/competition/new, role: ROLE_ADMIN }
-        - { path: ^/, role: ROLE_USER }
+        - { path: ^/competition/join, role: ROLE_ADMIN }
+        - { path: ^/chat, role: ROLE_STREAMER }
         # - { path: ^/profile, roles: ROLE_USER }
