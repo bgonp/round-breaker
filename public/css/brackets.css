@@ -100,6 +100,7 @@
 }
 
 .single.bracket .bracket .match span {
+	padding-right: 30px;
 	background:#000;
 	background-image: url('../img/skew.png');
 	background-position: bottom right;
@@ -108,11 +109,11 @@
 
 .single.bracket .bracket .match.t1 .win-2,
 .single.bracket .bracket .match.t2 .win-1 {
-	/* background:#6c757d; */
+	background:#6c757d;
 	color: #E5E5E5;
-	/* background-image: url('../img/skew.png'); */
-	/* background-position: bottom right; */
-	/* background-repeat: no-repeat; */
+	background-image: url('../img/skew.png');
+	background-position: bottom right;
+	background-repeat: no-repeat;
 }
 
 .single.bracket .bracket .match.t1 .win-2::after,
