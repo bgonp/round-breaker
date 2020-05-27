@@ -21,23 +21,10 @@
     {% endblock %}
 </head>
 
-<body>
+<body class="bg-secondary">
     {% include 'navbar.html.twig' %}
-    <div class="container-fluid">
-        <div class="row bg-secondary">
-            <div class="col-xl-12 form-control-sm d-none d-xl-block"></div>
-        </div>
-        <div class="row">
-            <div class="col-xl-2 bg-secondary pt-2 d-none d-xl-block">
-                <!--Blank filler for sides over xl-->
-            </div>
-            <div class="col-md-12 col-xl-8 p-0">
-                {% block content %}{% endblock %}
-            </div>
-            <div class="col-xl-2 bg-secondary pt-2 d-none d-xl-block">
-                <!--Blank filler for sides over xl-->
-            </div>
-        </div>
+    <div class="container-fluid main-container my-xl-4 bg-white">
+        {% block content %}{% endblock %}
     </div>
     {% include 'footer.html.twig' %}
     {% block javascripts %}{% endblock %}

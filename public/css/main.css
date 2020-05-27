@@ -1,12 +1,14 @@
 @font-face {
     font-family: deporte;
     src: url(../fonts/octin.ttf);
-  }
-
-  @font-face {
+}
+@font-face {
     font-family: broken;
     src: url(../fonts/BrokenGlass.ttf);
-  }
+}
+.main-container {
+    max-width: 1200px;
+}
 .titulo {
     color:#f7921e;
     font-size: 1.8vw;
