@@ -2899,8 +2899,6 @@
             ],
             "description": "Symfony Asset Component",
             "homepage": "https://symfony.com",
-<<<<<<< HEAD
-<<<<<<< HEAD
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -2915,10 +2913,6 @@
                     "type": "tidelift"
                 }
             ],
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
             "time": "2020-04-12T14:40:17+00:00"
         },
         {
@@ -2998,8 +2992,6 @@
                 "caching",
                 "psr6"
             ],
-<<<<<<< HEAD
-<<<<<<< HEAD
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -3014,10 +3006,6 @@
                     "type": "tidelift"
                 }
             ],
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
             "time": "2020-04-28T17:58:55+00:00"
         },
         {
@@ -3140,8 +3128,6 @@
             ],
             "description": "Symfony Config Component",
             "homepage": "https://symfony.com",
-<<<<<<< HEAD
-<<<<<<< HEAD
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -3156,10 +3142,6 @@
                     "type": "tidelift"
                 }
             ],
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
             "time": "2020-04-15T15:59:10+00:00"
         },
         {
@@ -3323,8 +3305,6 @@
             ],
             "description": "Symfony DependencyInjection Component",
             "homepage": "https://symfony.com",
-<<<<<<< HEAD
-<<<<<<< HEAD
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -3339,10 +3319,6 @@
                     "type": "tidelift"
                 }
             ],
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
             "time": "2020-04-28T17:58:55+00:00"
         },
         {
@@ -3439,8 +3415,6 @@
             ],
             "description": "Symfony Doctrine Bridge",
             "homepage": "https://symfony.com",
-<<<<<<< HEAD
-<<<<<<< HEAD
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -3455,10 +3429,6 @@
                     "type": "tidelift"
                 }
             ],
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
             "time": "2020-04-12T16:45:47+00:00"
         },
         {
@@ -3792,8 +3762,6 @@
             ],
             "description": "Symfony ExpressionLanguage Component",
             "homepage": "https://symfony.com",
-<<<<<<< HEAD
-<<<<<<< HEAD
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -3808,10 +3776,6 @@
                     "type": "tidelift"
                 }
             ],
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
             "time": "2020-04-15T15:59:10+00:00"
         },
         {
@@ -3862,8 +3826,6 @@
             ],
             "description": "Symfony Filesystem Component",
             "homepage": "https://symfony.com",
-<<<<<<< HEAD
-<<<<<<< HEAD
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -3878,10 +3840,6 @@
                     "type": "tidelift"
                 }
             ],
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
             "time": "2020-04-12T14:40:17+00:00"
         },
         {
@@ -4092,8 +4050,6 @@
             ],
             "description": "Symfony Form Component",
             "homepage": "https://symfony.com",
-<<<<<<< HEAD
-<<<<<<< HEAD
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -4108,10 +4064,6 @@
                     "type": "tidelift"
                 }
             ],
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
             "time": "2020-04-28T17:58:55+00:00"
         },
         {
@@ -4242,8 +4194,6 @@
             ],
             "description": "Symfony FrameworkBundle",
             "homepage": "https://symfony.com",
-<<<<<<< HEAD
-<<<<<<< HEAD
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -4258,10 +4208,6 @@
                     "type": "tidelift"
                 }
             ],
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
             "time": "2020-04-28T17:58:55+00:00"
         },
         {
@@ -4330,8 +4276,6 @@
             ],
             "description": "Symfony HttpClient component",
             "homepage": "https://symfony.com",
-<<<<<<< HEAD
-<<<<<<< HEAD
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -4346,10 +4290,6 @@
                     "type": "tidelift"
                 }
             ],
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
             "time": "2020-04-12T16:45:47+00:00"
         },
         {
@@ -4462,8 +4402,6 @@
             ],
             "description": "Symfony HttpFoundation Component",
             "homepage": "https://symfony.com",
-<<<<<<< HEAD
-<<<<<<< HEAD
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -4478,10 +4416,6 @@
                     "type": "tidelift"
                 }
             ],
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
             "time": "2020-04-18T20:50:06+00:00"
         },
         {
@@ -4579,8 +4513,6 @@
             ],
             "description": "Symfony HttpKernel Component",
             "homepage": "https://symfony.com",
-<<<<<<< HEAD
-<<<<<<< HEAD
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -4595,10 +4527,6 @@
                     "type": "tidelift"
                 }
             ],
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
             "time": "2020-04-28T18:53:25+00:00"
         },
         {
@@ -4746,8 +4674,6 @@
                 "l10n",
                 "localization"
             ],
-<<<<<<< HEAD
-<<<<<<< HEAD
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -4762,10 +4688,6 @@
                     "type": "tidelift"
                 }
             ],
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
             "time": "2020-04-12T14:40:17+00:00"
         },
         {
@@ -4833,8 +4755,6 @@
             ],
             "description": "Symfony Mailer Component",
             "homepage": "https://symfony.com",
-<<<<<<< HEAD
-<<<<<<< HEAD
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -4849,10 +4769,6 @@
                     "type": "tidelift"
                 }
             ],
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
             "time": "2020-04-28T17:58:55+00:00"
         },
         {
@@ -4997,8 +4913,6 @@
                 "mime",
                 "mime-type"
             ],
-<<<<<<< HEAD
-<<<<<<< HEAD
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -5013,10 +4927,6 @@
                     "type": "tidelift"
                 }
             ],
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
             "time": "2020-04-17T03:29:44+00:00"
         },
         {
@@ -5084,8 +4994,6 @@
             ],
             "description": "Symfony Monolog Bridge",
             "homepage": "https://symfony.com",
-<<<<<<< HEAD
-<<<<<<< HEAD
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -5100,10 +5008,6 @@
                     "type": "tidelift"
                 }
             ],
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
             "time": "2020-04-12T16:45:47+00:00"
         },
         {
@@ -5291,8 +5195,6 @@
                 "configuration",
                 "options"
             ],
-<<<<<<< HEAD
-<<<<<<< HEAD
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -5307,10 +5209,6 @@
                     "type": "tidelift"
                 }
             ],
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
             "time": "2020-04-06T10:40:56+00:00"
         },
         {
@@ -5831,8 +5729,6 @@
             ],
             "description": "Symfony Process Component",
             "homepage": "https://symfony.com",
-<<<<<<< HEAD
-<<<<<<< HEAD
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -5847,10 +5743,6 @@
                     "type": "tidelift"
                 }
             ],
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
             "time": "2020-04-15T15:59:10+00:00"
         },
         {
@@ -5918,8 +5810,6 @@
                 "property path",
                 "reflection"
             ],
-<<<<<<< HEAD
-<<<<<<< HEAD
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -5934,10 +5824,6 @@
                     "type": "tidelift"
                 }
             ],
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
             "time": "2020-04-15T15:59:10+00:00"
         },
         {
@@ -6014,8 +5900,6 @@
                 "type",
                 "validator"
             ],
-<<<<<<< HEAD
-<<<<<<< HEAD
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -6030,10 +5914,6 @@
                     "type": "tidelift"
                 }
             ],
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
             "time": "2020-04-06T10:40:56+00:00"
         },
         {
@@ -6110,8 +5990,6 @@
                 "uri",
                 "url"
             ],
-<<<<<<< HEAD
-<<<<<<< HEAD
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -6126,10 +6004,6 @@
                     "type": "tidelift"
                 }
             ],
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
             "time": "2020-04-21T21:02:50+00:00"
         },
         {
@@ -6213,8 +6087,6 @@
             ],
             "description": "Symfony SecurityBundle",
             "homepage": "https://symfony.com",
-<<<<<<< HEAD
-<<<<<<< HEAD
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -6229,10 +6101,6 @@
                     "type": "tidelift"
                 }
             ],
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
             "time": "2020-04-22T00:36:07+00:00"
         },
         {
@@ -6306,8 +6174,6 @@
             ],
             "description": "Symfony Security Component - Core Library",
             "homepage": "https://symfony.com",
-<<<<<<< HEAD
-<<<<<<< HEAD
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -6322,10 +6188,6 @@
                     "type": "tidelift"
                 }
             ],
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
             "time": "2020-04-21T21:19:41+00:00"
         },
         {
@@ -6453,8 +6315,6 @@
             ],
             "description": "Symfony Security Component - Guard",
             "homepage": "https://symfony.com",
-<<<<<<< HEAD
-<<<<<<< HEAD
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -6469,10 +6329,6 @@
                     "type": "tidelift"
                 }
             ],
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
             "time": "2020-04-15T15:59:10+00:00"
         },
         {
@@ -6538,8 +6394,6 @@
             ],
             "description": "Symfony Security Component - HTTP Integration",
             "homepage": "https://symfony.com",
-<<<<<<< HEAD
-<<<<<<< HEAD
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -6554,10 +6408,6 @@
                     "type": "tidelift"
                 }
             ],
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
             "time": "2020-04-06T10:40:56+00:00"
         },
         {
@@ -6640,8 +6490,6 @@
             ],
             "description": "Symfony Serializer Component",
             "homepage": "https://symfony.com",
-<<<<<<< HEAD
-<<<<<<< HEAD
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -6656,10 +6504,6 @@
                     "type": "tidelift"
                 }
             ],
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
             "time": "2020-04-12T16:45:47+00:00"
         },
         {
@@ -6967,8 +6811,6 @@
             ],
             "description": "Symfony Translation Component",
             "homepage": "https://symfony.com",
-<<<<<<< HEAD
-<<<<<<< HEAD
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -6983,10 +6825,6 @@
                     "type": "tidelift"
                 }
             ],
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
             "time": "2020-04-12T16:45:47+00:00"
         },
         {
@@ -7145,8 +6983,6 @@
             ],
             "description": "Symfony Twig Bridge",
             "homepage": "https://symfony.com",
-<<<<<<< HEAD
-<<<<<<< HEAD
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -7161,10 +6997,6 @@
                     "type": "tidelift"
                 }
             ],
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
             "time": "2020-04-15T15:59:10+00:00"
         },
         {
@@ -7375,8 +7207,6 @@
             ],
             "description": "Symfony Validator Component",
             "homepage": "https://symfony.com",
-<<<<<<< HEAD
-<<<<<<< HEAD
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -7391,10 +7221,6 @@
                     "type": "tidelift"
                 }
             ],
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
             "time": "2020-04-28T18:26:18+00:00"
         },
         {
@@ -7470,8 +7296,6 @@
                 "debug",
                 "dump"
             ],
-<<<<<<< HEAD
-<<<<<<< HEAD
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -7486,10 +7310,6 @@
                     "type": "tidelift"
                 }
             ],
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
             "time": "2020-04-12T16:45:47+00:00"
         },
         {
@@ -7550,8 +7370,6 @@
                 "instantiate",
                 "serialize"
             ],
-<<<<<<< HEAD
-<<<<<<< HEAD
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -7566,10 +7384,6 @@
                     "type": "tidelift"
                 }
             ],
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
             "time": "2020-04-15T15:59:10+00:00"
         },
         {
@@ -7718,8 +7532,6 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-<<<<<<< HEAD
-<<<<<<< HEAD
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -7734,10 +7546,6 @@
                     "type": "tidelift"
                 }
             ],
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
             "time": "2020-04-28T17:58:55+00:00"
         },
         {
@@ -8530,8 +8338,6 @@
             ],
             "description": "Symfony PHPUnit Bridge",
             "homepage": "https://symfony.com",
-<<<<<<< HEAD
-<<<<<<< HEAD
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -8546,10 +8352,6 @@
                     "type": "tidelift"
                 }
             ],
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
             "time": "2020-04-28T17:58:55+00:00"
         },
         {
@@ -8672,8 +8474,6 @@
             ],
             "description": "Symfony WebProfilerBundle",
             "homepage": "https://symfony.com",
-<<<<<<< HEAD
-<<<<<<< HEAD
             "funding": [
                 {
                     "url": "https://symfony.com/sponsor",
@@ -8688,10 +8488,6 @@
                     "type": "tidelift"
                 }
             ],
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
-=======
->>>>>>> api-platform endpoints competitions, rounds, teams
             "time": "2020-04-28T17:58:55+00:00"
         }
     ],
