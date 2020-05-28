@@ -4,17 +4,17 @@
 
 {% block content %}
 <div class="row">
-    <div class="col-md-9">
+    <div class="col-md-9 p-3">
         {% include 'brackets/bracket_8.html.twig' %}
     </div>
-    <div class="col-md-3">
-        <div class="card bg-light m-3">
+    <div class="col-md-3 p-3">
+        <div class="card bg-light mb-3">
             <div class="card-header text-center cards">¡Únete a roundbreaker!</div>
             <div class="card-body">
                 <h6 class="card-title">Inicia sesión como jugador para gestionar tus inscripciones</h6>
                 <form method="post" {#action=" path('app_login')"#}>
                     {% if error %}
-                    <div class="alert alert-danger">
+                    <div class="alert alert-danger">    
                         {{ error.messageKey|trans(error.messageData, 'security') }}
                     </div>
                     {% endif %}
@@ -26,27 +26,27 @@
                     {% endif %}
                     <label for="inputUsername" class="d-none">Username</label>
                     <input type="text" value="{{ last_username }}" name="username" id="inputUsername"
-                        class="mb-2 col-8 form-control" placeholder="Usuario" required autofocus>
+                        class="mb-3 col-8 form-control" placeholder="Usuario" required autofocus>
                     <div class="form-group">
                         <label for="inputPassword" class="d-none">Password</label>
                         <input type="password" name="password" id="inputPassword" class="col-8 form-control"
                             placeholder="Contraseña" required>
                     </div>
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-                    <button class="mb-2 btn btn-lg btn-primary btn-dark" type="submit">
+                    <button class="btn btn-lg btn-primary btn-dark" type="submit">
                         Log in
                     </button>
                 </form>
                 <form method="post" {#action=" path('app_register')"#} class="d-none"></form>
             </div>
         </div>
-        <div class="card bg-light m-3">
+        <div class="card bg-light mb-3">
             <div class="card-header text-center cards">¡lo más jugado!</div>
             <img src="{{ asset('img/cs.png') }}" class="img-fluid" />
             <img src="{{ asset('img/lol.png') }}" class="img-fluid" />
             <img src="{{ asset('img/rl.png') }}" class="img-fluid rounded-bottom" />
         </div>
-        <div class="card bg-light m-3">
+        <div class="card bg-light">
             <div class="card-header text-center cards">Redes Sociales</div>
             <div class="row p-3">
                 <div class="col rrss"><img src="{{ asset('img/facebook.png') }}" class="img-fluid" /></div>
@@ -55,10 +55,10 @@
             </div>
         </div>
     </div>
-    <div class="row m-3">
+    <div class="row mx-3">
         <div class="col-md-12 col-xl-9 pt-2">
             <h1>¿Qué es roundbreaker?</h1>
-            <p class="text-justify">Lorem fistrum diodeno no puedor jarl hasta luego Lucas no puedor
+            <p class="text-left">Lorem fistrum diodeno no puedor jarl hasta luego Lucas no puedor
                 apetecan.
                 Diodeno a peich sexuarl fistro
                 sexuarl hasta luego Lucas por la gloria de mi madre. Tiene musho peligro quietooor ese que
@@ -81,7 +81,7 @@
                 diodenoo
                 hasta luego Lucas.</p>
 
-            <p class="text-justify">A wan pupita torpedo tiene musho peligro ese que llega tiene musho
+            <p class="text-left">A wan pupita torpedo tiene musho peligro ese que llega tiene musho
                 peligro
                 no puedor va usté muy cargadoo
                 me cago en tus muelas papaar papaar diodenoo. No te digo trigo por no llamarte Rodrigor a
@@ -108,7 +108,7 @@
                 muy
                 malar.</p>
 
-            <p class="text-justify">Pupita hasta luego Lucas condemor torpedo diodenoo quietooor papaar
+            <p class="text-left">Pupita hasta luego Lucas condemor torpedo diodenoo quietooor papaar
                 papaar
                 condemor pecador diodeno
                 pupita. Te va a hasé pupitaa ahorarr ese hombree torpedo ese hombree papaar papaar está la

@@ -1,38 +1,44 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
-    {% include 'header.html.twig' %}
-    {% if games %}
-    <form method="post">
-        <label for="inputName">Name</label>
-        <input type="text" name="name" id="inputName" class="form-control" required autofocus>
-        <label for="inputDescription">Description</label>
-        <input type="text" name="description" id="inputDescription" class="form-control" required>
-        <!-- <label for="inputMaxPlayers">Max Player Count</label>
+{% block content %}
+{% if games %}
+<form method="post">
+    <div class="col-md-12 col-lg-8 col-xl-5 border-0 p-3" style="margin: 0 auto;">
+        <div class="card form-group border border-secondary p-3">
+            <label for="inputName" class="mt-3 sport-text-form">Name</label>
+            <input type="text" name="name" id="inputName" class="form-control col-12 mb-5 form-control-lg" required autofocus>
+            <label for="inputDescription" class="sport-text-form">Description</label>
+            <input type="text" name="description" id="inputDescription" class="form-control col-12 mb-5 form-control-lg" required>
+            <!-- <label for="inputMaxPlayers">Max Player Count</label>
         <input type="int" name="maxPlayers" id="inputMaxPlayers" class="form-control" required> -->
-        <label for="inputPlayersPerTeam">Players Per Team</label>
-        <input type="number" name="playersPerTeam" id="inputPlayersPerTeam" class="form-control" max="5" min="1" required>
-        <label for="inputTeamNum">Number of Teams</label>
-        <select id="inputTeamNum" name="teamNum">
-            <option value="2">2</option>
-            <option value="4">4</option>
-            <option value="8">8</option>
-            <option value="16">16</option>
-        </select>
-        <input type="checkbox" name="individual" id="inputIndividual" onclick="document.getElementById('inputPlayersPerTeam').disabled=this.checked;">
-        <label for="inputIndividual">Individual</label><br>
+            <label for="inputPlayersPerTeam" class="sport-text-form">Players Per Team</label>
+            <input type="number" name="playersPerTeam" id="inputPlayersPerTeam" class="form-control col-12 mb-5 form-control-lg" max="5"
+                min="1" required>
+            <label for="inputTeamNum" class="sport-text-form">Number of Teams</label>
+            <select id="inputTeamNum" name="teamNum" class="form-control col-12 mb-5 sport-text-form form-control-lg">
+                <option selected value="">Escoge...</option>
+                <option value="2">2</option>
+                <option value="4">4</option>
+                <option value="8">8</option>
+                <option value="16">16</option>
+            </select>
+            <input type="checkbox" name="individual" id="inputIndividual"
+                onclick="document.getElementById('inputPlayersPerTeam').disabled=this.checked;">
+            <label for="inputIndividual" class="sport-text-form">Individual</label><br>
 
-        <label for="game">Game:</label>
-        <select name="game">
-            {% for game in games %}
-            <option value="{{ game.name }}">{{ game.name }}</option>
-            {% endfor %}
-        </select>
-        <button class="btn btn-lg btn-primary" type="submit">
-            Create Competition
-        </button>
-    </form>
-    {% else %}
-        Can't make competitions if there are no games.
-    {% endif %}
+            <label for="game" class="sport-text-form">Game:</label>
+            <select name="game" class="form-control col-12 mb-5 sport-text-form form-control-lg">
+                {% for game in games %}
+                <option value="{{ game.name }}">{{ game.name }}</option>
+                {% endfor %}
+            </select>
+            <button class="btn btn-lg btn-dark mb-3 break-text-large" type="submit">
+                Create Competition
+            </button>
+        </div>
+    </div>
+</form>
+{% else %}
+Can't make competitions if there are no games.
+{% endif %}
 {% endblock %}
