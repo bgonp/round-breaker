@@ -1,12 +1,14 @@
 @font-face {
     font-family: deporte;
     src: url(../fonts/octin.ttf);
-  }
-
-  @font-face {
+}
+@font-face {
     font-family: broken;
     src: url(../fonts/BrokenGlass.ttf);
-  }
+}
+.main-container {
+    max-width: 1280px;
+}
 .titulo {
     color:#f7921e;
     font-size: 1.8vw;
@@ -48,8 +50,21 @@ h1 {
     font-family: broken;
     letter-spacing: 2px;
 }
-/*.prueba {
-    background: url('../img/tile3.png') repeat bottom right;
-}*/
 
+.sport-text {
+    font-family: deporte;
+    letter-spacing: 2.5px;
+}
 
+.sport-text-form {
+    font-family: deporte;
+    font-size: 18px;
+    letter-spacing: 2.5px;
+}
+
+.break-text-large {
+    padding: 0.1em;
+    font-size: 32px;
+    font-family: broken;
+    letter-spacing: 2.5px;
+}

@@ -1,31 +1,43 @@
 {% extends 'base.html.twig' %}
 
 {% block content %}
-<div class="row m-3">
-    {% if competition %}
-    <div>
-        Competition:
-        {{ competition.name }}
+<div class="row">
+    {% if competition.isopen == false %}
+    {% include 'brackets/bracket_8.html.twig' %}
+{% endif %}
+</div>
+<div>
+    <h1>Equipos</h1>
+    {% for team in teams %}
+
+    <div class="w-50 my-2 bg-light border">
+        <div class="card-body">
+            <h5 class="card-title sport-text">{{ team.name }}</h5>
+            <ul class="list-group">
+                {% for player in team.players %}
+                <li class="list-group-item sport-text">{{ player.username }}
+                    <!--<a href="#"><i class="fas fa-skull"></i></a>-->
+                </li>
+                {% endfor %}
+            </ul>
+
+        </div>
     </div>
-    {% if competition.creator.username == app.user.username and competition.isOpen and competition.isIndividual == false %}
-    <a href="{{ path('competition_randomize', {id: competition.id}) }}">Randomize Teams</a>
-    {% endif %}
-    <div>
-        Players:
+    {% endfor %}
+    <h1>Jugadores Registrados</h1>
+    <ul class="list-group list-group-flush sport-text">
         {% for registration in competition.registrations %}
-        {{ registration.player.username }}
+        <li class="list-group-item w-50">{{ registration.player.username }}
+            <span class="float-right">
+                <a href="#"><i class="fas fa-skull"></i></a>
+                {% if registration.isConfirmed == true %}
+                <a href="#"><i class="far fa-check-square"></i></a>
+                {% else %}
+                <a href="#"><i class="far fa-square"></i></a>
+                {% endif %}
+            </span>
+        </li>
         {% endfor %}
-        <br>Teams:
-        {% for team in teams %}
-        {{ team.name }}:<br>
-        {% for player in team.players %}
-        {{ player.username }}<br>
-        {% endfor %}
-        <br>
-        {% endfor %}
-    </div>
-    {% else %}
-    No competition selected.
-    {% endif %}
+    </ul>
 </div>
 {% endblock %}
