@@ -28,7 +28,7 @@ class SecurityController extends AbstractController
         }
         // necesito un método en el repo que coja un torneo random, terminado de 8 equipos.
         // por ahora uso find para mostrar el único torneo que tenemos.
-        $competition = $competitionRepository->find('2');
+        $competition = $competitionRepository->find('1');
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user
