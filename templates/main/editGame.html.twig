@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <div class="row m-3">
+        <form method="post">
+            <label for="inputName">Name</label>
+            <input type="text" value="{{ game.name }}" name="name" id="inputName" class="form-control">
+            <label for="inputDescription">Description</label>
+            <input type="text" value="{{ game.description }}" name="description" id="inputDescription" class="form-control">
+
+            <button class="btn btn-lg btn-primary" type="submit">
+                Edit Game
+            </button>
+        </form>
+    </div>
+{% endblock %}

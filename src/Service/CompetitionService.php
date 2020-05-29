@@ -57,7 +57,7 @@ class CompetitionService
         $competition->setDescription($description);
         $competition->setIsOpen(true);
         $competition->setIsFinished(false);
-        $competition->setCreator($user);
+        $competition->setStreamer($user);
         $competition->setMaxPlayers($maxPlayers);
         if ($isIndividual || $playersPerTeam === 1) {
             $competition->setIsIndividual(true);

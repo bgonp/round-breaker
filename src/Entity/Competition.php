@@ -65,7 +65,7 @@ class Competition extends Base
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Player", inversedBy="competitionsCreated")
      */
-    private $creator;
+    private $streamer;
 
     /**
      * @ORM\Column(type="boolean")
@@ -198,14 +198,14 @@ class Competition extends Base
         return $this;
     }
 
-    public function getCreator(): ?Player
+    public function getStreamer(): ?Player
     {
-        return $this->creator;
+        return $this->streamer;
     }
 
-    public function setCreator(?Player $creator): self
+    public function setStreamer(?Player $streamer): self
     {
-        $this->creator = $creator;
+        $this->streamer = $streamer;
 
         return $this;
     }

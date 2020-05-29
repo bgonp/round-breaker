@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <div class="row m-3">
+        <form method="post">
+            <label for="inputName">Name</label>
+            <input type="text" value="{{ team.name }}" name="name" id="inputName" class="form-control">
+
+            <button class="btn btn-lg btn-primary" type="submit">
+                Edit Team
+            </button>
+        </form>
+    </div>
+{% endblock %}

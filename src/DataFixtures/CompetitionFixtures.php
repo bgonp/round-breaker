@@ -17,7 +17,7 @@ class CompetitionFixtures extends Fixture implements DependentFixtureInterface
         $competition = new Competition();
         $competition->setName('Competición de prueba #1');
         $competition->setGame($game);
-        $competition->setCreator($manager->getRepository(Player::class)->findOneBy(['username' => "Tester01"]));
+        $competition->setStreamer($manager->getRepository(Player::class)->findOneBy(['username' => "Tester01"]));
         $competition->setHeldAt(new \DateTime());
         $competition->setIsOpen(false);
         $competition->setIsFinished(true);

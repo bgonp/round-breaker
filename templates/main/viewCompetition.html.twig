@@ -7,25 +7,35 @@
         Competition:
         {{ competition.name }}
     </div>
-    {% if competition.creator.username == app.user.username and competition.isOpen and competition.isIndividual == false %}
-    <a href="{{ path('competition_randomize', {id: competition.id}) }}">Randomize Teams</a>
+        {% if competition.streamer.username == app.user.username %}
+            <a href="{{ path('competition_edit', {id: competition.id}) }}">Edit Competition</a>
+            <a href="{{ path('competition_delete', {id: competition.id}) }}">Delete Competition</a>
+        {% endif %}
+        {% if app.user and competition.isOpen %}
+        <a href="{{ path('competition_join', {id: competition.id}) }}">Join Competition</a>
+            {% if competition.isIndividual == false %}
+                <a href="{{ path('competition_randomize', {id: competition.id}) }}">Randomize Competition</a>
+        {% endif %}
     {% endif %}
     <div>
         Players:
         {% for registration in competition.registrations %}
-        {{ registration.player.username }}
+            {{ registration.player.username }}
         {% endfor %}
-        <br>Teams:
+        <br>Teams:<br>
         {% for team in teams %}
+        {% if player in team.players %}
+            <a href="{{ path('team_show', {id: team.id}) }}">View Team</a>
+        {% endif %}
         {{ team.name }}:<br>
         {% for player in team.players %}
-        {{ player.username }}<br>
+            {{ player.username }}<br>
         {% endfor %}
         <br>
         {% endfor %}
     </div>
     {% else %}
-    No competition selected.
+        No competition selected.
     {% endif %}
 </div>
 {% endblock %}

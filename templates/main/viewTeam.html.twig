@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <div class="row m-3">
+        {% if team %}
+            <div>
+                {% if team.captain.username == app.user.username %}
+                    <a href="{{ path('team_edit', {id: team.id}) }}">Edit Team</a>
+                {% endif %}
+                {{ team.name }}:<br>
+                {% for player in team.players %}
+                    {{ player.username }}<br>
+                {% endfor %}
+            </div>
+        {% else %}
+            No team selected.
+        {% endif %}
+    </div>
+{% endblock %}
