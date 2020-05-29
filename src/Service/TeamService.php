@@ -32,7 +32,7 @@ class TeamService
     }
 
 	public function randomize(Player $player, Competition $competition) {
-		if ($competition->getIsOpen() && $competition->getCreator()->equals($player) && !$competition->getIsIndividual()) {
+		if ($competition->getIsOpen() && $competition->getStreamer()->equals($player) && !$competition->getIsIndividual()) {
 			$registrations = $competition->getRegistrations()->toArray();
 			$teamNum = pow(2, intval(log(floor(count($registrations)/$competition->getPlayersPerTeam()), 2)));
 			$maxTeamNum = $competition->getMaxPlayers()/$competition->getPlayersPerTeam();
@@ -46,6 +46,9 @@ class TeamService
 				for($j = 0; $j < $competition->getPlayersPerTeam(); $j++) {
 					$randomRegistration = array_rand($registrations);
 					$team->addPlayer($registrations[$randomRegistration]->getPlayer());
+					if ($j==0) {
+                        $team->setCaptain($registrations[$randomRegistration]->getPlayer());
+                    }
 					unset($registrations[$randomRegistration]);
 				}
 				$teams[] = $team;

@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <div class="row m-3">
+        {% if game %}
+            <div>
+                Game:
+                {{ game.name }}
+                Description:
+                {{ game.description }}
+            </div>
+            {% if is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('game_edit', {id: game.id}) }}">Edit Game</a>
+                <a href="{{ path('game_delete', {id: game.id}) }}">Delete Game</a>
+            {% endif %}
+        {% else %}
+            No game selected.
+        {% endif %}
+    </div>
+{% endblock %}

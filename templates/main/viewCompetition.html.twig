@@ -23,6 +23,18 @@
 
         </div>
     </div>
+        {% if competition.streamer.username == app.user.username %}
+            <a href="{{ path('competition_edit', {id: competition.id}) }}">Edit Competition</a>
+            <a href="{{ path('competition_delete', {id: competition.id}) }}">Delete Competition</a>
+        {% endif %}
+        {% if app.user and competition.isOpen %}
+        <a href="{{ path('competition_join', {id: competition.id}) }}">Join Competition</a>
+            {% if competition.isIndividual == false %}
+                <a href="{{ path('competition_randomize', {id: competition.id}) }}">Randomize Competition</a>
+        {% endif %}
+    {% endif %}
+    <div>
+        Players:
     {% endfor %}
     <h1>Jugadores Registrados</h1>
     <ul class="list-group list-group-flush sport-text">

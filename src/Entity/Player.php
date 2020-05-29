@@ -61,9 +61,14 @@ class Player extends Base implements UserInterface
     private $teams;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Competition", mappedBy="creator")
+     * @ORM\OneToMany(targetEntity="App\Entity\Competition", mappedBy="streamer")
      */
     private $competitionsCreated;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Team", mappedBy="captain")
+     */
+    private $teamsCaptained;
 
     public function __construct()
     {
@@ -252,5 +257,13 @@ class Player extends Base implements UserInterface
     public function getCompetitionsCreated(): Collection
     {
         return $this->competitionsCreated;
+    }
+
+    /**
+     * @return Collection|Team[]
+     */
+    public function getTeamsCaptained(): Collection
+    {
+        return $this->teamsCaptained;
     }
 }

@@ -3,15 +3,16 @@
 {% block content %}
 <div class="row m-3">
     <div id="main">
-        {% if is_granted('ROLE_ADMIN') %}
-        <a href="{{ path('game_new') }}">Create Game</a>
-        <a href="{{ path('competition_new') }}">Create Competition</a>
+        {% if createGameButton %}
+            <a href="{{ path('game_new') }}">Create Game</a>
         {% endif %}
-        <a href="{{ path('competition_join') }}">Join Competition</a>
+        {% if createCompetitionButton %}
+            <a href="{{ path('competition_new') }}">Create Competition</a>
+        {% endif %}
         <div id="Games">
             <br />Games
             {% for game in games %}
-            <div>{{ game.name }}: {{ game.description }}</div>
+            <div><a href="{{ path('game_show', {id: game.id}) }}">{{ game.name }}</a>: {{ game.description }}</div>
             {% else %}
             <p>No games</p>
             {% endfor %}

@@ -19,6 +19,7 @@ class TeamFixtures extends Fixture implements DependentFixtureInterface
             $team = new Team();
             $team->setCompetition($competition);
             $team->setName('Nombre de prueba '.($i+1));
+            $team->setCaptain($players[$i*3]);
             $team->addPlayer($players[$i*3]);
             $team->addPlayer($players[$i*3+1]);
             $team->addPlayer($players[$i*3+2]);

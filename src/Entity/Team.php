@@ -38,6 +38,12 @@ class Team extends Base
     private $name;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Player", inversedBy="teamsCaptained")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $captain;
+
+    /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Round", mappedBy="teams")
      */
     private $rounds;
@@ -62,6 +68,18 @@ class Team extends Base
     public function setCompetition(?Competition $competition): self
     {
         $this->competition = $competition;
+
+        return $this;
+    }
+
+    public function getCaptain(): ?Player
+    {
+        return $this->captain;
+    }
+
+    public function setCaptain(?Player $player): self
+    {
+        $this->captain = $player;
 
         return $this;
     }
