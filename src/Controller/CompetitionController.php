@@ -21,11 +21,12 @@ class CompetitionController extends AbstractController
     /**
      * @Route("/", name="competition_list")
      */
-    public function index(CompetitionRepository $competitionRepository): Response
+    public function index(CompetitionRepository $competitionRepository, PlayerRepository $playerRepository): Response
     {
         return $this->render('main/viewCompetitionList.html.twig', [
             'controller_name' => 'CompetitionController',
-            'competitions' => $competitionRepository->findAll()
+            'competitions' => $competitionRepository->findAll(),
+            'player'=> $playerRepository->findOneBy(["username" => $this->getUser()->getUsername()]),
         ]);
     }
 

@@ -1,19 +1,21 @@
 {% extends 'base.html.twig' %}
 
 {% block content %}
-    <div class="row m-3">
-        {% if team %}
-            <div>
-                {% if team.captain.username == app.user.username %}
-                    <a href="{{ path('team_edit', {id: team.id}) }}">Edit Team</a>
-                {% endif %}
-                {{ team.name }}:<br>
+<div style="min-height: 867px;">
+    <div class="w-50">
+        <div class="card-body">
+            <h1 class="card-title sport-text">{{ team.name }}</h1>
+            <ul class="list-group">
                 {% for player in team.players %}
-                    {{ player.username }}<br>
+                <li class="list-group-item sport-text">{{ player.username }}
+                    <!--<a href="#"><i class="fas fa-skull"></i></a>-->
+                </li>
                 {% endfor %}
-            </div>
-        {% else %}
-            No team selected.
-        {% endif %}
+            </ul>
+            {% if team.captain.username == app.user.username %}
+            <a class="btn btn-dark mt-3 sport-text" href="{{ path('team_edit', {id: team.id}) }}">Renombrar Equipo</a>
+            {% endif %}
+        </div>
     </div>
+</div>
 {% endblock %}

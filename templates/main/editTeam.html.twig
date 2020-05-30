@@ -1,14 +1,17 @@
 {% extends 'base.html.twig' %}
 
 {% block content %}
-    <div class="row m-3">
-        <form method="post">
-            <label for="inputName">Name</label>
-            <input type="text" value="{{ team.name }}" name="name" id="inputName" class="form-control">
+<form method="post" style="min-height: 867px;">
+    <div class="col-md-12 col-lg-8 col-xl-5 border-0 p-3" style="margin: auto;">
+        <h1 class="text-center">Renombrar Equipo</h1>
+        <div class="card form-group border border-secondary p-3">
+            <label for="inputName" class="sport-text-form">Cambia el nombre de tu equipo</label>
+            <input type="text" value="{{ team.name }}" name="name" id="inputName" class="form-control form-control-lg">
 
-            <button class="btn btn-lg btn-primary" type="submit">
-                Edit Team
+            <button class="btn btn-lg btn-dark break-text-large mt-3" type="submit">
+                Cambiar!
             </button>
-        </form>
+        </div>
     </div>
+</form>
 {% endblock %}

@@ -4,8 +4,9 @@
 <div class="row">
     {% if competition.isopen == false %}
     {% include 'brackets/bracket_8.html.twig' %}
-{% endif %}
+    {% endif %}
 </div>
+{% if competition.isopen == false %}
 <div>
     <h1>Equipos</h1>
     {% for team in teams %}
@@ -23,33 +24,34 @@
 
         </div>
     </div>
-        {% if competition.streamer.username == app.user.username %}
-            <a href="{{ path('competition_edit', {id: competition.id}) }}">Edit Competition</a>
-            <a href="{{ path('competition_delete', {id: competition.id}) }}">Delete Competition</a>
-        {% endif %}
-        {% if app.user and competition.isOpen %}
-        <a href="{{ path('competition_join', {id: competition.id}) }}">Join Competition</a>
-            {% if competition.isIndividual == false %}
-                <a href="{{ path('competition_randomize', {id: competition.id}) }}">Randomize Competition</a>
-        {% endif %}
-    {% endif %}
-    <div>
-        Players:
     {% endfor %}
-    <h1>Jugadores Registrados</h1>
-    <ul class="list-group list-group-flush sport-text">
-        {% for registration in competition.registrations %}
-        <li class="list-group-item w-50">{{ registration.player.username }}
-            <span class="float-right">
-                <a href="#"><i class="fas fa-skull"></i></a>
-                {% if registration.isConfirmed == true %}
-                <a href="#"><i class="far fa-check-square"></i></a>
-                {% else %}
-                <a href="#"><i class="far fa-square"></i></a>
-                {% endif %}
-            </span>
-        </li>
-        {% endfor %}
-    </ul>
+{% endif %}
+    <div>
+        <h1>Jugadores Registrados</h1>
+        <ul class="list-group list-group-flush sport-text">
+            {% for registration in competition.registrations %}
+            <li class="list-group-item w-50">{{ registration.player.username }}
+                <span class="float-right">
+                    <a href="#"><i class="fas fa-skull"></i></a>
+                    {% if registration.isConfirmed == true %}
+                    <a href="#"><i class="far fa-check-square"></i></a>
+                    {% else %}
+                    <a href="#"><i class="far fa-square"></i></a>
+                    {% endif %}
+                </span>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% if competition.streamer.username == app.user.username %}
+<a class="btn btn-dark mb-3" href="{{ path('competition_edit', {id: competition.id}) }}">Edit Competition</a>
+<a class="btn btn-dark mb-3" href="{{ path('competition_delete', {id: competition.id}) }}">Delete Competition</a>
+{% endif %}
+{% if app.user and competition.isOpen %}
+<a class="btn btn-dark mb-3" href="{{ path('competition_join', {id: competition.id}) }}">Join Competition</a>
+{% if competition.isIndividual == false and  competition.streamer.username == app.user.username  %}
+<a class="btn btn-dark mb-3" href="{{ path('competition_randomize', {id: competition.id}) }}">Randomize Competition</a>
+{% endif %}
+{% endif %}
 </div>
 {% endblock %}

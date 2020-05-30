@@ -1,5 +1,20 @@
 {% extends 'base.html.twig' %}
 
 {% block content %}
-
+<div style="min-height: 867px;" class="pt-3">
+    <h1>Competiciones</h1>
+    <ul class="list-group list-group-flush sport-text">
+        {% for competition in competitions %}
+        <li class="list-group-item d-flex justify-content-between w-75">
+            <span class="d-flex align-items-center">
+                <a href="{{ path('competition_show', {id: competition.id}) }}">{{ competition.name }}&nbsp;</a>
+                - {{ competition.game.name }} {% if competition.description %}- {{ competition.description }} {% endif %}
+            </span>
+            {% if competition.isopen and (player not in competition.players) %}
+                <a class="btn btn-dark" href="{{ path('competition_join', {id: competition.id}) }}">Join</a>
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+</div>
 {% endblock %}
