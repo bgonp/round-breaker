@@ -43,15 +43,18 @@
             {% endfor %}
         </ul>
     </div>
-    {% if competition.streamer.username == app.user.username %}
-<a class="btn btn-dark mb-3" href="{{ path('competition_edit', {id: competition.id}) }}">Edit Competition</a>
-<a class="btn btn-dark mb-3" href="{{ path('competition_delete', {id: competition.id}) }}">Delete Competition</a>
+    
+{% if competition.streamer.username == app.user.username or is_granted('ROLE_ADMIN') %}
+<a class="btn btn-dark my-3 sport-text" href="{{ path('competition_edit', {id: competition.id}) }}">Editar Competición</a>
+<a class="btn btn-dark my-3" href="{{ path('competition_delete', {id: competition.id}) }}"><i class="fas fa-trash-alt"></i></a>
 {% endif %}
-{% if app.user and competition.isOpen %}
-<a class="btn btn-dark mb-3" href="{{ path('competition_join', {id: competition.id}) }}">Join Competition</a>
+
+{% if competition.isopen and (player not in competition.players) %}
+<a class="btn btn-dark my-3 sport-text" href="{{ path('competition_join', {id: competition.id}) }}">Unirse</a>
+{% endif %}
+
 {% if competition.isIndividual == false and  competition.streamer.username == app.user.username  %}
-<a class="btn btn-dark mb-3" href="{{ path('competition_randomize', {id: competition.id}) }}">Randomize Competition</a>
-{% endif %}
+<a class="btn btn-dark my-3 sport-text" href="{{ path('competition_randomize', {id: competition.id}) }}">Randomiza!</a>
 {% endif %}
 </div>
 {% endblock %}
