@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Repository\CompetitionRepository;
 use App\Repository\GameRepository;
 use App\Repository\PlayerRepository;
+use App\Repository\RegistrationRepository;
 use App\Repository\TeamRepository;
 use App\Service\CompetitionService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -74,18 +75,18 @@ class CompetitionController extends AbstractController
     }
 
     /**
-     * @Route("/join", name="competition_join", methods={"GET"})
+     * @Route("/registration_new", name="registration_new", methods={"POST"})
      */
-    public function joinCompetition(
+    public function makeRegistration(
         Request $request,
         PlayerRepository $playerRepository,
         CompetitionRepository $competitionRepository,
         CompetitionService $competitionService
     ) {
-        if ($request->query->has('id')) {
+        if ($request->request->has('id')) {
             $player = $this->getUser()->getUsername();
             $player = $playerRepository->findOneBy(['username' => $player]);
-            $competition = $competitionRepository->findOneBy(['id' => $request->query->get('id')]);
+            $competition = $competitionRepository->findOneBy(['id' => $request->request->get('id')]);
             //$team = $em->getRepository(Team::class)->findOneBy(['name' => $request->request->get('team')]);
             if (/*$team &&*/ $competition && $competition->getIsOpen()) {
                 $competitionService->addPlayerToCompetition($competition, $player);
@@ -97,7 +98,36 @@ class CompetitionController extends AbstractController
     }
 
     /**
-     * @Route("/delete", name="competition_delete", methods={"GET"})
+     * @Route("/registration_delete", name="registration_delete", methods={"POST"})
+     */
+    public function deleteRegistration(
+        Request $request,
+        PlayerRepository $playerRepository,
+        CompetitionRepository $competitionRepository,
+        RegistrationRepository $registrationRepository
+    ) {
+        if ($request->request->has('competitionId')) {
+            $player = $playerRepository->findOneBy(['id' => $request->request->get('playerId')]);
+            $competition = $competitionRepository->findOneBy(['id' => $request->request->get('competitionId')]);
+            $registration = $registrationRepository->findOneBy(
+                ['player' => $player,
+                    'competition' => $competition]);
+            //$team = $em->getRepository(Team::class)->findOneBy(['name' => $request->request->get('team')]);
+            if (/*$team &&*/ $competition && $competition->getIsOpen() &&
+                (in_array('ROLE_ADMIN', $this->getUser()->getRoles()   )
+                    || $player->getUsername() == $this->getUser()->getUsername()) && $registration) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->remove($registration);
+                $entityManager->flush();
+            }
+            return $this->redirectToRoute('competition_list');
+        } else {
+            return $this->redirectToRoute('main');
+        }
+    }
+
+    /**
+     * @Route("/delete", name="competition_delete", methods={"POST"})
      */
     public function deleteCompetition(
         Request $request,
@@ -105,10 +135,10 @@ class CompetitionController extends AbstractController
         CompetitionRepository $competitionRepository,
         CompetitionService $competitionService
     ) {
-        if ($request->query->has('id')) {
+        if ($request->request->has('id')) {
             $player = $this->getUser()->getUsername();
             $player = $playerRepository->findOneBy(['username' => $player]);
-            $competition = $competitionRepository->findOneBy(['id' => $request->query->get('id')]);
+            $competition = $competitionRepository->findOneBy(['id' => $request->request->get('id')]);
             if ($competition && $competition->getStreamer() === $player) {
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->remove($competition);

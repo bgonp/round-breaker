@@ -43,14 +43,14 @@ class GameController extends AbstractController
     }
 
     /**
-     * @Route("/delete", name="game_delete", methods={"GET"})
+     * @Route("/delete", name="game_delete", methods={"POST"})
      */
     public function deleteGame(
         Request $request,
         GameRepository $gameRepository
     ) {
-        if ($request->query->has('id')) {
-            $game = $gameRepository->findOneBy(['id' => $request->query->get('id')]);
+        if ($request->$request->has('id')) {
+            $game = $gameRepository->findOneBy(['id' => $request->$request->get('id')]);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($game);
             $entityManager->flush();

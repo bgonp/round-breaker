@@ -45,10 +45,24 @@
     </div>
     {% if competition.streamer.username == app.user.username %}
 <a class="btn btn-dark mb-3" href="{{ path('competition_edit', {id: competition.id}) }}">Edit Competition</a>
-<a class="btn btn-dark mb-3" href="{{ path('competition_delete', {id: competition.id}) }}">Delete Competition</a>
+        <form action="/competition/delete" method="POST">
+        <input type="hidden" name="id" value="{{ competition.id }}">
+        <input type="submit" value="Delete Competition">
+    </form>
 {% endif %}
 {% if app.user and competition.isOpen %}
-<a class="btn btn-dark mb-3" href="{{ path('competition_join', {id: competition.id}) }}">Join Competition</a>
+    {% if player in competition.players %}
+        <form action="/competition/registration_delete" method="POST">
+            <input type="hidden" name="competitionId" value="{{ competition.id }}">
+            <input type="hidden" name="playerId" value="{{ player.id }}">
+            <input type="submit" value="Leave Competition">
+        </form>
+    {% else %}
+        <form action="/competition/registration_new" method="POST">
+            <input type="hidden" name="id" value="{{ competition.id }}">
+            <input type="submit" value="Join Competition">
+        </form>
+    {% endif %}
 {% if competition.isIndividual == false and  competition.streamer.username == app.user.username  %}
 <a class="btn btn-dark mb-3" href="{{ path('competition_randomize', {id: competition.id}) }}">Randomize Competition</a>
 {% endif %}

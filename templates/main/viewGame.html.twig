@@ -11,7 +11,10 @@
             </div>
             {% if is_granted('ROLE_ADMIN') %}
                 <a href="{{ path('game_edit', {id: game.id}) }}">Edit Game</a>
-                <a href="{{ path('game_delete', {id: game.id}) }}">Delete Game</a>
+                <form action="/game/delete" method="POST">
+                <input type="hidden" name="id" value="{{ game.id }}">
+                <input type="submit" value="Delete Game">
+            </form>
             {% endif %}
         {% else %}
             No game selected.

@@ -28,12 +28,4 @@ class MainController extends AbstractController
             'createGameButton' => $this->isGranted('ROLE_ADMIN')
         ]);
     }
-
-    /**
-     * @Route("/profile", name="profile", methods={"GET","POST"})
-     */
-    public function profile(): Response
-    {
-        // TODO
-    }
 }
