@@ -13,7 +13,7 @@
                 {% endif %}
             </span>
             {% if competition.isopen and (player not in competition.players) %}
-            <a class="btn btn-dark" href="{{ path('competition_join', {id: competition.id}) }}">Unirse</a>
+                <a class="btn btn-dark" href="{{ path('registration_new', {id: competition.id}) }}">Join</a>
             {% endif %}
         </li>
         {% endfor %}

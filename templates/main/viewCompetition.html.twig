@@ -43,14 +43,28 @@
             {% endfor %}
         </ul>
     </div>
-    
-{% if competition.streamer.username == app.user.username or is_granted('ROLE_ADMIN') %}
-<a class="btn btn-dark my-3 sport-text" href="{{ path('competition_edit', {id: competition.id}) }}">Editar Competición</a>
-<a class="btn btn-dark my-3" href="{{ path('competition_delete', {id: competition.id}) }}"><i class="fas fa-trash-alt"></i></a>
+    {% if competition.streamer.username == app.user.username %}
+<a class="btn btn-dark mb-3" href="{{ path('competition_edit', {id: competition.id}) }}">Edit Competition</a>
+        <form action="/competition/delete" method="POST">
+        <input type="hidden" name="id" value="{{ competition.id }}">
+        <input type="submit" value="Delete Competition">
+    </form>
 {% endif %}
-
-{% if competition.isopen and (player not in competition.players) %}
-<a class="btn btn-dark my-3 sport-text" href="{{ path('competition_join', {id: competition.id}) }}">Unirse</a>
+{% if app.user and competition.isOpen %}
+    {% if player in competition.players %}
+        <form action="/competition/registration_delete" method="POST">
+            <input type="hidden" name="competitionId" value="{{ competition.id }}">
+            <input type="hidden" name="playerId" value="{{ player.id }}">
+            <input type="submit" value="Leave Competition">
+        </form>
+    {% else %}
+        <form action="/competition/registration_new" method="POST">
+            <input type="hidden" name="id" value="{{ competition.id }}">
+            <input type="submit" value="Join Competition">
+        </form>
+    {% endif %}
+{% if competition.isIndividual == false and  competition.streamer.username == app.user.username  %}
+<a class="btn btn-dark mb-3" href="{{ path('competition_randomize', {id: competition.id}) }}">Randomize Competition</a>
 {% endif %}
 
 {% if competition.isIndividual == false and  competition.streamer.username == app.user.username  %}

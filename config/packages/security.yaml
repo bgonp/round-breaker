@@ -47,9 +47,10 @@ security:
     access_control:
         - { path: ^/competition/new, role: ROLE_USER }
         - { path: ^/competition/delete, role: ROLE_USER }
-        - { path: ^/registration/new, role: ROLE_USER }
-        - { path: ^/registration/delete, role: ROLE_USER }
+        - { path: ^/competition/registration_new, role: ROLE_USER }
+        - { path: ^/competition/registration_delete, roles: ROLE_USER }
         - { path: ^/game/new, role: ROLE_ADMIN }
         - { path: ^/game/delete, role: ROLE_ADMIN }
         - { path: ^/profile, roles: ROLE_USER }
         - { path: ^/api, roles: ROLE_USER }
+        - { path: ^/profile, roles: ROLE_USER }
