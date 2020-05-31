@@ -1,21 +1,4 @@
 {
-    "api-platform/api-pack": {
-        "version": "v1.2.2"
-    },
-    "api-platform/core": {
-        "version": "2.5",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "2.5",
-            "ref": "a93061567140e386f107be75340ac2aee3f86cbf"
-        },
-        "files": [
-            "config/packages/api_platform.yaml",
-            "config/routes/api_platform.yaml",
-            "src/Entity/.gitignore"
-        ]
-    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {
@@ -107,11 +90,11 @@
     "doctrine/reflection": {
         "version": "v1.1.0"
     },
+    "doctrine/sql-formatter": {
+        "version": "1.1.0"
+    },
     "egulias/email-validator": {
         "version": "2.1.17"
-    },
-    "fig/link-util": {
-        "version": "1.1.0"
     },
     "guzzlehttp/guzzle": {
         "version": "6.5.3"
@@ -121,9 +104,6 @@
     },
     "guzzlehttp/psr7": {
         "version": "1.6.1"
-    },
-    "jdorn/sql-formatter": {
-        "version": "v1.2.17"
     },
     "laminas/laminas-code": {
         "version": "3.4.1"
@@ -136,18 +116,6 @@
     },
     "monolog/monolog": {
         "version": "2.0.2"
-    },
-    "nelmio/cors-bundle": {
-        "version": "1.5",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "1.5",
-            "ref": "6388de23860284db9acce0a7a5d9d13153bcb571"
-        },
-        "files": [
-            "config/packages/nelmio_cors.yaml"
-        ]
     },
     "nicklaw5/twitch-api-php": {
         "version": "v2.1.2"
@@ -439,6 +407,9 @@
     "symfony/polyfill-php73": {
         "version": "v1.14.0"
     },
+    "symfony/polyfill-php80": {
+        "version": "v1.17.0"
+    },
     "symfony/process": {
         "version": "v5.0.5"
     },
@@ -593,8 +564,5 @@
     },
     "webmozart/assert": {
         "version": "1.7.0"
-    },
-    "willdurand/negotiation": {
-        "version": "v2.3.1"
     }
 }

@@ -106,14 +106,17 @@ class CompetitionService
         }
     }
 
-    public function advanceTeam(Team $team, Round $round) {
+    /** @return Round|null Destination round of winner or null if it doesn't exists */
+    public function advanceTeam(Team $team, Round $round): ?Round {
         $round->setWinner($team);
         $this->roundRepository->save($round);
         $bracketOrder = $round->getBracketOrder();
         $sisterRound = $this->roundRepository->findOneBy([
             'bracket_level' => $round->getBracketLevel(),
             'bracket_order' => $bracketOrder+1]);
-        if (!($bracketOrder == 1 && !$sisterRound)) {
+        $nextRound = null;
+        //if (!($bracketOrder == 1 && !$sisterRound)) {
+        if ($bracketOrder > 1 || $sisterRound) {
             if ($bracketOrder % 2 != 0) {
                 $bracketOrder++;
             }
@@ -129,5 +132,12 @@ class CompetitionService
             }
             $this->roundRepository->save($nextRound);
         }
+        return $nextRound;
+    }
+
+    /** @return Round Destination round of winner */
+    public function undoAdvanceTeam(Team $team, Round $round)
+    {
+
     }
 }
