@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Competition;
 use App\Entity\Registration;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -25,6 +26,16 @@ class RegistrationRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function findByCompetitionAndTwitchId(Competition $competition, int $twitchId): Registration
+    {
+        return $this->createQueryBuilder('r')
+            ->from('App:Registration', 'r')
+            ->join('r.player', 'p')
+            ->where('r.competition = :competition')
+            ->andWhere('p.twitch_id = :twitchid')
+            ->getQuery()->execute();
     }
 
     // /**

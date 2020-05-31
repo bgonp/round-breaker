@@ -138,6 +138,6 @@ class CompetitionService
     /** @return Round Destination round of winner */
     public function undoAdvanceTeam(Team $team, Round $round)
     {
-
+        // TODO
     }
 }
