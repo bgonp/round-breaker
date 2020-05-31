@@ -115,7 +115,7 @@ class CompetitionController extends AbstractController
                     'competition' => $competition]);
             //$team = $em->getRepository(Team::class)->findOneBy(['name' => $request->request->get('team')]);
             if (/*$team &&*/ $competition && $competition->getIsOpen() &&
-                (in_array('ROLE_ADMIN', $this->getUser()->getRoles()   )
+                ($this->isGranted("ROLE_ADMIN")
                     || $player->getUsername() == $this->getUser()->getUsername()) && $registration) {
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->remove($registration);
@@ -160,12 +160,17 @@ class CompetitionController extends AbstractController
         TeamRepository $teamRepository,
         CompetitionService $competitionService
     ) {
+        $user = $this->getUser();
         $teams = $teamRepository->findCompleteTeamsFromCompetition($competition);
+        $player = $this->getUser() ? $playerRepository->findOneBy(["username" => $this->getUser()->getUsername()]) : null;
         return $this->render('main/viewCompetition.html.twig', [
             'controller_name' => 'CompetitionController',
             'competition' => $competition,
             'teams' => $teams,
-            'player'=> $playerRepository->findOneBy(["username" => $this->getUser()->getUsername()])
+            'player'=> $player,
+            'createStreamerButtons' => $competition->getStreamer() === $player,
+            'createRegistrationButtons' => $competition->getIsOpen() && $player,
+            'createRandomizeButton' => $competition->getIsIndividual() && $competition->getStreamer() === $player
         ]);
     }
 

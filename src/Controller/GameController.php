@@ -49,8 +49,8 @@ class GameController extends AbstractController
         Request $request,
         GameRepository $gameRepository
     ) {
-        if ($request->$request->has('id')) {
-            $game = $gameRepository->findOneBy(['id' => $request->$request->get('id')]);
+        if ($request->request->has('id')) {
+            $game = $gameRepository->findOneBy(['id' => $request->request->get('id')]);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($game);
             $entityManager->flush();
@@ -66,7 +66,7 @@ class GameController extends AbstractController
         Game $game,
         GameRepository $gameRepository
     ) {
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        if ($this->isGranted("ROLE_ADMIN")) {
             if ($request->request->has('name')) {
                 $game->setName($request->request->get('name'));
                 $game->setDescription($request->request->get('description'));
@@ -89,11 +89,12 @@ class GameController extends AbstractController
         CompetitionRepository $competitionRepository,
         PlayerRepository $playerRepository
     ) {
+        $user = $this->getUser();
         return $this->render('main/viewCompetitionList.html.twig', [
             'controller_name' => 'GameController',
             'game' => $game,
             'competitions' => $competitionRepository->findBy(['game' => $game]),
-            'player'=> $playerRepository->findOneBy(["username" => $this->getUser()->getUsername()]),
+            'player'=> $this->getUser() ? $playerRepository->findOneBy(["username" => $this->getUser()->getUsername()]) : null
         ]);
     }
 }
