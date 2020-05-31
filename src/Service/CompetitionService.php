@@ -98,11 +98,18 @@ class CompetitionService
     }
 
     public function createRounds(Competition $competition, Array $teams) {
-        for ($i = 0; $i < count($teams)/2; $i++) {
-            $round = $this->createRound($competition, 3, 1, $i+1);
-            $round->addTeam($teams[$i*2]);
-            $round->addTeam($teams[$i*2+1]);
-            $this->roundRepository->save($round);
+        $numRounds = count($teams)/2;
+        $numLevels = log($numRounds, 2);
+        for ($i = 0; $i < $numLevels; $i++) {
+            for ($j = 0; $j < $numRounds; $j++) {
+                $round = $this->createRound($competition, 3, $i+1, $j+1);
+                if ($i == 0) {
+                    $round->addTeam($teams[$j*2]);
+                    $round->addTeam($teams[$j*2+1]);
+                }
+                $this->roundRepository->save($round);
+            }
+            $numRounds = $numRounds/2;
         }
     }
 
@@ -124,12 +131,7 @@ class CompetitionService
             $nextRound = $this->roundRepository->findOneBy([
                 'bracket_level' => $round->getBracketLevel()+1,
                 'bracket_order' => $bracketOrder]);
-            if ($nextRound) {
-                $nextRound->addTeam($team);
-            } else {
-                $nextRound = $this->createRound($round->getCompetition(), $round->getBestOf(), $round->getBracketOrder()+1, $bracketOrder);
-                $nextRound->addTeam($team);
-            }
+            $nextRound->addTeam($team);
             $this->roundRepository->save($nextRound);
         }
         return $nextRound;
