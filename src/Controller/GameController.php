@@ -86,12 +86,14 @@ class GameController extends AbstractController
      */
     public function viewGame(
         Game $game,
-        CompetitionRepository $competitionRepository
+        CompetitionRepository $competitionRepository,
+        PlayerRepository $playerRepository
     ) {
-        return $this->render('main/viewGame.html.twig', [
+        return $this->render('main/viewCompetitionList.html.twig', [
             'controller_name' => 'GameController',
             'game' => $game,
-            'competitions' => $competitionRepository->findBy(['game' => $game])
+            'competitions' => $competitionRepository->findBy(['game' => $game]),
+            'player'=> $playerRepository->findOneBy(["username" => $this->getUser()->getUsername()]),
         ]);
     }
 }

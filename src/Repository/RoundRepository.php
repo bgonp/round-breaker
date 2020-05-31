@@ -27,6 +27,11 @@ class RoundRepository extends ServiceEntityRepository
         }
     }
 
+    public function flush()
+    {
+        $this->getEntityManager()->flush();
+    }
+
     // /**
     //  * @return Round[] Returns an array of Round objects
     //  */

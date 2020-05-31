@@ -113,33 +113,61 @@ class CompetitionService
         }
     }
 
-    /** @return Round|null Destination round of winner or null if it doesn't exists */
+    /** @return Round|null Affected round */
     public function advanceTeam(Team $team, Round $round): ?Round {
+        $nextRound = $this->getNextRound($round);
+        if ($nextRound->getWinner()) {
+            throw new \InvalidArgumentException('Can\'t modify round if next round already finished');
+        }
+        if ($round->getWinner() && !$round->getWinner()->equals($round)) {
+            $this->undoAdvanceTeam($round->getWinner(), $round, false);
+        }
         $round->setWinner($team);
-        $this->roundRepository->save($round);
+        $this->roundRepository->save($round, false);
+        if ($nextRound) {
+            $nextRound->addTeam($team);
+            $this->roundRepository->save($nextRound, false);
+        }
+        $this->roundRepository->flush();
+        return $nextRound;
+    }
+
+    /** @return Round|null Affected round */
+    public function undoAdvanceTeam(Team $team, Round $round, bool $flush = true): ?Round
+    {
+        $nextRound = $this->getNextRound($round);
+        if ($nextRound->getWinner()) {
+            throw new \InvalidArgumentException('Can\'t modify round if next round already finished');
+        }
+        $round->setWinner(null);
+        $this->roundRepository->save($round, false);
+        if ($nextRound) {
+            $nextRound->removeTeam($team);
+            $this->roundRepository->save($nextRound, false);
+        }
+        if ($flush) $this->roundRepository->flush();
+        return $nextRound;
+    }
+
+    private function getNextRound(Round $round): ?Round
+    {
         $bracketOrder = $round->getBracketOrder();
+        // TODO: Eliminar esta llamada a base de datos, sisterRound no hace falta
         $sisterRound = $this->roundRepository->findOneBy([
             'bracket_level' => $round->getBracketLevel(),
-            'bracket_order' => $bracketOrder+1]);
+            'bracket_order' => $bracketOrder + 1
+        ]);
         $nextRound = null;
-        //if (!($bracketOrder == 1 && !$sisterRound)) {
         if ($bracketOrder > 1 || $sisterRound) {
             if ($bracketOrder % 2 != 0) {
                 $bracketOrder++;
             }
             $bracketOrder = $bracketOrder/2;
             $nextRound = $this->roundRepository->findOneBy([
-                'bracket_level' => $round->getBracketLevel()+1,
-                'bracket_order' => $bracketOrder]);
-            $nextRound->addTeam($team);
-            $this->roundRepository->save($nextRound);
+                'bracket_level' => $round->getBracketLevel() + 1,
+                'bracket_order' => $bracketOrder
+            ]);
         }
         return $nextRound;
-    }
-
-    /** @return Round Destination round of winner */
-    public function undoAdvanceTeam(Team $team, Round $round)
-    {
-
     }
 }

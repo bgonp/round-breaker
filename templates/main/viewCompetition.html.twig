@@ -66,6 +66,9 @@
 {% if competition.isIndividual == false and  competition.streamer.username == app.user.username  %}
 <a class="btn btn-dark mb-3" href="{{ path('competition_randomize', {id: competition.id}) }}">Randomize Competition</a>
 {% endif %}
+
+{% if competition.isIndividual == false and  competition.streamer.username == app.user.username  %}
+<a class="btn btn-dark my-3 sport-text" href="{{ path('competition_randomize', {id: competition.id}) }}">Randomiza!</a>
 {% endif %}
 </div>
 {% endblock %}

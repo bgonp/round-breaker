@@ -28,6 +28,7 @@ class CompetitionController extends AbstractController
             'controller_name' => 'CompetitionController',
             'competitions' => $competitionRepository->findAll(),
             'player'=> $playerRepository->findOneBy(["username" => $this->getUser()->getUsername()]),
+            'game' => null,
         ]);
     }
 

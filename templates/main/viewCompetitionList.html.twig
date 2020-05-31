@@ -2,13 +2,15 @@
 
 {% block content %}
 <div style="min-height: 867px;" class="pt-3">
-    <h1>Competiciones</h1>
-    <ul class="list-group list-group-flush sport-text">
+
+    <h1>{% if (game and is_granted('ROLE_ADMIN')) or game %}{{ game.name }} - {% endif %}Torneos</h1>
+    <ul class="list-group list-group-flush sport-text mb-3">
         {% for competition in competitions %}
         <li class="list-group-item d-flex justify-content-between w-75">
             <span class="d-flex align-items-center">
                 <a href="{{ path('competition_show', {id: competition.id}) }}">{{ competition.name }}&nbsp;</a>
-                - {{ competition.game.name }} {% if competition.description %}- {{ competition.description }} {% endif %}
+                - {{ competition.game.name }} {% if competition.description %}- {{ competition.description }}
+                {% endif %}
             </span>
             {% if competition.isopen and (player not in competition.players) %}
                 <a class="btn btn-dark" href="{{ path('registration_new', {id: competition.id}) }}">Join</a>
@@ -16,5 +18,12 @@
         </li>
         {% endfor %}
     </ul>
+    {% if is_granted('ROLE_ADMIN') %}
+    {% if game %}
+    <a class="btn btn-dark sport-text" href="{{ path('game_edit', {id: game.id}) }}">Editar Juego</a>
+    <a class="btn btn-dark" href="{{ path('game_delete', {id: game.id}) }}"><i class="fas fa-trash-alt"></i></a>
+    {% endif %}
+    {% endif %}
+
 </div>
 {% endblock %}
