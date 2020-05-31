@@ -13,9 +13,9 @@
                 {% endif %}
             </span>
             {% if competition.isopen and (player not in competition.players) %}
-                <form action="/competition/registration_new" method="POST">
+                <form action="/competition/registration_new" method="POST" class="d-inline">
                     <input type="hidden" name="id" value="{{ competition.id }}">
-                    <input type="submit" value="Join">
+                    <input class="btn btn-dark sport-text" type="submit" value="Unirse">
                 </form>
             {% endif %}
         </li>
@@ -24,9 +24,9 @@
     {% if is_granted('ROLE_ADMIN') %}
     {% if game %}
     <a class="btn btn-dark sport-text" href="{{ path('game_edit', {id: game.id}) }}">Editar Juego</a>
-        <form action="/game/delete" method="POST">
+        <form action="/game/delete" method="POST" class="d-inline">
             <input type="hidden" name="id" value="{{ game.id }}">
-            <input type="submit" value="Delete Game">
+            <input class="btn btn-dark sport-text" type="submit" value="Eliminar Juego">
         </form>
     {% endif %}
     {% endif %}

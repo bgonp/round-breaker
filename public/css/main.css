@@ -35,6 +35,14 @@ a:hover {
     color:#4cd365 !important;
 }
 
+input.sport-text:hover {
+    color:#4cd365 !important;
+}
+
+input.sport-text {
+    color:#f7921e !important;
+}
+
 .rrss {
     opacity: .65;
 }
@@ -67,4 +75,8 @@ h1 {
     font-size: 32px;
     font-family: broken;
     letter-spacing: 2.5px;
+}
+
+.break-text-large:hover {
+    color:#4cd365 !important;
 }

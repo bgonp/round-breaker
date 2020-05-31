@@ -27,10 +27,11 @@
     {% endfor %}
 {% endif %}
     <div>
-        <h1>Jugadores Registrados</h1>
+        <h1>{% if competition.isopen%}{{competition.name}} - {% endif %}Jugadores Registrados</h1>
         <ul class="list-group list-group-flush sport-text">
             {% for registration in competition.registrations %}
             <li class="list-group-item w-50">{{ registration.player.username }}
+                {% if createStreamerButtons or is_granted('ROLE_ADMIN') %}
                 <span class="float-right">
                     <a href="#"><i class="fas fa-skull"></i></a>
                     {% if registration.isConfirmed == true %}
@@ -39,28 +40,29 @@
                     <a href="#"><i class="far fa-square"></i></a>
                     {% endif %}
                 </span>
+                {% endif %}
             </li>
             {% endfor %}
         </ul>
     </div>
-    {% if createStreamerButtons %}
-<a class="btn btn-dark mb-3" href="{{ path('competition_edit', {id: competition.id}) }}">Edit Competition</a>
-        <form action="/competition/delete" method="POST">
+    {% if createStreamerButtons or is_granted('ROLE_ADMIN') %}
+<a class="btn btn-dark mb-3 sport-text" href="{{ path('competition_edit', {id: competition.id}) }}">Editar Torneo</a>
+        <form action="/competition/delete" method="POST" class="d-inline">
         <input type="hidden" name="id" value="{{ competition.id }}">
-        <input type="submit" value="Delete Competition">
+        <input class="btn btn-dark sport-text mb-3" type="submit" value="Eliminar">
     </form>
 {% endif %}
 {% if createRegistrationButtons %}
     {% if player in competition.players %}
-        <form action="/competition/registration_delete" method="POST">
+        <form action="/competition/registration_delete" method="POST" class="d-inline">
             <input type="hidden" name="competitionId" value="{{ competition.id }}">
             <input type="hidden" name="playerId" value="{{ player.id }}">
-            <input type="submit" value="Leave Competition">
+            <input class="btn btn-dark sport-text mb-3" type="submit" value="Abandonar">
         </form>
     {% else %}
-        <form action="/competition/registration_new" method="POST">
+        <form action="/competition/registration_new" method="POST" class="d-inline">
             <input type="hidden" name="id" value="{{ competition.id }}">
-            <input type="submit" value="Join Competition">
+            <input class="btn btn-dark sport-text mb-3" type="submit" value="Unirse">
         </form>
     {% endif %}
 {% if createRandomizeButton  %}
