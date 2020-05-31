@@ -7,7 +7,6 @@ namespace App\Controller;
 use App\Repository\PlayerRepository;
 use App\Repository\RegistrationRepository;
 use App\Repository\RoundRepository;
-use App\Repository\TeamRepository;
 use App\Service\CompetitionService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,11 +35,15 @@ class ApiController
         foreach ($round->getTeams() as $team) {
             $response['origin']['teams'][] = $team->getId();
             if ($team->getId() == $teamId) {
-                if ($round->getWinner()->equals($team)) {
-                    $affectedRound = $competitionService->undoAdvanceTeam($team, $round);
-                } else {
-                    $response['origin']['winner'] = $teamId;
-                    $affectedRound = $competitionService->advanceTeam($team, $round);
+                try {
+                    if ($round->getWinner()->equals($team)) {
+                        $affectedRound = $competitionService->undoAdvanceTeam($team, $round);
+                    } else {
+                        $affectedRound = $competitionService->advanceTeam($team, $round);
+                        $response['origin']['winner'] = $teamId;
+                    }
+                } catch (\InvalidArgumentException $exception) {
+                    return new JsonResponse([], JsonResponse::HTTP_BAD_REQUEST);
                 }
                 if ($affectedRound) {
                     $response['destination'] = [
