@@ -27,11 +27,11 @@ class CompetitionController extends AbstractController
     public function index(CompetitionRepository $competitionRepository, PlayerRepository $playerRepository): Response
     {
         $user = $this->getUser();
-        $isAuthed = $user !== null;
+        $isAuthed = $user !== null; 
         return $this->render('competition/index.html.twig', [
             'competitions' => $competitionRepository->findAll(),
-            'canEditGame' => $isAuthed && $this->isGranted('ROLE_ADMIN'),
             'player'=> $isAuthed ? $playerRepository->findOneBy(["username" => $user->getUsername()]) : null,
+            'game' => null,
         ]);
     }
 
@@ -170,7 +170,7 @@ class CompetitionController extends AbstractController
             'competition' => $competition,
             'teams' => $teams,
             'player'=> $player,
-            'createStreamerButtons' => $competition->getStreamer() === $player,
+            'createStreamerButtons' => $competition->getStreamer() === $player or $this->isGranted('ROLE_ADMIN'),
             'createRegistrationButtons' => $competition->getIsOpen() && $player,
             'createRandomizeButton' => $competition->getIsIndividual() && $competition->getStreamer() === $player
         ]);
