@@ -22,6 +22,11 @@
                         <li class="nav-item">
                             <b><a href="{{ path('competition_list') }}" class="nav-link">Torneos</a></b>
                         </li>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <li class="nav-item">
+                                <b><a href="{{ path('game_list') }}" class="nav-link">Games</a></b>
+                            </li>
+                        {% endif %}
                         <li class="nav-item">
                             <b><a href="{{ path('profile') }}" class="nav-link">Panel de Jugador</a></b>
                         </li>

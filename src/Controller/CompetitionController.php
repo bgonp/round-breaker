@@ -88,8 +88,9 @@ class CompetitionController extends AbstractController
         CompetitionService $competitionService
     ) {
         if ($request->request->has('id')) {
-            $player = $this->getUser()->getUsername();
-            $player = $playerRepository->findOneBy(['username' => $player]);
+            $user = $this->getUser();
+            $isAuthed = $user !== null;
+            $player = $isAuthed ? $playerRepository->findOneBy(["username" => $user->getUsername()]) : null;
             $competition = $competitionRepository->findOneBy(['id' => $request->request->get('id')]);
             //$team = $em->getRepository(Team::class)->findOneBy(['name' => $request->request->get('team')]);
             if (/*$team &&*/ $competition && $competition->getIsOpen()) {

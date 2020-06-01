@@ -2,16 +2,14 @@
 
 namespace App\Controller;
 
-use App\Entity\Competition;
 use App\Entity\Game;
 use App\Repository\CompetitionRepository;
 use App\Repository\GameRepository;
 use App\Repository\PlayerRepository;
-use App\Repository\TeamRepository;
-use App\Service\CompetitionService;
 use App\Service\GameService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -19,6 +17,18 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class GameController extends AbstractController
 {
+    /**
+     * @Route("/", name="game_list", methods={"GET"})
+     */
+    public function index(GameRepository $gameRepository, PlayerRepository $playerRepository): Response
+    {
+        $user = $this->getUser();
+        $isAuthed = $user !== null;
+        return $this->render('game/index.html.twig', [
+            'games' => $gameRepository->findAll(),
+            'player'=> $isAuthed ? $playerRepository->findOneBy(["username" => $user->getUsername()]) : null
+        ]);
+    }
 
     /**
      * @Route("/new", name="game_new", methods={"GET", "POST"})
