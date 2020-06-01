@@ -34,11 +34,15 @@
                 {% if createStreamerButtons or is_granted('ROLE_ADMIN') %}
                 <span class="float-right">
                     <a href="#"><i class="fas fa-skull"></i></a>
+                    <form action="/competition/toggle_confirmation" method="POST" class="d-inline">
+                        <input type="hidden" name="competitionId" value="{{ competition.id }}">
+                        <input type="hidden" name="playerId" value="{{ player.id }}">
                     {% if registration.isConfirmed == true %}
-                    <a href="#"><i class="far fa-check-square"></i></a>
+                        <input class="btn btn-dark sport-text mb-3" type="submit" value="Unconfirm">
                     {% else %}
-                    <a href="#"><i class="far fa-square"></i></a>
+                        <input class="btn btn-dark sport-text mb-3" type="submit" value="Confirm">
                     {% endif %}
+                 </form>
                 </span>
                 {% endif %}
             </li>

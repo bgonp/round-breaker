@@ -131,6 +131,25 @@ class CompetitionController extends AbstractController
         }
     }
 
+    /** @Route("/toggle_confirmation", name="toggle_confirmation", methods={"POST"}) */
+    public function toggleConfirmation(
+        Request $request,
+        PlayerRepository $playerRepository,
+        CompetitionRepository $competitionRepository,
+        RegistrationRepository $registrationRepository
+    ): Response {
+        $competition = $competitionRepository->findOneBy(['id' => $request->request->get('competitionId')]);
+        $player = $playerRepository->findOneBy(['id' => $request->request->get('playerId')]);
+        $registration = $registrationRepository->findOneBy(['competition' => $competition, 'player' => $player]);
+        if ($registration && !$registration->getIsConfirmed()) {
+            $registration->setIsConfirmed(true);
+        } else {
+            $registration->setIsConfirmed(false);
+        }
+        $registrationRepository->save($registration);
+        return $this->redirectToRoute('competition_show', array('id' => $request->request->get('competitionId')));
+    }
+
     /**
      * @Route("/delete", name="competition_delete", methods={"POST"})
      */
