@@ -28,10 +28,9 @@ class RegistrationRepository extends ServiceEntityRepository
         }
     }
 
-    public function findByCompetitionAndTwitchName(Competition $competition, int $twitchName): ?Registration
+    public function findByCompetitionAndTwitchName(Competition $competition, string $twitchName): ?Registration
     {
         $registrations = $this->createQueryBuilder('r')
-            ->from('App:Registration', 'r')
             ->join('r.player', 'p')
             ->where('r.competition = :competition')
             ->andWhere('p.twitch_name = :twitchname')

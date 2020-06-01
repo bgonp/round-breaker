@@ -73,7 +73,7 @@ class ApiController
         if ($registration && !$registration->getIsConfirmed()) {
             $registration->setIsConfirmed(true);
             $registrationRepository->save($registration);
-            return new JsonResponse([], JsonResponse::HTTP_OK);
+            return new JsonResponse($registration->getId(), JsonResponse::HTTP_OK);
         }
         return new JsonResponse([], JsonResponse::HTTP_BAD_REQUEST);
     }
