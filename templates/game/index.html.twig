@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <div style="min-height: 867px;" class="pt-3">
+        <h1>Games</h1>
+            {% for game in games %}
+                <a href="{{ path('game_show', {id: game.id}) }}">{{ game.name }}&nbsp;</a>: {{ game.description }}
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}
