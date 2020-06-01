@@ -23,10 +23,11 @@ class SecurityController extends AbstractController
      */
     public function login(AuthenticationUtils $authenticationUtils, CompetitionRepository $competitionRepository): Response
     {
+        // TODO: Se debería poder vaciar este método
          if ($this->getUser()) {
              return $this->redirectToRoute('main');
         }
-        // necesito un método en el repo que coja un torneo random, terminado de 8 equipos.
+        // TODO: necesito un método en el repo que coja un torneo random, terminado de 8 equipos.
         // por ahora uso find para mostrar el único torneo que tenemos.
         $competition = $competitionRepository->find('1');
         // get the login error if there is one
@@ -34,7 +35,11 @@ class SecurityController extends AbstractController
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error,  'competition' => $competition]);
+        return $this->render('security/login.html.twig', [
+            'last_username' => $lastUsername,
+            'error' => $error,
+            'competition' => $competition]
+        );
     }
 
     /**

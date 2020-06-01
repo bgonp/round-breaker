@@ -8,6 +8,7 @@ use App\Repository\PlayerRepository;
 use App\Repository\RegistrationRepository;
 use App\Repository\TeamRepository;
 use App\Service\CompetitionService;
+use App\Service\TeamService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Entity\Competition;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,28 +21,29 @@ use Symfony\Component\Routing\Annotation\Route;
 class CompetitionController extends AbstractController
 {
     /**
-     * @Route("/", name="competition_list")
+     * @Route("/", name="competition_list", methods={"GET"})
      */
     public function index(CompetitionRepository $competitionRepository, PlayerRepository $playerRepository): Response
     {
-        return $this->render('main/viewCompetitionList.html.twig', [
-            'controller_name' => 'CompetitionController',
+        $user = $this->getUser();
+        $isAuthed = $user !== null;
+        return $this->render('competition/index.html.twig', [
             'competitions' => $competitionRepository->findAll(),
-            'player'=> $playerRepository->findOneBy(["username" => $this->getUser()->getUsername()]),
-            'game' => null,
+            'canEditGame' => $isAuthed && $this->isGranted('ROLE_ADMIN'),
+            'player'=> $isAuthed ? $playerRepository->findOneBy(["username" => $user->getUsername()]) : null,
         ]);
     }
 
     /**
-     * @Route("/new", name="competition_new")
+     * @Route("/new", name="competition_new", methods={"GET", "POST"})
      */
     public function createCompetition(
         Request $request,
         CompetitionRepository $competitionRepository,
         GameRepository $gameRepository,
         PlayerRepository $playerRepository,
-        CompetitionService $competitionService)
-    {
+        CompetitionService $competitionService
+    ) {
         if ($request->request->has('name')) {
             $competition = $competitionRepository->findOneBy(['name' => $request->request->get('name')]);
             $user = $this->getUser()->getUsername();
@@ -67,7 +69,7 @@ class CompetitionController extends AbstractController
             }
             return $this->redirectToRoute('main');
         } else {
-            return $this->render('main/createCompetition.html.twig', [
+            return $this->render('competition/new.html.twig', [
                 'controller_name' => 'CompetitionController',
                 'games' => $gameRepository->findAll(),
                 'competitions' => $competitionRepository->findAll()
@@ -150,7 +152,7 @@ class CompetitionController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="competition_show")
+     * @Route("/{id}", name="competition_show", methods={"GET"})
      */
     public function viewCompetition(
         Request $request,
@@ -160,10 +162,9 @@ class CompetitionController extends AbstractController
         TeamRepository $teamRepository,
         CompetitionService $competitionService
     ) {
-        $user = $this->getUser();
         $teams = $teamRepository->findCompleteTeamsFromCompetition($competition);
         $player = $this->getUser() ? $playerRepository->findOneBy(["username" => $this->getUser()->getUsername()]) : null;
-        return $this->render('main/viewCompetition.html.twig', [
+        return $this->render('competition/show.html.twig', [
             'controller_name' => 'CompetitionController',
             'competition' => $competition,
             'teams' => $teams,
@@ -194,7 +195,7 @@ class CompetitionController extends AbstractController
                 $competitionRepository->save($competition);
             }
             $teams = $teamRepository->findCompleteTeamsFromCompetition($competition);
-            return $this->render('main/editCompetition.html.twig', [
+            return $this->render('competition/edit.html.twig', [
                 'controller_name' => 'CompetitionController',
                 'competition' => $competition,
                 'teams' => $teams
@@ -218,7 +219,7 @@ class CompetitionController extends AbstractController
         $player = $playerRepository->findOneBy(['username' => $player]);
         if ($player === $competition->getStreamer()) {
             $teams = $teamRepository->findCompleteTeamsFromCompetition($competition);
-            return $this->render('main/viewCompetitionBracket.html.twig', [
+            return $this->render('competition/bracket.html.twig', [
                 'controller_name' => 'CompetitionController',
                 'competition' => $competition,
                 'teams' => $teams
@@ -226,5 +227,20 @@ class CompetitionController extends AbstractController
         } else {
             return $this->redirectToRoute('competition_list');
         }
+    }
+
+    /**
+     * @Route("/randomize", name="competition_randomize", methods={"POST"})
+     */
+    public function randomizeTeams(
+        Competition $competition,
+        PlayerRepository $playerRepository,
+        TeamService $teamService
+    ): Response {
+        $user = $this->getUser()->getUsername();
+        $user = $playerRepository->findOneBy(['username' => $user]);
+        $teamService->randomize($user, $competition);
+
+        return $this->redirectToRoute('competition_show', ['id' => $competition->getId()]);
     }
 }

@@ -12,11 +12,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class PlayerController extends AbstractController
 {
     /**
-     * @Route("/player/{id}", name="player_show")
+     * @Route("/player/{id}", name="player_show", methods={"GET"})
      */
     public function viewPlayer(PlayerRepository $playerRepository, Player $player): Response
     {
-        return $this->render('main/viewPlayer.html.twig', [
+        return $this->render('player/show.html.twig', [
             'controller_name' => 'PlayerController',
             'player'=> $player,
         ]);
@@ -27,9 +27,12 @@ class PlayerController extends AbstractController
      */
     public function viewProfile(PlayerRepository $playerRepository): Response
     {
-        return $this->render('main/viewProfile.html.twig', [
+        if (!($user = $this->getUser())) {
+            return $this->redirectToRoute('main');
+        }
+        return $this->render('player/edit.html.twig', [
             'controller_name' => 'ProfileController',
-            'player'=> $playerRepository->findOneBy(["username" => $this->getUser()->getUsername()]),
+            'player'=> $user ? $playerRepository->findOneBy(["username" => $user->getUsername()]) : null,
         ]);
     }
 }

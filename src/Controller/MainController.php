@@ -3,29 +3,32 @@
 namespace App\Controller;
 
 use App\Repository\CompetitionRepository;
-use App\Repository\GameRepository;
-use App\Repository\TeamRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use App\Entity\Game;
-use App\Entity\Competition;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class MainController extends AbstractController
 {
     /**
      * @Route("/", name="main", methods={"GET"})
      */
-    public function main(GameRepository $gameRepository, CompetitionRepository $competitionRepository): Response
-    {
+    public function main(
+        CompetitionRepository $competitionRepository,
+        AuthenticationUtils $authenticationUtils
+    ): Response {
         $user = $this->getUser();
+        $isAuthed = $user !== null;
+        $error = $authenticationUtils->getLastAuthenticationError();
+        $lastUsername = $authenticationUtils->getLastUsername();
+        $randomCompetition = $competitionRepository->findRandomFinished();
         return $this->render('main/index.html.twig', [
-            'controller_name' => 'MainController',
-            'games' => $gameRepository->findAll(),
-            'competitions' => $competitionRepository->findAll(),
-            'createCompetitionButton' => $user !== null,
-            'createGameButton' => $this->isGranted('ROLE_ADMIN')
+            'last_username' => $lastUsername,
+            'error' => $error,
+            'competition' => $randomCompetition,
+            'loggedUser' => $user,
+            'createCompetitionButton' => $isAuthed,
+            'createGameButton' => $isAuthed && $this->isGranted('ROLE_ADMIN')
         ]);
     }
 }

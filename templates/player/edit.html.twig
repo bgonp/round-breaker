@@ -2,6 +2,6 @@
 
 {% block content %}
     <div>
-        Player: {{ player.username }}
+        Player: {{ player ? player.username : 'Not logged in' }}
     </div>
 {% endblock %}

@@ -15,6 +15,7 @@ class RegistrationController extends AbstractController
      */
     public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
+        // TODO: No debe tener vista aquí
         // 1) build the form
         $user = new Player();
         $form = $this->createForm(UserType::class, $user);
@@ -35,7 +36,7 @@ class RegistrationController extends AbstractController
             // ... do any other work - like sending them an email, etc
             // maybe set a "flash" success message for the user
 
-            return $this->redirectToRoute('app_login');
+            return $this->redirectToRoute('main');
         }
 
         return $this->render(

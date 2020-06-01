@@ -12,25 +12,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Route("/team")
+ */
 class TeamController extends AbstractController
 {
     /**
-     * @Route("/competition/{id}/randomize", name="competition_randomize")
-     */
-    public function randomizeTeams(
-        Competition $competition,
-        PlayerRepository $playerRepository,
-        TeamService $teamService
-    ): Response {
-        $user = $this->getUser()->getUsername();
-        $user = $playerRepository->findOneBy(['username' => $user]);
-        $teamService->randomize($user, $competition);
-
-        return $this->redirectToRoute('competition_show', ['id' => $competition->getId()]);
-    }
-
-    /**
-     * @Route("/team/{id}/edit", name="team_edit", methods={"GET", "POST"})
+     * @Route("/{id}/edit", name="team_edit", methods={"GET", "POST"})
      */
     public function editGame(
         Request $request,
@@ -42,7 +30,7 @@ class TeamController extends AbstractController
                 $team->setName($request->request->get('name'));
                 $teamRepository->save($team);
             }
-            return $this->render('main/editTeam.html.twig', [
+            return $this->render('team/edit.html.twig', [
                 'controller_name' => 'TeamController',
                 'team' => $team
             ]);
@@ -52,12 +40,12 @@ class TeamController extends AbstractController
     }
 
     /**
-     * @Route("/team/{id}", name="team_show", methods={"GET"})
+     * @Route("/{id}", name="team_show", methods={"GET"})
      */
     public function viewGame(
         Team $team
     ) {
-        return $this->render('main/viewTeam.html.twig', [
+        return $this->render('team/show.html.twig', [
             'controller_name' => 'TeamController',
             'team' => $team
         ]);

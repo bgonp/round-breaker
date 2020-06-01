@@ -21,7 +21,7 @@ class GameController extends AbstractController
 {
 
     /**
-     * @Route("/new", name="game_new")
+     * @Route("/new", name="game_new", methods={"GET", "POST"})
      */
     public function createGame(
         Request $request,
@@ -35,7 +35,7 @@ class GameController extends AbstractController
             }
             return $this->redirectToRoute('main');
         } else {
-            return $this->render('main/createGame.html.twig', [
+            return $this->render('game/new.html.twig', [
                 'controller_name' => 'CompetitionController',
                 'games' => $gameRepository->findAll()
             ]);
@@ -72,7 +72,7 @@ class GameController extends AbstractController
                 $game->setDescription($request->request->get('description'));
                 $gameRepository->save($game);
             }
-            return $this->render('main/editGame.html.twig', [
+            return $this->render('game/edit.html.twig', [
                 'controller_name' => 'GameController',
                 'game' => $game
             ]);
@@ -90,7 +90,7 @@ class GameController extends AbstractController
         PlayerRepository $playerRepository
     ) {
         $user = $this->getUser();
-        return $this->render('main/viewCompetitionList.html.twig', [
+        return $this->render('game/show.html.twig', [
             'controller_name' => 'GameController',
             'game' => $game,
             'competitions' => $competitionRepository->findBy(['game' => $game]),

@@ -6,6 +6,7 @@ use App\Entity\Competition;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 
 /**
  * @method Competition|null find($id, $lockMode = null, $lockVersion = null)
@@ -26,6 +27,20 @@ class CompetitionRepository extends ServiceEntityRepository
 		if ($flush) {
 			$this->getEntityManager()->flush();
 		}
+    }
+
+    public function findRandomFinished(): ?Competition
+    {
+        $result = $this->createQueryBuilder('c')
+            ->orderBy('c.heldAt', 'DESC')
+            ->where('c.heldAt >= :since')
+            ->setParameter('since', strtotime('-6 month'))
+            ->setMaxResults(10)
+            ->getQuery()->getResult();
+        if (count($result) === 0) {
+            return null;
+        }
+        return $result[rand(0, count($result)-1)];
     }
 
     // /**
