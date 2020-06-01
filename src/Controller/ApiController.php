@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\Competition;
 use App\Repository\PlayerRepository;
 use App\Repository\RegistrationRepository;
 use App\Repository\RoundRepository;
@@ -64,15 +65,16 @@ class ApiController
     /** @Route("/confirm_registration", name="api_confirm", methods={"PUT"}) */
     public function confirmRegistration(
         Request $request,
-        PlayerRepository $playerRepository,
+        Competition $competition,
         RegistrationRepository $registrationRepository
-    ): void {
-        $competitionId = $request->get('competition_id');
-        $twitchId = $request->get('twitch_id');
-        $registration = $registrationRepository->findByCompetitionAndTwitchId($competitionId, $twitchId);
-        if (!$registration->getIsConfirmed()) {
+    ): JsonResponse {
+        $twitchName = $request->get('twitch_name');
+        $registration = $registrationRepository->findByCompetitionAndTwitchName($competition, $twitchName);
+        if ($registration && !$registration->getIsConfirmed()) {
             $registration->setIsConfirmed(true);
             $registrationRepository->save($registration);
+            return new JsonResponse([], JsonResponse::HTTP_OK);
         }
+        return new JsonResponse([], JsonResponse::HTTP_BAD_REQUEST);
     }
 }

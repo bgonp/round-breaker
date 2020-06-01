@@ -11,23 +11,41 @@ const conf = {
 
 const client = new tmi.client(conf);
 
-const container = document.getElementById('messages');
+const form = document.getElementById('twitch_params');
 
-document.getElementById('twitch_params').addEventListener('submit', e => {
+const competition_id = form.querySelector('input[name="competition_id"]').value;
+
+const endpoint = '/api/confirm_registration';
+
+const confirm = (twitch_name) => {
+    const xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = () => {
+        if (this.readyState == 4 && this.status == 200) {
+            document.getElementById('registration-' + this.responseText).classList.add('confirmed')
+        }
+        xhr.open("PUT", endpoint, true);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhr.send(`competition_id=${competition_id}&twitch_name=${twitch_name}`);
+    }
+}
+
+form.addEventListener('submit', e => {
     const data = new FormData(e.target);
     client.opts.channels = [data.get('channel')];
     client.opts.identity.username = data.get('username');
     client.opts.identity.password = data.get('password');
     client.connect().then(() => {
-        container.innerHTML += '<li>Listening <strong>'+data.get('channel')+'</strong></li>';
-        document.getElementById('twitch_params').remove();
+        // TODO
+        alert('open');
     }).catch((err) => {
-        container.innerHTML += '<li><strong>ERROR</strong> - Refresh the page and try again</li>';
-        document.getElementById('twitch_params').remove();
+        // TODO
+        alert('error')
     });
     e.preventDefault();
 });
 
 client.on('chat', (channel, userstate, message, self) => {
-    container.innerHTML += '<li><strong>'+userstate['display-name']+' ('+userstate['username']+')'+'</strong>: '+message+'</li>';
+    if (!self && message === '!confirmo') {
+        confirm(userstate['username'])
+    }
 });

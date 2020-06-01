@@ -14,17 +14,17 @@ abstract class Base
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $createdAt;
+    protected $createdAt;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $updatedAt;
+    protected $updatedAt;
 
     public function __construct()
     {
@@ -42,25 +42,12 @@ abstract class Base
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
     public function getUpdatedAt(): ?\DateTimeInterface
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
+    /** @ORM\PreUpdate */
     protected function updateNow(): self
     {
         $this->setUpdatedAt = new \DateTime();

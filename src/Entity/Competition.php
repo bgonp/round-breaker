@@ -94,6 +94,21 @@ class Competition extends Base
      */
     private $maxPlayers;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $twitchBotName;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $twitchBotToken;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $twitchChannel;
+
     public function __construct()
     {
         parent::__construct();
@@ -342,6 +357,42 @@ class Competition extends Base
             }
         }
 
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTwitchBotName()
+    {
+        return $this->twitchBotName;
+    }
+
+    public function setTwitchBotName($twitchBotName): self
+    {
+        $this->twitchBotName = $twitchBotName;
+        return $this;
+    }
+
+    public function getTwitchBotToken()
+    {
+        return $this->twitchBotToken;
+    }
+
+    public function setTwitchBotToken($twitchBotToken): self
+    {
+        $this->twitchBotToken = $twitchBotToken;
+        return $this;
+    }
+
+    public function getTwitchChannel()
+    {
+        return $this->twitchChannel;
+    }
+
+    public function setTwitchChannel($twitchChannel): self
+    {
+        $this->twitchChannel = $twitchChannel;
         return $this;
     }
 }

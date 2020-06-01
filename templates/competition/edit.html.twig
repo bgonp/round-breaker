@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block content %}
-<form method="post" style="min-height: 867px;">
+<form method="post">
     <div class="col-md-12 col-lg-8 col-xl-5 border-0 p-3" style="margin: auto;">
         <h1 class="text-center">Editar Competición</h1>
         <div class="card form-group border border-secondary p-3">
@@ -18,6 +18,7 @@
 </form>
 <div id="chat">
     <form id="twitch_params">
+        <input type="hidden" name="competition_id" value="{{ competition.id }}">
         <input type="text" placeholder="Username" name="username" /><br>
         <input type="text" placeholder="Password" name="password" /><br>
         <input type="text" placeholder="Channel" name="channel" /><br>
