@@ -37,6 +37,13 @@ abstract class Base
         return $this->id;
     }
 
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
     public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->createdAt;
@@ -61,6 +68,7 @@ abstract class Base
         return $this;
     }
 
+    /** @ORM\PreUpdate() */
     protected function updateNow(): self
     {
         $this->setUpdatedAt = new \DateTime();

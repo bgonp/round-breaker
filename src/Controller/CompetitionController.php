@@ -14,6 +14,7 @@ use App\Entity\Competition;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Route("/competition")
@@ -181,28 +182,24 @@ class CompetitionController extends AbstractController
     public function editCompetition(
         Request $request,
         Competition $competition,
-        PlayerRepository $playerRepository,
         CompetitionRepository $competitionRepository,
-        TeamRepository $teamRepository,
-        CompetitionService $competitionService
+        TeamRepository $teamRepository
     ) {
-        $player = $this->getUser()->getUsername();
-        $player = $playerRepository->findOneBy(['username' => $player]);
-        if ($player === $competition->getStreamer()) {
-            if ($request->request->has('name')) {
-                $competition->setName($request->request->get('name'));
-                $competition->setDescription($request->request->get('description'));
-                $competitionRepository->save($competition);
-            }
-            $teams = $teamRepository->findCompleteTeamsFromCompetition($competition);
-            return $this->render('competition/edit.html.twig', [
-                'controller_name' => 'CompetitionController',
-                'competition' => $competition,
-                'teams' => $teams
-            ]);
-        } else {
-            return $this->redirectToRoute('competition_list');
+        $player = $competition->getStreamer();
+        if (!$this->isGranted('ROLE_ADMIN') && (!$this->getUser() || $this->getUser()->getUsername() !== $player->getUsername())) {
+            return $this->redirectToRoute('competition_show', ['id' => $competition->getId()]);
         }
+        if ($request->request->has('name')) {
+            $competition->setName($request->request->get('name'));
+            $competition->setDescription($request->request->get('description'));
+            $competitionRepository->save($competition);
+        }
+        $teams = $teamRepository->findCompleteTeamsFromCompetition($competition);
+        return $this->render('competition/edit.html.twig', [
+            'controller_name' => 'CompetitionController',
+            'competition' => $competition,
+            'teams' => $teams
+        ]);
     }
 
     /**
