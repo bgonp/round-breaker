@@ -177,9 +177,9 @@ class CompetitionController extends AbstractController
             'competition' => $competition,
             'player'=> $player,
             'clicable' => false,
-            'createStreamerButtons' => $playerIsStreamer,
+            'createStreamerButtons' => $competition->getIsOpen() && ($playerIsStreamer || $this->isGranted('ROLE_ADMIN')),
             'createRegistrationButtons' => $competition->getIsOpen() && $player,
-            'createRandomizeButton' => $competition->getIsIndividual() && $playerIsStreamer
+            'createRandomizeButton' => $competition->getIsIndividual() && ($playerIsStreamer || $this->isGranted('ROLE_ADMIN'))
         ]);
     }
 
