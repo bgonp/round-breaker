@@ -49,7 +49,7 @@ class Team extends Base
     private $rounds;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Player", inversedBy="teams", fetch="EAGER")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Player", inversedBy="teams")
      */
     private $players;
 

@@ -29,14 +29,17 @@ class CompetitionRepository extends ServiceEntityRepository
 		}
     }
 
-    public function findRandomFinished(): ?Competition
+    /** @return Competition|null Random competition from the last 3 months or null if it doesn't exists */
+    public function findRandomFinishedWithRoundsAndTeams(): ?Competition
     {
         $result = $this->createQueryBuilder('c')
+            ->select('c', 'r', 't')
+            ->join('c.rounds', 'r')
+            ->join('r.teams', 't')
             ->orderBy('c.heldAt', 'DESC')
             ->where('c.heldAt >= :since')
-            ->setParameter('since', strtotime('-6 month'))
-            ->setMaxResults(10)
-            ->getQuery()->getResult();
+            ->setParameter('since', strtotime('-3 month'))
+            ->getQuery()->execute();
         if (count($result) === 0) {
             return null;
         }
