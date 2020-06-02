@@ -33,7 +33,7 @@
             <label for="game" class="sport-text-form">Juego</label>
             <select name="game" class="form-control col-12 mb-3 sport-text-form form-control-lg">
                 {% for game in games %}
-                <option value="{{ game.name }}">{{ game.name }}</option>
+                <option value="{{ game.id }}">{{ game.name }}</option>
                 {% endfor %}
             </select>
             <button class="btn btn-lg btn-dark break-text-large" type="submit">

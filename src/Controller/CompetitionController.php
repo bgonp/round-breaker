@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Game;
 use App\Entity\Player;
 use App\Repository\CompetitionRepository;
 use App\Repository\GameRepository;
@@ -40,15 +41,20 @@ class CompetitionController extends AbstractController
      */
     public function createCompetition(
         Request $request,
-        CompetitionRepository $competitionRepository,
         GameRepository $gameRepository,
-        PlayerRepository $playerRepository,
         CompetitionService $competitionService
     ) {
-        if ($request->request->has('name')) {
-            $competition = $competitionRepository->findOneBy(['name' => $request->request->get('name')]);
-            $user = $this->getUser()->getUsername();
-            $user = $playerRepository->findOneBy(['username' => $user]);
+        if (!($player = $this->getUser())) {
+            $this->redirectToRoute('main');
+        }
+        if ($request->isMethod('POST')) {
+            if (!($name = $request->request->get('name'))) {
+                $this->addFlash('error', 'Error creating competition');
+                $this->redirectToRoute('competition_new');
+            }
+            $description = $request->request->get('description');
+            $isIndividual = $request->request->get('individual') ? true : false;
+            $game = $gameRepository->find($request->request->get('game'));
             $playersPerTeam = $request->request->get('playersPerTeam');
             $teamNum = $request->request->get('teamNum');
             if ($playersPerTeam > 5 || $playersPerTeam < 1) {
@@ -57,24 +63,20 @@ class CompetitionController extends AbstractController
             if (!is_int(log($teamNum, 2)) || $teamNum < 2 || $teamNum > 16) {
                 $teamNum = 2;
             }
-            if (!$competition) {
-                $competitionService->createCompetition(
-                    $request->request->get('name'),
-                    $request->request->get('description'),
-                    $user,
-                    ($playersPerTeam * $teamNum),
-                    $request->request->get('individual') ? true : false,
-                    $request->request->get('playersPerTeam'),
-                    $gameRepository->findOneBy(['name' => $request->request->get('game')])
-                );
-            }
+            $competitionService->createCompetition(
+                $name,
+                $description,
+                $player,
+                ($playersPerTeam * $teamNum),
+                $isIndividual,
+                $playersPerTeam,
+                $game
+            );
             return $this->redirectToRoute('main');
-        } else {
-            return $this->render('competition/new.html.twig', [
-                'games' => $gameRepository->findAll(),
-                'competitions' => $competitionRepository->findAll()
-            ]);
         }
+        return $this->render('competition/new.html.twig', [
+            'games' => $gameRepository->findAll()
+        ]);
     }
 
     /** @Route("/toggle_confirmation", name="toggle_confirmation", methods={"POST"}) */
