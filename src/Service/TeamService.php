@@ -32,7 +32,9 @@ class TeamService
     }
 
 	public function randomize(Player $player, Competition $competition) {
-		if ($competition->getIsOpen() && $competition->getStreamer()->equals($player) && !$competition->getIsIndividual()) {
+	    $anyTeamPassed = $this->competitionRepository->findOneBy(['bracket_level' => 2, 'competition' => $competition]);
+		if ($competition->getStreamer()->equals($player) && !$competition->getIsIndividual() && $anyTeamPassed == null) {
+		    $this->teamRepository->removeTeams($competition->getTeams());
 			$registrations = $competition->getRegistrations()->toArray();
 			$teamNum = pow(2, intval(log(floor(count($registrations)/$competition->getPlayersPerTeam()), 2)));
 			$maxTeamNum = $competition->getMaxPlayers()/$competition->getPlayersPerTeam();
@@ -55,7 +57,6 @@ class TeamService
 				$this->teamRepository->save($team, false);
 			}
 			$this->competitionService->createRounds($competition, $teams);
-			$competition->setIsOpen(false);
 			$this->competitionRepository->save($competition);
 		}
 	}

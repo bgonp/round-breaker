@@ -87,7 +87,7 @@ class CompetitionController extends AbstractController
         $competition = $competitionRepository->findOneBy(['id' => $request->request->get('competitionId')]);
         $player = $playerRepository->findOneBy(['id' => $request->request->get('playerId')]);
         $registration = $registrationRepository->findOneBy(['competition' => $competition, 'player' => $player]);
-        if ($registration && !$registration->getIsConfirmed()) {
+        if ($registration && $request->request->get('confirm')=="1") {
             $registration->setIsConfirmed(true);
         } else {
             $registration->setIsConfirmed(false);
@@ -121,9 +121,9 @@ class CompetitionController extends AbstractController
             'competition' => $competition,
             'player'=> $player,
             'clickable' => false,
-            'createStreamerButtons' => $competition->getIsOpen() && ($playerIsStreamer || $this->isGranted('ROLE_ADMIN')),
+            'createStreamerButtons' => $playerIsStreamer || $this->isGranted('ROLE_ADMIN'),
             'createRegistrationButtons' => $competition->getIsOpen() && $player,
-            'createRandomizeButton' => $competition->getIsIndividual() && ($playerIsStreamer || $this->isGranted('ROLE_ADMIN'))
+            'createRandomizeButton' => !$competition->getIsIndividual() && ($playerIsStreamer || $this->isGranted('ROLE_ADMIN'))
         ]);
     }
 
@@ -142,6 +142,8 @@ class CompetitionController extends AbstractController
         if ($request->request->has('name')) {
             $competition->setName($request->request->get('name'));
             $competition->setDescription($request->request->get('description'));
+            $competition->setIsOpen($request->request->get('open') ? true : false);
+            $competition->setIsFinished($request->request->get('finished') ? true : false);
             $competitionRepository->save($competition);
         }
         return $this->render('competition/edit.html.twig', [
@@ -174,11 +176,16 @@ class CompetitionController extends AbstractController
      * @Route("/randomize", name="competition_randomize", methods={"POST"})
      */
     public function randomizeTeams(
-        Competition $competition,
-        TeamService $teamService
+        Request $request,
+        TeamService $teamService,
+        CompetitionRepository $competitionRepository
     ): Response {
-        $teamService->randomize($this->getUser(), $competition);
+        if ($request->request->has('id')) {
+            $competition = $competitionRepository->findOneBy(['id' => $request->request->get('id')]);
+            $teamService->randomize($this->getUser(), $competition);
+            return $this->redirectToRoute('competition_show', ['id' => $competition->getId()]);
+        }
 
-        return $this->redirectToRoute('competition_show', ['id' => $competition->getId()]);
+        return $this->redirectToRoute('competition_list');
     }
 }

@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Competition;
 use App\Entity\Team;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
@@ -37,6 +38,17 @@ class TeamRepository extends ServiceEntityRepository
 		if ($flush) {
 			$this->getEntityManager()->flush();
 		}
+    }
+
+    public function removeTeams(Collection $teams, bool $flush = true)
+    {
+        $teamNum = count($teams);
+        for($i = 0; $i < $teamNum; $i++) {
+            $this->getEntityManager()->remove($teams[$i]);
+        }
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
     }
 
     // /**

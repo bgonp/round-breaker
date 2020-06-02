@@ -7,6 +7,7 @@ use App\Repository\CompetitionRepository;
 use App\Repository\GameRepository;
 use App\Repository\PlayerRepository;
 use App\Service\GameService;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -62,10 +63,14 @@ class GameController extends AbstractController
         if ($request->request->has('id')) {
             $game = $gameRepository->findOneBy(['id' => $request->request->get('id')]);
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($game);
-            $entityManager->flush();
+            try {
+                $entityManager->remove($game);
+                $entityManager->flush();
+            } catch (Exception $e) {
+                return $this->redirectToRoute('game_show', array("id" => $request->request->get('id')));
+            }
         }
-        return $this->redirectToRoute('main');
+        return $this->redirectToRoute('game_list');
     }
 
     /**

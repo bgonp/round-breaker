@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="row">
-    {% if competition.isopen == false %}
+    {% if competition.isopen == false and competition.rounds|length > 0%}
     {% include 'brackets/bracket_8.html.twig' %}
     {% endif %}
 </div>
@@ -31,7 +31,7 @@
         <ul class="list-group list-group-flush sport-text mb-3">
             {% for registration in competition.registrations %}
             <li class="list-group-item w-50">{{ registration.player.username }}
-                {% if competition.isopen and (competition.streamer == app.user or is_granted('ROLE_ADMIN')) %}
+                {% if competition.isfinished != true and (competition.streamer == app.user or is_granted('ROLE_ADMIN')) %}
                 <span class="float-right">
                     <!--<a href="#"><i class="fas fa-skull"></i></a>-->
                     <form action="{{ path('registration_delete') }}" method="POST" class="d-inline">
@@ -41,11 +41,13 @@
                     </form>
                     <form action="{{ path('toggle_confirmation') }}" method="POST" class="d-inline">
                         <input type="hidden" name="competitionId" value="{{ competition.id }}">
-                        <input type="hidden" name="playerId" value="{{ player.id }}">
-                    {% if registration.isConfirmed == true %}
-                        <button class="btn far fa-check-square controlls" type="submit" value="Unconfirm"></button>
+                        <input type="hidden" name="playerId" value="{{ registration.player.id }}">
+                    {% if registration.isConfirmed %}
+                        <input type="hidden" name="confirm" value="0">
+                        <input class="btn btn-dark sport-text mb-3" type="submit" value="Unconfirm">
                     {% else %}
-                        <button class="btn far fa-square controlls" type="submit" value="Confirm"></button>
+                        <input type="hidden" name="confirm" value="1">
+                        <input class="btn btn-dark sport-text mb-3" type="submit" value="Confirm">
                     {% endif %}
                  </form>
                 </span>
@@ -61,22 +63,27 @@
         <input class="btn btn-dark sport-text mb-3" type="submit" value="Eliminar">
     </form>
 {% endif %}
-{% if createRegistrationButtons %}
-    {% if player in competition.players %}
-        <form action="{{ path('registration_delete') }}" method="POST" class="d-inline">
-            <input type="hidden" name="competitionId" value="{{ competition.id }}">
-            <input type="hidden" name="playerId" value="{{ player.id }}">
-            <input class="btn btn-dark sport-text mb-3" type="submit" value="Abandonar">
-        </form>
-    {% else %}
-        <form action="{{ path('registration_new') }}" method="POST" class="d-inline">
-            <input type="hidden" name="id" value="{{ competition.id }}">
-            <input class="btn btn-dark sport-text mb-3" type="submit" value="Unirse">
-        </form>
-    {% endif %}
+{% if competition.isfinished == false %}
 {% if createRandomizeButton  %}
-<a class="btn btn-dark mb-3" href="{{ path('competition_randomize', {id: competition.id}) }}">Randomize Competition</a>
+    <form action="{{ path('competition_randomize') }}" method="POST" class="d-inline">
+        <input type="hidden" name="id" value="{{ competition.id }}">
+        <input class="btn btn-dark sport-text mb-3" type="submit" value="Randomize Teams">
+    </form>
 {% endif %}
+    {% if createRegistrationButtons %}
+        {% if player in competition.players %}
+            <form action="{{ path('registration_delete') }}" method="POST" class="d-inline">
+                <input type="hidden" name="competitionId" value="{{ competition.id }}">
+                <input type="hidden" name="playerId" value="{{ player.id }}">
+                <input class="btn btn-dark sport-text mb-3" type="submit" value="Abandonar">
+            </form>
+        {% else %}
+            <form action="{{ path('registration_new') }}" method="POST" class="d-inline">
+                <input type="hidden" name="id" value="{{ competition.id }}">
+                <input class="btn btn-dark sport-text mb-3" type="submit" value="Unirse">
+            </form>
+        {% endif %}
+    {% endif %}
 {% endif %}
 </div>
 </div>

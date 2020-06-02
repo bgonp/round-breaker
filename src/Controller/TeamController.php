@@ -20,7 +20,7 @@ class TeamController extends AbstractController
     /**
      * @Route("/{id}/edit", name="team_edit", methods={"GET", "POST"})
      */
-    public function editGame(
+    public function editTeam(
         Request $request,
         Team $team,
         TeamRepository $teamRepository
@@ -42,7 +42,7 @@ class TeamController extends AbstractController
     /**
      * @Route("/{id}", name="team_show", methods={"GET"})
      */
-    public function viewGame(
+    public function viewTeam(
         Team $team
     ) {
         return $this->render('team/show.html.twig', [

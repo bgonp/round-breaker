@@ -34,7 +34,7 @@ class RegistrationController extends AbstractController
             if ($competition && $competition->getIsOpen()) {
                 $competitionService->addPlayerToCompetition($competition, $player);
             }
-            return $this->redirectToRoute('competition_list');
+            return $this->redirectToRoute('competition_show', array('id' => $request->request->get('id')));
         } else {
             return $this->redirectToRoute('main');
         }
