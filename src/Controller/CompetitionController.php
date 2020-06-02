@@ -2,10 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Player;
 use App\Repository\CompetitionRepository;
 use App\Repository\GameRepository;
 use App\Repository\PlayerRepository;
 use App\Repository\RegistrationRepository;
+use App\Repository\RoundRepository;
 use App\Repository\TeamRepository;
 use App\Service\CompetitionService;
 use App\Service\TeamService;
@@ -165,22 +167,19 @@ class CompetitionController extends AbstractController
      */
     public function viewCompetition(
         Request $request,
-        Competition $competition,
-        PlayerRepository $playerRepository,
-        CompetitionRepository $competitionRepository,
-        TeamRepository $teamRepository,
-        CompetitionService $competitionService
+        CompetitionRepository $competitionRepository
     ) {
-        $teams = $teamRepository->findCompleteTeamsFromCompetition($competition);
-        $player = $this->getUser() ? $playerRepository->findOneBy(["username" => $this->getUser()->getUsername()]) : null;
+        $competition = $competitionRepository->findCompleteById($request->get('id'));
+        /** @var Player $player */
+        $player = $this->getUser();
+        $playerIsStreamer = $player ? $competition->getStreamer()->equals($player) : false;
         return $this->render('competition/show.html.twig', [
             'controller_name' => 'CompetitionController',
             'competition' => $competition,
-            'teams' => $teams,
             'player'=> $player,
-            'createStreamerButtons' => $competition->getStreamer() === $player,
+            'createStreamerButtons' => $playerIsStreamer,
             'createRegistrationButtons' => $competition->getIsOpen() && $player,
-            'createRandomizeButton' => $competition->getIsIndividual() && $competition->getStreamer() === $player
+            'createRandomizeButton' => $competition->getIsIndividual() && $playerIsStreamer
         ]);
     }
 

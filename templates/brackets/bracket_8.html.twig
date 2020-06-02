@@ -1,14 +1,11 @@
 <link rel="stylesheet" href="{{ asset('css/brackets.css') }}" />
 <!--<i class="fas fa-angle-double-right"></i>-->
 <div class="single bracket ml-3 mt-3">
-	{% if competition and app.user %}
 	<div>
 		<h1>{{ competition.name }}</h1>
 	</div>
-	{% endif %}
 	<div class="bracket-container scrollable-x">
 		<table class="bracket refresh" align="center">
-			{% if app.user %}
 			<thead>
 				<tr>
 					<th colspan="2">Cuartos</th>
@@ -17,7 +14,6 @@
 				</tr>
 				<tr class="spacer"></tr>
 			</thead>
-			{% endif %}
 			<tbody>
 				<tr>
 					<td class="match l1 o1 t1"><span

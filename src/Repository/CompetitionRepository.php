@@ -54,6 +54,20 @@ class CompetitionRepository extends ServiceEntityRepository
         return $result[rand(0, count($result)-1)];
     }
 
+    public function findCompleteById(int $competitionId): ?Competition
+    {
+        return $this->createQueryBuilder('c')
+            ->select('c', 'r', 't', 'p')
+            ->join('c.rounds', 'r')
+            ->join('r.teams', 't')
+            ->join('t.players', 'p')
+            ->where('c.id = :id')
+            ->setParameter('id', $competitionId)
+            ->orderBy('r.bracketLevel', 'ASC')
+            ->addOrderBy('r.bracketOrder', 'ASC')
+            ->getQuery()->getOneOrNullResult();
+    }
+
     // /**
     //  * @return Competition[] Returns an array of Competition objects
     //  */

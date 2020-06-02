@@ -9,7 +9,7 @@
 {% if competition.isopen == false %}
 <div>
     <h1>Equipos</h1>
-    {% for team in teams %}
+    {% for team in competition.teams %}
 
     <div class="w-50 my-2 bg-light border">
         <div class="card-body">
@@ -27,7 +27,7 @@
     {% endfor %}
 {% endif %}
     <div>
-        <h1>{% if competition.isopen%}{{competition.name}} - {% endif %}Jugadores Registrados</h1>
+        <h1>{% if competition.isopen %}{{competition.name}} - {% endif %}Jugadores Registrados</h1>
         <ul class="list-group list-group-flush sport-text">
             {% for registration in competition.registrations %}
             <li class="list-group-item w-50">{{ registration.player.username }}

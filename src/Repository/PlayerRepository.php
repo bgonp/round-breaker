@@ -32,8 +32,7 @@ class PlayerRepository extends ServiceEntityRepository implements PasswordUpgrad
         }
 
         $user->setPassword($newEncodedPassword);
-        $this->_em->persist($user);
-        $this->_em->flush();
+        $this->save($user);
     }
 
     public function save(Player $player, bool $flush = true)
@@ -42,6 +41,11 @@ class PlayerRepository extends ServiceEntityRepository implements PasswordUpgrad
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function flush()
+    {
+        $this->getEntityManager()->flush();
     }
 
     // /**
