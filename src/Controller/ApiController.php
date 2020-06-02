@@ -41,7 +41,7 @@ class ApiController extends AbstractController
                         $affectedRound = $competitionService->undoAdvanceTeam($team, $round);
                     } else {
                         $affectedRound = $competitionService->advanceTeam($team, $round);
-                        $response['origin']['winner'] = $teamId;
+                        $response['origin']['winner'] = $team->getId();
                     }
                 } catch (\InvalidArgumentException $exception) {
                     return new JsonResponse([], JsonResponse::HTTP_BAD_REQUEST);
