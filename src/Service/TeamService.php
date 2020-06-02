@@ -6,11 +6,11 @@ namespace App\Service;
 
 use App\Entity\Competition;
 use App\Entity\Player;
-use App\Entity\Round;
 use App\Entity\Team;
 use App\Repository\CompetitionRepository;
 use App\Repository\PlayerRepository;
 use App\Repository\TeamRepository;
+use App\Repository\RoundRepository;
 use App\Service\CompetitionService;
 
 class TeamService
@@ -23,16 +23,19 @@ class TeamService
 
     private CompetitionService $competitionService;
 
-	public function __construct(CompetitionRepository $competitionRepository, TeamRepository $teamRepository, PlayerRepository $playerRepository, CompetitionService $competitionService)
+    private RoundRepository $roundRepository;
+
+	public function __construct(RoundRepository $roundRepository, CompetitionRepository $competitionRepository, TeamRepository $teamRepository, PlayerRepository $playerRepository, CompetitionService $competitionService)
 	{
 		$this->competitionRepository = $competitionRepository;
 		$this->teamRepository = $teamRepository;
         $this->playerRepository = $playerRepository;
+        $this->roundRepository = $roundRepository;
         $this->competitionService = $competitionService;
     }
 
 	public function randomize(Player $player, Competition $competition) {
-	    $anyTeamPassed = $this->competitionRepository->findOneBy(['bracket_level' => 2, 'competition' => $competition]);
+	    $anyTeamPassed = $this->roundRepository->findOneBy(['bracketLevel' => 2, 'competition' => $competition]);
 		if ($competition->getStreamer()->equals($player) && !$competition->getIsIndividual() && $anyTeamPassed == null) {
 		    $this->teamRepository->removeTeams($competition->getTeams());
 			$registrations = $competition->getRegistrations()->toArray();
