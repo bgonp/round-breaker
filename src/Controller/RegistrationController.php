@@ -57,7 +57,7 @@ class RegistrationController extends AbstractController
                 'competition' => $competition
             ]);
             if (
-                $competition && $competition->getIsOpen() && $registration &&
+                $competition && $registration &&
                 ($this->isGranted("ROLE_ADMIN") ||
                 $player->getUsername() == $this->getUser()->getUsername())
             ) {
