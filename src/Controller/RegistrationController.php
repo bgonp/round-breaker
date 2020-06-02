@@ -1,75 +1,73 @@
 <?php
+
+declare(strict_types=1);
+
 namespace App\Controller;
 
-use App\Form\UserType;
-use App\Entity\Player;
+use App\Repository\CompetitionRepository;
 use App\Repository\PlayerRepository;
+use App\Repository\RegistrationRepository;
+use App\Service\CompetitionService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
+/**
+ * @Route("/registration")
+ */
 class RegistrationController extends AbstractController
 {
     /**
-     * @Route("/register", name="user_registration", methods={"POST"})
+     * @Route("/new", name="registration_new", methods={"POST"})
      */
-    public function register(
+    public function makeRegistration(
         Request $request,
-        UserPasswordEncoderInterface $passwordEncoder,
-        PlayerRepository $playerRepository
-    ): Response {
-        if (
-            !($username = $request->get('username')) ||
-            !($plainPassword = $request->get('password')) ||
-            !($email = $request->get('email')) ||
-            !($twitchname = $request->get('twitchname'))
-        ) {
-            throw new \InvalidArgumentException("Some required fields missing");
-        }
-
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            throw new \InvalidArgumentException("Wrong E-mail");
-        }
-
-        $player = new Player();
-        $player
-            ->setUsername($username)
-            ->setTwitchName($twitchname)
-            ->setEmail($email)
-            ->setPassword($passwordEncoder->encodePassword($player, $plainPassword));
-
-        $playerRepository->save($player);
-        return $this->redirectToRoute('main');
-
-        /*// TODO: No debe tener vista aquí
-        // 1) build the form
-        $user = new Player();
-        $form = $this->createForm(UserType::class, $user);
-
-        // 2) handle the submit (will only happen on POST)
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            // 3) Encode the password (you could also do this via Doctrine listener)
-            $password = $passwordEncoder->encodePassword($user, $user->getPlainPassword());
-            $user->setPassword($password);
-
-            // 4) save the User!
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($user);
-            $entityManager->flush();
-
-            // ... do any other work - like sending them an email, etc
-            // maybe set a "flash" success message for the user
-
+        PlayerRepository $playerRepository,
+        CompetitionRepository $competitionRepository,
+        CompetitionService $competitionService
+    ) {
+        if ($request->request->has('id')) {
+            $user = $this->getUser();
+            $isAuthed = $user !== null;
+            $player = $isAuthed ? $playerRepository->findOneBy(["username" => $user->getUsername()]) : null;
+            $competition = $competitionRepository->findOneBy(['id' => $request->request->get('id')]);
+            if ($competition && $competition->getIsOpen()) {
+                $competitionService->addPlayerToCompetition($competition, $player);
+            }
+            return $this->redirectToRoute('competition_list');
+        } else {
             return $this->redirectToRoute('main');
         }
+    }
 
-        return $this->render(
-            'registration/register.html.twig',
-            array('form' => $form->createView())
-        );*/
+    /**
+     * @Route("/delete", name="registration_delete", methods={"POST"})
+     */
+    public function deleteRegistration(
+        Request $request,
+        PlayerRepository $playerRepository,
+        CompetitionRepository $competitionRepository,
+        RegistrationRepository $registrationRepository
+    ) {
+        if ($request->request->has('competitionId')) {
+            $player = $playerRepository->findOneBy(['id' => $request->request->get('playerId')]);
+            $competition = $competitionRepository->findOneBy(['id' => $request->request->get('competitionId')]);
+            $registration = $registrationRepository->findOneBy([
+                'player' => $player,
+                'competition' => $competition
+            ]);
+            if (
+                $competition && $competition->getIsOpen() && $registration &&
+                ($this->isGranted("ROLE_ADMIN") ||
+                $player->getUsername() == $this->getUser()->getUsername())
+            ) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->remove($registration);
+                $entityManager->flush();
+            }
+            return $this->redirectToRoute('competition_list');
+        } else {
+            return $this->redirectToRoute('main');
+        }
     }
 }

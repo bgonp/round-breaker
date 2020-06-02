@@ -7,7 +7,6 @@ use App\Repository\CompetitionRepository;
 use App\Repository\GameRepository;
 use App\Repository\PlayerRepository;
 use App\Repository\RegistrationRepository;
-use App\Repository\RoundRepository;
 use App\Repository\TeamRepository;
 use App\Service\CompetitionService;
 use App\Service\TeamService;
@@ -16,7 +15,6 @@ use App\Entity\Competition;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Route("/competition")
@@ -76,59 +74,6 @@ class CompetitionController extends AbstractController
                 'games' => $gameRepository->findAll(),
                 'competitions' => $competitionRepository->findAll()
             ]);
-        }
-    }
-
-    /**
-     * @Route("/registration_new", name="registration_new", methods={"POST"})
-     */
-    public function makeRegistration(
-        Request $request,
-        PlayerRepository $playerRepository,
-        CompetitionRepository $competitionRepository,
-        CompetitionService $competitionService
-    ) {
-        if ($request->request->has('id')) {
-            $user = $this->getUser();
-            $isAuthed = $user !== null;
-            $player = $isAuthed ? $playerRepository->findOneBy(["username" => $user->getUsername()]) : null;
-            $competition = $competitionRepository->findOneBy(['id' => $request->request->get('id')]);
-            //$team = $em->getRepository(Team::class)->findOneBy(['name' => $request->request->get('team')]);
-            if (/*$team &&*/ $competition && $competition->getIsOpen()) {
-                $competitionService->addPlayerToCompetition($competition, $player);
-            }
-            return $this->redirectToRoute('competition_list');
-        } else {
-            return $this->redirectToRoute('main');
-        }
-    }
-
-    /**
-     * @Route("/registration_delete", name="registration_delete", methods={"POST"})
-     */
-    public function deleteRegistration(
-        Request $request,
-        PlayerRepository $playerRepository,
-        CompetitionRepository $competitionRepository,
-        RegistrationRepository $registrationRepository
-    ) {
-        if ($request->request->has('competitionId')) {
-            $player = $playerRepository->findOneBy(['id' => $request->request->get('playerId')]);
-            $competition = $competitionRepository->findOneBy(['id' => $request->request->get('competitionId')]);
-            $registration = $registrationRepository->findOneBy(
-                ['player' => $player,
-                    'competition' => $competition]);
-            //$team = $em->getRepository(Team::class)->findOneBy(['name' => $request->request->get('team')]);
-            if (/*$team &&*/ $competition && $competition->getIsOpen() &&
-                ($this->isGranted("ROLE_ADMIN")
-                    || $player->getUsername() == $this->getUser()->getUsername()) && $registration) {
-                $entityManager = $this->getDoctrine()->getManager();
-                $entityManager->remove($registration);
-                $entityManager->flush();
-            }
-            return $this->redirectToRoute('competition_list');
-        } else {
-            return $this->redirectToRoute('main');
         }
     }
 
