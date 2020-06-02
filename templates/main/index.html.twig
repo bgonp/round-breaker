@@ -15,11 +15,16 @@
                 <div class="card-body">
                     <h6 class="card-title">Inicia sesión como jugador para gestionar tus inscripciones</h6>
                     <form method="post" action="{{ path('app_login') }}">
-                        {% if error %}
-                            <div class="alert alert-danger">
-                                {{ error.messageKey|trans(error.messageData, 'security') }}
-                            </div>
-                        {% endif %}
+                        {% for error in app.session.flashBag.get('error') %}
+                        <div class="alert alert-danger">
+                            {{ error }}
+                        </div>
+                        {% endfor %}
+                        {% for message in app.session.flashBag.get('success') %}
+                        <div class="alert alert-success">
+                            {{ message }}
+                        </div>
+                        {% endfor %}
 
                         {% if loggedUser %}
                             <div class="m-3">
@@ -27,7 +32,7 @@
                             </div>
                         {% else %}
                             <label for="inputUsername" class="d-none">Username</label>
-                            <input type="text" value="{{ last_username }}" name="username" id="inputUsername"
+                            <input type="text" value="{{ last_username is defined ? last_username : '' }}" name="username" id="inputUsername"
                                    class="mb-3 col-8 form-control" placeholder="Usuario" required autofocus>
                             <div class="form-group">
                                 <label for="inputPassword" class="d-none">Password</label>
