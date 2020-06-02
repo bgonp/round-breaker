@@ -58,9 +58,9 @@ class CompetitionRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('c')
             ->select('c', 'r', 't', 'p')
-            ->join('c.rounds', 'r')
-            ->join('r.teams', 't')
-            ->join('t.players', 'p')
+            ->leftJoin('c.rounds', 'r')
+            ->leftJoin('r.teams', 't')
+            ->leftJoin('t.players', 'p')
             ->where('c.id = :id')
             ->setParameter('id', $competitionId)
             ->orderBy('r.bracketLevel', 'ASC')

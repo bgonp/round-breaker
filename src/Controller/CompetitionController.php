@@ -73,7 +73,6 @@ class CompetitionController extends AbstractController
             return $this->redirectToRoute('main');
         } else {
             return $this->render('competition/new.html.twig', [
-                'controller_name' => 'CompetitionController',
                 'games' => $gameRepository->findAll(),
                 'competitions' => $competitionRepository->findAll()
             ]);
@@ -174,12 +173,12 @@ class CompetitionController extends AbstractController
         $player = $this->getUser();
         $playerIsStreamer = $player ? $competition->getStreamer()->equals($player) : false;
         return $this->render('competition/show.html.twig', [
-            'competition' => $competitiony,
+            'competition' => $competition,
             'player'=> $player,
             'clickable' => false,
-            'createStreamerButtons' => $playerIsStreamer,
+            'createStreamerButtons' => $competition->getIsOpen() && ($playerIsStreamer || $this->isGranted('ROLE_ADMIN')),
             'createRegistrationButtons' => $competition->getIsOpen() && $player,
-            'createRandomizeButton' => $competition->getIsIndividual() && $playerIsStreamer
+            'createRandomizeButton' => $competition->getIsIndividual() && ($playerIsStreamer || $this->isGranted('ROLE_ADMIN'))
         ]);
     }
 
