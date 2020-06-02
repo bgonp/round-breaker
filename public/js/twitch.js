@@ -19,7 +19,7 @@ const endpoint = '/api/confirm_registration';
 
 const openMessage = "/me ¡Confirmaciones abiertas! Escribe !confirmo en el chat para confirmar tu inscripción (tienes que haberte inscrito previamente a través de la web)";
 
-const confirm = (twitch_name) => {
+const confirmRegistration = (twitch_name) => {
     const xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
@@ -47,6 +47,6 @@ client.on('connected', () => {
 
 client.on('chat', (channel, userstate, message, self) => {
     if (!self && message === '!confirmo') {
-        confirm(userstate['username'])
+        confirmRegistration(userstate['username'])
     }
 });

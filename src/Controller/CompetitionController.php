@@ -174,9 +174,9 @@ class CompetitionController extends AbstractController
         $player = $this->getUser();
         $playerIsStreamer = $player ? $competition->getStreamer()->equals($player) : false;
         return $this->render('competition/show.html.twig', [
-            'competition' => $competition,
+            'competition' => $competitiony,
             'player'=> $player,
-            'clicable' => false,
+            'clickable' => false,
             'createStreamerButtons' => $playerIsStreamer,
             'createRegistrationButtons' => $competition->getIsOpen() && $player,
             'createRandomizeButton' => $competition->getIsIndividual() && $playerIsStreamer
@@ -202,7 +202,7 @@ class CompetitionController extends AbstractController
         }
         return $this->render('competition/edit.html.twig', [
             'competition' => $competition,
-            'clicable' => true,
+            'clickable' => true,
         ]);
     }
 

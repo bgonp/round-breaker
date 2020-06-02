@@ -26,7 +26,7 @@ class MainController extends AbstractController
             'last_username' => $lastUsername,
             'error' => $error,
             'competition' => $randomCompetition,
-            'clicable' => false,
+            'clickable' => false,
             'loggedUser' => $user,
             'createCompetitionButton' => $isAuthed,
             'createGameButton' => $isAuthed && $this->isGranted('ROLE_ADMIN')
