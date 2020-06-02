@@ -44,10 +44,10 @@
                         <input type="hidden" name="playerId" value="{{ registration.player.id }}">
                     {% if registration.isConfirmed %}
                         <input type="hidden" name="confirm" value="0">
-                        <input class="btn btn-dark sport-text mb-3" type="submit" value="Unconfirm">
+                        <button class="btn far fa-check-square controlls" type="submit" value="Unconfirm"></button>
                     {% else %}
                         <input type="hidden" name="confirm" value="1">
-                        <input class="btn btn-dark sport-text mb-3" type="submit" value="Confirm">
+                        <button class="btn far fa-square controlls" type="submit" value="Confirm"></button>
                     {% endif %}
                  </form>
                 </span>
