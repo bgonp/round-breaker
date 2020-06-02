@@ -37,7 +37,7 @@ class ApiController extends AbstractController
             $response['origin']['teams'][] = $team->getId();
             if ($team->getId() == $teamId) {
                 try {
-                    if ($round->getWinner()->equals($team)) {
+                    if ($round->getWinner() && $round->getWinner()->equals($team)) {
                         $affectedRound = $competitionService->undoAdvanceTeam($team, $round);
                     } else {
                         $affectedRound = $competitionService->advanceTeam($team, $round);

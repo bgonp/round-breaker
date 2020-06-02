@@ -46,6 +46,7 @@ class CompetitionRepository extends ServiceEntityRepository
             ->join('r.teams', 't')
             ->orderBy('c.heldAt', 'DESC')
             ->where('c.heldAt >= :since')
+            ->andWhere('c.isFinished = 1')
             ->setParameter('since', strtotime('-3 month'))
             ->getQuery()->execute();
         if (count($result) === 0) {

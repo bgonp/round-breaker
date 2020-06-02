@@ -116,7 +116,7 @@ class CompetitionService
     /** @return Round|null Affected round */
     public function advanceTeam(Team $team, Round $round): ?Round {
         $nextRound = $this->getNextRound($round);
-        if ($nextRound->getWinner()) {
+        if ($nextRound && $nextRound->getWinner()) {
             throw new \InvalidArgumentException('Can\'t modify round if next round already finished');
         }
         if ($round->getWinner() && !$round->getWinner()->equals($round)) {
@@ -136,7 +136,7 @@ class CompetitionService
     public function undoAdvanceTeam(Team $team, Round $round, bool $flush = true): ?Round
     {
         $nextRound = $this->getNextRound($round);
-        if ($nextRound->getWinner()) {
+        if ($nextRound && $nextRound->getWinner()) {
             throw new \InvalidArgumentException('Can\'t modify round if next round already finished');
         }
         $round->setWinner(null);
@@ -154,8 +154,8 @@ class CompetitionService
         $bracketOrder = $round->getBracketOrder();
         // TODO: Eliminar esta llamada a base de datos, sisterRound no hace falta
         $sisterRound = $this->roundRepository->findOneBy([
-            'bracket_level' => $round->getBracketLevel(),
-            'bracket_order' => $bracketOrder + 1
+            'bracketLevel' => $round->getBracketLevel(),
+            'bracketOrder' => $bracketOrder + 1
         ]);
         $nextRound = null;
         if ($bracketOrder > 1 || $sisterRound) {
@@ -164,8 +164,8 @@ class CompetitionService
             }
             $bracketOrder = $bracketOrder/2;
             $nextRound = $this->roundRepository->findOneBy([
-                'bracket_level' => $round->getBracketLevel() + 1,
-                'bracket_order' => $bracketOrder
+                'bracketLevel' => $round->getBracketLevel() + 1,
+                'bracketOrder' => $bracketOrder
             ]);
         }
         return $nextRound;
