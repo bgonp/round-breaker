@@ -3,7 +3,7 @@
 {% block content %}
 <div style="min-height: 867px;" class="pt-3">
 
-    <h1>{% if game %}{{ game.name }} - {% endif %}Torneos</h1>
+    <h1>{% if game is defined %}{{ game.name }} - {% endif %}Torneos</h1>
     <ul class="list-group list-group-flush sport-text mb-3">
         {% for competition in competitions %}
         <li class="list-group-item d-flex justify-content-between w-75">
@@ -26,7 +26,7 @@
         </li>
         {% endfor %}
     </ul>
-    {% if game and canEditGame %}
+    {% if game is defined and canEditGame %}
         <a class="btn btn-dark sport-text" href="{{ path('game_edit', {id: game.id}) }}">Editar Juego</a>
         <form action="{{ path('game_delete') }}" method="POST" class="d-inline">
             <input type="hidden" name="id" value="{{ game.id }}">

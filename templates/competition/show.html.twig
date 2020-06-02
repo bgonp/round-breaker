@@ -34,7 +34,7 @@
                 {% if competition.isopen and (competition.streamer == app.user or is_granted('ROLE_ADMIN')) %}
                 <span class="float-right">
                     <a href="#"><i class="fas fa-skull"></i></a>
-                    <form action="/competition/toggle_confirmation" method="POST" class="d-inline">
+                    <form action="{{ path('toggle_confirmation') }}" method="POST" class="d-inline">
                         <input type="hidden" name="competitionId" value="{{ competition.id }}">
                         <input type="hidden" name="playerId" value="{{ player.id }}">
                     {% if registration.isConfirmed == true %}
@@ -48,10 +48,10 @@
             </li>
             {% endfor %}
         </ul>
-
+        
     {% if createStreamerButtons %}
 <a class="btn btn-dark mb-3 sport-text" href="{{ path('competition_edit', {id: competition.id}) }}">Editar Torneo</a>
-        <form action="/competition/delete" method="POST" class="d-inline">
+        <form action="{{ path('competition_delete') }}" method="POST" class="d-inline">
         <input type="hidden" name="competition_id" value="{{ competition.id }}">
         <input class="btn btn-dark sport-text mb-3" type="submit" value="Eliminar">
     </form>
