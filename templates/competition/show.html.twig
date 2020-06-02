@@ -66,7 +66,7 @@
 {% if competition.isfinished == false %}
 {% if createRandomizeButton  %}
     <form action="{{ path('competition_randomize') }}" method="POST" class="d-inline">
-        <input type="hidden" name="id" value="{{ competition.id }}">
+        <input type="hidden" name="competition_id" value="{{ competition.id }}">
         <input class="btn btn-dark sport-text mb-3" type="submit" value="Randomize Teams">
     </form>
 {% endif %}

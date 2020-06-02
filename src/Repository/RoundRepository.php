@@ -2,7 +2,6 @@
 
 namespace App\Repository;
 
-use App\Entity\Competition;
 use App\Entity\Round;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Collection;
@@ -32,6 +31,17 @@ class RoundRepository extends ServiceEntityRepository
     public function flush()
     {
         $this->getEntityManager()->flush();
+    }
+
+    public function removeRounds(Collection $rounds, bool $flush = true)
+    {
+        $roundsNum = count($rounds);
+        for($i = 0; $i < $roundsNum; $i++) {
+            $this->getEntityManager()->remove($rounds[$i]);
+        }
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
     }
 
     // /**

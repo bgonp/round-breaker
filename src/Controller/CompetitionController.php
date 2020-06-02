@@ -157,16 +157,9 @@ class CompetitionController extends AbstractController
     /**
      * @Route("/{id}/bracket", name="competition_bracket", methods={"GET"})
      */
-    public function viewCompetitionBracket(
-        Request $request,
-        Competition $competition,
-        PlayerRepository $playerRepository,
-        CompetitionRepository $competitionRepository,
-        TeamRepository $teamRepository
-    ) {
+    public function viewCompetitionBracket(Competition $competition) {
         $isStreamer = $competition->getStreamer()->equals($this->getUser());
         if ($isStreamer) {
-            $competition = $competitionRepository->findCompleteById($request->get('id'));
             return $this->render('competition/bracket.html.twig', [
                 'competition' => $competition
             ]);
@@ -177,17 +170,8 @@ class CompetitionController extends AbstractController
     /**
      * @Route("/randomize", name="competition_randomize", methods={"POST"})
      */
-    public function randomizeTeams(
-        Request $request,
-        TeamService $teamService,
-        CompetitionRepository $competitionRepository
-    ): Response {
-        if ($request->request->has('id')) {
-            $competition = $competitionRepository->findOneBy(['id' => $request->request->get('id')]);
-            $teamService->randomize($this->getUser(), $competition);
-            return $this->redirectToRoute('competition_show', ['id' => $competition->getId()]);
-        }
-
-        return $this->redirectToRoute('competition_list');
+    public function randomizeTeams(Competition $competition, TeamService $teamService): Response {
+        $teamService->randomize($this->getUser(), $competition);
+        return $this->redirectToRoute('competition_show', ['id' => $competition->getId()]);
     }
 }
