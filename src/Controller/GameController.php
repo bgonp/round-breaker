@@ -100,11 +100,13 @@ class GameController extends AbstractController
         PlayerRepository $playerRepository
     ) {
         $user = $this->getUser();
+        $isAuthed = $user !== null; 
         return $this->render('game/show.html.twig', [
             'controller_name' => 'GameController',
             'game' => $game,
             'competitions' => $competitionRepository->findBy(['game' => $game]),
-            'player'=> $this->getUser() ? $playerRepository->findOneBy(["username" => $this->getUser()->getUsername()]) : null
+            'player'=> $this->getUser() ? $playerRepository->findOneBy(["username" => $this->getUser()->getUsername()]) : null,
+            'canEditGame' => $isAuthed && $this->isGranted('ROLE_ADMIN'),
         ]);
     }
 }
