@@ -73,7 +73,6 @@ class CompetitionController extends AbstractController
             return $this->redirectToRoute('main');
         } else {
             return $this->render('competition/new.html.twig', [
-                'controller_name' => 'CompetitionController',
                 'games' => $gameRepository->findAll(),
                 'competitions' => $competitionRepository->findAll()
             ]);
