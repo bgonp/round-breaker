@@ -80,3 +80,7 @@ h1 {
 .break-text-large:hover {
     color:#4cd365 !important;
 }
+
+.controlls:hover {
+    color:#4cd365;
+}

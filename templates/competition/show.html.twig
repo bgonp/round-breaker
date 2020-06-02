@@ -33,14 +33,19 @@
             <li class="list-group-item w-50">{{ registration.player.username }}
                 {% if competition.isopen and (competition.streamer == app.user or is_granted('ROLE_ADMIN')) %}
                 <span class="float-right">
-                    <a href="#"><i class="fas fa-skull"></i></a>
+                    <!--<a href="#"><i class="fas fa-skull"></i></a>-->
+                    <form action="{{ path('registration_delete') }}" method="POST" class="d-inline">
+                        <input type="hidden" name="competitionId" value="{{ competition.id }}">
+                        <input type="hidden" name="playerId" value="{{ player.id }}">
+                        <button class="btn fas fa-skull controlls" type="submit" value="ban"></button>
+                    </form>
                     <form action="{{ path('toggle_confirmation') }}" method="POST" class="d-inline">
                         <input type="hidden" name="competitionId" value="{{ competition.id }}">
                         <input type="hidden" name="playerId" value="{{ player.id }}">
                     {% if registration.isConfirmed == true %}
-                        <input class="btn btn-dark sport-text mb-3" type="submit" value="Unconfirm">
+                        <button class="btn far fa-check-square controlls" type="submit" value="Unconfirm"></button>
                     {% else %}
-                        <input class="btn btn-dark sport-text mb-3" type="submit" value="Confirm">
+                        <button class="btn far fa-square controlls" type="submit" value="Confirm"></button>
                     {% endif %}
                  </form>
                 </span>
