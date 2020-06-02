@@ -1,0 +1,2 @@
+<a class="round-{{ round.id }} team-{{ team.id }} {{ round.winner ? round.winner == team ? 'win' : 'lose' : '' }}"
+   {% if clicable %}href="#" {% endif %}title="{{ team.name }}">{{ team.name }}</a>

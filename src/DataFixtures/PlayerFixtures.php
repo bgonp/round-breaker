@@ -3,17 +3,21 @@
 namespace App\DataFixtures;
 
 use App\Entity\Player;
+use App\Repository\PlayerRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class PlayerFixtures extends Fixture
 {
-    private $encoder;
+    private UserPasswordEncoderInterface $encoder;
 
-    public function __construct(UserPasswordEncoderInterface $encoder)
+    private PlayerRepository $playerRepository;
+
+    public function __construct(UserPasswordEncoderInterface $encoder, PlayerRepository $playerRepository)
     {
         $this->encoder = $encoder;
+        $this->playerRepository = $playerRepository;
     }
     public function load(ObjectManager $manager)
     {
@@ -22,14 +26,14 @@ class PlayerFixtures extends Fixture
             $player->setUsername('Tester'.substr('0'.$i,-2));
             $player->setEmail($i.'t@gmail.com');
             $player->setPassword($this->encoder->encodePassword($player, 'randompassword'));
-            $manager->persist($player);
+            if ($i === 1) $player->setTwitchName('vayaustecondioh');
+            $this->playerRepository->save($player, false);
         }
         $admin = new Player();
         $admin->setUsername('admin');
         $admin->setEmail('admin@admin.com');
         $admin->setRoles(['ROLE_ADMIN']);
         $admin->setPassword($this->encoder->encodePassword($admin, 'randompassword'));
-        $manager->persist($admin);
-        $manager->flush();
+        $this->playerRepository->save($admin);
     }
 }

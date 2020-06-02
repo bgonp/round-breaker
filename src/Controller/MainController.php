@@ -21,11 +21,12 @@ class MainController extends AbstractController
         $isAuthed = $user !== null;
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
-        $randomCompetition = $competitionRepository->findRandomFinished();
+        $randomCompetition = $competitionRepository->findRandomFinishedWithRoundsAndTeams();
         return $this->render('main/index.html.twig', [
             'last_username' => $lastUsername,
             'error' => $error,
             'competition' => $randomCompetition,
+            'clicable' => false,
             'loggedUser' => $user,
             'createCompetitionButton' => $isAuthed,
             'createGameButton' => $isAuthed && $this->isGranted('ROLE_ADMIN')

@@ -1,6 +1,6 @@
 const conf = {
     options: {
-        debug: false
+        debug: true // TODO
     },
     connection: {
         reconnect: true,
@@ -11,23 +11,42 @@ const conf = {
 
 const client = new tmi.client(conf);
 
-const container = document.getElementById('messages');
+const form = document.getElementById('twitch_params');
 
-document.getElementById('twitch_params').addEventListener('submit', e => {
+const competition_id = form.querySelector('input[name="competition_id"]').value;
+
+const endpoint = '/api/confirm_registration';
+
+const openMessage = "/me ¡Confirmaciones abiertas! Escribe !confirmo en el chat para confirmar tu inscripción (tienes que haberte inscrito previamente a través de la web)";
+
+const confirm = (twitch_name) => {
+    const xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            const registration = document.getElementById('registration-' + this.responseText);
+            if (registration) registration.classList.add('confirmed');
+        }
+    }
+    xhr.open("PUT", endpoint, true);
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhr.send(`competition_id=${competition_id}&twitch_name=${twitch_name}`);
+}
+
+form.addEventListener('submit', e => {
     const data = new FormData(e.target);
     client.opts.channels = [data.get('channel')];
-    client.opts.identity.username = data.get('username');
-    client.opts.identity.password = data.get('password');
-    client.connect().then(() => {
-        container.innerHTML += '<li>Listening <strong>'+data.get('channel')+'</strong></li>';
-        document.getElementById('twitch_params').remove();
-    }).catch((err) => {
-        container.innerHTML += '<li><strong>ERROR</strong> - Refresh the page and try again</li>';
-        document.getElementById('twitch_params').remove();
-    });
+    client.opts.identity.username = data.get('username'); // roundbreaker
+    client.opts.identity.password = data.get('password'); // oauth:l81j2b4wknlagdmbwcgezw77v5c44b
+    client.connect();
     e.preventDefault();
 });
 
+client.on('connected', () => {
+    client.say(client.opts.channels[0], openMessage);
+});
+
 client.on('chat', (channel, userstate, message, self) => {
-    container.innerHTML += '<li><strong>'+userstate['display-name']+' ('+userstate['username']+')'+'</strong>: '+message+'</li>';
+    if (!self && message === '!confirmo') {
+        confirm(userstate['username'])
+    }
 });

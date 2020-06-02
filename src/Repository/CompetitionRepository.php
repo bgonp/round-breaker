@@ -29,18 +29,43 @@ class CompetitionRepository extends ServiceEntityRepository
 		}
     }
 
-    public function findRandomFinished(): ?Competition
+    public function remove(Competition $competition, bool $flush = true)
+    {
+        $this->getEntityManager()->remove($competition);
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    /** @return Competition|null Random competition from the last 3 months or null if it doesn't exists */
+    public function findRandomFinishedWithRoundsAndTeams(): ?Competition
     {
         $result = $this->createQueryBuilder('c')
+            ->select('c', 'r', 't')
+            ->join('c.rounds', 'r')
+            ->join('r.teams', 't')
             ->orderBy('c.heldAt', 'DESC')
             ->where('c.heldAt >= :since')
-            ->setParameter('since', strtotime('-6 month'))
-            ->setMaxResults(10)
-            ->getQuery()->getResult();
+            ->setParameter('since', strtotime('-3 month'))
+            ->getQuery()->execute();
         if (count($result) === 0) {
             return null;
         }
         return $result[rand(0, count($result)-1)];
+    }
+
+    public function findCompleteById(int $competitionId): ?Competition
+    {
+        return $this->createQueryBuilder('c')
+            ->select('c', 'r', 't', 'p')
+            ->join('c.rounds', 'r')
+            ->join('r.teams', 't')
+            ->join('t.players', 'p')
+            ->where('c.id = :id')
+            ->setParameter('id', $competitionId)
+            ->orderBy('r.bracketLevel', 'ASC')
+            ->addOrderBy('r.bracketOrder', 'ASC')
+            ->getQuery()->getOneOrNullResult();
     }
 
     // /**

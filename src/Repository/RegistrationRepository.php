@@ -28,14 +28,20 @@ class RegistrationRepository extends ServiceEntityRepository
         }
     }
 
-    public function findByCompetitionAndTwitchId(Competition $competition, int $twitchId): Registration
+    public function findByCompetitionAndTwitchName(Competition $competition, string $twitchName): ?Registration
     {
-        return $this->createQueryBuilder('r')
-            ->from('App:Registration', 'r')
+        $registrations = $this->createQueryBuilder('r')
             ->join('r.player', 'p')
             ->where('r.competition = :competition')
-            ->andWhere('p.twitch_id = :twitchid')
-            ->getQuery()->execute();
+            ->andWhere('p.twitch_name = :twitchname')
+            ->setParameter('competition', $competition)
+            ->setParameter('twitchname', $twitchName)
+            ->getQuery()->getResult();
+
+        if (count($registrations) === 0) {
+            return null;
+        }
+        return $registrations[0];
     }
 
     // /**

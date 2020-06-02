@@ -13,7 +13,7 @@ class Team extends Base
 {
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Competition", inversedBy="teams")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $competition;
 
@@ -49,7 +49,7 @@ class Team extends Base
     private $rounds;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Player", inversedBy="teams", fetch="EAGER")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Player", inversedBy="teams")
      */
     private $players;
 

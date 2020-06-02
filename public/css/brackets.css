@@ -5,56 +5,56 @@
 	max-width: 100%;
 }
 .single.fullscreen {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background: #E5E5E5;
-    margin: 0;
-    overflow: auto;
-    z-index: 100;
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background: #E5E5E5;
+	margin: 0;
+	overflow: auto;
+	z-index: 100;
 }
 .single.bracket.fullscreen .scrollable-x {
 	overflow: visible;
 }
 .single.fullscreen .bracket-container,
 .single.fullscreen .bets {
-    position: absolute;
-    top: 80px;
-    left: 0;
-    width: 100%;
-    border-collapse: collapse;
+	position: absolute;
+	top: 80px;
+	left: 0;
+	width: 100%;
+	border-collapse: collapse;
 }
 .single.bracket .bracket {
 	margin-bottom: 20px;
 }
 .single.bracket .bracket tr.spacer {
-    height: 20px;
+	height: 20px;
 }
 .single.bracket .bracket th {
-    font-family: deporte, 'Coda', sans-serif;
-    letter-spacing: 2px;
+	font-family: deporte, 'Coda', sans-serif;
+	letter-spacing: 2px;
 	font-weight: 400;
 	font-size: 1.3rem;
 	text-align: center;
-    background: #000;
-    color: #FFF;
-    border: 2px solid #E5E5E5;
-    box-shadow: 0 1px 10px rgba(0,0,0,0.05);
+	background: #000;
+	color: #FFF;
+	border: 2px solid #E5E5E5;
+	box-shadow: 0 1px 10px rgba(0,0,0,0.05);
 }
 .single.bracket .bracket td {
-    border: 3px solid transparent;
-    padding: 0;
+	border: 3px solid transparent;
+	padding: 0;
 }
 .single.bracket .bracket .line.br {
-    border-right-color:#000;
+	border-right-color:#000;
 }
 .single.bracket .bracket .line.win {
-    border-right-color: black;
+	border-right-color: black;
 }
 .single.bracket .bracket .line.bb {
-    border-bottom-color:#000;
+	border-bottom-color:#000;
 }
 .single.bracket .bracket .line {
 	padding: 0 15px;
@@ -67,12 +67,12 @@
 .single.bracket .bracket .match a:focus {
 	position: relative;
 	display: block;
-    color: #f7921e;
+	color: #f7921e;
 	font-size: 1.25rem;
 	padding: 12px;
 	width: 270px;
-    font-family: deporte;
-    letter-spacing: 2px;
+	font-family: deporte;
+	letter-spacing: 2px;
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	text-decoration: none;
@@ -91,7 +91,7 @@
 	bottom: 0;
 	width: 300px;
 	background: #000;
-    z-index: -1;
+	z-index: -1;
 }
 .single.bracket .bracket .match span::before,
 .single.bracket .bracket .match a::before {
@@ -99,25 +99,24 @@
 	right: 21px;
 }
 
-.single.bracket .bracket .match span {
-	padding-right: 30px;
+.single.bracket .bracket .match span,
+.single.bracket .bracket .match a {
+	padding-right: 30px!important;
 	background:#000;
 	background-image: url('../img/skew.png');
 	background-position: bottom right;
 	background-repeat: no-repeat;
 }
 
-.single.bracket .bracket .match.t1 .win-2,
-.single.bracket .bracket .match.t2 .win-1 {
+.single.bracket .bracket .match .lose {
 	background:#6c757d;
-	color: #E5E5E5;
+	color: #E5E5E5!important;
 	background-image: url('../img/skew.png');
 	background-position: bottom right;
 	background-repeat: no-repeat;
 }
 
-.single.bracket .bracket .match.t1 .win-2::after,
-.single.bracket .bracket .match.t2 .win-1::after {
+.single.bracket .bracket .match .lose::after {
 	background:#6c757d
 }
 .bracket-zoom,
