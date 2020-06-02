@@ -3,7 +3,7 @@
 {% block content %}
 <div style="min-height: 867px;" class="pt-3">
 
-    <h1>Torneos</h1>
+    <h1>{% if game is defined %}{{ game.name }} - {% endif %}Torneos</h1>
     <ul class="list-group list-group-flush sport-text mb-3">
         {% for competition in competitions %}
         <li class="list-group-item d-flex justify-content-between w-75">
@@ -11,24 +11,28 @@
                 <a href="{{ path('competition_show', {id: competition.id}) }}">{{ competition.name }}&nbsp;</a>
                 - {{ competition.game.name }}{% if competition.description %} - {{ competition.description }}{% endif %}
             </span>
-            {% if competition.isopen and (player not in competition.players) %}
+            {% if competition.isopen and (player not in competition.players) and app.user %}
                 <form action="{{ path('registration_new') }}" method="POST" class="d-inline">
                     <input type="hidden" name="id" value="{{ competition.id }}">
                     <input class="btn btn-dark sport-text" type="submit" value="Unirse">
                 </form>
-            {% else %}
-                {# TODO #} HACER BOTON DE ELIMINAR REGISTRO
+            {% elseif competition.isopen and app.user %}
+            <form action="{{ path('registration_delete') }}" method="POST" class="d-inline">
+                <input type="hidden" name="competitionId" value="{{ competition.id }}">
+                <input type="hidden" name="playerId" value="{{ player.id }}">
+                <input class="btn btn-dark sport-text" type="submit" value="Abandonar">
+            </form>
             {% endif %}
         </li>
         {% endfor %}
     </ul>
-    {#{% if canEditGame %} TODO: No sé lo que hace esto aquí :S
+    {% if game is defined and canEditGame %}
         <a class="btn btn-dark sport-text" href="{{ path('game_edit', {id: game.id}) }}">Editar Juego</a>
         <form action="{{ path('game_delete') }}" method="POST" class="d-inline">
             <input type="hidden" name="id" value="{{ game.id }}">
             <input class="btn btn-dark sport-text" type="submit" value="Eliminar Juego">
         </form>
-    {% endif %}#}
+    {% endif %}
 
 </div>
 {% endblock %}
