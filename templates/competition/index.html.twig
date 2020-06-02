@@ -11,13 +11,17 @@
                 <a href="{{ path('competition_show', {id: competition.id}) }}">{{ competition.name }}&nbsp;</a>
                 - {{ competition.game.name }}{% if competition.description %} - {{ competition.description }}{% endif %}
             </span>
-            {% if competition.isopen and (player not in competition.players) %}
+            {% if competition.isopen and (player not in competition.players) and app.user %}
                 <form action="{{ path('registration_new') }}" method="POST" class="d-inline">
                     <input type="hidden" name="id" value="{{ competition.id }}">
                     <input class="btn btn-dark sport-text" type="submit" value="Unirse">
                 </form>
-            {% else %}
-                {# TODO #} HACER BOTON DE ELIMINAR REGISTRO
+            {% elseif competition.isopen and app.user %}
+            <form action="{{ path('registration_delete') }}" method="POST" class="d-inline">
+                <input type="hidden" name="competitionId" value="{{ competition.id }}">
+                <input type="hidden" name="playerId" value="{{ player.id }}">
+                <input class="btn btn-dark sport-text" type="submit" value="Abandonar">
+            </form>
             {% endif %}
         </li>
         {% endfor %}
