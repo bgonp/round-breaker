@@ -3,7 +3,6 @@
 namespace App\Repository;
 
 use App\Entity\Competition;
-use App\Entity\Player;
 use App\Entity\Team;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Collection;
@@ -50,16 +49,6 @@ class TeamRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
-    }
-
-    public function hasTeamInCompetition(Competition $competition, Player $player) {
-        for ($i = 0; $i < count($competition->getTeams()); $i++) {
-            $team = $competition->getTeams()->toArray()[$i];
-            if (in_array($player, $team->getPlayers()->toArray())) {
-                return $team;
-            }
-        }
-        return false;
     }
 
     // /**

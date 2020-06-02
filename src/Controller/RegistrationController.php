@@ -7,9 +7,7 @@ namespace App\Controller;
 use App\Repository\CompetitionRepository;
 use App\Repository\PlayerRepository;
 use App\Repository\RegistrationRepository;
-use App\Repository\TeamRepository;
 use App\Service\CompetitionService;
-use App\Service\TeamService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -49,8 +47,7 @@ class RegistrationController extends AbstractController
         Request $request,
         PlayerRepository $playerRepository,
         CompetitionRepository $competitionRepository,
-        RegistrationRepository $registrationRepository,
-        TeamRepository $teamRepository
+        RegistrationRepository $registrationRepository
     ) {
         if ($request->request->has('competitionId')) {
             $player = $playerRepository->findOneBy(['id' => $request->request->get('playerId')]);
@@ -64,13 +61,8 @@ class RegistrationController extends AbstractController
                 ($this->isGranted("ROLE_ADMIN") ||
                 $player->getUsername() == $this->getUser()->getUsername())
             ) {
-                $team = $teamRepository->hasTeamInCompetition($competition, $registration->getPlayer());
-                if ($team) {
-                    $team->removePlayer($player);
-                }
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->remove($registration);
-                $entityManager->persist($team);
                 $entityManager->flush();
             }
             return $this->redirectToRoute('competition_list');
