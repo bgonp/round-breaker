@@ -6,6 +6,7 @@ namespace App\Service;
 
 use App\Entity\Competition;
 use App\Entity\Player;
+use App\Entity\Registration;
 use App\Entity\Team;
 use App\Repository\CompetitionRepository;
 use App\Repository\PlayerRepository;
@@ -38,7 +39,10 @@ class TeamService
 		if ($competition->getStreamer()->equals($player) && !$competition->getIsIndividual() && $competition->getIsOpen()) {
 		    $this->teamRepository->removeTeams($competition->getTeams());
 		    $this->roundRepository->removeRounds($competition->getRounds());
-			$registrations = $competition->getRegistrations()->toArray();
+			$registrations = array_filter($competition->getRegistrations()->toArray(), function($var) {
+
+                return $var->getIsConfirmed();
+            });
 			$teamNum = pow(2, intval(log(floor(count($registrations)/$competition->getPlayersPerTeam()), 2)));
 			$maxTeamNum = $competition->getMaxPlayers()/$competition->getPlayersPerTeam();
 			if ($teamNum == 1) $teamNum = 0;
@@ -50,11 +54,11 @@ class TeamService
 				$team->setCompetition($competition);
 				for($j = 0; $j < $competition->getPlayersPerTeam(); $j++) {
 					$randomRegistration = array_rand($registrations);
-					$team->addPlayer($registrations[$randomRegistration]->getPlayer());
-					if ($j==0) {
+                    $team->addPlayer($registrations[$randomRegistration]->getPlayer());
+                    if ($j==0) {
                         $team->setCaptain($registrations[$randomRegistration]->getPlayer());
                     }
-					unset($registrations[$randomRegistration]);
+                    unset($registrations[$randomRegistration]);
 				}
 				$teams[] = $team;
 				$this->teamRepository->save($team, false);
@@ -64,4 +68,27 @@ class TeamService
 			$this->competitionRepository->save($competition);
 		}
 	}
+
+	public function fillTeams(Player $player, Competition $competition) {
+        $anyTeamPassed = $this->roundRepository->findOneBy(['bracketLevel' => 2, 'competition' => $competition]);
+        if ($competition->getStreamer()->equals($player) && !$competition->getIsIndividual() && $anyTeamPassed == null) {
+            $registrations = array_filter($competition->getRegistrations()->toArray(), function($var) use ($competition) {
+
+                return $var->getIsConfirmed() && $this->teamRepository->hasTeamInCompetition($competition, $var->getPlayer()) == false;
+            });
+            for ($i = 0; $i < count($competition->getTeams()); $i++) {
+                $team = $competition->getTeams()->toArray()[$i];
+                if (count($team->getPlayers()) < $competition->getPlayersPerTeam()) {
+                    $randomRegistration = array_rand($registrations);
+                    $team->addPlayer($registrations[$randomRegistration]->getPlayer());
+                    if ($team->getCaptain() == null) {
+                        $team->setCaptain($registrations[$randomRegistration]->getPlayer());
+                    }
+                    unset($registrations[$randomRegistration]);
+                    $this->teamRepository->save($team, false);
+                }
+            }
+        }
+        $this->competitionRepository->save($competition);
+    }
 }
