@@ -170,9 +170,11 @@ class CompetitionController extends AbstractController
     /**
      * @Route("/randomize", name="competition_randomize", methods={"POST"})
      */
-    public function randomizeTeams(Competition $competition, TeamService $teamService): Response {
+    public function randomizeTeams(Competition $competition, TeamService $teamService): Response
+    {
         $teamService->randomize($this->getUser(), $competition);
         return $this->redirectToRoute('competition_show', ['id' => $competition->getId()]);
+    }
 
     /**
      * @Route("/fill", name="competition_fill", methods={"POST"})
