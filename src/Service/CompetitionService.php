@@ -99,7 +99,7 @@ class CompetitionService
 
     public function createRounds(Competition $competition, Array $teams) {
         $numRounds = count($teams)/2;
-        $numLevels = log($numRounds, 2);
+        $numLevels = log(count($teams), 2);
         for ($i = 0; $i < $numLevels; $i++) {
             for ($j = 0; $j < $numRounds; $j++) {
                 $round = $this->createRound($competition, 3, $i+1, $j+1);

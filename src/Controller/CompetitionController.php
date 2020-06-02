@@ -188,4 +188,21 @@ class CompetitionController extends AbstractController
 
         return $this->redirectToRoute('competition_list');
     }
+
+    /**
+     * @Route("/fill", name="competition_fill", methods={"POST"})
+     */
+    public function fillTeams(
+        Request $request,
+        TeamService $teamService,
+        CompetitionRepository $competitionRepository
+    ): Response {
+        if ($request->request->has('id')) {
+            $competition = $competitionRepository->findOneBy(['id' => $request->request->get('id')]);
+            $teamService->fillTeams($this->getUser(), $competition);
+            return $this->redirectToRoute('competition_show', ['id' => $competition->getId()]);
+        }
+
+        return $this->redirectToRoute('competition_list');
+    }
 }
