@@ -174,9 +174,9 @@ class CompetitionController extends AbstractController
         $player = $this->getUser();
         $playerIsStreamer = $player ? $competition->getStreamer()->equals($player) : false;
         return $this->render('competition/show.html.twig', [
-            'controller_name' => 'CompetitionController',
             'competition' => $competition,
             'player'=> $player,
+            'clicable' => false,
             'createStreamerButtons' => $playerIsStreamer,
             'createRegistrationButtons' => $competition->getIsOpen() && $player,
             'createRandomizeButton' => $competition->getIsIndividual() && $playerIsStreamer
@@ -188,10 +188,9 @@ class CompetitionController extends AbstractController
      */
     public function editCompetition(
         Request $request,
-        Competition $competition,
-        CompetitionRepository $competitionRepository,
-        TeamRepository $teamRepository
+        CompetitionRepository $competitionRepository
     ) {
+        $competition = $competitionRepository->findCompleteById($request->get('id'));
         $player = $competition->getStreamer();
         if (!$this->isGranted('ROLE_ADMIN') && (!$this->getUser() || $this->getUser()->getUsername() !== $player->getUsername())) {
             return $this->redirectToRoute('competition_show', ['id' => $competition->getId()]);
@@ -201,11 +200,9 @@ class CompetitionController extends AbstractController
             $competition->setDescription($request->request->get('description'));
             $competitionRepository->save($competition);
         }
-        $teams = $teamRepository->findCompleteTeamsFromCompetition($competition);
         return $this->render('competition/edit.html.twig', [
-            'controller_name' => 'CompetitionController',
             'competition' => $competition,
-            'teams' => $teams
+            'clicable' => true,
         ]);
     }
 
@@ -219,18 +216,14 @@ class CompetitionController extends AbstractController
         CompetitionRepository $competitionRepository,
         TeamRepository $teamRepository
     ) {
-        $player = $this->getUser()->getUsername();
-        $player = $playerRepository->findOneBy(['username' => $player]);
-        if ($player === $competition->getStreamer()) {
-            $teams = $teamRepository->findCompleteTeamsFromCompetition($competition);
+        $isStreamer = $competition->getStreamer()->equals($this->getUser());
+        if ($isStreamer) {
+            $competition = $competitionRepository->findCompleteById($request->get('id'));
             return $this->render('competition/bracket.html.twig', [
-                'controller_name' => 'CompetitionController',
-                'competition' => $competition,
-                'teams' => $teams
+                'competition' => $competition
             ]);
-        } else {
-            return $this->redirectToRoute('competition_list');
         }
+        return $this->redirectToRoute('competition_list');
     }
 
     /**
@@ -238,12 +231,9 @@ class CompetitionController extends AbstractController
      */
     public function randomizeTeams(
         Competition $competition,
-        PlayerRepository $playerRepository,
         TeamService $teamService
     ): Response {
-        $user = $this->getUser()->getUsername();
-        $user = $playerRepository->findOneBy(['username' => $user]);
-        $teamService->randomize($user, $competition);
+        $teamService->randomize($this->getUser(), $competition);
 
         return $this->redirectToRoute('competition_show', ['id' => $competition->getId()]);
     }

@@ -16,9 +16,8 @@
 			</thead>
 			<tbody>
 				<tr>
-					<td class="match l1 o1 t1"><span
-							class="{{ competition.rounds[0].winner == competition.rounds[0].teams[0] ? 'win-1' : 'win-2' }}"
-							title="{{ competition.rounds[0].teams[0].name }}">{{ competition.rounds[0].teams[0].name }}</span>
+					<td class="match l1 o1 t1">
+						{% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[0], team: competition.rounds[0].teams[0] } %}
 					</td>
 					<td class="line bb"></td>
 					<td class="line"></td>
@@ -26,9 +25,8 @@
 					<td class="line"></td>
 				</tr>
 				<tr>
-					<td class="match l1 o1 t2"><span
-							class="{{ competition.rounds[0].winner == competition.rounds[0].teams[0] ? 'win-1' : 'win-2' }}"
-							title="{{ competition.rounds[0].teams[1].name }}">{{ competition.rounds[0].teams[1].name }}</span>
+					<td class="match l1 o1 t2">
+						{% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[0], team: competition.rounds[0].teams[1] } %}
 					</td>
 					<td class="line br"></td>
 					<td class="line"></td>
@@ -38,34 +36,30 @@
 				<tr>
 					<td class="line"></td>
 					<td class="line br"></td>
-					<td class="match l2 o1 t1"><span
-							class="{{ competition.rounds[4].winner == competition.rounds[4].teams[0] ? 'win-1' : 'win-2' }}"
-							title="{{ competition.rounds[4].teams[0].name }}">{{ competition.rounds[4].teams[0].name }}</span>
+					<td class="match l2 o1 t1">
+						{% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[4], team: competition.rounds[4].teams[0] } %}
 					</td>
 					<td class="line bb"></td>
 				</tr>
 				<tr>
 					<td class="empty"></td>
 					<td class="line br"></td>
-					<td class="match l2 o1 t2"><span
-							class="{{ competition.rounds[4].winner == competition.rounds[4].teams[0] ? 'win-1' : 'win-2' }}"
-							title="{{ competition.rounds[4].teams[1].name }}">{{ competition.rounds[4].teams[1].name }}</span>
+					<td class="match l2 o1 t2">
+						{% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[4], team: competition.rounds[4].teams[1] } %}
 					</td>
 					<td class="line br"></td>
 				</tr>
 				<tr>
-					<td class="match l1 o2 t1"><span
-							class="{{ competition.rounds[1].winner == competition.rounds[1].teams[0] ? 'win-1' : 'win-2' }}"
-							title="{{ competition.rounds[1].teams[0].name }}">{{ competition.rounds[1].teams[0].name }}</span>
+					<td class="match l1 o2 t1">
+						{% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[1], team: competition.rounds[1].teams[0] } %}
 					</td>
 					<td class="line br bb"></td>
 					<td class="line"></td>
 					<td class="line br"></td>
 				</tr>
 				<tr>
-					<td class="match l1 o2 t2"><span
-							class="{{ competition.rounds[1].winner == competition.rounds[1].teams[0] ? 'win-1' : 'win-2' }}"
-							title="{{ competition.rounds[1].teams[1].name }}">{{ competition.rounds[1].teams[1].name }}</span>
+					<td class="match l1 o2 t2">
+						{% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[1], team: competition.rounds[1].teams[1] } %}
 					</td>
 					<td class="line"></td>
 					<td class="line"></td>
@@ -76,9 +70,8 @@
 					<td class="line"></td>
 					<td class="line"></td>
 					<td class="line br"></td>
-					<td class="match l3 o1 t1"><span
-							class="{{ competition.rounds[6].winner == competition.rounds[6].teams[0] ? 'win-1' : 'win-2' }}"
-							title="{{ competition.rounds[6].teams[0].name }}">{{ competition.rounds[6].teams[0].name }}</span>
+					<td class="match l3 o1 t1">
+						{% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[6], team: competition.rounds[6].teams[0] } %}
 					</td>
 				</tr>
 				<tr>
@@ -86,15 +79,13 @@
 					<td class="line"></td>
 					<td class="empty"></td>
 					<td class="line br"></td>
-					<td class="match l3 o1 t2"><span
-							class="{{ competition.rounds[6].winner == competition.rounds[6].teams[0] ? 'win-1' : 'win-2' }}"
-							title="{{ competition.rounds[6].teams[1].name }}">{{ competition.rounds[6].teams[1].name }}</span>
+					<td class="match l3 o1 t2">
+						{% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[6], team: competition.rounds[6].teams[1] } %}
 					</td>
 				</tr>
 				<tr>
-					<td class="match l1 o3 t1"><span
-							class="{{ competition.rounds[2].winner == competition.rounds[2].teams[0] ? 'win-1' : 'win-2' }}"
-							title="{{ competition.rounds[2].teams[0].name }}">{{ competition.rounds[2].teams[0].name }}</span>
+					<td class="match l1 o3 t1">
+						{% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[2], team: competition.rounds[2].teams[0] } %}
 					</td>
 					<td class="line bb"></td>
 					<td class="line"></td>
@@ -102,9 +93,8 @@
 					<td class="empty"></td>
 				</tr>
 				<tr>
-					<td class="match l1 o3 t2"><span
-							class="{{ competition.rounds[2].winner == competition.rounds[2].teams[0] ? 'win-1' : 'win-2' }}"
-							title="{{ competition.rounds[2].teams[1].name }}">{{ competition.rounds[2].teams[1].name }}</span>
+					<td class="match l1 o3 t2">
+						{% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[2], team: competition.rounds[2].teams[1] } %}
 					</td>
 					<td class="line br"></td>
 					<td class="line"></td>
@@ -114,26 +104,23 @@
 				<tr>
 					<td class="empty"></td>
 					<td class="line br"></td>
-					<td class="match l2 o2 t1"><span
-							class="{{ competition.rounds[5].winner == competition.rounds[5].teams[0] ? 'win-1' : 'win-2' }}"
-							title="{{ competition.rounds[5].teams[0].name }}">{{ competition.rounds[5].teams[0].name }}</span>
+					<td class="match l2 o2 t1">
+						{% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[5], team: competition.rounds[5].teams[0] } %}
 					</td>
 					<td class="line bb br"></td>
 				</tr>
 				<tr>
 					<td class="empty"></td>
 					<td class="line br"></td>
-					<td class="match l2 o2 t2"><span
-							class="{{ competition.rounds[5].winner == competition.rounds[5].teams[0] ? 'win-1' : 'win-2' }}"
-							title="{{ competition.rounds[5].teams[1].name }}">{{ competition.rounds[5].teams[1].name }}</span>
+					<td class="match l2 o2 t2">
+						{% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[5], team: competition.rounds[5].teams[1] } %}
 					</td>
 					<td class="line"></td>
 
 				</tr>
 				<tr>
-					<td class="match l1 o4 t1"><span
-							class="{{ competition.rounds[5].winner == competition.rounds[5].teams[0] ? 'win-1' : 'win-2' }}"
-							title="{{ competition.rounds[3].teams[0].name }}">{{ competition.rounds[3].teams[0].name }}</span>
+					<td class="match l1 o4 t1">
+						{% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[3], team: competition.rounds[3].teams[0] } %}
 					</td>
 					<td class="line bb br"></td>
 					<td class="line"></td>
@@ -142,9 +129,8 @@
 
 				</tr>
 				<tr>
-					<td class="match l1 o4 t2"><span
-							class="{{ competition.rounds[3].winner == competition.rounds[3].teams[0] ? 'win-1' : 'win-2' }}"
-							title="{{ competition.rounds[3].teams[1].name }}">{{ competition.rounds[3].teams[1].name }}</span>
+					<td class="match l1 o4 t2">
+						{% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[3], team: competition.rounds[3].teams[1] } %}
 					</td>
 					<td class="line"></td>
 					<td class="line"></td>
