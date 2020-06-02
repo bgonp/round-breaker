@@ -29,6 +29,14 @@ class CompetitionRepository extends ServiceEntityRepository
 		}
     }
 
+    public function remove(Competition $competition, bool $flush = true)
+    {
+        $this->getEntityManager()->remove($competition);
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
     /** @return Competition|null Random competition from the last 3 months or null if it doesn't exists */
     public function findRandomFinishedWithRoundsAndTeams(): ?Competition
     {

@@ -13,7 +13,7 @@ class Round extends Base
 {
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Competition", inversedBy="rounds")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $competition;
 
@@ -49,6 +49,7 @@ class Round extends Base
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Team")
+     * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
      */
     private $winner;
 

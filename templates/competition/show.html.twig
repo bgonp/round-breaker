@@ -52,7 +52,7 @@
     {% if createStreamerButtons or is_granted('ROLE_ADMIN') %}
 <a class="btn btn-dark mb-3 sport-text" href="{{ path('competition_edit', {id: competition.id}) }}">Editar Torneo</a>
         <form action="/competition/delete" method="POST" class="d-inline">
-        <input type="hidden" name="id" value="{{ competition.id }}">
+        <input type="hidden" name="competition_id" value="{{ competition.id }}">
         <input class="btn btn-dark sport-text mb-3" type="submit" value="Eliminar">
     </form>
 {% endif %}

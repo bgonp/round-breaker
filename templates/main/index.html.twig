@@ -4,9 +4,11 @@
 
 {% block content %}
     <div class="row">
+        {%  if competition %}
         <div class="col-md-9 p-3">
             {% include 'brackets/bracket_8.html.twig' %}
         </div>
+        {% endif %}
         <div class="col-md-3 p-3">
             <div class="card bg-light mb-3">
                 <div class="card-header text-center cards">¡Únete a roundbreaker!</div>

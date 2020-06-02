@@ -11,13 +11,13 @@ class Registration extends Base
 {
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Player", inversedBy="registrations", fetch="EAGER")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $player;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Competition", inversedBy="registrations")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $competition;
 

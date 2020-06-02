@@ -153,21 +153,9 @@ class CompetitionController extends AbstractController
     /**
      * @Route("/delete", name="competition_delete", methods={"POST"})
      */
-    public function deleteCompetition(
-        Request $request,
-        PlayerRepository $playerRepository,
-        CompetitionRepository $competitionRepository,
-        CompetitionService $competitionService
-    ) {
-        if ($request->request->has('id')) {
-            $player = $this->getUser()->getUsername();
-            $player = $playerRepository->findOneBy(['username' => $player]);
-            $competition = $competitionRepository->findOneBy(['id' => $request->request->get('id')]);
-            if ($competition && $competition->getStreamer() === $player) {
-                $entityManager = $this->getDoctrine()->getManager();
-                $entityManager->remove($competition);
-                $entityManager->flush();
-            }
+    public function deleteCompetition(Competition $competition, CompetitionRepository $competitionRepository) {
+        if ($competition && $competition->getStreamer()->equals($this->getUser())) {
+            $competitionRepository->remove($competition);
         }
         return $this->redirectToRoute('main');
     }
