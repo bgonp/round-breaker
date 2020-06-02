@@ -24,8 +24,6 @@ class SecurityController extends AbstractController
         $error = $authenticationUtils->getLastAuthenticationError();
         if ($error) {
             $this->addFlash('error', $error->getMessage());
-        } else {
-            $this->addFlash('success', 'Logged in successfully');
         }
         $params = $error ? ['last_username' => $authenticationUtils->getLastUsername()] : [];
         return $this->redirectToRoute('main', $params);
