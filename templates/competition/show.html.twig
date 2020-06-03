@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="row">
-    {% if competition.isopen == false and competition.rounds|length > 0%}
+    {% if competition.rounds|length > 0%}
     {% include 'brackets/bracket_8.html.twig' %}
     {% endif %}
 </div>
@@ -30,28 +30,8 @@
         <h1>{% if competition.isopen %}{{competition.name}} - {% endif %}Jugadores Registrados</h1>
         <ul class="list-group list-group-flush sport-text mb-3">
             {% for registration in competition.registrations %}
-            <li class="list-group-item w-50">{{ registration.player.username }}
-                {% if competition.isfinished != true and (competition.streamer == app.user or is_granted('ROLE_ADMIN')) %}
-                <span class="float-right">
-                    <!--<a href="#"><i class="fas fa-skull"></i></a>-->
-                    <form action="{{ path('registration_delete') }}" method="POST" class="d-inline">
-                        <input type="hidden" name="competitionId" value="{{ competition.id }}">
-                        <input type="hidden" name="playerId" value="{{ player.id }}">
-                        <button class="btn fas fa-skull controlls" type="submit" value="ban"></button>
-                    </form>
-                    <form action="{{ path('toggle_confirmation') }}" method="POST" class="d-inline">
-                        <input type="hidden" name="competitionId" value="{{ competition.id }}">
-                        <input type="hidden" name="playerId" value="{{ registration.player.id }}">
-                    {% if registration.isConfirmed %}
-                        <input type="hidden" name="confirm" value="0">
-                        <button class="btn far fa-check-square controlls" type="submit" value="Unconfirm"></button>
-                    {% else %}
-                        <input type="hidden" name="confirm" value="1">
-                        <button class="btn far fa-square controlls" type="submit" value="Confirm"></button>
-                    {% endif %}
-                 </form>
-                </span>
-                {% endif %}
+            <li class="list-group-item w-50">
+                {{ registration.player.username }}            
             </li>
             {% endfor %}
         </ul>

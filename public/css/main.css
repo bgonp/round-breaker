@@ -81,6 +81,18 @@ h1 {
     color:#4cd365 !important;
 }
 
-.controlls:hover {
+.controls{
+    color:#212529;
+    background-color: transparent;
+    border: 0px solid transparent;
+    padding: 0 2px;
+    font-size: 1rem;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+.controls:hover {
     color:#4cd365;
+}
+
+.check{
+    padding: 0 4px;
 }

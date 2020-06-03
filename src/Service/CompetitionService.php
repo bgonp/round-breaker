@@ -50,7 +50,7 @@ class CompetitionService
     public function createCompetition(
         string $name, string $description,
         Player $user, int $maxPlayers, bool $isIndividual,
-        int $playersPerTeam, Game $game)
+        int $playersPerTeam, Game $game, String $dateTime)
     {
         $competition = new Competition();
         $competition->setName($name);
@@ -67,6 +67,7 @@ class CompetitionService
             $competition->setPlayersPerTeam($playersPerTeam);
         }
         $competition->setGame($game);
+        $competition->setHeldAt(new \DateTime($dateTime));
         $this->competitionRepository->save($competition);
     }
 
