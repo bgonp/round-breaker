@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Game;
 use App\Entity\Player;
 use App\Repository\CompetitionRepository;
 use App\Repository\GameRepository;
@@ -41,7 +40,9 @@ class CompetitionController extends AbstractController
      */
     public function createCompetition(
         Request $request,
+        CompetitionRepository $competitionRepository,
         GameRepository $gameRepository,
+        PlayerRepository $playerRepository,
         CompetitionService $competitionService
     ) {
         if (!($player = $this->getUser())) {
@@ -57,6 +58,7 @@ class CompetitionController extends AbstractController
             $game = $gameRepository->find($request->request->get('game'));
             $playersPerTeam = $request->request->get('playersPerTeam');
             $teamNum = $request->request->get('teamNum');
+            $heldAt = $request->request->get('dateAndTime');
             if ($playersPerTeam > 5 || $playersPerTeam < 1) {
                 $playersPerTeam = 1;
             }
@@ -70,7 +72,8 @@ class CompetitionController extends AbstractController
                 ($playersPerTeam * $teamNum),
                 $isIndividual,
                 $playersPerTeam,
-                $game
+                $game,
+                $heldAt
             );
             return $this->redirectToRoute('main');
         }
@@ -134,32 +137,49 @@ class CompetitionController extends AbstractController
      */
     public function editCompetition(
         Request $request,
-        CompetitionRepository $competitionRepository
+        CompetitionRepository $competitionRepository,
+        GameRepository $gameRepository
     ) {
         $competition = $competitionRepository->findCompleteById($request->get('id'));
         $player = $competition->getStreamer();
+        $showKick = ($competition->getIsOpen() && !$competition->getIsFinished());
+        $showConfirm = !$competition->getIsFinished();
         if (!$this->isGranted('ROLE_ADMIN') && (!$this->getUser() || $this->getUser()->getUsername() !== $player->getUsername())) {
             return $this->redirectToRoute('competition_show', ['id' => $competition->getId()]);
         }
         if ($request->request->has('name')) {
+            $playersPerTeam = $request->request->get('playersPerTeam');
+            $teamNum = $request->request->get('teamNum');
             $competition->setName($request->request->get('name'));
             $competition->setDescription($request->request->get('description'));
             $competition->setIsOpen($request->request->get('open') ? true : false);
             $competition->setIsFinished($request->request->get('finished') ? true : false);
+            $competition->setMaxPlayers($playersPerTeam*$teamNum);
+            $competition->setHeldAt(new \DateTime($request->request->get('dateAndTime')));
             $competitionRepository->save($competition);
         }
         return $this->render('competition/edit.html.twig', [
+            'games' => $gameRepository->findAll(),
             'competition' => $competition,
             'clickable' => true,
+            'showKick' => $showKick,
+            'showConfirm' => $showConfirm,
         ]);
     }
 
     /**
      * @Route("/{id}/bracket", name="competition_bracket", methods={"GET"})
      */
-    public function viewCompetitionBracket(Competition $competition) {
+    public function viewCompetitionBracket(
+        Request $request,
+        Competition $competition,
+        PlayerRepository $playerRepository,
+        CompetitionRepository $competitionRepository,
+        TeamRepository $teamRepository
+    ) {
         $isStreamer = $competition->getStreamer()->equals($this->getUser());
         if ($isStreamer) {
+            $competition = $competitionRepository->findCompleteById($request->get('id'));
             return $this->render('competition/bracket.html.twig', [
                 'competition' => $competition
             ]);
