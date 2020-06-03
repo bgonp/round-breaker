@@ -3,136 +3,181 @@
 {% block title %}RoundBreaker{% endblock %}
 
 {% block content %}
-    <div class="row">
-        {%  if competition %}
-        <div class="col-md-9 p-3">
-            {% include 'brackets/bracket_8.html.twig' %}
-        </div>
-        {% endif %}
-        <div class="col-md-3 p-3">
-            <div class="card bg-light mb-3">
-                <div class="card-header text-center cards">¡Únete a roundbreaker!</div>
-                <div class="card-body">
+<div class="row">
+    {%  if competition %}
+    <div class="col-md-9 p-3">
+        {% include 'brackets/bracket_8.html.twig' %}
+    </div>
+    {% endif %}
+    <div class="col-md-3 p-3">
+        <div class="card mb-3">
+            <div class="card-header">
+                <ul class="nav nav-tabs card-header-tabs">
+                    <li class="nav-item sport-text">
+                        <a id="login-tab" class="nav-link active" href="#" onclick="document.getElementById('login-tab').classList.toggle('active');
+                            document.getElementById('register-tab').classList.toggle('active');
+                            document.getElementById('login-form').classList.toggle('d-none');
+                            document.getElementById('register-form').classList.toggle('d-none');
+                            ">Login</a>
+                    </li>
+                    {% if not loggedUser %}
+                    <li class="nav-item sport-text">
+                        <a id="register-tab" class="nav-link" href="#" onclick="document.getElementById('login-tab').classList.toggle('active');
+                        document.getElementById('register-tab').classList.toggle('active');
+                        document.getElementById('login-form').classList.toggle('d-none');
+                        document.getElementById('register-form').classList.toggle('d-none');
+                        ">Registro</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+            <div class="card-body">
+                <form id="login-form" method="post" action="{{ path('app_login') }}">
+                    {% if not loggedUser %}
                     <h6 class="card-title">Inicia sesión como jugador para gestionar tus inscripciones</h6>
-                    <form method="post" action="{{ path('app_login') }}">
-                        {% for error in app.session.flashBag.get('error') %}
-                        <div class="alert alert-danger">
-                            {{ error }}
-                        </div>
-                        {% endfor %}
+                    {% endif %}
+                    {% for error in app.session.flashBag.get('error') %}
+                    <div class="alert alert-danger">
+                        {{ error }}
+                    </div>
+                    {% endfor %}
 
-                        {% if loggedUser %}
-                            <div class="m-3">
-                                You are logged in as {{ loggedUser.username }}, <a href="{{ path('app_logout') }}">Logout</a>
-                            </div>
-                        {% else %}
-                            <label for="inputUsername" class="d-none">Username</label>
-                            <input type="text" value="{{ last_username is defined ? last_username : '' }}" name="username" id="inputUsername"
-                                   class="mb-3 col-8 form-control" placeholder="Usuario" required autofocus>
-                            <div class="form-group">
-                                <label for="inputPassword" class="d-none">Password</label>
-                                <input type="password" name="password" id="inputPassword" class="col-8 form-control"
-                                       placeholder="Contraseña" required>
-                            </div>
-                            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-                            <button class="btn btn-lg btn-primary btn-dark" type="submit">
-                                Log in
-                            </button>
-                        {% endif %}
-                    </form>
-                    <form method="post" {#action=" path('app_register')"#} class="d-none"></form>
-                </div>
-            </div>
-            <div class="card bg-light mb-3">
-                <div class="card-header text-center cards">¡lo más jugado!</div>
-                <img src="{{ asset('img/cs.png') }}" class="img-fluid" />
-                <img src="{{ asset('img/lol.png') }}" class="img-fluid" />
-                <img src="{{ asset('img/rl.png') }}" class="img-fluid rounded-bottom" />
-            </div>
-            <div class="card bg-light">
-                <div class="card-header text-center cards">Redes Sociales</div>
-                <div class="row p-3">
-                    <div class="col rrss"><img src="{{ asset('img/facebook.png') }}" class="img-fluid" /></div>
-                    <div class="col rrss"><img src="{{ asset('img/twitch.png') }}" class="img-fluid" /></div>
-                    <div class="col rrss"><img src="{{ asset('img/gorjeo.png') }}" class="img-fluid" /></div>
-                </div>
+                    {% if loggedUser %}
+                    <div class="m-3">
+                        <p class="text-center">You are logged in as {{ loggedUser.username }}</p>
+                        <a class="btn btn-dark sport-text w-100 mb-3" href="{{ path('player_show', {id: app.user.id}) }}">Mi Perfil</a>
+                        <a class="btn btn-dark sport-text w-100 mb-3" href="{{ path('competition_new') }}">Crear Torneo</a>
+                        <a class="btn btn-light sport-text w-100" href="{{ path('app_logout') }}">Logout</a>
+                    </div>
+                    {% else %}
+                    <div class="form-group">
+                        <label for="inputUsername" class="d-none">Username</label>
+                        <input type="text" value="{{ last_username is defined ? last_username : '' }}" name="username"
+                            id="inputUsername" class="mb-3 form-control" placeholder="Usuario" required autofocus>
+                        <label for="inputPassword" class="d-none">Password</label>
+                        <input type="password" name="password" id="inputPassword" class="form-control"
+                            placeholder="Contraseña" required>
+                    </div>
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                    <button class="btn btn-lg btn-primary btn-dark sport-text form-control" type="submit">
+                        Log in
+                    </button>
+                    {% endif %}
+                </form>
+                {% if not loggedUser %}
+                <form id="register-form" method="post" action="{{ path('user_registration') }}" class="d-none">
+                    <h6 class="card-title">Regístrate y participa en innnumerables torneos!</h6>
+                    <div class="form-group">
+                        <label for="inputUsername" class="d-none">Username</label>
+                        <input type="text" value="{{ last_username is defined ? last_username : '' }}" name="username"
+                            id="inputUsername" class="mb-3 form-control" placeholder="Usuario" required autofocus>
+                        <label for="inputPassword" class="d-none">Password</label>
+                        <input type="password" name="password" id="inputPassword" class="mb-3 form-control"
+                            placeholder="Contraseña" required>
+                            <label for="inputUsername" class="d-none">Email</label>
+                        <input type="email" name="email"
+                            id="inputUsername" class="mb-3 form-control" placeholder="Email" required>
+                            <label for="inputUsername" class="d-none">Twitchname</label>
+                        <input type="text" name="twitchname"
+                            id="inputUsername" class="mb-3 form-control" placeholder="Twitchname" required>
+                    </div>
+                    <button class="btn btn-lg btn-primary btn-dark sport-text form-control" type="submit">
+                        Registrar
+                    </button>
+                </form>
+                {% endif %}
             </div>
         </div>
-        <div class="row mx-3">
-            <div class="col-md-12 col-xl-9 pt-2">
-                <h1>¿Qué es roundbreaker?</h1>
-                <p class="text-left">Lorem fistrum diodeno no puedor jarl hasta luego Lucas no puedor
-                    apetecan.
-                    Diodeno a peich sexuarl fistro
-                    sexuarl hasta luego Lucas por la gloria de mi madre. Tiene musho peligro quietooor ese que
-                    llega
-                    a peich
-                    a gramenawer no te digo trigo por no llamarte Rodrigor jarl torpedo diodeno por la gloria de
-                    mi
-                    madre
-                    qué dise usteer. Torpedo la caidita ese que llega quietooor caballo blanco caballo negroorl
-                    papaar
-                    papaar ese hombree fistro. A wan por la gloria de mi madre diodeno caballo blanco caballo
-                    negroorl al
-                    ataquerl hasta luego Lucas amatomaa sexuarl. Pecador sexuarl condemor por la gloria de mi
-                    madre
-                    tiene
-                    musho peligro la caidita no te digo trigo por no llamarte Rodrigor. Ese pedazo de qué dise
-                    usteer
-                    llevame al sircoo a peich ese que llega no te digo trigo por no llamarte Rodrigor de la
-                    pradera
-                    diodenoo
-                    hasta luego Lucas.</p>
-
-                <p class="text-left">A wan pupita torpedo tiene musho peligro ese que llega tiene musho
-                    peligro
-                    no puedor va usté muy cargadoo
-                    me cago en tus muelas papaar papaar diodenoo. No te digo trigo por no llamarte Rodrigor a
-                    peich
-                    condemor
-                    papaar papaar. Va usté muy cargadoo a wan te voy a borrar el cerito hasta luego Lucas no te
-                    digo
-                    trigo
-                    por no llamarte Rodrigor ahorarr. Te voy a borrar el cerito me cago en tus muelas de la
-                    pradera
-                    te va a
-                    hasé pupitaa jarl no puedor torpedo no puedor mamaar diodenoo. Jarl ese hombree mamaar
-                    pupita me
-                    cago en
-                    tus muelas mamaar. Va usté muy cargadoo te va a hasé pupitaa por la gloria de mi madre ese
-                    que
-                    llega
-                    tiene musho peligro caballo blanco caballo negroorl jarl te va a hasé pupitaa pecador
-                    diodeno
-                    apetecan.
-                    Tiene musho peligro papaar papaar no te digo trigo por no llamarte Rodrigor papaar papaar se
-                    calle ustée
-                    torpedo a peich tiene musho peligro ese pedazo de. Jarl al ataquerl condemor está la cosa
-                    muy
-                    malar.</p>
-
-                <p class="text-left">Pupita hasta luego Lucas condemor torpedo diodenoo quietooor papaar
-                    papaar
-                    condemor pecador diodeno
-                    pupita. Te va a hasé pupitaa ahorarr ese hombree torpedo ese hombree papaar papaar está la
-                    cosa
-                    muy
-                    malar condemor. Pecador no puedor diodenoo al ataquerl ese que llega quietooor por la gloria
-                    de
-                    mi
-                    madre. No puedor a gramenawer tiene musho peligro fistro se calle ustée amatomaa jarl. A
-                    peich
-                    me cago
-                    en tus muelas va usté muy cargadoo caballo blanco caballo negroorl al ataquerl benemeritaar
-                    la
-                    caidita
-                    la caidita. De la pradera por la gloria de mi madre benemeritaar torpedo la caidita me cago
-                    en
-                    tus
-                    muelas.</p>
+        <div class="card bg-light mb-3">
+            <div class="card-header text-center cards">¡lo más jugado!</div>
+            <img src="{{ asset('img/cs.png') }}" class="img-fluid" />
+            <img src="{{ asset('img/lol.png') }}" class="img-fluid" />
+            <img src="{{ asset('img/rl.png') }}" class="img-fluid rounded-bottom" />
+        </div>
+        <div class="card">
+            <div class="card-header text-center cards">Redes Sociales</div>
+            <div class="row p-3">
+                <div class="col rrss"><img src="{{ asset('img/facebook.png') }}" class="img-fluid" /></div>
+                <div class="col rrss"><img src="{{ asset('img/twitch.png') }}" class="img-fluid" /></div>
+                <div class="col rrss"><img src="{{ asset('img/gorjeo.png') }}" class="img-fluid" /></div>
             </div>
         </div>
     </div>
+    <div class="row mx-3">
+        <div class="col-md-12 col-xl-9 pt-2">
+            <h1>¿Qué es roundbreaker?</h1>
+            <p class="text-left">Lorem fistrum diodeno no puedor jarl hasta luego Lucas no puedor
+                apetecan.
+                Diodeno a peich sexuarl fistro
+                sexuarl hasta luego Lucas por la gloria de mi madre. Tiene musho peligro quietooor ese que
+                llega
+                a peich
+                a gramenawer no te digo trigo por no llamarte Rodrigor jarl torpedo diodeno por la gloria de
+                mi
+                madre
+                qué dise usteer. Torpedo la caidita ese que llega quietooor caballo blanco caballo negroorl
+                papaar
+                papaar ese hombree fistro. A wan por la gloria de mi madre diodeno caballo blanco caballo
+                negroorl al
+                ataquerl hasta luego Lucas amatomaa sexuarl. Pecador sexuarl condemor por la gloria de mi
+                madre
+                tiene
+                musho peligro la caidita no te digo trigo por no llamarte Rodrigor. Ese pedazo de qué dise
+                usteer
+                llevame al sircoo a peich ese que llega no te digo trigo por no llamarte Rodrigor de la
+                pradera
+                diodenoo
+                hasta luego Lucas.</p>
+
+            <p class="text-left">A wan pupita torpedo tiene musho peligro ese que llega tiene musho
+                peligro
+                no puedor va usté muy cargadoo
+                me cago en tus muelas papaar papaar diodenoo. No te digo trigo por no llamarte Rodrigor a
+                peich
+                condemor
+                papaar papaar. Va usté muy cargadoo a wan te voy a borrar el cerito hasta luego Lucas no te
+                digo
+                trigo
+                por no llamarte Rodrigor ahorarr. Te voy a borrar el cerito me cago en tus muelas de la
+                pradera
+                te va a
+                hasé pupitaa jarl no puedor torpedo no puedor mamaar diodenoo. Jarl ese hombree mamaar
+                pupita me
+                cago en
+                tus muelas mamaar. Va usté muy cargadoo te va a hasé pupitaa por la gloria de mi madre ese
+                que
+                llega
+                tiene musho peligro caballo blanco caballo negroorl jarl te va a hasé pupitaa pecador
+                diodeno
+                apetecan.
+                Tiene musho peligro papaar papaar no te digo trigo por no llamarte Rodrigor papaar papaar se
+                calle ustée
+                torpedo a peich tiene musho peligro ese pedazo de. Jarl al ataquerl condemor está la cosa
+                muy
+                malar.</p>
+
+            <p class="text-left">Pupita hasta luego Lucas condemor torpedo diodenoo quietooor papaar
+                papaar
+                condemor pecador diodeno
+                pupita. Te va a hasé pupitaa ahorarr ese hombree torpedo ese hombree papaar papaar está la
+                cosa
+                muy
+                malar condemor. Pecador no puedor diodenoo al ataquerl ese que llega quietooor por la gloria
+                de
+                mi
+                madre. No puedor a gramenawer tiene musho peligro fistro se calle ustée amatomaa jarl. A
+                peich
+                me cago
+                en tus muelas va usté muy cargadoo caballo blanco caballo negroorl al ataquerl benemeritaar
+                la
+                caidita
+                la caidita. De la pradera por la gloria de mi madre benemeritaar torpedo la caidita me cago
+                en
+                tus
+                muelas.</p>
+        </div>
+    </div>
+</div>
 {% endblock content %}
 
 {#
