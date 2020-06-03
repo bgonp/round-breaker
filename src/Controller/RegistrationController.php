@@ -67,10 +67,10 @@ class RegistrationController extends AbstractController
                 $team = $teamRepository->hasTeamInCompetition($competition, $registration->getPlayer());
                 if ($team) {
                     $team->removePlayer($player);
+                    $entityManager->persist($team);
                 }
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->remove($registration);
-                $entityManager->persist($team);
                 $entityManager->flush();
             }
             return $this->redirectToRoute('competition_list');
