@@ -47,33 +47,6 @@ class CompetitionService
         $this->roundRepository = $roundRepository;
     }
 
-<<<<<<< HEAD
-=======
-    public function createCompetition(
-        string $name, string $description,
-        Player $user, int $maxPlayers, bool $isIndividual,
-        int $playersPerTeam, Game $game, String $dateTime)
-    {
-        $competition = new Competition();
-        $competition->setName($name);
-        $competition->setDescription($description);
-        $competition->setIsOpen(true);
-        $competition->setIsFinished(false);
-        $competition->setStreamer($user);
-        $competition->setMaxPlayers($maxPlayers);
-        if ($isIndividual || $playersPerTeam === 1) {
-            $competition->setIsIndividual(true);
-            $competition->setPlayersPerTeam(1);
-        } else {
-            $competition->setIsIndividual(false);
-            $competition->setPlayersPerTeam($playersPerTeam);
-        }
-        $competition->setGame($game);
-        $competition->setHeldAt(new \DateTime($dateTime));
-        $this->competitionRepository->save($competition);
-    }
-
->>>>>>> master
     public function addPlayerToCompetition(Competition $competition, Player $player)
     {
         $registration = new Registration();
