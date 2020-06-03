@@ -10,7 +10,11 @@
     </div>
     {% endif %}
     <div class="col-md-3 p-3">
+<<<<<<< HEAD
         <div class="card mb-3">
+=======
+        <div class="card bg-light mb-3">
+>>>>>>> 5381e5b52ebff73ae1f872af3397ce9ec1115aba
             <div class="card-header">
                 <ul class="nav nav-tabs card-header-tabs">
                     <li class="nav-item sport-text">
@@ -20,7 +24,10 @@
                             document.getElementById('register-form').classList.toggle('d-none');
                             ">Login</a>
                     </li>
+<<<<<<< HEAD
                     {% if not loggedUser %}
+=======
+>>>>>>> 5381e5b52ebff73ae1f872af3397ce9ec1115aba
                     <li class="nav-item sport-text">
                         <a id="register-tab" class="nav-link" href="#" onclick="document.getElementById('login-tab').classList.toggle('active');
                         document.getElementById('register-tab').classList.toggle('active');
@@ -28,14 +35,21 @@
                         document.getElementById('register-form').classList.toggle('d-none');
                         ">Registro</a>
                     </li>
+<<<<<<< HEAD
                     {% endif %}
+=======
+>>>>>>> 5381e5b52ebff73ae1f872af3397ce9ec1115aba
                 </ul>
             </div>
             <div class="card-body">
                 <form id="login-form" method="post" action="{{ path('app_login') }}">
+<<<<<<< HEAD
                     {% if not loggedUser %}
                     <h6 class="card-title">Inicia sesión como jugador para gestionar tus inscripciones</h6>
                     {% endif %}
+=======
+                    <h6 class="card-title">Inicia sesión como jugador para gestionar tus inscripciones</h6>
+>>>>>>> 5381e5b52ebff73ae1f872af3397ce9ec1115aba
                     {% for error in app.session.flashBag.get('error') %}
                     <div class="alert alert-danger">
                         {{ error }}
@@ -44,10 +58,14 @@
 
                     {% if loggedUser %}
                     <div class="m-3">
+<<<<<<< HEAD
                         <p class="text-center">You are logged in as {{ loggedUser.username }}</p>
                         <a class="btn btn-dark sport-text w-100 mb-3" href="{{ path('player_show', {id: app.user.id}) }}">Mi Perfil</a>
                         <a class="btn btn-dark sport-text w-100 mb-3" href="{{ path('competition_new') }}">Crear Torneo</a>
                         <a class="btn btn-light sport-text w-100" href="{{ path('app_logout') }}">Logout</a>
+=======
+                        You are logged in as {{ loggedUser.username }}, <a href="{{ path('app_logout') }}">Logout</a>
+>>>>>>> 5381e5b52ebff73ae1f872af3397ce9ec1115aba
                     </div>
                     {% else %}
                     <div class="form-group">
@@ -64,7 +82,10 @@
                     </button>
                     {% endif %}
                 </form>
+<<<<<<< HEAD
                 {% if not loggedUser %}
+=======
+>>>>>>> 5381e5b52ebff73ae1f872af3397ce9ec1115aba
                 <form id="register-form" method="post" action="{{ path('user_registration') }}" class="d-none">
                     <h6 class="card-title">Regístrate y participa en innnumerables torneos!</h6>
                     <div class="form-group">
@@ -85,7 +106,10 @@
                         Registrar
                     </button>
                 </form>
+<<<<<<< HEAD
                 {% endif %}
+=======
+>>>>>>> 5381e5b52ebff73ae1f872af3397ce9ec1115aba
             </div>
         </div>
         <div class="card bg-light mb-3">
@@ -94,7 +118,11 @@
             <img src="{{ asset('img/lol.png') }}" class="img-fluid" />
             <img src="{{ asset('img/rl.png') }}" class="img-fluid rounded-bottom" />
         </div>
+<<<<<<< HEAD
         <div class="card">
+=======
+        <div class="card bg-light">
+>>>>>>> 5381e5b52ebff73ae1f872af3397ce9ec1115aba
             <div class="card-header text-center cards">Redes Sociales</div>
             <div class="row p-3">
                 <div class="col rrss"><img src="{{ asset('img/facebook.png') }}" class="img-fluid" /></div>
