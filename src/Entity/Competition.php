@@ -233,24 +233,6 @@ class Competition extends Base
     }
 
     /**
-     * @return Collection|Player[]
-     */
-
-    public function getPlayers(): Collection
-    {
-        $resu = new ArrayCollection;
-        $regs = $this->getRegistrations();
-
-        foreach ($regs as $reg){
-            
-            $resu->add($reg->getPlayer());
-
-        }
-        return $resu;
-    }
-
-
-    /**
      * @return Collection|Registration[]
      */
     public function getRegistrations(): Collection

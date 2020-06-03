@@ -3,7 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\Competition;
+use App\Entity\Player;
+use App\Entity\Registration;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
@@ -75,32 +78,14 @@ class CompetitionRepository extends ServiceEntityRepository
             ->getQuery()->getOneOrNullResult();
     }
 
-    // /**
-    //  * @return Competition[] Returns an array of Competition objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /** @return Registration[]|Collection */
+    public function findOpenByPlayerRegistered(Player $player): array
     {
         return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+            ->join('c.registrations', 'r')
+            ->where('c.isOpen = 1')
+            ->andWhere('r.player = :player')
+            ->setParameter('player', $player)
+            ->getQuery()->execute();
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Competition
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

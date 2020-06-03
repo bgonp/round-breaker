@@ -20,7 +20,7 @@ class RoundRepository extends ServiceEntityRepository
         parent::__construct($registry, Round::class);
     }
 
-    public function save(Round $round, bool $flush = true)
+    public function save(Round $round, bool $flush = true): void
     {
         $this->getEntityManager()->persist($round);
         if ($flush) {
@@ -28,12 +28,12 @@ class RoundRepository extends ServiceEntityRepository
         }
     }
 
-    public function flush()
+    public function flush(): void
     {
         $this->getEntityManager()->flush();
     }
 
-    public function removeRounds(Collection $rounds, bool $flush = true)
+    public function removeRounds(Collection $rounds, bool $flush = true): void
     {
         $roundsNum = count($rounds);
         for($i = 0; $i < $roundsNum; $i++) {
@@ -43,33 +43,4 @@ class RoundRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
-
-    // /**
-    //  * @return Round[] Returns an array of Round objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('r')
-            ->andWhere('r.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('r.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Round
-    {
-        return $this->createQueryBuilder('r')
-            ->andWhere('r.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }
