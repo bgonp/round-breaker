@@ -65,7 +65,8 @@ class CompetitionController extends AbstractController
                     ($playersPerTeam * $teamNum),
                     $request->request->get('individual') ? true : false,
                     $request->request->get('playersPerTeam'),
-                    $gameRepository->findOneBy(['name' => $request->request->get('game')])
+                    $gameRepository->findOneBy(['name' => $request->request->get('game')]),
+                    $request->request->get('dateAndTime'),
                 );
             }
             return $this->redirectToRoute('main');
@@ -132,23 +133,33 @@ class CompetitionController extends AbstractController
      */
     public function editCompetition(
         Request $request,
-        CompetitionRepository $competitionRepository
+        CompetitionRepository $competitionRepository,
+        GameRepository $gameRepository
     ) {
         $competition = $competitionRepository->findCompleteById($request->get('id'));
         $player = $competition->getStreamer();
+        $showKick = ($competition->getIsOpen() && !$competition->getIsFinished());
+        $showConfirm = !$competition->getIsFinished();
         if (!$this->isGranted('ROLE_ADMIN') && (!$this->getUser() || $this->getUser()->getUsername() !== $player->getUsername())) {
             return $this->redirectToRoute('competition_show', ['id' => $competition->getId()]);
         }
         if ($request->request->has('name')) {
+            $playersPerTeam = $request->request->get('playersPerTeam');
+            $teamNum = $request->request->get('teamNum');
             $competition->setName($request->request->get('name'));
             $competition->setDescription($request->request->get('description'));
             $competition->setIsOpen($request->request->get('open') ? true : false);
             $competition->setIsFinished($request->request->get('finished') ? true : false);
+            $competition->setMaxPlayers($playersPerTeam*$teamNum);
+            $competition->setHeldAt(new \DateTime($request->request->get('dateAndTime')));
             $competitionRepository->save($competition);
         }
         return $this->render('competition/edit.html.twig', [
+            'games' => $gameRepository->findAll(),
             'competition' => $competition,
             'clickable' => true,
+            'showKick' => $showKick,
+            'showConfirm' => $showConfirm,
         ]);
     }
 
