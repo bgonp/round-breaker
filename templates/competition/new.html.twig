@@ -24,18 +24,21 @@
             </select>
             <label for="inputPlayersPerTeam" class="sport-text-form">Jugadores por Equipo</label>
             <input type="number" name="playersPerTeam" id="inputPlayersPerTeam"
-                class="form-control col-12 mb-3 form-control-lg sport-text-form" max="5" min="1" required>
+                class="form-control col-12 mb-4 form-control-lg sport-text-form" max="5" min="1" required>
 
+            <div class="custom-control custom-checkbox check mb-2">
             <input type="checkbox" name="individual" id="inputIndividual"
                 onclick="document.getElementById('inputPlayersPerTeam').disabled=this.checked;">
             <label for="inputIndividual" class="sport-text-form">Individual</label><br>
-
+            </div>
             <label for="game" class="sport-text-form">Juego</label>
             <select name="game" class="form-control col-12 mb-3 sport-text-form form-control-lg">
                 {% for game in games %}
                 <option value="{{ game.id }}">{{ game.name }}</option>
                 {% endfor %}
             </select>
+            <label for="dateAndTime" class="sport-text-form mb-3">Fecha y Hora</label>
+            <input class="form-control mb-3 form-control-lg" type="datetime-local" value="" name="dateAndTime" id="dateAndTime">
             <button class="btn btn-lg btn-dark break-text-large" type="submit">
                 Crear!
             </button>

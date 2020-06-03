@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="row">
-    {% if competition.isopen == false and competition.rounds|length > 0%}
+    {% if competition.rounds|length > 0%}
     {% include 'brackets/bracket_8.html.twig' %}
     {% endif %}
 </div>
