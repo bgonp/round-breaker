@@ -11,17 +11,16 @@
                 <a href="{{ path('competition_show', {id: competition.id}) }}">{{ competition.name }}&nbsp;</a>
                 - {{ competition.game.name }}{% if competition.description %} - {{ competition.description }}{% endif %}
             </span>
-            {% if competition.isopen and (player not in competition.players) and app.user %}
+            {% if registration %}
+                <form action="{{ path('registration_delete') }}" method="POST" class="d-inline">
+                    <input type="hidden" name="registration_id" value="{{ registration.id }}">
+                    <input class="btn btn-dark sport-text" type="submit" value="Abandonar">
+                </form>
+            {% else %}
                 <form action="{{ path('registration_new') }}" method="POST" class="d-inline">
-                    <input type="hidden" name="id" value="{{ competition.id }}">
+                    <input type="hidden" name="competition_id" value="{{ competition.id }}">
                     <input class="btn btn-dark sport-text" type="submit" value="Unirse">
                 </form>
-            {% elseif competition.isopen and app.user %}
-            <form action="{{ path('registration_delete') }}" method="POST" class="d-inline">
-                <input type="hidden" name="competitionId" value="{{ competition.id }}">
-                <input type="hidden" name="playerId" value="{{ player.id }}">
-                <input class="btn btn-dark sport-text" type="submit" value="Abandonar">
-            </form>
             {% endif %}
         </li>
         {% endfor %}
@@ -29,7 +28,7 @@
     {% if game is defined and canEditGame %}
         <a class="btn btn-dark sport-text" href="{{ path('game_edit', {id: game.id}) }}">Editar Juego</a>
         <form action="{{ path('game_delete') }}" method="POST" class="d-inline">
-            <input type="hidden" name="id" value="{{ game.id }}">
+            <input type="hidden" name="game_id" value="{{ game.id }}">
             <input class="btn btn-dark sport-text" type="submit" value="Eliminar Juego">
         </form>
     {% endif %}

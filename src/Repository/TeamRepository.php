@@ -22,17 +22,6 @@ class TeamRepository extends ServiceEntityRepository
         parent::__construct($registry, Team::class);
     }
 
-    /** @return Team[] */
-	public function findCompleteTeamsFromCompetition(Competition $competition): array
-	{
-		return $this->createQueryBuilder('t')
-			->select('t', 'p')
-			->join('t.players', 'p')
-			->where('t.competition = :competition')
-			->setParameter('competition', $competition)
-			->getQuery()->execute();
-    }
-
 	public function save(Team $team, bool $flush = true)
 	{
 		$this->getEntityManager()->persist($team);
@@ -48,18 +37,24 @@ class TeamRepository extends ServiceEntityRepository
             $this->getEntityManager()->remove($teams[$i]);
         }
         if ($flush) {
-            $this->getEntityManager()->flush();
+            $this->flush();
         }
     }
 
-    public function hasTeamInCompetition(Competition $competition, Player $player) {
-        for ($i = 0; $i < count($competition->getTeams()); $i++) {
-            $team = $competition->getTeams()->toArray()[$i];
-            if (in_array($player, $team->getPlayers()->toArray())) {
-                return $team;
+    public function flush()
+    {
+        $this->getEntityManager()->flush();
+    }
+
+    public function findOneByPlayerAndCompetition(Player $player, Competition $competition): ?Team {
+        foreach ($competition->getTeams() as $team) {
+            foreach ($team->getPlayers() as $teamPlayer) {
+                if ($player->equals($teamPlayer)) {
+                    return $team;
+                }
             }
         }
-        return false;
+        return null;
     }
 
     // /**

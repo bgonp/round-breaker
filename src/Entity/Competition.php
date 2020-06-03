@@ -68,11 +68,6 @@ class Competition extends Base
     private $streamer;
 
     /**
-     * @ORM\Column(type="boolean")
-     */
-    private $isIndividual;
-
-    /**
      * @ORM\Column(type="integer")
      * @Assert\Range(
      *      min = 1,
@@ -125,18 +120,6 @@ class Competition extends Base
     public function setIsOpen(bool $isOpen): self
     {
         $this->isOpen = $isOpen;
-
-        return $this;
-    }
-
-    public function getIsIndividual(): ?bool
-    {
-        return $this->isIndividual;
-    }
-
-    public function setIsIndividual(bool $isIndividual): self
-    {
-        $this->isIndividual = $isIndividual;
 
         return $this;
     }

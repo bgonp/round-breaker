@@ -3,8 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\Competition;
+use App\Entity\Player;
 use App\Entity\Registration;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
@@ -28,7 +30,7 @@ class RegistrationRepository extends ServiceEntityRepository
         }
     }
 
-    public function findByCompetitionAndTwitchName(Competition $competition, string $twitchName): ?Registration
+    public function findOneByCompetitionAndTwitchName(Competition $competition, string $twitchName): ?Registration
     {
         $registrations = $this->createQueryBuilder('r')
             ->join('r.player', 'p')
@@ -42,6 +44,61 @@ class RegistrationRepository extends ServiceEntityRepository
             return null;
         }
         return $registrations[0];
+    }
+
+    public function findOneByPlayerAndCompetition(Player $player, Competition $competition): ?Registration
+    {
+        return $this->createQueryBuilder('r')
+            ->where('r.competition = :competition')
+            ->andWhere('r.player = :player')
+            ->setParameter('competition', $competition)
+            ->setParameter('player', $player)
+            ->getQuery()->getOneOrNullResult();
+    }
+
+    /** @return Collection|Registration[] */
+    public function findConfirmedByCompetitionRandomized(Competition $competition, int $maxResults): Collection
+    {
+        return $this->createQueryBuilder('r')
+            ->where('r.competition = :competition')
+            ->andWhere('r.isConfirmed = 1')
+            ->setMaxResults($maxResults)
+            ->setParameter('competition', $competition)
+            ->orderBy('RAND()')
+            ->getQuery()->execute();
+    }
+
+    /** @return Collection|Registration[] */
+    public function findRandomConfirmedNotInTeam(Competition $competition): Collection
+    {
+        $qb = $this->createQueryBuilder('r');
+        return $qb
+            ->where('r.competition = :competition')
+            ->andWhere('r.isConfirmed = 1')
+            ->andWhere('r NOT IN (:registrations)')
+            ->orderBy('RAND()')
+            ->setParameter('competition', $competition)
+            ->setParameter('registrations', $qb
+                ->join('r.competition', 'c')
+                ->join('c.teams', 't')
+                ->join('t.players', 'p')
+                ->where('r.competition = :competition')
+                ->setParameter('competition', $competition)
+                ->getDQL()
+            )->getQuery()->execute();
+    }
+
+    public function remove(Registration $registration, bool $flush = true)
+    {
+        $this->getEntityManager()->remove($registration);
+        if ($flush) {
+            $this->flush();
+        }
+    }
+
+    public function flush()
+    {
+        $this->getEntityManager()->flush();
     }
 
     // /**

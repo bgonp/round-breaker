@@ -20,34 +20,22 @@ class TeamController extends AbstractController
     /**
      * @Route("/{id}/edit", name="team_edit", methods={"GET", "POST"})
      */
-    public function editTeam(
-        Request $request,
-        Team $team,
-        TeamRepository $teamRepository
-    ) {
-        if ($team->getCaptain()->getUsername() == $this->getUser()->getUsername()) {
-            if ($request->request->has('name')) {
-                $team->setName($request->request->get('name'));
-                $teamRepository->save($team);
+    public function edit(Request $request, Team $team, TeamRepository $teamRepository)
+    {
+        if ($team->getCaptain()->equals($this->getUser()) || $this->isGranted('ROLE_ADMIN')) {
+            if ($request->isMethod('POST')) {
+                $teamRepository->save($team->setName($request->request->get('name')));
             }
-            return $this->render('team/edit.html.twig', [
-                'controller_name' => 'TeamController',
-                'team' => $team
-            ]);
-        } else {
-            return $this->redirectToRoute('main');
+            return $this->render('team/edit.html.twig', ['team' => $team]);
         }
+        return $this->redirectToRoute('competition_show', ['id' => $team->getCompetition()->getId()]);
     }
 
     /**
      * @Route("/{id}", name="team_show", methods={"GET"})
      */
-    public function viewTeam(
-        Team $team
-    ) {
-        return $this->render('team/show.html.twig', [
-            'controller_name' => 'TeamController',
-            'team' => $team
-        ]);
+    public function show(Team $team)
+    {
+        return $this->render('team/show.html.twig', ['team' => $team]);
     }
 }

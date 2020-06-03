@@ -33,8 +33,13 @@ class CompetitionRepository extends ServiceEntityRepository
     {
         $this->getEntityManager()->remove($competition);
         if ($flush) {
-            $this->getEntityManager()->flush();
+            $this->flush();
         }
+    }
+
+    public function flush()
+    {
+        $this->getEntityManager()->flush();
     }
 
     /** @return Competition|null Random competition from the last 3 months or null if it doesn't exists */
@@ -44,15 +49,15 @@ class CompetitionRepository extends ServiceEntityRepository
             ->select('c', 'r', 't')
             ->join('c.rounds', 'r')
             ->join('r.teams', 't')
-            ->orderBy('c.heldAt', 'DESC')
+            ->orderBy('r.bracketLevel')
+            ->addOrderBy('r.bracketOrder')
+            ->addOrderBy('t.id')
+            ->addOrderBy('RAND()')
             ->where('c.heldAt >= :since')
             ->andWhere('c.isFinished = 1')
             ->setParameter('since', strtotime('-3 month'))
             ->getQuery()->execute();
-        if (count($result) === 0) {
-            return null;
-        }
-        return $result[rand(0, count($result)-1)];
+        return count($result) === 0 ? null : $result[0];
     }
 
     public function findCompleteById(int $competitionId): ?Competition
@@ -66,6 +71,7 @@ class CompetitionRepository extends ServiceEntityRepository
             ->setParameter('id', $competitionId)
             ->orderBy('r.bracketLevel', 'ASC')
             ->addOrderBy('r.bracketOrder', 'ASC')
+            ->addOrderBy('t.id')
             ->getQuery()->getOneOrNullResult();
     }
 

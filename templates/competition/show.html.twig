@@ -35,13 +35,13 @@
                 <span class="float-right">
                     <!--<a href="#"><i class="fas fa-skull"></i></a>-->
                     <form action="{{ path('registration_delete') }}" method="POST" class="d-inline">
-                        <input type="hidden" name="competitionId" value="{{ competition.id }}">
-                        <input type="hidden" name="playerId" value="{{ player.id }}">
+                        <input type="hidden" name="competition_id" value="{{ competition.id }}">
+                        <input type="hidden" name="player_id" value="{{ player.id }}">
                         <button class="btn fas fa-skull controlls" type="submit" value="ban"></button>
                     </form>
                     <form action="{{ path('toggle_confirmation') }}" method="POST" class="d-inline">
-                        <input type="hidden" name="competitionId" value="{{ competition.id }}">
-                        <input type="hidden" name="playerId" value="{{ registration.player.id }}">
+                        <input type="hidden" name="competition_id" value="{{ competition.id }}">
+                        <input type="hidden" name="player_id" value="{{ registration.player.id }}">
                     {% if registration.isConfirmed %}
                         <input type="hidden" name="confirm" value="0">
                         <button class="btn far fa-check-square controlls" type="submit" value="Unconfirm"></button>
@@ -71,20 +71,20 @@
     </form>
 
     <form action="{{ path('competition_fill') }}" method="POST" class="d-inline">
-        <input type="hidden" name="id" value="{{ competition.id }}">
+        <input type="hidden" name="competition_id" value="{{ competition.id }}">
         <input class="btn btn-dark sport-text mb-3" type="submit" value="Fill Teams">
     </form>
 {% endif %}
     {% if createRegistrationButtons %}
         {% if player in competition.players %}
             <form action="{{ path('registration_delete') }}" method="POST" class="d-inline">
-                <input type="hidden" name="competitionId" value="{{ competition.id }}">
-                <input type="hidden" name="playerId" value="{{ player.id }}">
+                <input type="hidden" name="competition_id" value="{{ competition.id }}">
+                <input type="hidden" name="player_id" value="{{ player.id }}">
                 <input class="btn btn-dark sport-text mb-3" type="submit" value="Abandonar">
             </form>
         {% else %}
             <form action="{{ path('registration_new') }}" method="POST" class="d-inline">
-                <input type="hidden" name="id" value="{{ competition.id }}">
+                <input type="hidden" name="competition_id" value="{{ competition.id }}">
                 <input class="btn btn-dark sport-text mb-3" type="submit" value="Unirse">
             </form>
         {% endif %}

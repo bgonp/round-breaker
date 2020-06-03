@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\RegistrationRepository")
+ * @ORM\Table(uniqueConstraints={@ORM\UniqueConstraint(name="unique_player_competition", columns={"player_id", "competition_id"})})
  */
 class Registration extends Base
 {
