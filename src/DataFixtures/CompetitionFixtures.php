@@ -21,7 +21,6 @@ class CompetitionFixtures extends Fixture implements DependentFixtureInterface
         $competition->setHeldAt(new \DateTime());
         $competition->setIsOpen(false);
         $competition->setIsFinished(true);
-        $competition->setIsIndividual(false);
         $competition->setPlayersPerTeam(3);
         $competition->setMaxPlayers(12);
         $manager->persist($competition);

@@ -27,12 +27,14 @@ class PlayerFixtures extends Fixture
             $player->setEmail($i.'t@gmail.com');
             $player->setPassword($this->encoder->encodePassword($player, 'randompassword'));
             if ($i === 1) $player->setTwitchName('vayaustecondioh');
+            else $player->setTwitchName('tester'.substr('0'.$i,-2));
             $this->playerRepository->save($player, false);
         }
         $admin = new Player();
         $admin->setUsername('admin');
         $admin->setEmail('admin@admin.com');
         $admin->setRoles(['ROLE_ADMIN']);
+        $admin->setTwitchName('admin');
         $admin->setPassword($this->encoder->encodePassword($admin, 'randompassword'));
         $this->playerRepository->save($admin);
     }

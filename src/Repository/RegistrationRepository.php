@@ -22,14 +22,6 @@ class RegistrationRepository extends ServiceEntityRepository
         parent::__construct($registry, Registration::class);
     }
 
-    public function save(Registration $registration, bool $flush = true)
-    {
-        $this->getEntityManager()->persist($registration);
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
-    }
-
     public function findOneByCompetitionAndTwitchName(Competition $competition, string $twitchName): ?Registration
     {
         $registrations = $this->createQueryBuilder('r')
@@ -57,7 +49,7 @@ class RegistrationRepository extends ServiceEntityRepository
     }
 
     /** @return Collection|Registration[] */
-    public function findConfirmedByCompetitionRandomized(Competition $competition, int $maxResults): Collection
+    public function findConfirmedByCompetitionRandomized(Competition $competition, int $maxResults): array
     {
         return $this->createQueryBuilder('r')
             ->where('r.competition = :competition')
@@ -69,7 +61,7 @@ class RegistrationRepository extends ServiceEntityRepository
     }
 
     /** @return Collection|Registration[] */
-    public function findRandomConfirmedNotInTeam(Competition $competition): Collection
+    public function findRandomConfirmedNotInTeam(Competition $competition): array
     {
         $qb = $this->createQueryBuilder('r');
         return $qb
@@ -88,7 +80,15 @@ class RegistrationRepository extends ServiceEntityRepository
             )->getQuery()->execute();
     }
 
-    public function remove(Registration $registration, bool $flush = true)
+    public function save(Registration $registration, bool $flush = true): void
+    {
+        $this->getEntityManager()->persist($registration);
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    public function remove(Registration $registration, bool $flush = true): void
     {
         $this->getEntityManager()->remove($registration);
         if ($flush) {
@@ -96,7 +96,7 @@ class RegistrationRepository extends ServiceEntityRepository
         }
     }
 
-    public function flush()
+    public function flush(): void
     {
         $this->getEntityManager()->flush();
     }

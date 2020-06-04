@@ -39,7 +39,7 @@ class Team extends Base
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Player", inversedBy="teamsCaptained")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $captain;
 

@@ -36,17 +36,12 @@ class Player extends Base implements UserInterface
     private $plainPassword;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, unique=true)
      */
     private $twitch_name;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $twitch_id;
-
-    /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
      */
     private $email;
 
@@ -164,18 +159,6 @@ class Player extends Base implements UserInterface
     public function setTwitchName(?string $twitch_name): self
     {
         $this->twitch_name = $twitch_name;
-
-        return $this;
-    }
-
-    public function getTwitchId(): ?string
-    {
-        return $this->twitch_id;
-    }
-
-    public function setTwitchId(?string $twitch_id): self
-    {
-        $this->twitch_id = $twitch_id;
 
         return $this;
     }

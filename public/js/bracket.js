@@ -19,10 +19,15 @@
             if (this.readyState == 4) {
                 if (this.status == 200) {
                     const response = JSON.parse(this.responseText);
+                    const inputFinished = document.getElementById('inputFinished');
                     if (response.origin)
                         updateRound(response.origin.round_id, response.origin.teams, response.origin.winner);
                     if (response.destination)
                         updateRound(response.destination.round_id, response.destination.teams, response.destination.winner);
+                    if (response.finished)
+                        inputFinished.setAttribute('checked', 'checked');
+                    else
+                        inputFinished.removeAttribute('checked');
                 } else {
                     alert('You cannot do that!');
                 }
@@ -41,10 +46,10 @@
             roundTeams[i].dataset.team = teamId;
             roundTeams[i].title = teamTitle;
             roundTeams[i].innerText = teamTitle;
-            if (winner === teamId) roundTeams[i].classList.add('win')
-            else roundTeams[i].classList.remove('win');
-            if (winner && winner !== teamId) roundTeams[i].classList.add('lose')
-            else roundTeams[i].classList.remove('lose');
+            if (winner === teamId) roundTeams[i].parentElement.classList.add('win')
+            else roundTeams[i].parentElement.classList.remove('win');
+            if (winner && winner !== teamId) roundTeams[i].parentElement.classList.add('lose')
+            else roundTeams[i].parentElement.classList.remove('lose');
         }
     }
 })();

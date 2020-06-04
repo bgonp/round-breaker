@@ -1,8 +1,27 @@
 {% extends 'base.html.twig' %}
 
 {% block content %}
-<a href="{{ path('competition_show', {id: competition.id}) }}">Go back</a>
-<h1 class="text-center">Editar Competición</h1>
+<!--<a href="{{ path('competition_show', {id: competition.id}) }}">Go back</a>-->
+<div class="row competition-title">
+    <div class="col-12">
+        <h1 class="text-center">Editar {{ competition.name }}</h1>
+    </div>
+</div>
+
+{% if competition.isOpen %}
+<form action="{{ path('competition_randomize') }}" method="POST" class="d-inline">
+    <input type="hidden" name="competition_id" value="{{ competition.id }}">
+    <button class="btn btn-lg btn-block btn-dark break-text-large my-3" type="submit">Asignar equipos!</button>
+</form>
+{% endif %}
+
+{% if showFillButton %}
+<form action="{{ path('competition_fill') }}" method="POST" class="d-inline">
+    <input type="hidden" name="competition_id" value="{{ competition.id }}">
+    <button class="btn btn-lg btn-block btn-dark break-text-large my-3" type="submit">Completar grupos</button>
+</form>
+{% endif %}
+
 <div class="row">
     <div class="col-md-12 col-lg-8 col-xl-6 border-0">
         <form method="post">
@@ -10,9 +29,11 @@
                 <label for="inputName" class="sport-text-form">Nombre</label>
                 <input type="text" value="{{ competition.name }}" name="name" id="inputName"
                     class="form-control mb-3 form-control-lg" autofocus required>
+
                 <label for="inputDescription" class="sport-text-form">Descripción</label>
                 <input type="text" value="{{ competition.description }}" name="description" id="inputDescription"
                     class="form-control mb-3 form-control-lg">
+
                 {% if competition.isOpen %}
                 <label for="inputTeamNum" class="sport-text-form">Número de Equipos</label>
                 <select id="inputTeamNum" name="teamNum"
@@ -23,77 +44,88 @@
                     <option value="8"{{ competition|teamsNumber == 8 ? ' selected' : '' }}>8</option>
                     <option value="16"{{ competition|teamsNumber == 16 ? ' selected' : '' }}>16</option>
                 </select>
+
                 <label for="inputPlayersPerTeam" class="sport-text-form">Jugadores por Equipo</label>
                 <input type="number" name="playersPerTeam" id="inputPlayersPerTeam"
                     class="form-control col-12 mb-3 form-control-lg sport-text-form" max="5" min="1" value="{{ competition.PlayersPerTeam }}" required>
-                <label for="game" class="sport-text-form">Juego</label>
-                <select name="game" class="form-control col-12 mb-3 sport-text-form form-control-lg" required>
+
+                <label for="inputGame" class="sport-text-form">Juego</label>
+                <select name="game" id="inputGame" class="form-control col-12 mb-3 sport-text-form form-control-lg" required>
                     <option value="">Escoge...</option>
                     {% for game in games %}
                     <option value="{{ game.id }}"{{ competition.game == game ? ' selected' : '' }}>{{ game.name }}</option>
                     {% endfor %}
                 </select>
-                {% endif %}
-                {% if not competition.isFinished %}
+
                 <label for="dateAndTime" class="sport-text-form mb-3">Fecha y Hora</label>
                 <input class="form-control mb-3 form-control-lg" type="datetime-local"
                        value="{{ competition.heldAt|toDateTimeFormat }}" id="dateAndTime" name="heldAt">
                 {% endif %}
+
                 <div class="custom-control custom-checkbox check">
                     <input type="checkbox" name="open" id="inputOpen"{{ competition.isOpen ? ' checked' : '' }}>
                     <label for="inputOpen" class="sport-text-form">Abierta</label>
                 </div>
+
                 <div class="custom-control custom-checkbox check">
                     <input type="checkbox" name="finished" id="inputFinished"{{ competition.isFinished ? ' checked' : '' }}>
                     <label for="inputFinished" class="sport-text-form">Finalizada</label>
                 </div>
+
                 <button class="btn btn-lg btn-dark break-text-large mt-3" type="submit">
                     Editar!
                 </button>
             </div>
         </form>
     </div>
+
     <div id="chat" class="col-md-12 col-lg-8 col-xl-6 border-0">
         <form id="twitch_params">
             <div class="card form-group border border-secondary p-3">
                 <input class="form-control mb-3 form-control-lg" type="hidden" name="competition_id"
-                    value="{{ competition.id }}">
-                <input class="form-control mb-3 form-control-lg" type="text" placeholder="Username"
-                    name="username" /><br>
-                <input class="form-control mb-3 form-control-lg" type="text" placeholder="Password"
-                    name="password" /><br>
-                <input class="form-control mb-3 form-control-lg" type="text" placeholder="Channel" name="channel" /><br>
-                <button class="btn btn-lg btn-dark break-text-large mt-3" type="submit">Escuchar chat!</button>
+                    value="{{ competition.id }}" />
+                <label class="sport-text-form" for="inputBotName">Twitch bot name</label>
+                <input class="form-control mb-3 form-control-lg" type="text"
+                    id="inputBotName" name="twitch_bot_name" value="{{ competition.twitchBotName }}" />
+                <label class="sport-text-form" for="inputBotToken">Twitch bot token</label>
+                <input class="form-control mb-3 form-control-lg" type="text"
+                    id="inputBotToken" name="twitch_bot_token" value="{{ competition.twitchBotToken }}" />
+                <label class="sport-text-form" for="inputChannel">Twitch channel</label>
+                <input class="form-control mb-3 form-control-lg" type="text"
+                    id="inputChannel" name="twitch_channel" value="{{ competition.twitchChannel }}" />
+                <button class="btn btn-lg btn-dark break-text-large mt-3" type="submit"{{ competition.isOpen ? '' : ' disabled' }}>
+                    Abrir confirmaciones!
+                </button>
+            </div>
         </form>
     </div>
 
 </div>
 <script src="{{ asset('js/tmi.js') }}"></script>
 <script src="{{ asset('js/twitch.js') }}"></script>
-</div>
-{% if competition.rounds|length > 0 %}
-{% include 'brackets/bracket_8.html.twig' %}
+
+{% if not competition.isOpen %}
+    {% include 'brackets/bracket_8.html.twig' %}
 {% endif %}
-<ul class="list-group list-group-flush sport-text mb-3">
+
+<ul class="list-group list-group-flush sport-text mb-3 registrations">
     {% for registration in competition.registrations %}
-    <li class="list-group-item w-50">{{ registration.player.username }}
+    <li id="registration-{{ registration.id }}" class="list-group-item w-50{{ registration.isConfirmed ? ' confirmed' : '' }}">
+        {{ registration.player.username }}
         <span class="float-right">
-            {% if showConfirm %}
+            {% if competition.isOpen %}
             <form action="{{ path('registration_delete') }}" method="POST" class="d-inline">
                 <input type="hidden" name="registration_id" value="{{ registration.id }}">
-                <button class="fas fa-skull controls" type="submit" title="ban"></button>
+                <button class="fas fa-skull controls" type="submit" title="ban" onclick="if (!confirm('¿Estás seguro?')) return false"></button>
             </form>
-            {% endif %}
-            {% if showKick %}
             <form action="{{ path('toggle_confirmation') }}" method="POST" class="d-inline">
                 <input type="hidden" name="registration_id" value="{{ registration.id }}">
-                {% if registration.isConfirmed %}
                 <input type="hidden" name="confirm" value="{{ registration.isConfirmed ? 0 : 1 }}">
-                <button class="far fa-check-square controls" type="submit" value="{{ registration.isConfirmed ? 'Unconfirm' : 1 }}"></button>
-                {% else %}
-                <input type="hidden" name="confirm" value="1">
-                <button class="far fa-square controls" type="submit" value="Confirm"></button>
-                {% endif %}
+                <button class="controls" type="submit"
+                    title="{{ registration.isConfirmed ? 'Unconfirm' : 'Confirm' }}">
+                    <i class="far fa-square"></i>
+                    <i class="far fa-check-square"></i>
+                </button>
             </form>
             {% endif %}
 
@@ -102,14 +134,3 @@
     {% endfor %}
 </ul>
 {% endblock %}
-
-{# TODO #}
-<form action="{{ path('competition_randomize') }}" method="POST" class="d-inline">
-    <input type="hidden" name="competition_id" value="{{ competition.id }}">
-    <input class="btn btn-dark sport-text mb-3" type="submit" value="Randomize Teams">
-</form>
-
-<form action="{{ path('competition_fill') }}" method="POST" class="d-inline">
-    <input type="hidden" name="competition_id" value="{{ competition.id }}">
-    <input class="btn btn-dark sport-text mb-3" type="submit" value="Fill Teams">
-</form>

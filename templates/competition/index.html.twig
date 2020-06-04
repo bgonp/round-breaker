@@ -4,12 +4,13 @@
 <div style="min-height: 867px;" class="pt-3">
 
     <h1>{% if game is defined %}{{ game.name }} - {% endif %}Torneos</h1>
+    {% if game is defined %}<p>{{ game.description }}</p>{% endif %}
     <ul class="list-group list-group-flush sport-text mb-3">
         {% for competition in competitions %}
         <li class="list-group-item d-flex justify-content-between w-75">
             <span class="d-flex align-items-center">
-                <a href="{{ path('competition_show', {id: competition.id}) }}">{{ competition.name }}&nbsp;</a>
-                - {{ competition.game.name }}{% if competition.description %} - {{ competition.description }}{% endif %}
+                <a class="mr-1" href="{{ path('competition_show', {id: competition.id}) }}">{{ competition.name }}</a>
+                ({{ competition.game.name }}){% if competition.heldAt %} {{ competition.heldAt|toDateTimeLocal }}{% endif %}
             </span>
             {% if competition.isOpen %}
                 {% if competition in competitionsRegistered %}
@@ -17,7 +18,7 @@
                         <input type="hidden" name="registration_id" value="{{ registration.id }}">
                         <input class="btn btn-dark sport-text" type="submit" value="Abandonar">
                     </form>
-                {% else %}
+                {% elseif player %}
                     <form action="{{ path('registration_new') }}" method="POST" class="d-inline">
                         <input type="hidden" name="competition_id" value="{{ competition.id }}">
                         <input class="btn btn-dark sport-text" type="submit" value="Unirse">

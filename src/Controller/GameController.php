@@ -37,8 +37,8 @@ class GameController extends AbstractController
     public function createGame(
         Request $request,
         GameRepository $gameRepository,
-        GameService $gameService)
-    {
+        GameService $gameService
+    ): Response {
         if ($request->request->has('name')) {
             $game = $gameRepository->findOneBy(['name' => $request->request->get('name')]);
             if (!$game) {
@@ -59,7 +59,7 @@ class GameController extends AbstractController
     public function deleteGame(
         Request $request,
         GameRepository $gameRepository
-    ) {
+    ): Response {
         if ($request->request->has('id')) {
             $game = $gameRepository->findOneBy(['id' => $request->request->get('id')]);
             $entityManager = $this->getDoctrine()->getManager();
@@ -80,7 +80,7 @@ class GameController extends AbstractController
         Request $request,
         Game $game,
         GameRepository $gameRepository
-    ) {
+    ): Response {
         if ($this->isGranted("ROLE_ADMIN")) {
             if ($request->request->has('name')) {
                 $game->setName($request->request->get('name'));
@@ -99,19 +99,15 @@ class GameController extends AbstractController
     /**
      * @Route("/{id}", name="game_show", methods={"GET"})
      */
-    public function viewGame(
-        Game $game,
-        CompetitionRepository $competitionRepository,
-        PlayerRepository $playerRepository
-    ) {
-        $user = $this->getUser();
-        $isAuthed = $user !== null; 
+    public function viewGame(Game $game, CompetitionRepository $competitionRepository): Response
+    {
+        $player = $this->getUser();
         return $this->render('game/show.html.twig', [
-            'controller_name' => 'GameController',
             'game' => $game,
-            'competitions' => $competitionRepository->findBy(['game' => $game]),
-            'player'=> $this->getUser() ? $playerRepository->findOneBy(["username" => $this->getUser()->getUsername()]) : null,
-            'canEditGame' => $isAuthed && $this->isGranted('ROLE_ADMIN'),
+            'competitions' => $competitionRepository->findByGame($game),
+            'canEditGame' => $this->isGranted('ROLE_ADMIN'),
+            'player'=> $player,
+            'competitionsRegistered' => $player ? $competitionRepository->findOpenByPlayerRegistered($player) : [],
         ]);
     }
 }

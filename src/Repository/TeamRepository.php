@@ -33,6 +33,18 @@ class TeamRepository extends ServiceEntityRepository
             ->getQuery()->getOneOrNullResult();
     }
 
+    /** @return Team[]|Collection */
+    public function findIncompleteByCompetition(Competition $competition): array
+    {
+        return $this->createQueryBuilder('t')
+            ->select('t', 'COUNT(p.id)')
+            ->join('t.players', 'p')
+            ->groupBy('t')
+            ->having('COUNT(p.id) < :players')
+            ->setParameter('players', $competition->getPlayersPerTeam())
+            ->getQuery()->execute();
+    }
+
 	public function save(Team $team, bool $flush = true): void
 	{
 		$this->getEntityManager()->persist($team);

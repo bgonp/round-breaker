@@ -2,60 +2,72 @@
 
 {% block content %}
 
-<div class="row">
+<div class="row competition-title">
+    <div class="col-12">
+        <h1>{{competition.name}}</h1>
+    </div>
+</div>
 
-    <h1>{{competition.name}}</h1>
+<div class="row competition-buttons">
+    <div class="col-12">
 
-    {% if showEditButtons %}
-        <a class="btn btn-dark mb-3 sport-text" href="{{ path('competition_edit', {id: competition.id}) }}">Editar Torneo</a>
-        <form action="{{ path('competition_delete') }}" method="POST" class="d-inline">
-            <input type="hidden" name="competition_id" value="{{ competition.id }}">
-            <input class="btn btn-dark sport-text mb-3" type="submit" value="Eliminar">
-        </form>
-    {% endif %}
-
-    {% if showRegistrationButton %}
-        {% if playerRegistration %}
-            <form action="{{ path('registration_delete') }}" method="POST" class="d-inline">
-                <input type="hidden" name="registration_id" value="{{ playerRegistration.id }}">
-                <input class="btn btn-dark sport-text mb-3" type="submit" value="Abandonar">
-            </form>
-        {% else %}
-            <form action="{{ path('registration_new') }}" method="POST" class="d-inline">
+        {% if showEditButtons %}
+            <a class="btn btn-dark mb-3 sport-text" href="{{ path('competition_edit', {id: competition.id}) }}">Editar Torneo</a>
+            <form action="{{ path('competition_delete') }}" method="POST" class="d-inline">
                 <input type="hidden" name="competition_id" value="{{ competition.id }}">
-                <input class="btn btn-dark sport-text mb-3" type="submit" value="Unirse">
+                <input class="btn btn-dark sport-text mb-3" type="submit" value="Eliminar">
             </form>
         {% endif %}
-    {% endif %}
 
-    {% if not competition.isOpen %}
+        {% if showRegistrationButton %}
+            {% if playerRegistration %}
+                <form action="{{ path('registration_delete') }}" method="POST" class="d-inline">
+                    <input type="hidden" name="registration_id" value="{{ playerRegistration.id }}">
+                    <input class="btn btn-dark sport-text mb-3" type="submit" value="Abandonar">
+                </form>
+            {% else %}
+                <form action="{{ path('registration_new') }}" method="POST" class="d-inline">
+                    <input type="hidden" name="competition_id" value="{{ competition.id }}">
+                    <input class="btn btn-dark sport-text mb-3" type="submit" value="Unirse">
+                </form>
+            {% endif %}
+        {% endif %}
 
-        {% include 'brackets/bracket_8.html.twig' %}
+    </div>
+</div>
 
-        <h1>Equipos</h1>
-        {% for team in competition.teams %}
-        <div class="w-50 my-2 bg-light border">
-            <div class="card-body">
-                <h5 class="card-title sport-text">{{ team.name }}</h5>
-                <ul class="list-group">
-                    {% for player in team.players %}
-                    <li class="list-group-item sport-text">{{ player.username }}</li>
-                    {% endfor %}
-                </ul>
+<div class="row competition-data">
+    <div class="col-12">
 
-            </div>
-        </div>
-        {% endfor %}
+        {% if not competition.isOpen %}
 
-    {% endif %}
+            {% include 'brackets/bracket_8.html.twig' %}
 
-    <h1>Jugadores Registrados</h1>
-    <ul class="list-group list-group-flush sport-text mb-3">
-        {% for registration in competition.registrations %}
-        <li class="list-group-item w-50">{{ registration.player.username }}</li>
-        {% endfor %}
-    </ul>
+            <h1>Equipos</h1>
+            {% for team in competition.teams %}
+                <div class="w-50 my-2 bg-light border">
+                    <div class="card-body">
+                        <h5 class="card-title sport-text">{{ team.name }}</h5>
+                        <ul class="list-group">
+                            {% for player in team.players %}
+                                <li class="list-group-item sport-text">{{ player.username }}</li>
+                            {% endfor %}
+                        </ul>
 
+                    </div>
+                </div>
+            {% endfor %}
+
+        {% endif %}
+
+        <h1>Jugadores Registrados</h1>
+        <ul class="list-group list-group-flush sport-text mb-3">
+            {% for registration in competition.registrations %}
+                <li class="list-group-item w-50">{{ registration.player.username }}</li>
+            {% endfor %}
+        </ul>
+
+    </div>
 </div>
 
 {% endblock %}

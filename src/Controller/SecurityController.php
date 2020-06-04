@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Player;
 use App\Repository\PlayerRepository;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,7 +24,7 @@ class SecurityController extends AbstractController
         }
         $error = $authenticationUtils->getLastAuthenticationError();
         if ($error) {
-            $this->addFlash('error', $error->getMessage());
+            $this->addFlash('error', 'Credenciales incorrectas');
         }
         $params = $error ? ['last_username' => $authenticationUtils->getLastUsername()] : [];
         return $this->redirectToRoute('main', $params);
@@ -64,7 +65,11 @@ class SecurityController extends AbstractController
             ->setEmail($email)
             ->setPassword($passwordEncoder->encodePassword($player, $plainPassword));
 
-        $playerRepository->save($player);
+        try {
+            $playerRepository->save($player);
+        } catch (UniqueConstraintViolationException $e) {
+            $this->addFlash('error', 'El usuario ya existe');
+        }
         return $this->redirectToRoute('main');
     }
 }

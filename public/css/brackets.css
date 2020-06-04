@@ -4,30 +4,29 @@
 	margin: 0 auto 20px;
 	max-width: 100%;
 }
-.single.fullscreen {
+body.fullscreen-bracket {
+	overflow: hidden;
+}
+body.fullscreen-bracket .single.bracket {
 	position: fixed;
 	top: 0;
 	right: 0;
 	bottom: 0;
 	left: 0;
-	background: #E5E5E5;
-	margin: 0;
-	overflow: auto;
+	background: #FFF;
+	margin: 0!important;
 	z-index: 100;
 }
-.single.bracket.fullscreen .scrollable-x {
-	overflow: visible;
-}
-.single.fullscreen .bracket-container,
-.single.fullscreen .bets {
+body.fullscreen-bracket .bracket-container {
 	position: absolute;
-	top: 80px;
-	left: 0;
-	width: 100%;
-	border-collapse: collapse;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	overflow: hidden;
 }
 .single.bracket .bracket {
 	margin-bottom: 20px;
+	border-collapse: collapse;
 }
 .single.bracket .bracket tr.spacer {
 	height: 20px;
@@ -45,7 +44,7 @@
 }
 .single.bracket .bracket td {
 	border: 3px solid transparent;
-	padding: 0;
+	padding: 0 12px 0 0;
 }
 .single.bracket .bracket .line.br {
 	border-right-color:#000;
@@ -60,6 +59,9 @@
 	padding: 0 15px;
 }
 
+.single.bracket .bracket .match {
+	position: relative;
+}
 .single.bracket .bracket .match span,
 .single.bracket .bracket .match a,
 .single.bracket .bracket .match a:hover,
@@ -74,50 +76,52 @@
 	font-family: deporte;
 	letter-spacing: 2px;
 	white-space: nowrap;
+	overflow: hidden;
 	text-overflow: ellipsis;
 	text-decoration: none;
-	overflow: hidden;
 	z-index: 1;
 }
-.single.bracket .bracket .match span::before,
-.single.bracket .bracket .match span::after,
-.single.bracket .bracket .match a::before,
-.single.bracket .bracket .match a::after {
+.single.bracket .bracket .match::before,
+.single.bracket .bracket .match::after,
+.single.bracket .bracket .match::before,
+.single.bracket .bracket .match::after {
 	content: '';
 	position: absolute;
 	transform: skewX(-15deg);
 	top: 0;
-	right: 32px;
+	right: 19px;
 	bottom: 0;
 	width: 300px;
 	background: #000;
-	z-index: -1;
+	z-index: 10;
 }
-.single.bracket .bracket .match span::before,
-.single.bracket .bracket .match a::before {
+.single.bracket .bracket .match::before,
+.single.bracket .bracket .match::after {
+	width: 15px;
+	right: 10px;
+}
+.single.bracket .bracket .match::before,
+.single.bracket .bracket .match::before {
 	background: #4cd365;
-	right: 21px;
+	right: 24px;
 }
 
 .single.bracket .bracket .match span,
 .single.bracket .bracket .match a {
-	padding-right: 30px!important;
-	background:#000;
-	background-image: url('../img/skew.png');
-	background-position: bottom right;
-	background-repeat: no-repeat;
+	padding: 0 30px 0 12px!important;
+	margin-right: 12px;
+	line-height: 50px;
+	height: 50px;
+	background: #000;
 }
 
-.single.bracket .bracket .match .lose {
-	background:#6c757d;
+.single.bracket .bracket .match.lose a {
 	color: #E5E5E5!important;
-	background-image: url('../img/skew.png');
-	background-position: bottom right;
-	background-repeat: no-repeat;
+	background:#6c757d;
 }
 
-.single.bracket .bracket .match .lose::after {
-	background:#6c757d
+.single.bracket .bracket .match.lose::after {
+	background:#6c757d;
 }
 .bracket-zoom,
 .bracket-zoom:hover,

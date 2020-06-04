@@ -64,30 +64,25 @@ class CompetitionService
         $this->competitionRepository->save($competition);
     }
 
-    public function createRound(Competition $competition, $bestOf, $bracketLevel, $bracketOrder) {
-        $round = new Round();
-        $round->setCompetition($competition);
-        $round->setBestOf($bestOf);
-        $round->setBracketLevel($bracketLevel);
-        $round->setBracketOrder($bracketOrder);
-        $this->roundRepository->save($round);
-        return $round;
-    }
-
-    public function createRounds(Competition $competition, Array $teams) {
+    public function createRounds(Competition $competition, array $teams) {
         $numRounds = count($teams)/2;
         $numLevels = log(count($teams), 2);
         for ($i = 0; $i < $numLevels; $i++) {
             for ($j = 0; $j < $numRounds; $j++) {
-                $round = $this->createRound($competition, 3, $i+1, $j+1);
+                $round = (new Round())
+                    ->setCompetition($competition)
+                    ->setBestOf(3)
+                    ->setBracketLevel($i+1)
+                    ->setBracketOrder($j+1);
                 if ($i == 0) {
                     $round->addTeam($teams[$j*2]);
                     $round->addTeam($teams[$j*2+1]);
                 }
-                $this->roundRepository->save($round);
+                $this->roundRepository->save($round, false);
             }
             $numRounds = $numRounds/2;
         }
+        $this->roundRepository->flush();
     }
 
     /** @return Round|null Affected round */

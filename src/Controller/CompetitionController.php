@@ -3,10 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Player;
-use App\Entity\Registration;
 use App\Repository\CompetitionRepository;
 use App\Repository\GameRepository;
 use App\Repository\RegistrationRepository;
+use App\Repository\TeamRepository;
 use App\Service\TeamService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Entity\Competition;
@@ -47,27 +47,28 @@ class CompetitionController extends AbstractController
         }
         if ($request->isMethod('POST')) {
             if (!($name = $request->request->get('name'))) {
-                $this->addFlash('error', 'Required field name can\'t be empty');
+                $this->addFlash('error', 'El campo nombre es obligatorio');
+            } else if (!($heldAt = new \DateTime($request->request->get('heldAt')))) {
+                $this->addFlash('error', 'El campo fecha y hora es obligatorio');
             } else {
-                $description = $request->request->get('description');
-                $game = $gameRepository->find($request->request->get('game'));
-                $playersPerTeam = $request->request->get('individual') ? 1 : $request->request->get('playersPerTeam');
+                $playersPerTeam = $request->request->get('playersPerTeam');
                 $teamNum = $request->request->get('teamNum');
-                if ($playersPerTeam > 5 || $playersPerTeam < 1) {
-                    $playersPerTeam = 1;
-                }
-                if (!is_int(log($teamNum, 2)) || $teamNum < 2 || $teamNum > 16) {
-                    $teamNum = 2;
-                }
                 $competition = (new Competition())
                     ->setName($name)
-                    ->setDescription($description)
+                    ->setDescription($request->request->get('description'))
                     ->setIsOpen(true)
                     ->setIsFinished(false)
                     ->setStreamer($player)
-                    ->setMaxPlayers($playersPerTeam * $teamNum)
-                    ->setGame($game)
-                    ->setPlayersPerTeam($playersPerTeam);
+                    ->setMaxPlayers($teamNum * $playersPerTeam)
+                    ->setGame($gameRepository->find($request->request->get('game')))
+                    ->setPlayersPerTeam($playersPerTeam)
+                    ->setHeldAt($heldAt);
+                if ($previousCompetition = $competitionRepository->findLastByStreamer($player)) {
+                    $competition
+                        ->setTwitchChannel($previousCompetition->getTwitchChannel())
+                        ->setTwitchBotName($previousCompetition->getTwitchBotName())
+                        ->setTwitchBotToken($previousCompetition->getTwitchBotToken());
+                }
                 $competitionRepository->save($competition);
                 return $this->redirectToRoute('competition_show', ['id' => $competition->getId()]);
             }
@@ -78,12 +79,53 @@ class CompetitionController extends AbstractController
     }
 
     /**
+     * @Route("/{id}/edit", name="competition_edit", methods={"GET", "POST"})
+     */
+    public function edit(
+        Request $request,
+        Competition $competition,
+        CompetitionRepository $competitionRepository,
+        TeamRepository $teamRepository,
+        GameRepository $gameRepository
+    ): Response {
+        if (!$this->isGranted('ROLE_ADMIN') && !$competition->getStreamer()->equals($this->getUser())) {
+            return $this->redirectToRoute('competition_show', ['id' => $competition->getId()]);
+        }
+        if ($request->isMethod('POST')) {
+            if (!($name = $request->request->get('name'))) {
+                $this->addFlash('error', 'El campo nombre es obligatorio');
+            } else {
+                if ($competition->getIsOpen()) {
+                    $playersPerTeam = $request->request->get('individual') ? 1 : $request->request->get('playersPerTeam');
+                    $teamNum = $request->request->get('teamNum');
+                    $competition
+                        ->setMaxPlayers($playersPerTeam * $teamNum)
+                        ->setPlayersPerTeam($playersPerTeam)
+                        ->setGame($gameRepository->find($request->request->get('game')))
+                        ->setHeldAt(new \DateTime($request->request->get('heldAt')));
+                }
+                $competition
+                    ->setName($request->request->get('name'))
+                    ->setDescription($request->request->get('description'))
+                    ->setIsOpen($request->request->get('open') ? true : false)
+                    ->setIsFinished($request->request->get('finished') ? true : false);
+                $competitionRepository->save($competition);
+            }
+        }
+        return $this->render('competition/edit.html.twig', [
+            'games' => $gameRepository->findAll(),
+            'competition' => $competition,
+            'clickable' => true,
+            'showFillButton' => !$competition->getIsOpen() && $teamRepository->findIncompleteByCompetition($competition),
+        ]);
+    }
+
+    /**
      * @Route("/delete", name="competition_delete", methods={"POST"})
      */
     public function delete(Competition $competition, CompetitionRepository $competitionRepository) {
         if ($this->isGranted('ROLE_ADMIN') || $competition->getStreamer()->equals($this->getUser())) {
             $competitionRepository->remove($competition);
-            $this->addFlash('success', 'Competition removed');
         }
         return $this->redirectToRoute('main');
     }
@@ -110,44 +152,6 @@ class CompetitionController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="competition_edit", methods={"GET", "POST"})
-     */
-    public function edit(
-        Request $request,
-        Competition $competition,
-        CompetitionRepository $competitionRepository,
-        GameRepository $gameRepository
-    ): Response {
-        if (!$this->isGranted('ROLE_ADMIN') && !$competition->getStreamer()->equals($this->getUser())) {
-            return $this->redirectToRoute('competition_show', ['id' => $competition->getId()]);
-        }
-        $showKick = ($competition->getIsOpen() && !$competition->getIsFinished());
-        $showConfirm = !$competition->getIsFinished();
-        if ($request->isMethod('POST')) {
-            if (!($name = $request->request->get('name'))) {
-                $this->addFlash('error', 'Required field name can\'t be empty');
-            } else {
-                $playersPerTeam = $request->request->get('playersPerTeam');
-                $teamNum = $request->request->get('teamNum');
-                $competition->setName($request->request->get('name'));
-                $competition->setDescription($request->request->get('description'));
-                $competition->setIsOpen($request->request->get('open') ? true : false);
-                $competition->setIsFinished($request->request->get('finished') ? true : false);
-                $competition->setMaxPlayers($playersPerTeam*$teamNum);
-                $competition->setHeldAt(new \DateTime($request->request->get('dateAndTime')));
-                $competitionRepository->save($competition);
-            }
-        }
-        return $this->render('competition/edit.html.twig', [
-            'games' => $gameRepository->findAll(),
-            'competition' => $competition,
-            'clickable' => true,
-            'showKick' => $showKick,
-            'showConfirm' => $showConfirm,
-        ]);
-    }
-
-    /**
      * @Route("/{id}/bracket", name="competition_bracket", methods={"GET"})
      */
     public function viewBracket(int $id, CompetitionRepository $competitionRepository): Response {
@@ -170,11 +174,13 @@ class CompetitionController extends AbstractController
             $competition->getIsOpen() &&
             ($this->isGranted('ROLE_ADMIN') || $competition->getStreamer()->equals($this->getUser()))
         ) {
-            $teamService->randomize($competition);
+            if (!$teamService->randomize($competition)) {
+                $this->addFlash('error', 'No hay suficientes jugadores confirmados');
+            }
         } else {
-            $this->addFlash('error', 'You cannot edit this competition or it isn\'t open');
+            $this->addFlash('error', 'La competición esta cerrada o no tienes permisos para editar');
         }
-        return $this->redirectToRoute('competition_show', ['id' => $competition->getId()]);
+        return $this->redirectToRoute('competition_edit', ['id' => $competition->getId()]);
     }
 
     /**
@@ -188,7 +194,7 @@ class CompetitionController extends AbstractController
         ) {
             $teamService->fillTeams($competition);
         } else {
-            $this->addFlash('error', 'You cannot edit this competition or it is still open');
+            $this->addFlash('error', 'La competición esta cerrada o no tienes permisos para editar');
         }
         return $this->redirectToRoute('competition_show', ['id' => $competition->getId()]);
     }

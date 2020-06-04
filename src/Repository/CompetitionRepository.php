@@ -3,13 +3,12 @@
 namespace App\Repository;
 
 use App\Entity\Competition;
+use App\Entity\Game;
 use App\Entity\Player;
 use App\Entity\Registration;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\ORM\NonUniqueResultException;
-use Doctrine\ORM\NoResultException;
 
 /**
  * @method Competition|null find($id, $lockMode = null, $lockVersion = null)
@@ -45,8 +44,20 @@ class CompetitionRepository extends ServiceEntityRepository
         $this->getEntityManager()->flush();
     }
 
+    /** @return Competition[]|Collection */
+    public function findByGame(Game $game): array
+    {
+        return $this->findBy(['game' => $game], ['heldAt' => 'DESC']);
+    }
+
+    public function findLastByStreamer(Player $player): Competition
+    {
+        return $this->findOneBy(['streamer' => $player], ['updatedAt' => 'DESC']);
+
+    }
+
     /** @return Competition|null Random competition from the last 3 months or null if it doesn't exists */
-    public function findRandomFinishedWithRoundsAndTeams(): ?Competition
+    public function findOneRandomFinishedWithRoundsAndTeams(): ?Competition
     {
         $result = $this->createQueryBuilder('c')
             ->select('c', 'r', 't')

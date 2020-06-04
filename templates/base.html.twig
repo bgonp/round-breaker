@@ -14,11 +14,19 @@
 
 <body class="bg-secondary">
     {% include 'navbar.html.twig' %}
-    <div class="container-fluid main-container my-xl-4 bg-white">
+    <div class="container-fluid main-container my-xl-4 py-4 bg-white">
         {% block content %}{% endblock %}
     </div>
     {% include 'footer.html.twig' %}
-    {% block javascripts %}{% endblock %}
+    {% for message in app.session.flashBag.get('error') %}
+        <div class="message-container">
+            <div class="message">
+                <p class="m-0">{{ message }}</p>
+                <a href="#" class="close"><i class="fas fa-window-close"></i></a>
+            </div>
+        </div>
+    {% endfor %}
+    <script src="{{ asset('js/main.js') }}"></script>
 </body>
 
 </html>

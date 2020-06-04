@@ -3,43 +3,42 @@
 {% block content %}
 {% if games %}
 <form method="post" style="min-height: 867px;">
-    <div class="col-md-12 col-lg-8 col-xl-5 border-0 p-3" style="margin: 0 auto;">
+    <div class="col-md-12 col-lg-8 col-xl-5 border-0 p-3 my-0 mx-auto">
         <h1 class="text-center">Crear Competición</h1>
         <div class="card form-group border border-secondary p-3">
             <label for="inputName" class="sport-text-form">Nombre</label>
-            <input type="text" name="name" id="inputName" class="form-control col-12 mb-3 form-control-lg" required
-                autofocus>
+            <input type="text" name="name" id="inputName"
+                   class="form-control mb-3 form-control-lg" autofocus required>
+
             <label for="inputDescription" class="sport-text-form">Descripción</label>
-            <input type="text" name="description" id="inputDescription" class="form-control col-12 mb-3 form-control-lg"
-                required>
-            <!-- <label for="inputMaxPlayers">Max Player Count</label>
-        <input type="int" name="maxPlayers" id="inputMaxPlayers" class="form-control" required> -->
+            <input type="text" name="description" id="inputDescription"
+                   class="form-control mb-3 form-control-lg">
+
             <label for="inputTeamNum" class="sport-text-form">Número de Equipos</label>
-            <select id="inputTeamNum" name="teamNum" class="form-control col-12 mb-3 sport-text-form form-control-lg">
-                <option selected value="">Escoge...</option>
+            <select id="inputTeamNum" name="teamNum" class="form-control col-12 mb-3 sport-text-form form-control-lg" required>
+                <option value="">Escoge...</option>
                 <option value="2">2</option>
                 <option value="4">4</option>
                 <option value="8">8</option>
                 <option value="16">16</option>
             </select>
+
             <label for="inputPlayersPerTeam" class="sport-text-form">Jugadores por Equipo</label>
             <input type="number" name="playersPerTeam" id="inputPlayersPerTeam"
-                class="form-control col-12 mb-4 form-control-lg sport-text-form" max="5" min="1" required>
+                   class="form-control col-12 mb-3 form-control-lg sport-text-form" max="5" min="1" required>
 
-            <div class="custom-control custom-checkbox check mb-2">
-            <input type="checkbox" name="individual" id="inputIndividual"
-                onclick="document.getElementById('inputPlayersPerTeam').disabled=this.checked;">
-            <label for="inputIndividual" class="sport-text-form">Individual</label><br>
-            </div>
-            <label for="game" class="sport-text-form">Juego</label>
-            <select name="game" class="form-control col-12 mb-3 sport-text-form form-control-lg">
+            <label for="inputGame" class="sport-text-form">Juego</label>
+            <select name="game" id="inputGame" class="form-control col-12 mb-3 sport-text-form form-control-lg" required>
+                <option value="">Escoge...</option>
                 {% for game in games %}
-                <option value="{{ game.id }}">{{ game.name }}</option>
+                    <option value="{{ game.id }}">{{ game.name }}</option>
                 {% endfor %}
             </select>
+
             <label for="dateAndTime" class="sport-text-form mb-3">Fecha y Hora</label>
-            <input class="form-control mb-3 form-control-lg" type="datetime-local" value="" name="dateAndTime" id="dateAndTime">
-            <button class="btn btn-lg btn-dark break-text-large" type="submit">
+            <input class="form-control mb-3 form-control-lg" type="datetime-local" id="dateAndTime" name="heldAt" required>
+
+            <button class="btn btn-lg btn-dark break-text-large mt-3" type="submit">
                 Crear!
             </button>
         </div>

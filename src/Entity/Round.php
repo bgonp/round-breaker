@@ -18,7 +18,7 @@ class Round extends Base
     private $competition;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Team", inversedBy="rounds")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Team", inversedBy="rounds", cascade={"remove"})
      */
     private $teams;
 

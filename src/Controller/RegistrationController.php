@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Competition;
-use App\Entity\Player;
 use App\Entity\Registration;
 use App\Repository\RegistrationRepository;
 use App\Repository\TeamRepository;
@@ -24,10 +23,13 @@ class RegistrationController extends AbstractController
      */
     public function new(
         Competition $competition,
-        Player $player,
         RegistrationRepository $registrationRepository
     ) {
-        if ($competition->getIsOpen()) {
+        if (!($player = $this->getUser())) {
+            $this->addFlash('error', 'Tienes que iniciar sesión para unirte a una competición');
+        } else if (!$competition->getIsOpen()) {
+            $this->addFlash('error', 'Esta competición esta cerrada');
+        } else {
             $registration = (new Registration())
                 ->setCompetition($competition)
                 ->setPlayer($player);
@@ -44,12 +46,17 @@ class RegistrationController extends AbstractController
         RegistrationRepository $registrationRepository,
         TeamRepository $teamRepository
     ) {
-        if ($team = $teamRepository->findOneByPlayerAndCompetition($registration->getPlayer(), $registration->getCompetition())) {
-            $team->removePlayer($registration->getPlayer());
-            $teamRepository->save($team);
+        if (!$registration->getPlayer()->equals($this->getUser()) && !$this->isGranted('ROLE_ADMIN')) {
+            $this->addFlash('error', 'No puedes eliminar la inscripción de otro jugador');
+        } else {
+            if ($team = $teamRepository->findOneByPlayerAndCompetition($registration->getPlayer(), $registration->getCompetition())) {
+                $team->removePlayer($registration->getPlayer());
+                $teamRepository->save($team);
+            }
+            $registrationRepository->remove($registration);
         }
-        $registrationRepository->remove($registration);
-        return $this->redirectToRoute('competition_show', [
+        return $this->redirectToRoute(
+            $this->isGranted('ROLE_ADMIN') ? 'competition_edit' : 'competition_view', [
             'id' => $registration->getCompetition()->getId()
         ]);
     }
@@ -60,8 +67,14 @@ class RegistrationController extends AbstractController
         Registration $registration,
         RegistrationRepository $registrationRepository
     ): Response {
-        $registration->setIsConfirmed($request->request->get('confirm')=="1");
-        $registrationRepository->save($registration);
-        return $this->redirectToRoute('competition_show', ['id' => $registration->getCompetition()->getId()]);
+        if (!$registration->getPlayer()->equals($this->getUser()) && !$this->isGranted('ROLE_ADMIN')) {
+            $this->addFlash('error', 'No puedes editar la inscripción de otro jugador');
+        } else if (!$registration->getCompetition()->getIsOpen()) {
+            $this->addFlash('error', 'No puedes editar una inscripción si la competición esta cerrada');
+        } else {
+            $registration->setIsConfirmed($request->request->get('confirm')=="1");
+            $registrationRepository->save($registration);
+        }
+        return $this->redirectToRoute('competition_edit', ['id' => $registration->getCompetition()->getId()]);
     }
 }

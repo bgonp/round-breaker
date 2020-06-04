@@ -1,4 +1,5 @@
 {% set team = round.teams|length > team_index ? round.teams[team_index] : null %}
+<td class="match l{{ position[0] }} o{{ position[1] }} t{{ position[2] }} {{ round.winner ? round.winner == team ? 'win' : 'lose' : '' }}">
 <a data-round="{{ round.id }}" data-team="{{ team ? team.id : '' }}"
-   class="{{ clickable ? 'bracket-button' : '' }} {{ round.winner ? round.winner == team ? 'win' : 'lose' : '' }}"
+   class="{{ clickable ? 'bracket-button' : '' }}"
    {% if clickable %}href="#" {% endif %}title="{{ team ? team.name : '' }}">{{ team ? team.name : '' }}</a>

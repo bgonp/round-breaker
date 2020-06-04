@@ -89,10 +89,52 @@ h1 {
     font-size: 1rem;
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
+
 .controls:hover {
     color:#4cd365;
 }
 
+.registrations > li.confirmed .far.fa-square,
+.registrations > li:not(.confirmed) .far.fa-check-square {
+    display: none;
+}
+
 .check{
     padding: 0 4px;
+}
+
+.message-container {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, .5);
+    z-index: 200;
+}
+
+.message-container .message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 1rem 1.5rem;
+    background: #ffd9d9;
+    border: 1px solid #ff2c2c;
+    border-radius: 0.2rem;
+    overflow: hidden;
+}
+
+.message-container .message a {
+    position: absolute;
+    top: -.2rem;
+    right: -.1rem;
+}
+
+.message-container .message a.close {
+    opacity: 1!important;
+}
+
+.message-container .message a .fas {
+    color: #ff2c2c;
 }

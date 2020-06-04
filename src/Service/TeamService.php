@@ -6,12 +6,15 @@ namespace App\Service;
 
 use App\Entity\Competition;
 use App\Entity\Team;
+use App\Repository\CompetitionRepository;
 use App\Repository\RegistrationRepository;
 use App\Repository\TeamRepository;
 use App\Repository\RoundRepository;
 
 class TeamService
 {
+    private CompetitionRepository $competitionRepository;
+
     private CompetitionService $competitionService;
 
 	private TeamRepository $teamRepository;
@@ -21,11 +24,13 @@ class TeamService
     private RoundRepository $roundRepository;
 
 	public function __construct(
+	    CompetitionRepository $competitionRepository,
         CompetitionService $competitionService,
         TeamRepository $teamRepository,
         RegistrationRepository $registrationRepository,
         RoundRepository $roundRepository
     ) {
+        $this->competitionRepository = $competitionRepository;
         $this->competitionService = $competitionService;
 		$this->teamRepository = $teamRepository;
         $this->registrationRepository = $registrationRepository;
@@ -35,34 +40,31 @@ class TeamService
 	public function randomize(Competition $competition): bool
     {
         $registrations = $this->registrationRepository->findConfirmedByCompetitionRandomized($competition, $competition->getMaxPlayers());
-        if ($registrations->count() < $competition->getMaxPlayers()) {
+        if (count($registrations) < $competition->getMaxPlayers()) {
             $competition->setMaxPlayers($competition->getMaxPlayers() / 2);
             return $competition->getMaxPlayers() < 2 * $competition->getPlayersPerTeam() ?
                 false :
                 $this->randomize($competition);
         }
 
-        $this->teamRepository->removeTeams($competition->getTeams());
         $this->roundRepository->removeRounds($competition->getRounds());
         $playersPerTeam = $competition->getPlayersPerTeam();
         $teams = [];
         for ($registrationIndex = 0; $registrationIndex < $competition->getMaxPlayers(); $registrationIndex++) {
             if ($registrationIndex % $playersPerTeam === 0) {
                 $teams[] = (new Team())
-                    ->setName('Team ' . $registrationIndex / $playersPerTeam)
+                    ->setName('Team ' . (($registrationIndex / $playersPerTeam) + 1))
                     ->setCompetition($competition);
             }
             $team = end($teams);
-            $team->addPlayer($registrations[$registrationIndex]);
-            if ($registrationIndex +1 % $playersPerTeam === 0) {
-                $captain = $team->getPlayers()->get(rand(0, $playersPerTeam-1));
-                $team->setCaptain($captain);
+            $team->addPlayer($registrations[$registrationIndex]->getPlayer());
+            if (($registrationIndex + 1) % $playersPerTeam === 0) {
+                $team->setCaptain($team->getPlayers()->get(rand(0, $playersPerTeam-1)));
                 $this->teamRepository->save($team, false);
             }
         }
+        $this->competitionRepository->save($competition->setIsOpen(false));
         $this->competitionService->createRounds($competition, $teams);
-        $this->teamRepository->flush();
-        $competition->setIsOpen(false);
         return true;
 
         // TODO: Lucas

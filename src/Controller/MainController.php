@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Repository\CompetitionRepository;
+use App\Repository\PlayerRepository;
 use App\Repository\RegistrationRepository;
+use App\Repository\TeamRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,7 +20,7 @@ class MainController extends AbstractController
     {
         $user = $this->getUser();
         $isAuthed = $user !== null;
-        $randomCompetition = $competitionRepository->findRandomFinishedWithRoundsAndTeams();
+        $randomCompetition = $competitionRepository->findOneRandomFinishedWithRoundsAndTeams();
         return $this->render('main/index.html.twig', [
             'last_username' => $request->get('last_username'),
             'competition' => $randomCompetition,
@@ -32,8 +34,9 @@ class MainController extends AbstractController
     /**
      * @Route("/test", name="test")
      */
-    public function test(CompetitionRepository $competitionRepository, RegistrationRepository $registrationRepository): void
+    public function test(PlayerRepository $playerRepository, CompetitionRepository $competitionRepository): void
     {
-        $competition = $competitionRepository->find(1);
+        $competition = $competitionRepository->findLastByStreamer($playerRepository->find(357));
+        dd($competition);
     }
 }

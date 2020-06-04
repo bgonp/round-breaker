@@ -38,7 +38,7 @@ class Competition extends Base
     private $url;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="datetime")
      */
     private $heldAt;
 
