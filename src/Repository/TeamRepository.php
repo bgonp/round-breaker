@@ -22,6 +22,17 @@ class TeamRepository extends ServiceEntityRepository
         parent::__construct($registry, Team::class);
     }
 
+    public function findOneByPlayerAndCompetition(Player $player, Competition $competition): ?Team
+    {
+        return $this->createQueryBuilder('t')
+            ->join('t.players', 'p')
+            ->where('t.competition = :competition')
+            ->andWhere('p = :player')
+            ->setParameter('competition', $competition)
+            ->setParameter('player', $player)
+            ->getQuery()->getOneOrNullResult();
+    }
+
 	public function save(Team $team, bool $flush = true): void
 	{
 		$this->getEntityManager()->persist($team);
@@ -44,17 +55,5 @@ class TeamRepository extends ServiceEntityRepository
     public function flush(): void
     {
         $this->getEntityManager()->flush();
-    }
-
-    public function findOneByPlayerAndCompetition(Player $player, Competition $competition): ?Team
-    {
-        foreach ($competition->getTeams() as $team) {
-            foreach ($team->getPlayers() as $teamPlayer) {
-                if ($player->equals($teamPlayer)) {
-                    return $team;
-                }
-            }
-        }
-        return null;
     }
 }

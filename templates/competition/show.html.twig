@@ -2,8 +2,8 @@
 
 {% block content %}
 <div class="row">
-    {% if competition.rounds|length > 0%}
-    {% include 'brackets/bracket_8.html.twig' %}
+    {% if not competition.isOpen %}
+        {% include 'brackets/bracket_8.html.twig' %}
     {% endif %}
 </div>
 {% if competition.isopen == false %}
@@ -76,10 +76,9 @@
     </form>
 {% endif %}
     {% if createRegistrationButtons %}
-        {% if player in competition.players %}
+        {% if playerRegistration %}
             <form action="{{ path('registration_delete') }}" method="POST" class="d-inline">
-                <input type="hidden" name="competition_id" value="{{ competition.id }}">
-                <input type="hidden" name="player_id" value="{{ player.id }}">
+                <input type="hidden" name="registration_id" value="{{ playerRegistration.id }}">
                 <input class="btn btn-dark sport-text mb-3" type="submit" value="Abandonar">
             </form>
         {% else %}

@@ -7,7 +7,7 @@
             <nav class="navbar navbar-expand-xl navbar-dark bg-dark">
                 <div class="d-flex flex-grow-1 align-items-center">
                     <div class="w-100 titulo">
-                        <span class="text-left align-middle d-none d-md-block"><b>¡más de 1.124 torneos organizados!</b></span>
+                        <span class="text-left align-middle d-none d-md-block"><b>¡más de {{ competitionsCount - 1 }} torneos organizados!</b></span>
                     </div>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -30,12 +30,6 @@
                         <li class="nav-item">
                             <b><a href="{{ path('profile') }}" class="nav-link">Panel de Jugador</a></b>
                         </li>
-                        <li class="nav-item">
-                            <b><a href="#" class="nav-link">Blog</a></b>
-                        </li>
-                        <!--<li class="nav-item">
-                            <b><a href="#" class="nav-link disabled">Link</a></b>
-                        </li>-->
                     </ul>
                 </div>
             </nav>

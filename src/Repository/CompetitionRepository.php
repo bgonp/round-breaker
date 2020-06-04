@@ -88,4 +88,11 @@ class CompetitionRepository extends ServiceEntityRepository
             ->setParameter('player', $player)
             ->getQuery()->execute();
     }
+
+    public function getTotalCount(): int
+    {
+        return $this->createQueryBuilder('c')
+            ->select('COUNT(c.id)')
+            ->getQuery()->getSingleScalarResult();
+    }
 }

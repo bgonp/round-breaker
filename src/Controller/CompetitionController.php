@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Player;
 use App\Repository\CompetitionRepository;
 use App\Repository\GameRepository;
-use App\Repository\PlayerRepository;
 use App\Repository\RegistrationRepository;
 use App\Service\TeamService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -120,7 +119,7 @@ class CompetitionController extends AbstractController
         return $this->render('competition/show.html.twig', [
             'competition' => $competition,
             'player'=> $player,
-            'registration' => $registrationRepository->findOneByPlayerAndCompetition($player, $competition),
+            'playerRegistration' => $player ? $registrationRepository->findOneByPlayerAndCompetition($player, $competition) : null,
             'clickable' => false,
             'createStreamerButtons' => $playerIsStreamer || $this->isGranted('ROLE_ADMIN'),
             'createRegistrationButtons' => $competition->getIsOpen() && $player,
