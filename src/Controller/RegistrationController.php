@@ -7,10 +7,7 @@ namespace App\Controller;
 use App\Entity\Competition;
 use App\Entity\Player;
 use App\Entity\Registration;
-use App\Repository\PlayerRepository;
 use App\Repository\RegistrationRepository;
-use App\Repository\TeamRepository;
-use App\Service\CompetitionService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 

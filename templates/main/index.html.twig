@@ -10,7 +10,7 @@
     </div>
     {% endif %}
     <div class="col-md-3 p-3">
-        <div class="card bg-light mb-3">
+        <div class="card mb-3">
             <div class="card-header">
                 <ul class="nav nav-tabs card-header-tabs">
                     <li class="nav-item sport-text">
@@ -20,6 +20,7 @@
                             document.getElementById('register-form').classList.toggle('d-none');
                             ">Login</a>
                     </li>
+                    {% if not loggedUser %}
                     <li class="nav-item sport-text">
                         <a id="register-tab" class="nav-link" href="#" onclick="document.getElementById('login-tab').classList.toggle('active');
                         document.getElementById('register-tab').classList.toggle('active');
@@ -27,11 +28,14 @@
                         document.getElementById('register-form').classList.toggle('d-none');
                         ">Registro</a>
                     </li>
+                    {% endif %}
                 </ul>
             </div>
             <div class="card-body">
                 <form id="login-form" method="post" action="{{ path('app_login') }}">
+                    {% if not loggedUser %}
                     <h6 class="card-title">Inicia sesión como jugador para gestionar tus inscripciones</h6>
+                    {% endif %}
                     {% for error in app.session.flashBag.get('error') %}
                     <div class="alert alert-danger">
                         {{ error }}
@@ -40,7 +44,10 @@
 
                     {% if loggedUser %}
                     <div class="m-3">
-                        You are logged in as {{ loggedUser.username }}, <a href="{{ path('app_logout') }}">Logout</a>
+                        <p class="text-center">You are logged in as {{ loggedUser.username }}</p>
+                        <a class="btn btn-dark sport-text w-100 mb-3" href="{{ path('player_show', {id: app.user.id}) }}">Mi Perfil</a>
+                        <a class="btn btn-dark sport-text w-100 mb-3" href="{{ path('competition_new') }}">Crear Torneo</a>
+                        <a class="btn btn-light sport-text w-100" href="{{ path('app_logout') }}">Logout</a>
                     </div>
                     {% else %}
                     <div class="form-group">
@@ -57,6 +64,7 @@
                     </button>
                     {% endif %}
                 </form>
+                {% if not loggedUser %}
                 <form id="register-form" method="post" action="{{ path('user_registration') }}" class="d-none">
                     <h6 class="card-title">Regístrate y participa en innnumerables torneos!</h6>
                     <div class="form-group">
@@ -77,6 +85,7 @@
                         Registrar
                     </button>
                 </form>
+                {% endif %}
             </div>
         </div>
         <div class="card bg-light mb-3">
@@ -85,7 +94,7 @@
             <img src="{{ asset('img/lol.png') }}" class="img-fluid" />
             <img src="{{ asset('img/rl.png') }}" class="img-fluid rounded-bottom" />
         </div>
-        <div class="card bg-light">
+        <div class="card">
             <div class="card-header text-center cards">Redes Sociales</div>
             <div class="row p-3">
                 <div class="col rrss"><img src="{{ asset('img/facebook.png') }}" class="img-fluid" /></div>
