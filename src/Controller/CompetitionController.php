@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Player;
+use App\Entity\Registration;
 use App\Repository\CompetitionRepository;
 use App\Repository\GameRepository;
 use App\Repository\RegistrationRepository;
@@ -76,23 +77,6 @@ class CompetitionController extends AbstractController
         ]);
     }
 
-    /** @Route("/toggle_confirmation", name="toggle_confirmation", methods={"POST"}) */
-    public function toggleConfirmation(
-        Request $request,
-        Player $player,
-        Competition $competition,
-        RegistrationRepository $registrationRepository
-    ): Response {
-        $registration = $registrationRepository->findOneByPlayerAndCompetition($player, $competition);
-        if ($registration && $request->request->get('confirm')=="1") {
-            $registration->setIsConfirmed(true);
-        } else {
-            $registration->setIsConfirmed(false);
-        }
-        $registrationRepository->save($registration);
-        return $this->redirectToRoute('competition_show', ['id' => $competition->getId()]);
-    }
-
     /**
      * @Route("/delete", name="competition_delete", methods={"POST"})
      */
@@ -118,12 +102,10 @@ class CompetitionController extends AbstractController
         $playerIsStreamer = $player ? $competition->getStreamer()->equals($player) : false;
         return $this->render('competition/show.html.twig', [
             'competition' => $competition,
-            'player'=> $player,
+            'showRegistrationButton'=> $player !== null,
             'playerRegistration' => $player ? $registrationRepository->findOneByPlayerAndCompetition($player, $competition) : null,
             'clickable' => false,
-            'createStreamerButtons' => $playerIsStreamer || $this->isGranted('ROLE_ADMIN'),
-            'createRegistrationButtons' => $competition->getIsOpen() && $player,
-            'createRandomizeButton' => $playerIsStreamer || $this->isGranted('ROLE_ADMIN')
+            'showEditButtons' => $playerIsStreamer || $this->isGranted('ROLE_ADMIN')
         ]);
     }
 

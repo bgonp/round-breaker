@@ -10,6 +10,8 @@ use App\Entity\Registration;
 use App\Repository\RegistrationRepository;
 use App\Repository\TeamRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -50,5 +52,16 @@ class RegistrationController extends AbstractController
         return $this->redirectToRoute('competition_show', [
             'id' => $registration->getCompetition()->getId()
         ]);
+    }
+
+    /** @Route("/toggle_confirmation", name="toggle_confirmation", methods={"POST"}) */
+    public function toggleConfirmation(
+        Request $request,
+        Registration $registration,
+        RegistrationRepository $registrationRepository
+    ): Response {
+        $registration->setIsConfirmed($request->request->get('confirm')=="1");
+        $registrationRepository->save($registration);
+        return $this->redirectToRoute('competition_show', ['id' => $registration->getCompetition()->getId()]);
     }
 }

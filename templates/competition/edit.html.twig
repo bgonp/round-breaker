@@ -80,18 +80,16 @@
         <span class="float-right">
             {% if showConfirm %}
             <form action="{{ path('registration_delete') }}" method="POST" class="d-inline">
-                <input type="hidden" name="competitionId" value="{{ competition.id }}">
-                <input type="hidden" name="playerId" value="{{ registration.player.id }}">
-                <button class="fas fa-skull controls" type="submit" value="ban"></button>
+                <input type="hidden" name="registration_id" value="{{ registration.id }}">
+                <button class="fas fa-skull controls" type="submit" title="ban"></button>
             </form>
             {% endif %}
             {% if showKick %}
             <form action="{{ path('toggle_confirmation') }}" method="POST" class="d-inline">
-                <input type="hidden" name="competitionId" value="{{ competition.id }}">
-                <input type="hidden" name="playerId" value="{{ registration.player.id }}">
+                <input type="hidden" name="registration_id" value="{{ registration.id }}">
                 {% if registration.isConfirmed %}
-                <input type="hidden" name="confirm" value="0">
-                <button class="far fa-check-square controls" type="submit" value="Unconfirm"></button>
+                <input type="hidden" name="confirm" value="{{ registration.isConfirmed ? 0 : 1 }}">
+                <button class="far fa-check-square controls" type="submit" value="{{ registration.isConfirmed ? 'Unconfirm' : 1 }}"></button>
                 {% else %}
                 <input type="hidden" name="confirm" value="1">
                 <button class="far fa-square controls" type="submit" value="Confirm"></button>
@@ -104,3 +102,14 @@
     {% endfor %}
 </ul>
 {% endblock %}
+
+{# TODO #}
+<form action="{{ path('competition_randomize') }}" method="POST" class="d-inline">
+    <input type="hidden" name="competition_id" value="{{ competition.id }}">
+    <input class="btn btn-dark sport-text mb-3" type="submit" value="Randomize Teams">
+</form>
+
+<form action="{{ path('competition_fill') }}" method="POST" class="d-inline">
+    <input type="hidden" name="competition_id" value="{{ competition.id }}">
+    <input class="btn btn-dark sport-text mb-3" type="submit" value="Fill Teams">
+</form>
