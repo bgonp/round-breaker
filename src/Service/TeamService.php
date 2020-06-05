@@ -97,7 +97,7 @@ class TeamService
 	}
 
 	public function fillTeams(Competition $competition) {
-	    $registrations = $this->registrationRepository->findRandomConfirmedNotInTeam($competition);
+	    $registrations = $this->registrationRepository->findConfirmedNotInTeamRandomized($competition);
 	    foreach ($competition->getTeams() as $team) {
 	        while ($team->getPlayers()->count() < $competition->getPlayersPerTeam()) {
 	            $newPlayer = array_pop($registrations);

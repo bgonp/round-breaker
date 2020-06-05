@@ -13,12 +13,17 @@
                 ({{ competition.game.name }}){% if competition.heldAt %} {{ competition.heldAt|toDateTimeLocal }}{% endif %}
             </span>
             {% if competition.isOpen %}
-                {% if competition in competitionsRegistered %}
-                    <form action="{{ path('registration_delete') }}" method="POST" class="d-inline">
-                        <input type="hidden" name="registration_id" value="{{ registration.id }}">
-                        <input class="btn btn-dark sport-text" type="submit" value="Abandonar">
-                    </form>
-                {% elseif player %}
+                {% set leave = false %}
+                {% for registration in registrations %}
+                    {% if competition == registration.competition %}
+                        {% set leave = true %}
+                        <form action="{{ path('registration_delete') }}" method="POST" class="d-inline">
+                            <input type="hidden" name="competition_id" value="{{ competition.id }}">
+                            <input class="btn btn-dark sport-text" type="submit" value="Abandonar">
+                        </form>
+                    {% endif %}
+                {% endfor %}
+                {% if player and not leave %}
                     <form action="{{ path('registration_new') }}" method="POST" class="d-inline">
                         <input type="hidden" name="competition_id" value="{{ competition.id }}">
                         <input class="btn btn-dark sport-text" type="submit" value="Unirse">

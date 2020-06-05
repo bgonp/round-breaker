@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Game;
+use App\Entity\Player;
 use App\Repository\CompetitionRepository;
 use App\Repository\GameRepository;
 use App\Repository\PlayerRepository;
+use App\Repository\RegistrationRepository;
 use App\Service\GameService;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -34,7 +36,7 @@ class GameController extends AbstractController
     /**
      * @Route("/new", name="game_new", methods={"GET", "POST"})
      */
-    public function createGame(
+    public function new(
         Request $request,
         GameRepository $gameRepository,
         GameService $gameService
@@ -56,7 +58,7 @@ class GameController extends AbstractController
     /**
      * @Route("/delete", name="game_delete", methods={"POST"})
      */
-    public function deleteGame(
+    public function delete(
         Request $request,
         GameRepository $gameRepository
     ): Response {
@@ -76,7 +78,7 @@ class GameController extends AbstractController
     /**
      * @Route("/{id}/edit", name="game_edit", methods={"GET", "POST"})
      */
-    public function editGame(
+    public function edit(
         Request $request,
         Game $game,
         GameRepository $gameRepository
@@ -99,15 +101,19 @@ class GameController extends AbstractController
     /**
      * @Route("/{id}", name="game_show", methods={"GET"})
      */
-    public function viewGame(Game $game, CompetitionRepository $competitionRepository): Response
-    {
+    public function view(
+        Game $game,
+        CompetitionRepository $competitionRepository,
+        RegistrationRepository $registrationRepository
+    ): Response {
+        /** @var Player $player */
         $player = $this->getUser();
         return $this->render('game/show.html.twig', [
             'game' => $game,
             'competitions' => $competitionRepository->findByGame($game),
             'canEditGame' => $this->isGranted('ROLE_ADMIN'),
             'player'=> $player,
-            'competitionsRegistered' => $player ? $competitionRepository->findOpenByPlayerRegistered($player) : [],
+            'registrations' => $player ? $registrationRepository->findOpenByPlayer($player) : [],
         ]);
     }
 }

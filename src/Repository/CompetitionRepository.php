@@ -89,17 +89,6 @@ class CompetitionRepository extends ServiceEntityRepository
             ->getQuery()->getOneOrNullResult();
     }
 
-    /** @return Registration[]|Collection */
-    public function findOpenByPlayerRegistered(Player $player): array
-    {
-        return $this->createQueryBuilder('c')
-            ->join('c.registrations', 'r')
-            ->where('c.isOpen = 1')
-            ->andWhere('r.player = :player')
-            ->setParameter('player', $player)
-            ->getQuery()->execute();
-    }
-
     public function getTotalCount(): int
     {
         return $this->createQueryBuilder('c')

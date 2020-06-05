@@ -61,7 +61,7 @@ class RegistrationRepository extends ServiceEntityRepository
     }
 
     /** @return Collection|Registration[] */
-    public function findRandomConfirmedNotInTeam(Competition $competition): array
+    public function findConfirmedNotInTeamRandomized(Competition $competition): array
     {
         $qb = $this->createQueryBuilder('r');
         return $qb
@@ -78,6 +78,17 @@ class RegistrationRepository extends ServiceEntityRepository
                 ->setParameter('competition', $competition)
                 ->getDQL()
             )->getQuery()->execute();
+    }
+
+    /** @return Registration[]|Collection */
+    public function findOpenByPlayer(Player $player): array
+    {
+        return $this->createQueryBuilder('r')
+            ->join('r.competition', 'c')
+            ->where('c.isOpen = 1')
+            ->andWhere('r.player = :player')
+            ->setParameter('player', $player)
+            ->getQuery()->execute();
     }
 
     public function save(Registration $registration, bool $flush = true): void

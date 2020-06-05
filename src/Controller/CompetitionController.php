@@ -22,15 +22,17 @@ class CompetitionController extends AbstractController
     /**
      * @Route("/", name="competition_list", methods={"GET"})
      */
-    public function index(CompetitionRepository $competitionRepository): Response
-    {
+    public function index(
+        CompetitionRepository $competitionRepository,
+        RegistrationRepository $registrationRepository
+    ): Response {
         /** @var Player $player */
         $player = $this->getUser();
         return $this->render('competition/index.html.twig', [
             'competitions' => $competitionRepository->findAll(),
             'canEditGame' => $this->isGranted('ROLE_ADMIN'),
             'player'=> $player,
-            'competitionsRegistered' => $player ? $competitionRepository->findOpenByPlayerRegistered($player) : []
+            'registrations' => $player ? $registrationRepository->findOpenByPlayer($player) : [],
         ]);
     }
 
