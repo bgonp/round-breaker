@@ -3,8 +3,13 @@
 {% block content %}
     <div class="pt-3">
         <h1>Games</h1>
+        <ul class="list-group list-group-flush sport-text mb-3">
             {% for game in games %}
-                <a href="{{ path('game_show', {id: game.id}) }}">{{ game.name }}&nbsp;</a>: {{ game.description }}
+            <li class="list-group-item d-flex justify-content-between w-75">
+                <span class="d-flex align-items-center">
+                    <a class="mr-1" href="{{ path('game_show', {id: game.id}) }}">{{ game.name }}&nbsp;</a>- {{ game.description }}
+                </span>
+            </li>
             {% endfor %}
         </ul>
     </div>
