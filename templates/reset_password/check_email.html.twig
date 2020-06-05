@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Se ha enviado un e-mail de recuperación{% endblock %}
+
+{% block content %}
+    <h1>Se ha enviado un e-mail de recuperación</h1>
+    <p>Se ha enviado a tu dirección un e-mail con un enlace para cambiar tu contraseña. Este enlace expirará dentro de {{ tokenLifetime|date('g') }} horas.</p>
+    <p>Si no recibes el correo revisa tu bandeja de spam, o <a href="{{ path('app_forgot_password_request') }}">inténtalo otra vez</a>.</p>
+{% endblock %}
