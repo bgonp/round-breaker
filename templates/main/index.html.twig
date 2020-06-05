@@ -4,93 +4,10 @@
 
 {% block content %}
 <div class="row">
-    {%  if competition %}
     <div class="col-md-9 p-3">
-        {% include 'brackets/bracket_8.html.twig' %}
-    </div>
-    {% endif %}
-    <div class="col-md-3 p-3">
-        <div class="card mb-3">
-            <div class="card-header">
-                <ul class="nav nav-tabs card-header-tabs">
-                    <li class="nav-item sport-text">
-                        <a id="login-tab" class="nav-link active" href="#">Login</a>
-                    </li>
-                    {% if not loggedUser %}
-                    <li class="nav-item sport-text">
-                        <a id="register-tab" class="nav-link" href="#">Registro</a>
-                    </li>
-                    {% endif %}
-                </ul>
-            </div>
-            <div class="card-body">
-                <form id="login-form" method="post" action="{{ path('app_login') }}">
-                    {% if not loggedUser %}
-                    <h6 class="card-title">Inicia sesión como jugador para gestionar tus inscripciones</h6>
-                    {% endif %}
-
-                    {% if loggedUser %}
-                    <div class="m-3">
-                        <p class="text-center">¡Hola, {{ loggedUser.username }}!</p>
-                        <a class="btn btn-dark sport-text w-100 mb-3" href="{{ path('profile') }}">Mi Perfil</a>
-                        <a class="btn btn-dark sport-text w-100 mb-3" href="{{ path('competition_new') }}">Crear Torneo</a>
-                        <a class="btn btn-light sport-text w-100" href="{{ path('app_logout') }}">Logout</a>
-                    </div>
-                    {% else %}
-                    <div class="form-group">
-                        <label for="inputUsername" class="d-none">Username</label>
-                        <input type="text" value="{{ last_username is defined ? last_username : '' }}" name="username"
-                            id="inputUsername" class="mb-3 form-control" placeholder="Usuario" required autofocus>
-                        <label for="inputPassword" class="d-none">Password</label>
-                        <input type="password" name="password" id="inputPassword" class="form-control"
-                            placeholder="Contraseña" required>
-                    </div>
-                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-                    <button class="btn btn-lg btn-primary btn-dark sport-text form-control" type="submit">
-                        Log in
-                    </button>
-                    {% endif %}
-                </form>
-                {% if not loggedUser %}
-                <form id="register-form" method="post" action="{{ path('user_registration') }}" class="d-none">
-                    <h6 class="card-title">Regístrate y participa en innnumerables torneos!</h6>
-                    <div class="form-group">
-                        <label for="inputUsername" class="d-none">Username</label>
-                        <input type="text" value="{{ last_username is defined ? last_username : '' }}" name="username"
-                            id="inputUsername" class="mb-3 form-control" placeholder="Usuario" required autofocus>
-                        <label for="inputPassword" class="d-none">Password</label>
-                        <input type="password" name="password" id="inputPassword" class="mb-3 form-control"
-                            placeholder="Contraseña" required>
-                            <label for="inputUsername" class="d-none">Email</label>
-                        <input type="email" name="email"
-                            id="inputUsername" class="mb-3 form-control" placeholder="Email" required>
-                            <label for="inputUsername" class="d-none">Twitchname</label>
-                        <input type="text" name="twitchname"
-                            id="inputUsername" class="mb-3 form-control" placeholder="Twitchname" required>
-                    </div>
-                    <button class="btn btn-lg btn-primary btn-dark sport-text form-control" type="submit">
-                        Registrar
-                    </button>
-                </form>
-                {% endif %}
-            </div>
-        </div>
-        <div class="card bg-light mb-3">
-            <div class="card-header text-center cards">¡lo más jugado!</div>
-            <img src="{{ asset('img/cs.png') }}" class="img-fluid" />
-            <img src="{{ asset('img/lol.png') }}" class="img-fluid" />
-            <img src="{{ asset('img/rl.png') }}" class="img-fluid rounded-bottom" />
-        </div>
-        <div class="card">
-            <div class="card-header text-center cards">Redes Sociales</div>
-            <div class="row p-3">
-                <div class="col rrss"><img src="{{ asset('img/facebook.png') }}" class="img-fluid" /></div>
-                <div class="col rrss"><img src="{{ asset('img/twitch.png') }}" class="img-fluid" /></div>
-                <div class="col rrss"><img src="{{ asset('img/gorjeo.png') }}" class="img-fluid" /></div>
-            </div>
-        </div>
-    </div>
-    <div class="row mx-3">
+        {%  if competition %}
+            {% include 'brackets/bracket_8.html.twig' %}
+        {% endif %}
         <div class="col-md-12 col-xl-9 pt-2">
             <h1>¿Qué es roundbreaker?</h1>
             <p class="text-left">Lorem fistrum diodeno no puedor jarl hasta luego Lucas no puedor
@@ -164,16 +81,88 @@
                 muelas.</p>
         </div>
     </div>
+    <div class="col-md-3 p-3">
+        <div class="card mb-3">
+            <div class="card-header">
+                <ul class="nav nav-tabs card-header-tabs">
+                    <li class="nav-item sport-text">
+                        <a id="login-tab" class="nav-link active" href="#">Login</a>
+                    </li>
+                    {% if not player %}
+                    <li class="nav-item sport-text">
+                        <a id="register-tab" class="nav-link" href="#">Registro</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+            <div class="card-body">
+                <form id="login-form" method="post" action="{{ path('app_login') }}">
+                    {% if player %}
+                    <div class="m-3">
+                        <p class="text-center">¡Hola, {{ player.username }}!</p>
+                        <a class="btn btn-dark sport-text w-100 mb-3" href="{{ path('profile') }}">Mi Perfil</a>
+                        <a class="btn btn-dark sport-text w-100 mb-3" href="{{ path('competition_new') }}">Crear Torneo</a>
+                        <a class="btn btn-light sport-text w-100" href="{{ path('app_logout') }}">Logout</a>
+                    </div>
+                    {% else %}
+                    <h6 class="card-title">Inicia sesión como jugador para gestionar tus inscripciones</h6>
+                    <div class="form-group">
+                        <label for="inputUsername" class="d-none">Username</label>
+                        <input type="text" value="{{ last_username is defined ? last_username : '' }}" name="username"
+                            id="inputUsername" class="mb-3 form-control" placeholder="Usuario" required autofocus>
+                        <label for="inputPassword" class="d-none">Password</label>
+                        <input type="password" name="password" id="inputPassword" class="form-control"
+                            placeholder="Contraseña" required>
+                    </div>
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                    <button class="btn btn-lg btn-primary btn-dark sport-text form-control" type="submit">
+                        Log in
+                    </button>
+                    {% endif %}
+                </form>
+                {% if not player %}
+                <form id="register-form" method="post" action="{{ path('user_registration') }}" class="d-none">
+                    <h6 class="card-title">Regístrate y participa en innnumerables torneos!</h6>
+                    <div class="form-group">
+                        <label for="inputUsername" class="d-none">Username</label>
+                        <input type="text" value="{{ last_username is defined ? last_username : '' }}" name="username"
+                            id="inputUsername" class="mb-3 form-control" placeholder="Usuario" required autofocus>
+                        <label for="inputPassword" class="d-none">Password</label>
+                        <input type="password" name="password" id="inputPassword" class="mb-3 form-control"
+                            placeholder="Contraseña" required>
+                            <label for="inputUsername" class="d-none">Email</label>
+                        <input type="email" name="email"
+                            id="inputUsername" class="mb-3 form-control" placeholder="Email" required>
+                            <label for="inputUsername" class="d-none">Twitchname</label>
+                        <input type="text" name="twitchname"
+                            id="inputUsername" class="mb-3 form-control" placeholder="Twitchname" required>
+                    </div>
+                    <button class="btn btn-lg btn-primary btn-dark sport-text form-control" type="submit">
+                        Registrar
+                    </button>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+        <div class="card bg-light mb-3">
+            <div class="card-header text-center cards">¡lo más jugado!</div>
+            <ul class="list-unstyled my-1 px-3">
+            {% for game in mostsPlayed %}
+                <li class="my-2">
+                    <a href="{{ path('game_show', { id: game[0].id }) }}">{{ game[0].name }}</a>
+                    ({{ game[1] }} torneos)
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
+        <div class="card">
+            <div class="card-header text-center cards">Redes Sociales</div>
+            <div class="row p-3">
+                <div class="col rrss"><img src="{{ asset('img/facebook.png') }}" class="img-fluid" /></div>
+                <div class="col rrss"><img src="{{ asset('img/twitch.png') }}" class="img-fluid" /></div>
+                <div class="col rrss"><img src="{{ asset('img/gorjeo.png') }}" class="img-fluid" /></div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock content %}
-
-{#
-        Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-        See https://symfony.com/doc/current/security/remember_me.html
-
-        <div class="checkbox mb-3">
-            <label>
-                <input type="checkbox" name="_remember_me"> Remember me
-            </label>
-        </div>
-    #}

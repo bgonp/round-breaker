@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\CompetitionRepository;
+use App\Repository\GameRepository;
 use App\Repository\PlayerRepository;
 use App\Repository\RegistrationRepository;
 use App\Repository\TeamRepository;
@@ -16,18 +17,18 @@ class MainController extends AbstractController
     /**
      * @Route("/", name="main", methods={"GET"})
      */
-    public function main(Request $request, CompetitionRepository $competitionRepository): Response
-    {
-        $user = $this->getUser();
-        $isAuthed = $user !== null;
+    public function main(
+        Request $request,
+        CompetitionRepository $competitionRepository,
+        GameRepository $gameRepository
+    ): Response {
         $randomCompetition = $competitionRepository->findOneRandomFinishedWithRoundsAndTeams();
         return $this->render('main/index.html.twig', [
             'last_username' => $request->get('last_username'),
             'competition' => $randomCompetition,
             'clickable' => false,
-            'loggedUser' => $user,
-            'createCompetitionButton' => $isAuthed,
-            'createGameButton' => $isAuthed && $this->isGranted('ROLE_ADMIN')
+            'player' => $this->getUser(),
+            'mostsPlayed' => $gameRepository->findMostsPlayed()
         ]);
     }
 

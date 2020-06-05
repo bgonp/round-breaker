@@ -22,16 +22,6 @@ class Game extends Base
     private $description;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $url;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private ?string $image = null;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Competition", mappedBy="game")
      */
     private $competitions;
@@ -66,18 +56,6 @@ class Game extends Base
         return $this;
     }
 
-    public function getUrl(): ?string
-    {
-        return $this->url;
-    }
-
-    public function setUrl(?string $url): self
-    {
-        $this->url = $url;
-
-        return $this;
-    }
-
     /**
      * @return Collection|Competition[]
      */
@@ -100,22 +78,11 @@ class Game extends Base
     {
         if ($this->competitions->contains($competition)) {
             $this->competitions->removeElement($competition);
-            // set the owning side to null (unless already changed)
             if ($competition->getGame() === $this) {
                 $competition->setGame(null);
             }
         }
 
         return $this;
-    }
-
-    public function getImage(): ?string
-    {
-        return $this->image;
-    }
-
-    public function setImage(?string $image): void
-    {
-        $this->image = $image;
     }
 }

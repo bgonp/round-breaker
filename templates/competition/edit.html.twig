@@ -22,6 +22,10 @@
 </form>
 {% endif %}
 
+{% if not competition.isOpen %}
+    {% include 'brackets/bracket_8.html.twig' %}
+{% endif %}
+
 <div class="row">
     <div class="col-md-12 col-lg-8 col-xl-6 border-0">
         <form method="post">
@@ -104,33 +108,53 @@
 <script src="{{ asset('js/tmi.js') }}"></script>
 <script src="{{ asset('js/twitch.js') }}"></script>
 
-{% if not competition.isOpen %}
-    {% include 'brackets/bracket_8.html.twig' %}
-{% endif %}
+<div class="row">
 
-<ul class="list-group list-group-flush sport-text mb-3 registrations">
-    {% for registration in competition.registrations %}
-    <li id="registration-{{ registration.id }}" class="list-group-item w-50{{ registration.isConfirmed ? ' confirmed' : '' }}">
-        {{ registration.player.username }}
-        <span class="float-right">
-            {% if competition.isOpen %}
-            <form action="{{ path('registration_delete') }}" method="POST" class="d-inline">
-                <input type="hidden" name="registration_id" value="{{ registration.id }}">
-                <button class="fas fa-skull controls" type="submit" title="ban" onclick="if (!confirm('¿Estás seguro?')) return false"></button>
-            </form>
-            <form action="{{ path('toggle_confirmation') }}" method="POST" class="d-inline">
-                <input type="hidden" name="registration_id" value="{{ registration.id }}">
-                <input type="hidden" name="confirm" value="{{ registration.isConfirmed ? 0 : 1 }}">
-                <button class="controls" type="submit"
-                    title="{{ registration.isConfirmed ? 'Unconfirm' : 'Confirm' }}">
-                    <i class="far fa-square"></i>
-                    <i class="far fa-check-square"></i>
-                </button>
-            </form>
-            {% endif %}
+    <div class="col-12 col-lg-6 {{ competition.isOpen ? 'offset-lg-3' : '' }}">
+        <h1>Inscripciones</h1>
+        <ul class="list-group list-group-flush sport-text mb-3 registrations">
+            {% for registration in competition.registrations %}
+                <li id="registration-{{ registration.id }}" class="list-group-item {{ registration.isConfirmed ? ' confirmed' : '' }}">
+                    {{ registration.player.username }}
+                    <span class="float-right">
+                        {% if competition.isOpen %}
+                            <form action="{{ path('registration_delete') }}" method="POST" class="d-inline">
+                                <input type="hidden" name="registration_id" value="{{ registration.id }}">
+                                <button class="fas fa-skull controls" type="submit" title="ban" onclick="if (!confirm('¿Estás seguro?')) return false"></button>
+                            </form>
+                            <form action="{{ path('toggle_confirmation') }}" method="POST" class="d-inline">
+                                <input type="hidden" name="registration_id" value="{{ registration.id }}">
+                                <input type="hidden" name="confirm" value="{{ registration.isConfirmed ? 0 : 1 }}">
+                                <button class="controls" type="submit"
+                                        title="{{ registration.isConfirmed ? 'Unconfirm' : 'Confirm' }}">
+                                    <i class="far fa-square"></i>
+                                    <i class="far fa-check-square"></i>
+                                </button>
+                        </form>
+                        {% endif %}
+                    </span>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
 
-        </span>
-    </li>
-    {% endfor %}
-</ul>
+    {% if not competition.isOpen %}
+        <div class="col-12 col-lg-6">
+            <h1>Equipos</h1>
+            {% for team in competition.teams %}
+                <div class="my-2 bg-light border">
+                    <div class="card-body">
+                        <h5 class="card-title sport-text">{{ team.name }}</h5>
+                        <ul class="list-group">
+                            {% for player in team.players %}
+                                <li class="list-group-item sport-text">{{ player.username }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+</div>
 {% endblock %}
