@@ -50,7 +50,7 @@ class CompetitionRepository extends ServiceEntityRepository
         return $this->findBy(['game' => $game], ['heldAt' => 'DESC']);
     }
 
-    public function findLastByStreamer(Player $player): Competition
+    public function findLastByStreamer(Player $player): ?Competition
     {
         return $this->findOneBy(['streamer' => $player], ['updatedAt' => 'DESC']);
 

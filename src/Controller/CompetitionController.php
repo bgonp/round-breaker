@@ -81,6 +81,33 @@ class CompetitionController extends AbstractController
     }
 
     /**
+     * @Route("/{id}", name="competition_show", methods={"GET"})
+     */
+    public function show(
+        int $id,
+        CompetitionRepository $competitionRepository,
+        RegistrationRepository $registrationRepository
+    ): Response {
+        $competition = $competitionRepository->findCompleteById($id);
+        if (!$competition) {
+            $this->addFlash('error', 'No existe competición con ese ID');
+            return $this->redirectToRoute('competition_list');
+        }
+        /** @var Player $player */
+        $player = $this->getUser();
+        if ($competition->getStreamer()->equals($player)) {
+            return $this->redirectToRoute('competition_edit', ['id' => $competition->getId()]);
+        }
+        return $this->render('competition/show.html.twig', [
+            'competition' => $competition,
+            'showRegistrationButton'=> $player !== null,
+            'playerRegistration' => $player ? $registrationRepository->findOneByPlayerAndCompetition($player, $competition) : null,
+            'clickable' => false,
+            'showEditButtons' => $this->isGranted('ROLE_ADMIN')
+        ]);
+    }
+
+    /**
      * @Route("/{id}/edit", name="competition_edit", methods={"GET", "POST"})
      */
     public function edit(
@@ -130,27 +157,6 @@ class CompetitionController extends AbstractController
             $competitionRepository->remove($competition);
         }
         return $this->redirectToRoute('main');
-    }
-
-    /**
-     * @Route("/{id}", name="competition_show", methods={"GET"})
-     */
-    public function show(
-        int $id,
-        CompetitionRepository $competitionRepository,
-        RegistrationRepository $registrationRepository
-    ): Response {
-        $competition = $competitionRepository->findCompleteById($id);
-        /** @var Player $player */
-        $player = $this->getUser();
-        $playerIsStreamer = $player ? $competition->getStreamer()->equals($player) : false;
-        return $this->render('competition/show.html.twig', [
-            'competition' => $competition,
-            'showRegistrationButton'=> $player !== null,
-            'playerRegistration' => $player ? $registrationRepository->findOneByPlayerAndCompetition($player, $competition) : null,
-            'clickable' => false,
-            'showEditButtons' => $playerIsStreamer || $this->isGranted('ROLE_ADMIN')
-        ]);
     }
 
     /**

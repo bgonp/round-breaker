@@ -19,7 +19,7 @@
                         {% set leave = true %}
                         <form action="{{ path('registration_delete') }}" method="POST" class="d-inline">
                             <input type="hidden" name="competition_id" value="{{ competition.id }}">
-                            <input class="btn btn-dark sport-text" type="submit" value="Abandonar">
+                            <input class="btn btn-dark sport-text" type="submit" value="Abandonar" onclick="if (!confirm('¿Estás seguro?')) return false">
                         </form>
                     {% endif %}
                 {% endfor %}

@@ -32,7 +32,7 @@
                     {% if loggedUser %}
                     <div class="m-3">
                         <p class="text-center">¡Hola, {{ loggedUser.username }}!</p>
-                        <a class="btn btn-dark sport-text w-100 mb-3" href="{{ path('player_show', {id: app.user.id}) }}">Mi Perfil</a>
+                        <a class="btn btn-dark sport-text w-100 mb-3" href="{{ path('profile') }}">Mi Perfil</a>
                         <a class="btn btn-dark sport-text w-100 mb-3" href="{{ path('competition_new') }}">Crear Torneo</a>
                         <a class="btn btn-light sport-text w-100" href="{{ path('app_logout') }}">Logout</a>
                     </div>
