@@ -10,6 +10,7 @@ use App\Entity\Registration;
 use App\Entity\Round;
 use App\Entity\Team;
 use App\Entity\Game;
+use App\Exception\CannotModifyWinnerException;
 use App\Repository\CompetitionRepository;
 use App\Repository\TeamRepository;
 use App\Repository\PlayerRepository;
@@ -47,23 +48,6 @@ class CompetitionService
         $this->roundRepository = $roundRepository;
     }
 
-    public function addPlayerToCompetition(Competition $competition, Player $player)
-    {
-        $registration = new Registration();
-        $registration->setPlayer($player);
-        $competition->addRegistration($registration);
-        if ($competition->getIsIndividual()) {
-            $team = new Team();
-            $team->addPlayer($player);
-            $team->setName($player->getUsername());
-            $team->setCompetition($competition);
-            $this->teamRepository->save($team);
-        }
-        //$competition->addTeam($team);
-        $this->registrationRepository->save($registration);
-        $this->competitionRepository->save($competition);
-    }
-
     public function createRounds(Competition $competition, array $teams) {
         $numRounds = count($teams)/2;
         $numLevels = log(count($teams), 2);
@@ -89,7 +73,7 @@ class CompetitionService
     public function advanceTeam(Team $team, Round $round): ?Round {
         $nextRound = $this->getNextRound($round);
         if ($nextRound && $nextRound->getWinner()) {
-            throw new \InvalidArgumentException('Can\'t modify round if next round already finished');
+            throw CannotModifyWinnerException::create();
         }
         if ($round->getWinner() && !$round->getWinner()->equals($round)) {
             $this->undoAdvanceTeam($round->getWinner(), $round, false);
@@ -109,7 +93,7 @@ class CompetitionService
     {
         $nextRound = $this->getNextRound($round);
         if ($nextRound && $nextRound->getWinner()) {
-            throw new \InvalidArgumentException('Can\'t modify round if next round already finished');
+            throw CannotModifyWinnerException::create();
         }
         $round->setWinner(null);
         $this->roundRepository->save($round, false);
@@ -123,23 +107,10 @@ class CompetitionService
 
     private function getNextRound(Round $round): ?Round
     {
-        $bracketOrder = $round->getBracketOrder();
-        // TODO: Eliminar esta llamada a base de datos, sisterRound no hace falta
-        $sisterRound = $this->roundRepository->findOneBy([
-            'bracketLevel' => $round->getBracketLevel(),
-            'bracketOrder' => $bracketOrder + 1
+        return $this->roundRepository->findOneBy([
+            'competition' => $round->getCompetition(),
+            'bracketLevel' => $round->getBracketLevel() + 1,
+            'bracketOrder' => ceil($round->getBracketOrder() / 2)
         ]);
-        $nextRound = null;
-        if ($bracketOrder > 1 || $sisterRound) {
-            if ($bracketOrder % 2 != 0) {
-                $bracketOrder++;
-            }
-            $bracketOrder = $bracketOrder/2;
-            $nextRound = $this->roundRepository->findOneBy([
-                'bracketLevel' => $round->getBracketLevel() + 1,
-                'bracketOrder' => $bracketOrder
-            ]);
-        }
-        return $nextRound;
     }
 }

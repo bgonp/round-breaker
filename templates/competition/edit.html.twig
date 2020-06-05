@@ -1,7 +1,6 @@
 {% extends 'base.html.twig' %}
 
 {% block content %}
-<!--<a href="{{ path('competition_show', {id: competition.id}) }}">Go back</a>-->
 <div class="row competition-title">
     <div class="col-12">
         <h1 class="text-center">Editar {{ competition.name }}</h1>
@@ -15,13 +14,21 @@
 </form>
 {% endif %}
 
-{% if not competition.isOpen %}
-    {% include 'brackets/bracket_8.html.twig' %}
+{% if bracketType > 0 %}
+    <div class="row">
+        <div class="col-12">
+            {% if bracketType == 2 %}{% include 'brackets/bracket_2.html.twig' %}
+            {% elseif bracketType == 4 %}{% include 'brackets/bracket_4.html.twig' %}
+            {% elseif bracketType == 8 %}{% include 'brackets/bracket_8.html.twig' %}
+            {% elseif bracketType == 16 %}{% include 'brackets/bracket_16.html.twig' %}
+            {% endif %}
+        </div>
+    </div>
 {% endif %}
 
 <div class="row">
     <div class="col-md-12 col-lg-8 col-xl-6 border-0">
-        <form method="post">
+        <form method="post" class="{{ competition.isOpen ? 'open' : 'close' }}-competition">
             <div class="card form-group border border-secondary p-3 custom-control custom-checkbox">
                 <label for="inputName" class="sport-text-form">Nombre</label>
                 <input type="text" value="{{ competition.name }}" name="name" id="inputName"
@@ -43,8 +50,14 @@
                 </select>
 
                 <label for="inputPlayersPerTeam" class="sport-text-form">Jugadores por Equipo</label>
-                <input type="number" name="playersPerTeam" id="inputPlayersPerTeam"
-                    class="form-control col-12 mb-3 form-control-lg sport-text-form" max="5" min="1" value="{{ competition.PlayersPerTeam }}" required>
+                <select id="inputPlayersPerTeam" name="playersPerTeam" class="form-control col-12 mb-3 sport-text-form form-control-lg" required>
+                    <option value="">Escoge...</option>
+                    <option value="1"{{ competition.playersPerTeam == 1 ? ' selected' : '' }}>1</option>
+                    <option value="2"{{ competition.playersPerTeam == 2 ? ' selected' : '' }}>2</option>
+                    <option value="3"{{ competition.playersPerTeam == 3 ? ' selected' : '' }}>3</option>
+                    <option value="4"{{ competition.playersPerTeam == 4 ? ' selected' : '' }}>4</option>
+                    <option value="5"{{ competition.playersPerTeam == 5 ? ' selected' : '' }}>5</option>
+                </select>
 
                 <label for="inputGame" class="sport-text-form">Juego</label>
                 <select name="game" id="inputGame" class="form-control col-12 mb-3 sport-text-form form-control-lg" required>
@@ -62,11 +75,6 @@
                 <div class="custom-control custom-checkbox check">
                     <input type="checkbox" name="open" id="inputOpen"{{ competition.isOpen ? ' checked' : '' }}>
                     <label for="inputOpen" class="sport-text-form">Abierta</label>
-                </div>
-
-                <div class="custom-control custom-checkbox check">
-                    <input type="checkbox" name="finished" id="inputFinished"{{ competition.isFinished ? ' checked' : '' }}>
-                    <label for="inputFinished" class="sport-text-form">Finalizada</label>
                 </div>
 
                 <button class="btn btn-lg btn-dark break-text-large mt-3" type="submit">
@@ -137,7 +145,7 @@
                         {% if competition.isOpen %}
                             <form action="{{ path('registration_delete') }}" method="POST" class="d-inline">
                                 <input type="hidden" name="registration_id" value="{{ registration.id }}">
-                                <button class="fas fa-skull controls" type="submit" title="ban" onclick="if (!confirm('¿Estás seguro?')) return false"></button>
+                                <button class="fas fa-skull controls confirmable" type="submit" title="ban"></button>
                             </form>
                             <form action="{{ path('toggle_confirmation') }}" method="POST" class="d-inline">
                                 <input type="hidden" name="registration_id" value="{{ registration.id }}">

@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Entity\Competition;
 use App\Entity\Round;
 use App\Entity\Team;
+use App\Exception\CannotModifyWinnerException;
 use App\Repository\CompetitionRepository;
 use App\Repository\RegistrationRepository;
 use App\Service\CompetitionService;
@@ -26,14 +27,21 @@ class ApiController extends AbstractController
         CompetitionRepository $competitionRepository
     ): JsonResponse {
         if (
-            !$this->isGranted('ROLE_USER') ||
-            !$round->getCompetition()->getStreamer()->equals($this->getUser())
+            !$this->isGranted('ROLE_ADMIN') &&
+            (!$this->isGranted('ROLE_USER') ||
+            !$round->getCompetition()->getStreamer()->equals($this->getUser()))
         ) {
-            return new JsonResponse([], JsonResponse::HTTP_FORBIDDEN);
+            return new JsonResponse(
+                ['message' => 'No puedes asignar ganador de una competción que no es tuya'],
+                JsonResponse::HTTP_FORBIDDEN
+            );
         } else if ($round->getTeams()->count() < 2) {
-            return new JsonResponse([], JsonResponse::HTTP_BAD_REQUEST);
+            return new JsonResponse(
+                ['message' => 'No puede ganar si solo hay un equipo en la ronda'],
+                JsonResponse::HTTP_BAD_REQUEST
+            );
         }
-        $affectedRound = null;
+
         $response = [
             'finished' => false,
             'origin' => [
@@ -46,23 +54,30 @@ class ApiController extends AbstractController
             $response['origin']['teams'][] = $roundTeam->getId();
             if ($roundTeam->equals($team)) {
                 $competition = $round->getCompetition();
-                try {
-                    if ($round->getWinner() && $round->getWinner()->equals($roundTeam)) {
+                $affectedRound = null;
+
+                if ($round->getWinner() && $round->getWinner()->equals($roundTeam)) {
+                    try {
                         $affectedRound = $competitionService->undoAdvanceTeam($roundTeam, $round);
-                        if ($competition->getIsFinished()) {
-                            $competitionRepository->save($competition->setIsFinished(false));
-                        }
-                    } else {
-                        $affectedRound = $competitionService->advanceTeam($roundTeam, $round);
-                        if (!$affectedRound && !$competition->getIsFinished()) {
-                            $competitionRepository->save($competition->setIsFinished(true));
-                            $response['finished'] = true;
-                        }
-                        $response['origin']['winner'] = $roundTeam->getId();
+                    } catch (CannotModifyWinnerException $e) {
+                        return new JsonResponse(['message' => $e->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
                     }
-                } catch (\InvalidArgumentException $exception) {
-                    return new JsonResponse([], JsonResponse::HTTP_BAD_REQUEST);
+                    if ($competition->getIsFinished()) {
+                        $competitionRepository->save($competition->setIsFinished(false));
+                    }
+                } else {
+                    try {
+                        $affectedRound = $competitionService->advanceTeam($roundTeam, $round);
+                    } catch (CannotModifyWinnerException $e) {
+                        return new JsonResponse(['message' => $e->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
+                    }
+                    if (!$affectedRound && !$competition->getIsFinished()) {
+                        $competitionRepository->save($competition->setIsFinished(true));
+                        $response['finished'] = true;
+                    }
+                    $response['origin']['winner'] = $roundTeam->getId();
                 }
+
                 if ($affectedRound) {
                     $response['destination'] = [
                         'round_id' => $affectedRound->getId(),
@@ -111,7 +126,10 @@ class ApiController extends AbstractController
         Competition $competition,
         CompetitionRepository $competitionRepository
     ): JsonResponse {
-        if (!$this->isGranted('ROLE_ADMIN') && !$competition->getStreamer()->equals($this->getUser())) {
+        if (
+            !$this->isGranted('ROLE_ADMIN') &&
+            !$competition->getStreamer()->equals($this->getUser())
+        ) {
             return new JsonResponse([], JsonResponse::HTTP_FORBIDDEN);
         }
 

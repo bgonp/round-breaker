@@ -24,11 +24,24 @@ class GameRepository extends ServiceEntityRepository
             ->getQuery()->execute();
     }
 
-    public function save(Game $game, bool $flush = true)
+    public function save(Game $game, bool $flush = true): void
     {
         $this->getEntityManager()->persist($game);
         if ($flush) {
-            $this->getEntityManager()->flush();
+            $this->flush();
         }
+    }
+
+    public function remove(Game $game, bool $flush = true): void
+    {
+        $this->getEntityManager()->remove($game);
+        if ($flush) {
+            $this->flush();
+        }
+    }
+
+    public function flush(): void
+    {
+        $this->getEntityManager()->flush();
     }
 }

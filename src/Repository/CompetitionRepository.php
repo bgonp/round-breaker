@@ -38,6 +38,12 @@ class CompetitionRepository extends ServiceEntityRepository
     }
 
     /** @return Competition[]|Collection */
+    public function findAllOrdered(): array
+    {
+        return $this->findBy([], ['heldAt' => 'DESC']);
+    }
+
+    /** @return Competition[]|Collection */
     public function findByGame(Game $game): array
     {
         return $this->findBy(['game' => $game], ['heldAt' => 'DESC']);

@@ -15,12 +15,12 @@ class Competition extends Base
     /**
      * @ORM\Column(type="boolean")
      */
-    private $isOpen;
+    private $isOpen = true;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $isFinished;
+    private $isFinished = false;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -31,11 +31,6 @@ class Competition extends Base
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $description;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $url;
 
     /**
      * @ORM\Column(type="datetime")
@@ -69,12 +64,7 @@ class Competition extends Base
 
     /**
      * @ORM\Column(type="integer")
-     * @Assert\Range(
-     *      min = 1,
-     *      max = 5,
-     *      minMessage = "You must have at least {{ limit }} players",
-     *      maxMessage = "You cannot have more than {{ limit }} players"
-     * )
+     * @Assert\Range(min = 1, max = 5)
      */
     private $playersPerTeam;
 
@@ -156,18 +146,6 @@ class Competition extends Base
     public function setDescription(?string $description): self
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    public function getUrl(): ?string
-    {
-        return $this->url;
-    }
-
-    public function setUrl(?string $url): self
-    {
-        $this->url = $url;
 
         return $this;
     }

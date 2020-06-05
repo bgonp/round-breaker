@@ -48,12 +48,14 @@ class TeamService
         $registrations = $this->registrationRepository->findConfirmedByCompetitionRandomized($competition, $competition->getMaxPlayers());
         if (count($registrations) < $competition->getMaxPlayers()) {
             $competition->setMaxPlayers($competition->getMaxPlayers() / 2);
-            return $competition->getMaxPlayers() < 2 * $competition->getPlayersPerTeam() ?
+            return $competition->getMaxPlayers() < $competition->getPlayersPerTeam() * 2 ?
                 false :
                 $this->randomize($competition);
         }
 
-        $this->roundRepository->removeRounds($competition->getRounds());
+        if ($rounds = $competition->getRounds()) {
+            $this->roundRepository->removeRounds($competition->getRounds());
+        }
         $playersPerTeam = $competition->getPlayersPerTeam();
         $teams = [];
         for ($registrationIndex = 0; $registrationIndex < $competition->getMaxPlayers(); $registrationIndex++) {

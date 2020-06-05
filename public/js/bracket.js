@@ -17,8 +17,8 @@
         const xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function() {
             if (this.readyState == 4) {
+                const response = JSON.parse(this.responseText);
                 if (this.status == 200) {
-                    const response = JSON.parse(this.responseText);
                     const inputFinished = document.getElementById('inputFinished');
                     if (response.origin)
                         updateRound(response.origin.round_id, response.origin.teams, response.origin.winner);
@@ -29,7 +29,7 @@
                     else
                         inputFinished.removeAttribute('checked');
                 } else {
-                    alert('You cannot do that!');
+                    alert(response.message);
                 }
             }
         }

@@ -15,7 +15,7 @@
             <a class="btn btn-dark mb-3 sport-text" href="{{ path('competition_edit', {id: competition.id}) }}">Editar Torneo</a>
             <form action="{{ path('competition_delete') }}" method="POST" class="d-inline">
                 <input type="hidden" name="competition_id" value="{{ competition.id }}">
-                <input class="btn btn-dark sport-text mb-3" type="submit" value="Eliminar">
+                <input class="btn btn-dark sport-text mb-3 confirmable" type="submit" value="Eliminar">
             </form>
         {% endif %}
 
@@ -36,11 +36,17 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="col-12">
-        {% include 'brackets/bracket_8.html.twig' %}
+{% if bracketType > 0 %}
+    <div class="row">
+        <div class="col-12">
+            {% if bracketType == 2 %}{% include 'brackets/bracket_2.html.twig' %}
+            {% elseif bracketType == 4 %}{% include 'brackets/bracket_4.html.twig' %}
+            {% elseif bracketType == 8 %}{% include 'brackets/bracket_8.html.twig' %}
+            {% elseif bracketType == 16 %}{% include 'brackets/bracket_16.html.twig' %}
+            {% endif %}
+        </div>
     </div>
-</div>
+{% endif %}
 
 <div class="row competition-data">
 

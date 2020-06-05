@@ -25,52 +25,50 @@ class GameController extends AbstractController
      */
     public function index(GameRepository $gameRepository, PlayerRepository $playerRepository): Response
     {
-        $user = $this->getUser();
-        $isAuthed = $user !== null;
         return $this->render('game/index.html.twig', [
             'games' => $gameRepository->findAll(),
-            'player'=> $isAuthed ? $playerRepository->findOneBy(["username" => $user->getUsername()]) : null
+            'player'=> $this->getUser()
         ]);
     }
 
     /**
      * @Route("/new", name="game_new", methods={"GET", "POST"})
      */
-    public function new(
-        Request $request,
-        GameRepository $gameRepository,
-        GameService $gameService
-    ): Response {
-        if ($request->request->has('name')) {
-            $game = $gameRepository->findOneBy(['name' => $request->request->get('name')]);
-            if (!$game) {
-                $gameService->createGame($request->request->get('name'), $request->request->get('description'));
-            }
-            return $this->redirectToRoute('main');
-        } else {
-            return $this->render('game/new.html.twig', [
-                'controller_name' => 'CompetitionController',
-                'games' => $gameRepository->findAll()
-            ]);
+    public function new(Request $request, GameRepository $gameRepository): Response
+    {
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            $this->addFlash('error', 'No puedes crear un juego');
+            return $this->redirectToRoute('game_list');
         }
+        $game = null;
+        if ($request->isMethod('POST')) {
+            $game = (new Game())
+                ->setName($request->request->get('name'))
+                ->setDescription($request->request->get('description'));
+            if ($gameRepository->findOneBy(['name' => $request->request->get('name')])) {
+                $this->addFlash('error', 'Ya existe un juego con el mismo nombre');
+            } else {
+                $gameRepository->save($game);
+                return $this->redirectToRoute('game_list');
+            }
+        }
+        return $this->render('game/new.html.twig', ['game' => $game]);
     }
 
     /**
      * @Route("/delete", name="game_delete", methods={"POST"})
      */
-    public function delete(
-        Request $request,
-        GameRepository $gameRepository
-    ): Response {
-        if ($request->request->has('id')) {
-            $game = $gameRepository->findOneBy(['id' => $request->request->get('id')]);
-            $entityManager = $this->getDoctrine()->getManager();
-            try {
-                $entityManager->remove($game);
-                $entityManager->flush();
-            } catch (Exception $e) {
-                return $this->redirectToRoute('game_show', array("id" => $request->request->get('id')));
-            }
+    public function delete(Game $game, GameRepository $gameRepository): Response
+    {
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            $this->addFlash('error', 'No puedes eliminar juegos');
+            return $this->redirectToRoute('game_list');
+        }
+        try {
+            $gameRepository->remove($game);
+        } catch(Exception $e) {
+            $this->addFlash('error', 'No puedes borrar este juego');
+            return $this->redirectToRoute('game_edit', ['id' => $game->getId()]);
         }
         return $this->redirectToRoute('game_list');
     }

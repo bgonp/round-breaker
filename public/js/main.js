@@ -1,4 +1,11 @@
 ;(() => {
+    const confirmables = document.querySelectorAll('a.confirmable, button.confirmable, input.confirmable');
+    for (const confirmable of confirmables) {
+        confirmable.addEventListener('click', (e) => {
+            if (!confirm('¿Estas seguro?')) e.preventDefault();
+        });
+    }
+
     const closeButton = document.querySelector('.message-container .close');
     if (closeButton) closeButton.addEventListener('click', (e) => {
         e.preventDefault();
@@ -28,4 +35,11 @@
         e.preventDefault();
         document.body.classList.toggle('fullscreen-bracket');
     });
+
+    const inputOpen = document.querySelector('.close-competition #inputOpen');
+    if (inputOpen) inputOpen.addEventListener('click', (e) => {
+        if (inputOpen.checked && !confirm('Si reabres una competición cerrada se borrarán los equipos y el progreso. ¿Estas seguro?')) {
+            e.preventDefault();
+        }
+    })
 })()

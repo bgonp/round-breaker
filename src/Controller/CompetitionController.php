@@ -7,7 +7,7 @@ use App\Entity\Team;
 use App\Repository\CompetitionRepository;
 use App\Repository\GameRepository;
 use App\Repository\RegistrationRepository;
-use App\Repository\TeamRepository;
+use App\Repository\RoundRepository;
 use App\Service\TeamService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Entity\Competition;
@@ -30,7 +30,7 @@ class CompetitionController extends AbstractController
         /** @var Player $player */
         $player = $this->getUser();
         return $this->render('competition/index.html.twig', [
-            'competitions' => $competitionRepository->findAll(),
+            'competitions' => $competitionRepository->findAllOrdered(),
             'canEditGame' => $this->isGranted('ROLE_ADMIN'),
             'player'=> $player,
             'registrations' => $player ? $registrationRepository->findOpenByPlayer($player) : [],
@@ -46,7 +46,8 @@ class CompetitionController extends AbstractController
         GameRepository $gameRepository
     ) {
         if (!($player = $this->getUser())) {
-            $this->redirectToRoute('main');
+            $this->addFlash('error', 'No puedes crear una competición sin haber iniciado sesión');
+            return $this->redirectToRoute('main');
         }
         if ($request->isMethod('POST')) {
             if (!($name = $request->request->get('name'))) {
@@ -96,7 +97,7 @@ class CompetitionController extends AbstractController
         }
         /** @var Player $player */
         $player = $this->getUser();
-        if ($competition->getStreamer()->equals($player)) {
+        if ($player && $competition->getStreamer()->equals($player)) {
             return $this->redirectToRoute('competition_edit', ['id' => $competition->getId()]);
         }
         return $this->render('competition/show.html.twig', [
@@ -104,7 +105,8 @@ class CompetitionController extends AbstractController
             'showRegistrationButton'=> $player !== null,
             'playerRegistration' => $player ? $registrationRepository->findOneByPlayerAndCompetition($player, $competition) : null,
             'clickable' => false,
-            'showEditButtons' => $this->isGranted('ROLE_ADMIN')
+            'showEditButtons' => $this->isGranted('ROLE_ADMIN'),
+            'bracketType' => $competition->getIsOpen() ? 0 : $competition->getTeams()->count(),
         ]);
     }
 
@@ -113,15 +115,24 @@ class CompetitionController extends AbstractController
      */
     public function edit(
         Request $request,
-        Competition $competition,
+        int $id,
         CompetitionRepository $competitionRepository,
-        GameRepository $gameRepository
+        GameRepository $gameRepository,
+        RoundRepository $roundRepository
     ): Response {
+        $competition = $competitionRepository->findCompleteById($id);
+        if (!$competition) {
+            $this->addFlash('error', 'No existe competición con ese ID');
+            return $this->redirectToRoute('competition_list');
+        }
         if (!$this->isGranted('ROLE_ADMIN') && !$competition->getStreamer()->equals($this->getUser())) {
+            $this->addFlash('error', 'No puedes editar competiciones de otos usuarios');
             return $this->redirectToRoute('competition_show', ['id' => $competition->getId()]);
         }
         if ($request->isMethod('POST')) {
-            if (!($name = $request->request->get('name'))) {
+            if ($competition->getIsFinished()) {
+                $this->addFlash('error', 'No puedes editar una competición finalizada');
+            } else if (!($name = $request->request->get('name'))) {
                 $this->addFlash('error', 'El campo nombre es obligatorio');
             } else {
                 if ($competition->getIsOpen()) {
@@ -132,19 +143,21 @@ class CompetitionController extends AbstractController
                         ->setPlayersPerTeam($playersPerTeam)
                         ->setGame($gameRepository->find($request->request->get('game')))
                         ->setHeldAt(new \DateTime($request->request->get('heldAt')));
+                } else if ($request->request->get('open')) {
+                    $roundRepository->removeRounds($competition->getRounds());
                 }
                 $competition
                     ->setName($request->request->get('name'))
                     ->setDescription($request->request->get('description'))
-                    ->setIsOpen($request->request->get('open') ? true : false)
-                    ->setIsFinished($request->request->get('finished') ? true : false);
+                    ->setIsOpen($request->request->get('open') ? true : false);
                 $competitionRepository->save($competition);
             }
         }
         return $this->render('competition/edit.html.twig', [
             'games' => $gameRepository->findAll(),
             'competition' => $competition,
-            'clickable' => true
+            'clickable' => true,
+            'bracketType' => $competition->getIsOpen() ? 0 : $competition->getTeams()->count(),
         ]);
     }
 
@@ -152,24 +165,12 @@ class CompetitionController extends AbstractController
      * @Route("/delete", name="competition_delete", methods={"POST"})
      */
     public function delete(Competition $competition, CompetitionRepository $competitionRepository) {
-        if ($this->isGranted('ROLE_ADMIN') || $competition->getStreamer()->equals($this->getUser())) {
+        if (!$this->isGranted('ROLE_ADMIN') && !$competition->getStreamer()->equals($this->getUser())) {
+            $this->addFlash('error', 'No puedes borrar una competición de otro usuario');
+        } else {
             $competitionRepository->remove($competition);
         }
-        return $this->redirectToRoute('main');
-    }
-
-    /**
-     * @Route("/{id}/bracket", name="competition_bracket", methods={"GET"})
-     */
-    public function viewBracket(int $id, CompetitionRepository $competitionRepository): Response {
-        $competition = $competitionRepository->findCompleteById($id);
-        $isStreamer = $competition->getStreamer()->equals($this->getUser());
-        if ($isStreamer) {
-            return $this->render('competition/bracket.html.twig', [
-                'competition' => $competition
-            ]);
-        }
-        return $this->redirectToRoute('competition_show', ['id' => $competition->getId()]);
+        return $this->redirectToRoute('competition_list');
     }
 
     /**

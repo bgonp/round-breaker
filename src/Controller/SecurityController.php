@@ -45,31 +45,39 @@ class SecurityController extends AbstractController
         UserPasswordEncoderInterface $passwordEncoder,
         PlayerRepository $playerRepository
     ): Response {
-        if (
-            !($username = $request->get('username')) ||
-            !($plainPassword = $request->get('password')) ||
-            !($email = $request->get('email')) ||
-            !($twitchname = $request->get('twitchname'))
-        ) {
-            throw new \InvalidArgumentException("Some required fields missing");
-        }
+        $username = $request->get('username');
+        $plainPassword = $request->get('password');
+        $email = $request->get('email');
+        $twitchname = $request->get('twitchname');
 
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            throw new \InvalidArgumentException("Wrong E-mail");
-        }
+        $invalidFields = [];
+        if (!$username || $playerRepository->findOneBy(['username' => $username]))
+            $invalidFields[] = 'username';
+        if (!$twitchname || $playerRepository->findOneBy(['twitch_name' => $twitchname]))
+            $invalidFields[] = 'twitch name';
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL) || $playerRepository->findOneBy(['email' => $email]))
+            $invalidFields[] = 'e-mail';
+        if (!$plainPassword)
+            $invalidFields[] = 'password';
 
-        $player = new Player();
-        $player
-            ->setUsername($username)
-            ->setTwitchName($twitchname)
-            ->setEmail($email)
-            ->setPassword($passwordEncoder->encodePassword($player, $plainPassword));
-
-        try {
+        if ($invalidFields) {
+            $this->addFlash('error',
+                sprintf('Error. Usuario existente o campos incorrectos: %s', implode(', ', $invalidFields))
+            );
+        } else {
+            $player = new Player();
+            $player
+                ->setUsername($username)
+                ->setTwitchName($twitchname)
+                ->setEmail($email)
+                ->setPassword($passwordEncoder->encodePassword($player, $plainPassword));
             $playerRepository->save($player);
-        } catch (UniqueConstraintViolationException $e) {
-            $this->addFlash('error', 'El usuario ya existe');
         }
-        return $this->redirectToRoute('main');
+
+        return $this->redirectToRoute('main', [
+            'last_username' => $username,
+            'last_email' => $email,
+            'last_twitchname' => $twitchname
+        ]);
     }
 }

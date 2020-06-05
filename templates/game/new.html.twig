@@ -1,15 +1,16 @@
 {% extends 'base.html.twig' %}
 
 {% block content %}
-<form method="post" style="min-height: 867px;">
+<form method="post">
     <div class="col-md-12 col-lg-8 col-xl-5 border-0 p-3" style="margin: auto;">
         <h1 class="text-center">Crear Juego</h1>
         <div class="card form-group border border-secondary p-3">
             <label for="inputName" class="sport-text-form">Nombre</label>
-            <input type="text" name="name" id="inputName" class="form-control form-control-lg" required autofocus>
+            <input type="text" name="name" id="inputName" class="form-control form-control-lg" required autofocus
+                   value="{% if game %}{{ game.name }}{% endif %}">
             <label for="inputDescription" class="mt-3 sport-text-form">Descripción</label>
-            <input type="text" name="description" id="inputDescription" class="form-control form-control-lg" required>
-
+            <input type="text" name="description" id="inputDescription" class="form-control form-control-lg" required
+                   value="{% if game %}{{ game.description }}{% endif %}">
             <button class="btn btn-lg btn-dark mt-3 break-text-large" type="submit">
                 Crear!
             </button>

@@ -21,7 +21,7 @@ class RegistrationRepository extends ServiceEntityRepository
         $registrations = $this->createQueryBuilder('r')
             ->join('r.player', 'p')
             ->where('r.competition = :competition')
-            ->andWhere('p.twitch_name = :twitchname')
+            ->andWhere('p.twitchName = :twitchname')
             ->setParameter('competition', $competition)
             ->setParameter('twitchname', $twitchName)
             ->getQuery()->getResult();

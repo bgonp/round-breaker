@@ -31,6 +31,14 @@ class PlayerRepository extends ServiceEntityRepository implements PasswordUpgrad
             ->getQuery()->getOneOrNullResult();
     }
 
+    public function findRandomized(int $count): array
+    {
+        return $this->createQueryBuilder('p')
+            ->orderBy('RAND()')
+            ->setMaxResults($count)
+            ->getQuery()->execute();
+    }
+
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
      */
@@ -48,7 +56,7 @@ class PlayerRepository extends ServiceEntityRepository implements PasswordUpgrad
     {
         $this->getEntityManager()->persist($player);
         if ($flush) {
-            $this->getEntityManager()->flush();
+            $this->flush();
         }
     }
 

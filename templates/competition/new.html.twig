@@ -2,7 +2,7 @@
 
 {% block content %}
 {% if games %}
-<form method="post" style="min-height: 867px;">
+<form method="post">
     <div class="col-md-12 col-lg-8 col-xl-5 border-0 p-3 my-0 mx-auto">
         <h1 class="text-center">Crear Competición</h1>
         <div class="card form-group border border-secondary p-3">
@@ -24,8 +24,14 @@
             </select>
 
             <label for="inputPlayersPerTeam" class="sport-text-form">Jugadores por Equipo</label>
-            <input type="number" name="playersPerTeam" id="inputPlayersPerTeam"
-                   class="form-control col-12 mb-3 form-control-lg sport-text-form" max="5" min="1" required>
+            <select id="inputPlayersPerTeam" name="playersPerTeam" class="form-control col-12 mb-3 sport-text-form form-control-lg" required>
+                <option value="">Escoge...</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
 
             <label for="inputGame" class="sport-text-form">Juego</label>
             <select name="game" id="inputGame" class="form-control col-12 mb-3 sport-text-form form-control-lg" required>

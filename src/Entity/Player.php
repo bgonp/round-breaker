@@ -38,7 +38,7 @@ class Player extends Base implements UserInterface
     /**
      * @ORM\Column(type="string", length=255, unique=true)
      */
-    private $twitch_name;
+    private $twitchName;
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
@@ -153,12 +153,12 @@ class Player extends Base implements UserInterface
 
     public function getTwitchName(): ?string
     {
-        return $this->twitch_name;
+        return $this->twitchName;
     }
 
-    public function setTwitchName(?string $twitch_name): self
+    public function setTwitchName(?string $twitchName): self
     {
-        $this->twitch_name = $twitch_name;
+        $this->twitchName = $twitchName;
 
         return $this;
     }

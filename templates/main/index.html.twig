@@ -131,10 +131,10 @@
                         <input type="password" name="password" id="inputPassword" class="mb-3 form-control"
                             placeholder="Contraseña" required>
                             <label for="inputUsername" class="d-none">Email</label>
-                        <input type="email" name="email"
+                        <input type="email" name="email" value="{{ last_email is defined ? last_email : '' }}"
                             id="inputUsername" class="mb-3 form-control" placeholder="Email" required>
                             <label for="inputUsername" class="d-none">Twitchname</label>
-                        <input type="text" name="twitchname"
+                        <input type="text" name="twitchname" value="{{ last_twitchname is defined ? last_twitchname : '' }}"
                             id="inputUsername" class="mb-3 form-control" placeholder="Twitchname" required>
                     </div>
                     <button class="btn btn-lg btn-primary btn-dark sport-text form-control" type="submit">

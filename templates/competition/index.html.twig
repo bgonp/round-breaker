@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block content %}
-<div style="min-height: 867px;" class="pt-3">
+<div class="pt-3">
 
     <h1>{% if game is defined %}{{ game.name }} - {% endif %}Torneos</h1>
     {% if game is defined %}<p>{{ game.description }}</p>{% endif %}
@@ -19,13 +19,14 @@
                         {% set leave = true %}
                         <form action="{{ path('registration_delete') }}" method="POST" class="d-inline">
                             <input type="hidden" name="competition_id" value="{{ competition.id }}">
-                            <input class="btn btn-dark sport-text" type="submit" value="Abandonar" onclick="if (!confirm('¿Estás seguro?')) return false">
+                            <input class="btn btn-dark sport-text confirmable" type="submit" value="Abandonar">
                         </form>
                     {% endif %}
                 {% endfor %}
                 {% if player and not leave %}
                     <form action="{{ path('registration_new') }}" method="POST" class="d-inline">
                         <input type="hidden" name="competition_id" value="{{ competition.id }}">
+                        <input type="hidden" name="player_id" value="{{ player.id }}">
                         <input class="btn btn-dark sport-text" type="submit" value="Unirse">
                     </form>
                 {% endif %}
@@ -33,11 +34,12 @@
         </li>
         {% endfor %}
     </ul>
+
     {% if game is defined and canEditGame %}
         <a class="btn btn-dark sport-text" href="{{ path('game_edit', {id: game.id}) }}">Editar Juego</a>
         <form action="{{ path('game_delete') }}" method="POST" class="d-inline">
             <input type="hidden" name="game_id" value="{{ game.id }}">
-            <input class="btn btn-dark sport-text" type="submit" value="Eliminar Juego">
+            <input class="btn btn-dark sport-text confirmable" type="submit" value="Eliminar Juego">
         </form>
     {% endif %}
 
