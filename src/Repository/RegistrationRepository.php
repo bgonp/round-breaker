@@ -9,12 +9,6 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
-/**
- * @method Registration|null find($id, $lockMode = null, $lockVersion = null)
- * @method Registration|null findOneBy(array $criteria, array $orderBy = null)
- * @method Registration[]    findAll()
- * @method Registration[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
- */
 class RegistrationRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
@@ -58,26 +52,6 @@ class RegistrationRepository extends ServiceEntityRepository
             ->setParameter('competition', $competition)
             ->orderBy('RAND()')
             ->getQuery()->execute();
-    }
-
-    /** @return Collection|Registration[] */
-    public function findConfirmedNotInTeamRandomized(Competition $competition): array
-    {
-        $qb = $this->createQueryBuilder('r');
-        return $qb
-            ->where('r.competition = :competition')
-            ->andWhere('r.isConfirmed = 1')
-            ->andWhere('r NOT IN (:registrations)')
-            ->orderBy('RAND()')
-            ->setParameter('competition', $competition)
-            ->setParameter('registrations', $qb
-                ->join('r.competition', 'c')
-                ->join('c.teams', 't')
-                ->join('t.players', 'p')
-                ->where('r.competition = :competition')
-                ->setParameter('competition', $competition)
-                ->getDQL()
-            )->getQuery()->execute();
     }
 
     /** @return Registration[]|Collection */

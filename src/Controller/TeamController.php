@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Competition;
+use App\Entity\Player;
 use App\Entity\Team;
 use App\Repository\PlayerRepository;
 use App\Repository\TeamRepository;
@@ -18,24 +19,22 @@ use Symfony\Component\Routing\Annotation\Route;
 class TeamController extends AbstractController
 {
     /**
-     * @Route("/{id}/edit", name="team_edit", methods={"GET", "POST"})
+     * @Route("/{id}", name="team_show", methods={"GET", "POST"})
      */
-    public function edit(Request $request, Team $team, TeamRepository $teamRepository)
+    public function show(Request $request, Team $team, TeamRepository $teamRepository): Response
     {
-        if ($team->getCaptain()->equals($this->getUser()) || $this->isGranted('ROLE_ADMIN')) {
+        if (!($player = $this->getUser()) || $team->getPlayers()->contains($player)) {
+            return $this->redirectToRoute('competition_show', ['id' => $team->getCompetition()->getId()]);
+        }
+        $canEditName = $team->getCaptain()->equals($player) || $this->isGranted('ROLE_ADMIN');
+        if ($canEditName) {
             if ($request->isMethod('POST')) {
                 $teamRepository->save($team->setName($request->request->get('name')));
             }
-            return $this->render('team/edit.html.twig', ['team' => $team]);
         }
-        return $this->redirectToRoute('competition_show', ['id' => $team->getCompetition()->getId()]);
-    }
-
-    /**
-     * @Route("/{id}", name="team_show", methods={"GET"})
-     */
-    public function show(Team $team)
-    {
-        return $this->render('team/show.html.twig', ['team' => $team]);
+        return $this->render('team/show.html.twig', [
+            'team' => $team,
+            'canEditName' => $canEditName
+        ]);
     }
 }

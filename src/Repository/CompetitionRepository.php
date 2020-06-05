@@ -5,17 +5,10 @@ namespace App\Repository;
 use App\Entity\Competition;
 use App\Entity\Game;
 use App\Entity\Player;
-use App\Entity\Registration;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
-/**
- * @method Competition|null find($id, $lockMode = null, $lockVersion = null)
- * @method Competition|null findOneBy(array $criteria, array $orderBy = null)
- * @method Competition[]    findAll()
- * @method Competition[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
- */
 class CompetitionRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)

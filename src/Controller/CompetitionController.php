@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Player;
+use App\Entity\Team;
 use App\Repository\CompetitionRepository;
 use App\Repository\GameRepository;
 use App\Repository\RegistrationRepository;
@@ -114,7 +115,6 @@ class CompetitionController extends AbstractController
         Request $request,
         Competition $competition,
         CompetitionRepository $competitionRepository,
-        TeamRepository $teamRepository,
         GameRepository $gameRepository
     ): Response {
         if (!$this->isGranted('ROLE_ADMIN') && !$competition->getStreamer()->equals($this->getUser())) {
@@ -144,8 +144,7 @@ class CompetitionController extends AbstractController
         return $this->render('competition/edit.html.twig', [
             'games' => $gameRepository->findAll(),
             'competition' => $competition,
-            'clickable' => true,
-            'showFillButton' => !$competition->getIsOpen() && $teamRepository->findIncompleteByCompetition($competition),
+            'clickable' => true
         ]);
     }
 
@@ -192,18 +191,16 @@ class CompetitionController extends AbstractController
     }
 
     /**
-     * @Route("/fill", name="competition_fill", methods={"POST"})
+     * @Route("/kick_member", name="kick_member", methods={"POST"})
      */
-    public function fillTeams(Competition $competition, TeamService $teamService): Response
+    public function kickMember(Team $team, Player $player, TeamService $teamService): Response
     {
         if (
-            !$competition->getIsOpen() &&
-            ($competition->getStreamer()->equals($this->getUser()) || $this->isGranted('ROLE_ADMIN'))
+            $this->isGranted('ROLE_ADMIN') ||
+            $team->getCompetition()->getStreamer()->equals($this->getUser())
         ) {
-            $teamService->fillTeams($competition);
-        } else {
-            $this->addFlash('error', 'La competición esta cerrada o no tienes permisos para editar');
+            $teamService->replacePlayer($team, $player);
         }
-        return $this->redirectToRoute('competition_show', ['id' => $competition->getId()]);
+        return $this->redirectToRoute('competition_edit', ['id' => $team->getCompetition()->getId()]);
     }
 }
