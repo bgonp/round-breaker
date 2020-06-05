@@ -46,8 +46,14 @@ class RegistrationController extends AbstractController
         RegistrationRepository $registrationRepository,
         TeamRepository $teamRepository
     ) {
-        if (!$registration->getPlayer()->equals($this->getUser()) && !$this->isGranted('ROLE_ADMIN')) {
+        if (
+            !$registration->getPlayer()->equals($this->getUser()) &&
+            !$registration->getCompetition()->getStreamer()->equals($this->getUser()) &&
+            !$this->isGranted('ROLE_ADMIN')
+        ) {
             $this->addFlash('error', 'No puedes eliminar la inscripción de otro jugador');
+        } else if (!$registration->getCompetition()->getIsOpen()) {
+            $this->addFlash('error', 'No puedes eliminar una inscripción de una competición cerrada');
         } else {
             if ($team = $teamRepository->findOneByPlayerAndCompetition($registration->getPlayer(), $registration->getCompetition())) {
                 $team->removePlayer($registration->getPlayer());
@@ -56,7 +62,7 @@ class RegistrationController extends AbstractController
             $registrationRepository->remove($registration);
         }
         return $this->redirectToRoute(
-            $this->isGranted('ROLE_ADMIN') ? 'competition_edit' : 'competition_view', [
+            $this->isGranted('ROLE_ADMIN') ? 'competition_edit' : 'competition_show', [
             'id' => $registration->getCompetition()->getId()
         ]);
     }
@@ -67,7 +73,11 @@ class RegistrationController extends AbstractController
         Registration $registration,
         RegistrationRepository $registrationRepository
     ): Response {
-        if (!$registration->getPlayer()->equals($this->getUser()) && !$this->isGranted('ROLE_ADMIN')) {
+        if (
+            !$registration->getPlayer()->equals($this->getUser()) &&
+            !$registration->getCompetition()->getStreamer()->equals($this->getUser()) &&
+            !$this->isGranted('ROLE_ADMIN')
+        ) {
             $this->addFlash('error', 'No puedes editar la inscripción de otro jugador');
         } else if (!$registration->getCompetition()->getIsOpen()) {
             $this->addFlash('error', 'No puedes editar una inscripción si la competición esta cerrada');

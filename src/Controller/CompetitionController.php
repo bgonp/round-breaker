@@ -199,7 +199,11 @@ class CompetitionController extends AbstractController
             $this->isGranted('ROLE_ADMIN') ||
             $team->getCompetition()->getStreamer()->equals($this->getUser())
         ) {
-            $teamService->replacePlayer($team, $player);
+            if ($team->getCompetition()->getIsFinished()) {
+                $this->addFlash('error', 'No puedes eliminar a un jugador de un equipo en una competición terminada');
+            } else {
+                $teamService->replacePlayer($team, $player);
+            }
         }
         return $this->redirectToRoute('competition_edit', ['id' => $team->getCompetition()->getId()]);
     }
