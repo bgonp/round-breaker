@@ -1,0 +1,5 @@
+<h1>Round Breaker</h1>
+<h2>Obtén una nueva contraseña</h2>
+
+<p>Para crear una nueva contraseña, visita <a href="{{ url('app_reset_password', {token: resetToken.token}) }}">este enlace</a><p>
+<p>Este enlace expirará dentro de {{ tokenLifetime|date('g') }} horas.</p>

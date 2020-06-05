@@ -53,7 +53,7 @@ class SecurityController extends AbstractController
         $invalidFields = [];
         if (!$username || $playerRepository->findOneBy(['username' => $username]))
             $invalidFields[] = 'username';
-        if (!$twitchname || $playerRepository->findOneBy(['twitch_name' => $twitchname]))
+        if (!$twitchname || $playerRepository->findOneBy(['twitchName' => $twitchname]))
             $invalidFields[] = 'twitch name';
         if (!filter_var($email, FILTER_VALIDATE_EMAIL) || $playerRepository->findOneBy(['email' => $email]))
             $invalidFields[] = 'e-mail';
