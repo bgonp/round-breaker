@@ -10,7 +10,7 @@
         <li class="list-group-item d-flex justify-content-between w-75">
             <span class="d-flex align-items-center">
                 <a class="mr-1" href="{{ path('competition_show', {id: competition.id}) }}">{{ competition.name }}</a>
-                ({{ competition.game.name }}){% if competition.heldAt %} {{ competition.heldAt|toDateTimeLocal }}{% endif %}
+                {% if game is not defined %}({{ competition.game.name }}){% endif %}{% if competition.heldAt %} {{ competition.heldAt|toDateTimeLocal }}{% endif %}
             </span>
             {% if competition.isOpen %}
                 {% set leave = false %}
