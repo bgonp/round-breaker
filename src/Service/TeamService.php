@@ -59,9 +59,6 @@ class TeamService
             $this->createFromCompetition($competition);
         }
 
-        if ($rounds = $competition->getRounds()) {
-            $this->roundRepository->removeRounds($competition->getRounds());
-        }
         $playersPerTeam = $competition->getPlayersPerTeam();
         $faker = Faker\Factory::create();
         for ($registrationIndex = 0; $registrationIndex < $competition->getMaxPlayers(); ++$registrationIndex) {

@@ -18,7 +18,7 @@ class Round extends Base
     private $competition;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Team", inversedBy="rounds", cascade={"remove"})
+     * @ORM\ManyToMany(targetEntity="App\Entity\Team", inversedBy="rounds")
      * @ORM\OrderBy({"id" = "ASC"})
      */
     private $teams;
@@ -35,7 +35,7 @@ class Round extends Base
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Team")
-     * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
+     * @ORM\JoinColumn(nullable=true)
      */
     private $winner;
 

@@ -59,10 +59,12 @@ class RoundService
         }
         $this->roundRepository->flush();
 
-        // Call repository again to obtain teams ordered
-        $this->roundRepository->clear();
+        if ($nextRound) {
+            // Call repository again in order to obtain teams ordered
+            $this->roundRepository->refresh($nextRound);
+        }
 
-        return $this->roundRepository->find($nextRound->getId());
+        return $nextRound;
     }
 
     /** @return Round|null Affected round */

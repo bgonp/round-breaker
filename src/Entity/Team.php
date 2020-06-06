@@ -35,6 +35,7 @@ class Team extends Base
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Round", mappedBy="teams")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $rounds;
 

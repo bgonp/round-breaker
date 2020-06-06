@@ -53,4 +53,13 @@ class TeamRepository extends ServiceEntityRepository
     {
         $this->getEntityManager()->flush();
     }
+
+    public function removeFromCompetition(Competition $competition): void
+    {
+        $this->createQueryBuilder('t')
+            ->delete('App:Team', 't')
+            ->where('t.competition = :competition')
+            ->setParameter('competition', $competition)
+            ->getQuery()->execute();
+    }
 }

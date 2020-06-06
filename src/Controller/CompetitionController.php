@@ -143,8 +143,13 @@ class CompetitionController extends AbstractController
             } elseif (!($name = $request->request->get('name'))) {
                 $this->addFlash('error', 'El campo nombre es obligatorio');
             } else {
-                if ($competition->getIsOpen()) {
-                    $playersPerTeam = $request->request->get('individual') ? 1 : $request->request->get('playersPerTeam');
+                $wasOpen = $competition->getIsOpen();
+                $competition
+                    ->setName($request->request->get('name'))
+                    ->setDescription($request->request->get('description'))
+                    ->setIsOpen((bool) $request->request->get('open'));
+                if ($wasOpen) {
+                    $playersPerTeam = $request->request->get('playersPerTeam');
                     $teamNum = $request->request->get('teamNum');
                     $competition
                         ->setMaxPlayers($playersPerTeam * $teamNum)
@@ -152,12 +157,8 @@ class CompetitionController extends AbstractController
                         ->setGame($gameRepository->find($request->request->get('game')))
                         ->setHeldAt(new \DateTime($request->request->get('heldAt')));
                 } elseif ($request->request->get('open')) {
-                    $roundRepository->removeRounds($competition->getRounds());
+                    $roundRepository->removeFromCompetition($competition);
                 }
-                $competition
-                    ->setName($request->request->get('name'))
-                    ->setDescription($request->request->get('description'))
-                    ->setIsOpen($request->request->get('open') ? true : false);
                 $competitionRepository->save($competition);
             }
         }

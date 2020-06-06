@@ -12,32 +12,32 @@
 			</thead>
 			<tbody>
 				<tr>
-                    {% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[0], team_index: 0, position: [1,1,1] } %}
+                    {% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[0], team_index: 0, position: [1,1] } %}
 					<td class="line bb"></td>
 					<td class="line"></td>
 				</tr>
 				<tr>
-                    {% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[0], team_index: 1, position: [1,1,1] } %}
+                    {% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[0], team_index: 1, position: [1,1] } %}
 					<td class="line br"></td>
 					<td class="line"></td>
 				</tr>
 				<tr>
 					<td class="line"></td>
                     <td class="line br"></td>
-                    {% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[2], team_index: 0, position: [2,1,1] } %}
+                    {% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[2], team_index: 0, position: [2,1] } %}
 				</tr>
 				<tr>
 					<td class="empty"></td>
                     <td class="line br"></td>
-                    {% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[2], team_index: 1, position: [2,1,2] } %}
+                    {% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[2], team_index: 1, position: [2,1] } %}
 				</tr>
 				<tr>
-                    {% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[1], team_index: 0, position: [1,2,1] } %}
+                    {% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[1], team_index: 0, position: [1,2] } %}
 					<td class="line br bb"></td>
 					<td class="line"></td>
 				</tr>
 				<tr>
-                    {% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[1], team_index: 1, position: [1,2,2] } %}
+                    {% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[1], team_index: 1, position: [1,2] } %}
 					<td class="empty"></td>
 					<td class="empty"></td>
 				</tr>
