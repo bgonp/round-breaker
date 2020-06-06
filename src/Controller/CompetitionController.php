@@ -77,7 +77,7 @@ class CompetitionController extends AbstractController
                 }
                 $competitionRepository->save($competition);
 
-                return $this->redirectToRoute('competition_show', ['id' => $competition->getId()]);
+                return $this->redirectToRoute('competition_edit', ['id' => $competition->getId()]);
             }
         }
 

@@ -81,6 +81,24 @@ class CompetitionRepository extends ServiceEntityRepository
             ->getQuery()->getOneOrNullResult();
     }
 
+    public function findWithRegistrationsAndTeamsByPlayer(Player $player): array
+    {
+        return $this->createQueryBuilder('c')
+            ->select('c', 'r', 't')
+            ->join('c.registrations', 'r')
+            ->leftJoin('c.teams', 't')
+            ->join('t.players', 'p')
+            ->where('r.player = :player')
+            ->andWhere('p = :player')
+            ->setParameter('player', $player)
+            ->getQuery()->execute();
+    }
+
+    public function findByStreamer(Player $streamer)
+    {
+        return $this->findBy(['streamer' => $streamer]);
+    }
+
     public function getTotalCount(): int
     {
         return $this->createQueryBuilder('c')

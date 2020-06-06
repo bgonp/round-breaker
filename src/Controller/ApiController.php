@@ -97,7 +97,7 @@ class ApiController extends AbstractController
         RegistrationRepository $registrationRepository
     ): JsonResponse {
         if (
-            !$this->isGranted('ROLE_USER') ||
+            !$this->isGranted('ROLE_ADMIN') &&
             !$competition->getStreamer()->equals($this->getUser())
         ) {
             return new JsonResponse([], JsonResponse::HTTP_FORBIDDEN);

@@ -29,7 +29,7 @@ class MainController extends AbstractController
             'competition' => $competition,
             'clickable' => false,
             'player' => $this->getUser(),
-            'mostsPlayed' => $gameRepository->findMostsPlayed(),
+            'mostsPlayed' => $gameRepository->findMostPlayed(),
         ]);
     }
 }

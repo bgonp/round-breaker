@@ -13,7 +13,7 @@ class GameRepository extends ServiceEntityRepository
         parent::__construct($registry, Game::class);
     }
 
-    public function findMostsPlayed(): array
+    public function findMostPlayed(): array
     {
         return $this->createQueryBuilder('g')
             ->leftJoin('g.competitions', 'c')

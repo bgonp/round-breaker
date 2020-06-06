@@ -19,7 +19,11 @@ class TeamController extends AbstractController
      */
     public function show(Request $request, Team $team, TeamRepository $teamRepository): Response
     {
-        if (!($player = $this->getUser()) || $team->getPlayers()->contains($player)) {
+        if (
+            !$this->isGranted('ROLE_ADMIN') && (
+            !($player = $this->getUser()) ||
+            $team->getPlayers()->contains($player))
+        ) {
             return $this->redirectToRoute('competition_show', ['id' => $team->getCompetition()->getId()]);
         }
         $canEditName = $team->getCaptain()->equals($player) || $this->isGranted('ROLE_ADMIN');
