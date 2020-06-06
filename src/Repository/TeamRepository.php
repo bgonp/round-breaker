@@ -6,6 +6,7 @@ use App\Entity\Competition;
 use App\Entity\Player;
 use App\Entity\Team;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 class TeamRepository extends ServiceEntityRepository
@@ -13,6 +14,18 @@ class TeamRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Team::class);
+    }
+
+    /** @return Team[]|Collection */
+    public function findWithCompetitionByPlayer(Player $player): array
+    {
+        return $this->createQueryBuilder('t')
+            ->select('t', 'c')
+            ->join('t.competition', 'c')
+            ->join('t.players', 'p')
+            ->where('p = :player')
+            ->setParameter('player', $player)
+            ->getQuery()->execute();
     }
 
     public function findOneByPlayerAndCompetition(Player $player, Competition $competition): ?Team

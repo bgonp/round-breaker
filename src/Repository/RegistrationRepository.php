@@ -43,6 +43,16 @@ class RegistrationRepository extends ServiceEntityRepository
             ->getQuery()->getOneOrNullResult();
     }
 
+    /** @return Registration[]|Collection */
+    public function findWithCompetitionByPlayer(Player $player): array
+    {
+        return $this->createQueryBuilder('r')
+            ->join('r.competition', 'c')
+            ->where('r.player = :player')
+            ->setParameter('player', $player)
+            ->getQuery()->execute();
+    }
+
     /** @return Collection|Registration[] */
     public function findConfirmedByCompetitionRandomized(Competition $competition, int $maxResults): array
     {

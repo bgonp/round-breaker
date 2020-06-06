@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Repository\CompetitionRepository;
 use App\Repository\GameRepository;
+use App\Repository\PlayerRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,5 +32,11 @@ class MainController extends AbstractController
             'player' => $this->getUser(),
             'mostsPlayed' => $gameRepository->findMostPlayed(),
         ]);
+    }
+
+    /** @Route("/test") */
+    public function test(CompetitionRepository $competitionRepository, PlayerRepository $playerRepository): Response
+    {
+        dd($competitionRepository->findWithRegistrationsAndTeamsByPlayer($playerRepository->find(1800)));
     }
 }
