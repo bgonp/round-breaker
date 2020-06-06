@@ -2,8 +2,6 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Competition;
-use App\Entity\Player;
 use App\Entity\Registration;
 use App\Repository\CompetitionRepository;
 use App\Repository\PlayerRepository;
@@ -32,15 +30,15 @@ class RegistrationFixtures extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager)
     {
-        $competitions = $this->competitionRepository->findAll();
-        foreach ($competitions as $competition) {
-            $registrationCount = rand(30, 60);
+        $competitions = $this->competitionRepository->findAllOrdered();
+        foreach ($competitions as $index => $competition) {
+            $registrationCount = $competition->getMaxPlayers() + (4 - $index) * 3;
             $players = $this->playerRepository->findRandomized($registrationCount);
-            for ($i = 0; $i < $registrationCount; $i++) {
+            for ($i = 0; $i < count($players); ++$i) {
                 $this->registrationRepository->save((new Registration())
                     ->setCompetition($competition)
                     ->setPlayer($players[$i])
-                    ->setIsConfirmed(!!rand(0,10)),
+                    ->setIsConfirmed($i > 2),
                 false);
             }
         }

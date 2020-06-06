@@ -12,15 +12,15 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20200529000004 extends AbstractMigration
 {
-    public function getDescription() : string
+    public function getDescription(): string
     {
         return '';
     }
 
-    public function up(Schema $schema) : void
+    public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
+        $this->abortIf('mysql' !== $this->connection->getDatabasePlatform()->getName(), 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('ALTER TABLE competition DROP FOREIGN KEY FK_B50A2CB161220EA6');
         $this->addSql('DROP INDEX IDX_B50A2CB161220EA6 ON competition');
@@ -36,10 +36,10 @@ final class Version20200529000004 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_C4E0A61F3346729B ON team (captain_id)');
     }
 
-    public function down(Schema $schema) : void
+    public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
+        $this->abortIf('mysql' !== $this->connection->getDatabasePlatform()->getName(), 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('ALTER TABLE competition DROP FOREIGN KEY FK_B50A2CB125F432AD');
         $this->addSql('DROP INDEX IDX_B50A2CB125F432AD ON competition');

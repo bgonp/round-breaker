@@ -19,7 +19,7 @@ class PlayerController extends AbstractController
     public function view(PlayerRepository $playerRepository, Player $player): Response
     {
         return $this->render('player/show.html.twig', [
-            'player'=> $player,
+            'player' => $player,
         ]);
     }
 
@@ -33,12 +33,14 @@ class PlayerController extends AbstractController
     ): Response {
         if (!($player = $this->getUser())) {
             $this->addFlash('error', 'Inicia sesión para entrar en tu perfil');
+
             return $this->redirectToRoute('main');
         }
         if ($request->isMethod('POST')) {
             $this->editPlayer($player, $request, $passwordEncoder, $playerRepository);
         }
-        return $this->render('player/edit.html.twig', ['player'=> $player]);
+
+        return $this->render('player/edit.html.twig', ['player' => $player]);
     }
 
     /**
@@ -55,14 +57,16 @@ class PlayerController extends AbstractController
                 return $this->redirectToRoute('profile');
             } else {
                 $this->addFlash('error', 'No puedes editar información de otros jugadores');
+
                 return $this->redirectToRoute('player_show', ['id' => $player->getId()]);
             }
         }
         if ($request->isMethod('POST')) {
             $this->editPlayer($player, $request, $passwordEncoder, $playerRepository);
         }
+
         return $this->render('player/edit.html.twig', [
-            'player' => $player
+            'player' => $player,
         ]);
     }
 

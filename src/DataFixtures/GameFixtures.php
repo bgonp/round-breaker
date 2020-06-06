@@ -21,7 +21,7 @@ class GameFixtures extends Fixture
         $games = [
             ['Rocket League', 'Supersonic Acrobatic Rocket-Powered Battle-Cars'],
             ['Counter Strike', 'Pium pium'],
-            ['League of Legends', 'Best community EVER']
+            ['League of Legends', 'Best community EVER'],
         ];
         foreach ($games as $game) {
             $this->gameRepository->save((new Game())

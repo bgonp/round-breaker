@@ -6,8 +6,8 @@ use App\Entity\Player;
 use App\Repository\PlayerRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Faker;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class PlayerFixtures extends Fixture
 {
@@ -20,6 +20,7 @@ class PlayerFixtures extends Fixture
         $this->encoder = $encoder;
         $this->playerRepository = $playerRepository;
     }
+
     public function load(ObjectManager $manager)
     {
         $admin = new Player();
@@ -30,14 +31,20 @@ class PlayerFixtures extends Fixture
         $admin->setPassword($this->encoder->encodePassword($admin, 'randompassword'));
         $faker = Faker\Factory::create();
         $this->playerRepository->save($admin, false);
-        for ($i = 1; $i < 100; $i++) {
+        for ($i = 1; $i < 100; ++$i) {
             $player = new Player();
-            do { $username = $faker->userName; } while ($this->playerRepository->findBy(['username' => $username]));
+            do {
+                $username = $faker->userName;
+            } while ($this->playerRepository->findBy(['username' => $username]));
             $player->setUsername($username);
-            do { $email = $faker->email; } while ($this->playerRepository->findBy(['username' => $username]));
+            do {
+                $email = $faker->email;
+            } while ($this->playerRepository->findBy(['username' => $username]));
             $player->setEmail($email);
-            while ($this->playerRepository->findBy(['twitchName' => $username])) $username = $faker->userName;
-            $player->setTwitchName($faker->userName);
+            while ($this->playerRepository->findBy(['twitchName' => $username])) {
+                $username = $faker->userName;
+            }
+            $player->setTwitchName($username);
             $player->setPassword($this->encoder->encodePassword($player, 'randompassword'));
             $this->playerRepository->save($player, false);
         }

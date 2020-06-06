@@ -40,11 +40,11 @@ abstract class BaseResolver implements ParamConverterInterface
         }
 
         if (!$object = $this->repository->find($id)) {
-            throw new \InvalidArgumentException('Entity with this id doesn\'t exists');
+            throw new \InvalidArgumentException('No existe entidad con ese ID');
         }
 
         $request->attributes->set($configuration->getName(), $object);
+
         return true;
     }
-
 }

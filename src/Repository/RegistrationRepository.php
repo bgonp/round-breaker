@@ -26,9 +26,10 @@ class RegistrationRepository extends ServiceEntityRepository
             ->setParameter('twitchname', $twitchName)
             ->getQuery()->getResult();
 
-        if (count($registrations) === 0) {
+        if (0 === count($registrations)) {
             return null;
         }
+
         return $registrations[0];
     }
 

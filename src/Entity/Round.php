@@ -33,21 +33,6 @@ class Round extends Base
     private $bracketOrder;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $bestOf;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $lobbyName;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $lobbyPassword;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Team")
      * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
      */
@@ -117,42 +102,6 @@ class Round extends Base
     public function setBracketOrder(int $bracketOrder): self
     {
         $this->bracketOrder = $bracketOrder;
-
-        return $this;
-    }
-
-    public function getBestOf(): ?int
-    {
-        return $this->bestOf;
-    }
-
-    public function setBestOf(int $bestOf): self
-    {
-        $this->bestOf = $bestOf;
-
-        return $this;
-    }
-
-    public function getLobbyName(): ?string
-    {
-        return $this->lobbyName;
-    }
-
-    public function setLobbyName(?string $lobbyName): self
-    {
-        $this->lobbyName = $lobbyName;
-
-        return $this;
-    }
-
-    public function getLobbyPassword(): ?string
-    {
-        return $this->lobbyPassword;
-    }
-
-    public function setLobbyPassword(?string $lobbyPassword): self
-    {
-        $this->lobbyPassword = $lobbyPassword;
 
         return $this;
     }

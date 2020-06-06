@@ -30,7 +30,7 @@ class RoundRepository extends ServiceEntityRepository
     public function removeRounds(Collection $rounds, bool $flush = true): void
     {
         $roundsNum = count($rounds);
-        for($i = 0; $i < $roundsNum; $i++) {
+        for ($i = 0; $i < $roundsNum; ++$i) {
             $this->getEntityManager()->remove($rounds[$i]);
         }
         if ($flush) {

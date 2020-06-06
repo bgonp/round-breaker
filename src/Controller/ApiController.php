@@ -10,7 +10,7 @@ use App\Entity\Team;
 use App\Exception\CannotModifyWinnerException;
 use App\Repository\CompetitionRepository;
 use App\Repository\RegistrationRepository;
-use App\Service\CompetitionService;
+use App\Service\RoundService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,11 +19,11 @@ use Symfony\Component\Routing\Annotation\Route;
 /** @Route("/api") */
 class ApiController extends AbstractController
 {
-    /** @Route("/set_round_winner", name="api_winner", methods={"PUT"}) */
+    /** @Route("/set_round_winner", name="api_winner", methods={"POST"}) */
     public function setRoundWinner(
         Round $round,
         Team $team,
-        CompetitionService $competitionService,
+        RoundService $competitionService,
         CompetitionRepository $competitionRepository
     ): JsonResponse {
         if (
@@ -35,7 +35,7 @@ class ApiController extends AbstractController
                 ['message' => 'No puedes asignar ganador de una competción que no es tuya'],
                 JsonResponse::HTTP_FORBIDDEN
             );
-        } else if ($round->getTeams()->count() < 2) {
+        } elseif ($round->getTeams()->count() < 2) {
             return new JsonResponse(
                 ['message' => 'No puede ganar si solo hay un equipo en la ronda'],
                 JsonResponse::HTTP_BAD_REQUEST
@@ -48,7 +48,7 @@ class ApiController extends AbstractController
                 'round_id' => $round->getId(),
                 'teams' => [],
                 'winner' => false,
-            ]
+            ],
         ];
         foreach ($round->getTeams() as $roundTeam) {
             $response['origin']['teams'][] = $roundTeam->getId();
@@ -56,26 +56,22 @@ class ApiController extends AbstractController
                 $competition = $round->getCompetition();
                 $affectedRound = null;
 
-                if ($round->getWinner() && $round->getWinner()->equals($roundTeam)) {
-                    try {
+                try {
+                    if ($round->getWinner() && $round->getWinner()->equals($roundTeam)) {
                         $affectedRound = $competitionService->undoAdvanceTeam($roundTeam, $round);
-                    } catch (CannotModifyWinnerException $e) {
-                        return new JsonResponse(['message' => $e->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
-                    }
-                    if ($competition->getIsFinished()) {
-                        $competitionRepository->save($competition->setIsFinished(false));
-                    }
-                } else {
-                    try {
+                        if ($competition->getIsFinished()) {
+                            $competitionRepository->save($competition->setIsFinished(false));
+                        }
+                    } else {
                         $affectedRound = $competitionService->advanceTeam($roundTeam, $round);
-                    } catch (CannotModifyWinnerException $e) {
-                        return new JsonResponse(['message' => $e->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
+                        if (!$affectedRound && !$competition->getIsFinished()) {
+                            $competitionRepository->save($competition->setIsFinished(true));
+                            $response['finished'] = true;
+                        }
+                        $response['origin']['winner'] = $roundTeam->getId();
                     }
-                    if (!$affectedRound && !$competition->getIsFinished()) {
-                        $competitionRepository->save($competition->setIsFinished(true));
-                        $response['finished'] = true;
-                    }
-                    $response['origin']['winner'] = $roundTeam->getId();
+                } catch (CannotModifyWinnerException $e) {
+                    return new JsonResponse(['message' => $e->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
                 }
 
                 if ($affectedRound) {
@@ -113,8 +109,10 @@ class ApiController extends AbstractController
                 $registration->setIsConfirmed(true);
                 $registrationRepository->save($registration);
             }
+
             return new JsonResponse(['registration_id' => $registration->getId()], JsonResponse::HTTP_OK);
         }
+
         return new JsonResponse([], JsonResponse::HTTP_BAD_REQUEST);
     }
 

@@ -12,15 +12,15 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20200604200354 extends AbstractMigration
 {
-    public function getDescription() : string
+    public function getDescription(): string
     {
         return '';
     }
 
-    public function up(Schema $schema) : void
+    public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
+        $this->abortIf('mysql' !== $this->connection->getDatabasePlatform()->getName(), 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('ALTER TABLE competition DROP is_individual, CHANGE held_at held_at DATETIME NOT NULL');
         $this->addSql('ALTER TABLE team CHANGE captain_id captain_id INT DEFAULT NULL');
@@ -30,10 +30,10 @@ final class Version20200604200354 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX UNIQ_98197A65E7927C74 ON player (email)');
     }
 
-    public function down(Schema $schema) : void
+    public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
+        $this->abortIf('mysql' !== $this->connection->getDatabasePlatform()->getName(), 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('ALTER TABLE competition ADD is_individual TINYINT(1) NOT NULL, CHANGE held_at held_at DATETIME DEFAULT NULL');
         $this->addSql('DROP INDEX UNIQ_98197A6572EE84A6 ON player');

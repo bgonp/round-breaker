@@ -16,12 +16,12 @@ class CompetitionRepository extends ServiceEntityRepository
         parent::__construct($registry, Competition::class);
     }
 
-	public function save(Competition $competition, bool $flush = true): void
-	{
-		$this->getEntityManager()->persist($competition);
-		if ($flush) {
-			$this->getEntityManager()->flush();
-		}
+    public function save(Competition $competition, bool $flush = true): void
+    {
+        $this->getEntityManager()->persist($competition);
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
     }
 
     public function remove(Competition $competition, bool $flush = true)
@@ -52,25 +52,18 @@ class CompetitionRepository extends ServiceEntityRepository
     public function findLastByStreamer(Player $player): ?Competition
     {
         return $this->findOneBy(['streamer' => $player], ['updatedAt' => 'DESC']);
-
     }
 
     /** @return Competition|null Random competition from the last 3 months or null if it doesn't exists */
-    public function findOneRandomFinishedWithRoundsAndTeams(): ?Competition
+    public function findOneRandomFinished(): ?Competition
     {
-        $result = $this->createQueryBuilder('c')
-            ->select('c', 'r', 't')
-            ->join('c.rounds', 'r')
-            ->join('r.teams', 't')
-            ->orderBy('r.bracketLevel')
-            ->addOrderBy('r.bracketOrder')
-            ->addOrderBy('t.id')
-            ->addOrderBy('RAND()')
+        return $this->createQueryBuilder('c')
+            ->orderBy('RAND()')
             ->where('c.heldAt >= :since')
             ->andWhere('c.isFinished = 1')
             ->setParameter('since', strtotime('-3 month'))
-            ->getQuery()->execute();
-        return count($result) === 0 ? null : $result[0];
+            ->setMaxResults(1)
+            ->getQuery()->getOneOrNullResult();
     }
 
     public function findCompleteById(int $competitionId): ?Competition

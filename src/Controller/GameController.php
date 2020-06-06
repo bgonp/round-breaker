@@ -8,7 +8,6 @@ use App\Repository\CompetitionRepository;
 use App\Repository\GameRepository;
 use App\Repository\PlayerRepository;
 use App\Repository\RegistrationRepository;
-use App\Service\GameService;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,7 +26,7 @@ class GameController extends AbstractController
     {
         return $this->render('game/index.html.twig', [
             'games' => $gameRepository->findAll(),
-            'player'=> $this->getUser()
+            'player' => $this->getUser(),
         ]);
     }
 
@@ -38,6 +37,7 @@ class GameController extends AbstractController
     {
         if (!$this->isGranted('ROLE_ADMIN')) {
             $this->addFlash('error', 'No puedes crear un juego');
+
             return $this->redirectToRoute('game_list');
         }
         $game = null;
@@ -49,9 +49,11 @@ class GameController extends AbstractController
                 $this->addFlash('error', 'Ya existe un juego con el mismo nombre');
             } else {
                 $gameRepository->save($game);
+
                 return $this->redirectToRoute('game_list');
             }
         }
+
         return $this->render('game/new.html.twig', ['game' => $game]);
     }
 
@@ -62,14 +64,17 @@ class GameController extends AbstractController
     {
         if (!$this->isGranted('ROLE_ADMIN')) {
             $this->addFlash('error', 'No puedes eliminar juegos');
+
             return $this->redirectToRoute('game_list');
         }
         try {
             $gameRepository->remove($game);
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             $this->addFlash('error', 'No puedes borrar este juego');
+
             return $this->redirectToRoute('game_edit', ['id' => $game->getId()]);
         }
+
         return $this->redirectToRoute('game_list');
     }
 
@@ -81,15 +86,16 @@ class GameController extends AbstractController
         Game $game,
         GameRepository $gameRepository
     ): Response {
-        if ($this->isGranted("ROLE_ADMIN")) {
+        if ($this->isGranted('ROLE_ADMIN')) {
             if ($request->request->has('name')) {
                 $game->setName($request->request->get('name'));
                 $game->setDescription($request->request->get('description'));
                 $gameRepository->save($game);
             }
+
             return $this->render('game/edit.html.twig', [
                 'controller_name' => 'GameController',
-                'game' => $game
+                'game' => $game,
             ]);
         } else {
             return $this->redirectToRoute('main');
@@ -106,11 +112,12 @@ class GameController extends AbstractController
     ): Response {
         /** @var Player $player */
         $player = $this->getUser();
+
         return $this->render('game/show.html.twig', [
             'game' => $game,
             'competitions' => $competitionRepository->findByGame($game),
             'canEditGame' => $this->isGranted('ROLE_ADMIN'),
-            'player'=> $player,
+            'player' => $player,
             'registrations' => $player ? $registrationRepository->findOpenByPlayer($player) : [],
         ]);
     }

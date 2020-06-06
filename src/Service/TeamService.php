@@ -7,19 +7,21 @@ namespace App\Service;
 use App\Entity\Competition;
 use App\Entity\Player;
 use App\Entity\Team;
+use App\Exception\NotEnoughConfirmedRegistrationsException;
 use App\Repository\CompetitionRepository;
 use App\Repository\PlayerRepository;
 use App\Repository\RegistrationRepository;
-use App\Repository\TeamRepository;
 use App\Repository\RoundRepository;
+use App\Repository\TeamRepository;
+use Faker;
 
 class TeamService
 {
     private CompetitionRepository $competitionRepository;
 
-    private CompetitionService $competitionService;
+    private RoundService $competitionService;
 
-	private TeamRepository $teamRepository;
+    private TeamRepository $teamRepository;
 
     private RegistrationRepository $registrationRepository;
 
@@ -27,9 +29,9 @@ class TeamService
 
     private PlayerRepository $playerRepository;
 
-	public function __construct(
-	    CompetitionRepository $competitionRepository,
-        CompetitionService $competitionService,
+    public function __construct(
+        CompetitionRepository $competitionRepository,
+        RoundService $competitionService,
         TeamRepository $teamRepository,
         RegistrationRepository $registrationRepository,
         RoundRepository $roundRepository,
@@ -37,52 +39,51 @@ class TeamService
     ) {
         $this->competitionRepository = $competitionRepository;
         $this->competitionService = $competitionService;
-		$this->teamRepository = $teamRepository;
+        $this->teamRepository = $teamRepository;
         $this->registrationRepository = $registrationRepository;
         $this->roundRepository = $roundRepository;
         $this->playerRepository = $playerRepository;
     }
 
-	public function randomize(Competition $competition): bool
+    /**
+     * @throws NotEnoughConfirmedRegistrationsException
+     */
+    public function createFromCompetition(Competition $competition): void
     {
         $registrations = $this->registrationRepository->findConfirmedByCompetitionRandomized($competition, $competition->getMaxPlayers());
         if (count($registrations) < $competition->getMaxPlayers()) {
             $competition->setMaxPlayers($competition->getMaxPlayers() / 2);
-            return $competition->getMaxPlayers() < $competition->getPlayersPerTeam() * 2 ?
-                false :
-                $this->randomize($competition);
+            if ($competition->getMaxPlayers() < $competition->getPlayersPerTeam() * 2) {
+                throw NotEnoughConfirmedRegistrationsException::create();
+            }
+            $this->createFromCompetition($competition);
         }
 
         if ($rounds = $competition->getRounds()) {
             $this->roundRepository->removeRounds($competition->getRounds());
         }
         $playersPerTeam = $competition->getPlayersPerTeam();
-        $teams = [];
-        for ($registrationIndex = 0; $registrationIndex < $competition->getMaxPlayers(); $registrationIndex++) {
-            if ($registrationIndex % $playersPerTeam === 0) {
-                $teams[] = (new Team())
-                    ->setName('Team ' . (($registrationIndex / $playersPerTeam) + 1))
-                    ->setCompetition($competition);
+        $faker = Faker\Factory::create();
+        for ($registrationIndex = 0; $registrationIndex < $competition->getMaxPlayers(); ++$registrationIndex) {
+            if (0 === $registrationIndex % $playersPerTeam) {
+                $team = (new Team())->setName($faker->streetName);
+                $competition->addTeam($team);
             }
-            $team = end($teams);
             $team->addPlayer($registrations[$registrationIndex]->getPlayer());
-            if (($registrationIndex + 1) % $playersPerTeam === 0) {
-                $team->setCaptain($team->getPlayers()->get(rand(0, $playersPerTeam-1)));
+            if (0 === ($registrationIndex + 1) % $playersPerTeam) {
+                $team->setCaptain($team->getPlayers()->get(rand(0, $playersPerTeam - 1)));
                 $this->teamRepository->save($team, false);
             }
         }
         $this->competitionRepository->save($competition->setIsOpen(false));
-        $this->competitionService->createRounds($competition, $teams);
-        return true;
-	}
+    }
 
-    public function replacePlayer(Team $team, Player $player): bool
+    public function replacePlayer(Team $team, Player $player): void
     {
         $newPlayer = $this->playerRepository->findOneConfirmedNotInTeamRandomized($team->getCompetition());
         if (!$newPlayer || !$team->getPlayers()->contains($player)) {
-            return false;
+            throw NotEnoughConfirmedRegistrationsException::create();
         }
         $this->teamRepository->save($team->removePlayer($player)->addPlayer($newPlayer));
-        return true;
-	}
+    }
 }
