@@ -112,7 +112,7 @@
 					<td class="empty"></td>
 					<td class="line"></td>
 					<td class="line br"></td>
-					{% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[14], team_index: 0, position: [4,1,1] } %}
+					<td class="empty"></td>
 
 				</tr>
 				<tr>
@@ -122,17 +122,26 @@
 					<td class="empty"></td>
 					<td class="line"></td>
 					<td class="line br"></td>
-					{% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[14], team_index: 1, position: [4,1,2] } %}
+					<td class="empty"></td>
 				</tr>
                 <!--MIDDLE OF TABLE-->
-				<tr style="height: 52px;">
+				<tr>
 					<td class="empty"></td>
+					<td class="line"></td>
+					<td class="line"></td>
 					<td class="empty"></td>
-					<td class="empty"></td>
-					<td class="empty"></td>
-					<td class="empty"></td>
+					<td class="line"></td>
 					<td class="line br"></td>
+					{% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[14], team_index: 1, position: [4,1,2] } %}
+				</tr>
+				<tr>
 					<td class="empty"></td>
+					<td class="line"></td>
+					<td class="line"></td>
+					<td class="empty"></td>
+					<td class="line"></td>
+					<td class="line br"></td>
+					{% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[14], team_index: 1, position: [4,1,2] } %}
 				</tr>
                 <!--MIDDLE OF TABLE-->
 				<tr>
