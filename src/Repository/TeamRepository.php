@@ -23,6 +23,8 @@ class TeamRepository extends ServiceEntityRepository
             ->select('t', 'c')
             ->join('t.competition', 'c')
             ->join('t.players', 'p')
+            ->orderBy('c.isFinished', 'ASC')
+            ->addOrderBy('c.heldAt', 'DESC')
             ->where('p = :player')
             ->setParameter('player', $player)
             ->getQuery()->execute();

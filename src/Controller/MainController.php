@@ -33,10 +33,4 @@ class MainController extends AbstractController
             'mostsPlayed' => $gameRepository->findMostPlayed(),
         ]);
     }
-
-    /** @Route("/test") */
-    public function test(CompetitionRepository $competitionRepository, PlayerRepository $playerRepository): Response
-    {
-        dd($competitionRepository->findWithRegistrationsAndTeamsByPlayer($playerRepository->find(1800)));
-    }
 }
