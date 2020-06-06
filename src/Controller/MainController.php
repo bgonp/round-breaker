@@ -31,6 +31,7 @@ class MainController extends AbstractController
             'clickable' => false,
             'player' => $this->getUser(),
             'mostsPlayed' => $gameRepository->findMostPlayed(),
+            'bracketType' => $competition->getIsOpen() ? 0 : $competition->getTeams()->count(),
         ]);
     }
 }

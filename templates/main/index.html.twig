@@ -6,7 +6,11 @@
 <div class="row">
     <div class="col-md-9 p-3">
         {%  if competition %}
-            {% include 'brackets/bracket_8.html.twig' %}
+        {% if bracketType == 2 %}{% include 'brackets/bracket_2.html.twig' %}
+        {% elseif bracketType == 4 %}{% include 'brackets/bracket_4.html.twig' %}
+        {% elseif bracketType == 8 %}{% include 'brackets/bracket_8.html.twig' %}
+        {% elseif bracketType == 16 %}{% include 'brackets/bracket_16.html.twig' %}
+        {% endif %}
         {% endif %}
         <div class="col-md-12 pt-2 px-0">
             <h1>¿Qué es roundbreaker?</h1>

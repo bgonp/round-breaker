@@ -1,0 +1,261 @@
+<link rel="stylesheet" href="{{ asset('css/brackets.css') }}" />
+<link rel="stylesheet" href="{{ asset('css/bracket_16.css') }}" />
+<div class="single bracket">
+	<div class="bracket-container scrollable-x">
+		<table class="bracket refresh" align="center">
+			<thead>
+				<tr>
+					<th colspan="2">Octavos</th>
+					<th colspan="2">Cuartos</th>
+					<th colspan="2">Semis</th>
+					<th colspan="2">Final</th>
+				</tr>
+				<tr class="spacer"></tr>
+			</thead>
+			<tbody>
+				<tr>
+					{% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[0], team_index: 0, position: [1,1,1] } %}
+					<td class="line bb"></td>
+					<td class="line"></td>
+					<td class="empty"></td>
+					<td class="line"></td>
+					<td class="line"></td>
+					<td class="line"></td>
+				</tr>
+				<tr>
+					{% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[0], team_index: 1, position: [1,1,2] } %}
+					<td class="line br"></td>
+					<td class="line"></td>
+					<td class="empty"></td>
+					<td class="line"></td>
+					<td class="line"></td>
+					<td class="line"></td>
+				</tr>
+				<tr>
+					<td class="line"></td>
+					<td class="line br"></td>
+					{% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[8], team_index: 0, position: [2,1,1] } %}
+					<td class="line bb"></td>
+				</tr>
+				<tr>
+					<td class="empty"></td>
+					<td class="line br"></td>
+					{% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[8], team_index: 1, position: [2,1,2] } %}
+					<td class="line br"></td>
+				</tr>
+				<tr>
+					{% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[1], team_index: 0, position: [1,2,1] } %}
+					<td class="line br bb"></td>
+					<td class="line"></td>
+					<td class="line br"></td>
+				</tr>
+				<tr>
+					{% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[1], team_index: 1, position: [1,2,2] } %}
+					<td class="line"></td>
+					<td class="line"></td>
+					<td class="line br"></td>
+				</tr>
+				<tr>
+					<td class="empty"></td>
+					<td class="line"></td>
+					<td class="line"></td>
+					<td class="line br"></td>
+					{% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[12], team_index: 0, position: [3,1,1] } %}
+					<td class="line bb"></td>
+				</tr>
+				<tr>
+					<td class="line"></td>
+					<td class="line"></td>
+					<td class="empty"></td>
+					<td class="line br"></td>
+					{% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[12], team_index: 1, position: [3,1,2] } %}
+					<td class="line br"></td>
+				</tr>
+				<tr>
+					{% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[2], team_index: 0, position: [1,3,1] } %}
+					<td class="line bb"></td>
+					<td class="line"></td>
+					<td class="line br"></td>
+					<td class="empty"></td>
+					<td class="line br"></td>
+					<td class="empty"></td>
+				</tr>
+				<tr>
+					{% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[2], team_index: 1, position: [1,3,2] } %}
+					<td class="line br"></td>
+					<td class="line"></td>
+					<td class="line br"></td>
+					<td class="empty"></td>
+					<td class="line br"></td>
+					<td class="empty"></td>
+				</tr>
+				<tr>
+					<td class="empty"></td>
+					<td class="line br"></td>
+					{% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[9], team_index: 0, position: [2,2,1] } %}
+					<td class="line bb br"></td>
+					<td class="empty"></td>
+					<td class="line br"></td>                    
+				</tr>
+				<tr>
+					<td class="empty"></td>
+					<td class="line br"></td>
+					{% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[9], team_index: 1, position: [2,2,2] } %}
+					<td class="line"></td>
+					<td class="empty"></td>
+					<td class="line br"></td>   
+				</tr>
+				<tr>
+					{% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[3], team_index: 0, position: [1,4,1] } %}
+					<td class="line bb br"></td>
+					<td class="line"></td>
+					<td class="empty"></td>
+					<td class="line"></td>
+					<td class="line br"></td>
+					{% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[14], team_index: 0, position: [4,1,1] } %}
+
+				</tr>
+				<tr>
+					{% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[3], team_index: 1, position: [1,4,2] } %}
+					<td class="line"></td>
+					<td class="line"></td>
+					<td class="empty"></td>
+					<td class="line"></td>
+					<td class="line br"></td>
+					{% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[14], team_index: 1, position: [4,1,2] } %}
+				</tr>
+                <!--MIDDLE OF TABLE-->
+				<tr style="height: 52px;">
+					<td class="empty"></td>
+					<td class="empty"></td>
+					<td class="empty"></td>
+					<td class="empty"></td>
+					<td class="empty"></td>
+					<td class="line br"></td>
+					<td class="empty"></td>
+				</tr>
+                <!--MIDDLE OF TABLE-->
+				<tr>
+					{% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[4], team_index: 0, position: [1,5,1] } %}
+					<td class="line bb"></td>
+					<td class="line"></td>
+					<td class="empty"></td>
+					<td class="line"></td>
+					<td class="line br"></td>
+					<td class="line"></td>
+				</tr>
+				<tr>
+					{% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[4], team_index: 1, position: [1,5,2] } %}
+					<td class="line br"></td>
+					<td class="line"></td>
+					<td class="empty"></td>
+					<td class="line"></td>
+					<td class="line br"></td>
+					<td class="line"></td>
+				</tr>
+				<tr>
+					<td class="line"></td>
+					<td class="line br"></td>
+					{% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[10], team_index: 0, position: [2,3,1] } %}
+					<td class="line bb"></td>
+					<td class="empty"></td>
+					<td class="line br"></td>                                        
+				</tr>
+				<tr>
+					<td class="empty"></td>
+					<td class="line br"></td>
+					{% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[10], team_index: 1, position: [2,3,2] } %}
+					<td class="line br"></td>
+                    <td class="empty"></td>
+					<td class="line br"></td>
+				</tr>
+				<tr>
+					{% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[5], team_index: 0, position: [1,6,1] } %}
+					<td class="line br bb"></td>
+					<td class="line"></td>
+					<td class="line br"></td>
+                    <td class="empty"></td>
+					<td class="line br"></td>                    
+				</tr>
+				<tr>
+					{% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[5], team_index: 1, position: [1,6,2] } %}
+					<td class="line"></td>
+					<td class="line"></td>
+					<td class="line br"></td>
+                    <td class="empty"></td>
+					<td class="line br"></td>                    
+				</tr>
+				<tr>
+					<td class="empty"></td>
+					<td class="line"></td>
+					<td class="line"></td>
+					<td class="line br"></td>
+					{% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[13], team_index: 0, position: [3,2,1] } %}
+					<td class="line br bb"></td>
+
+			  </tr>
+				<tr>
+					<td class="line"></td>
+					<td class="line"></td>
+					<td class="empty"></td>
+					<td class="line br"></td>
+					{% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[13], team_index: 1, position: [3,2,2] } %}
+
+			  </tr>
+				<tr>
+					{% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[6], team_index: 0, position: [1,7,1] } %}
+					<td class="line bb"></td>
+					<td class="line"></td>
+					<td class="line br"></td>
+					<td class="empty"></td>
+					<td class="empty"></td>
+					<td class="empty"></td>
+				</tr>
+				<tr>
+					{% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[6], team_index: 1, position: [1,7,2] } %}
+					<td class="line br"></td>
+					<td class="line"></td>
+					<td class="line br"></td>
+					<td class="empty"></td>
+					<td class="empty"></td>
+					<td class="empty"></td>
+				</tr>
+				<tr>
+					<td class="empty"></td>
+					<td class="line br"></td>
+					{% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[11], team_index: 0, position: [2,4,1] } %}
+					<td class="line bb br"></td>
+				</tr>
+				<tr>
+					<td class="empty"></td>
+					<td class="line br"></td>
+					{% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[11], team_index: 1, position: [2,4,2] } %}
+					<td class="line"></td>
+
+				</tr>
+				<tr>
+					{% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[7], team_index: 0, position: [1,8,1] } %}
+					<td class="line bb br"></td>
+					<td class="line"></td>
+					<td class="empty"></td>
+					<td class="line"></td>
+					<td class="line"></td>
+					<td class="line"></td>
+
+				</tr>
+				<tr>
+					{% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[7], team_index: 1, position: [1,8,2] } %}
+					<td class="line"></td>
+					<td class="line"></td>
+					<td class="empty"></td>
+					<td class="line"></td>
+					<td class="line"></td>
+					<td class="line"></td>
+
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<a href="#" class="bracket-zoom"><i class="fas fa-expand-arrows-alt"></i></a>
+</div>
+{% if clickable %}<script src="{{ asset('js/bracket.js') }}"></script>{% endif %}

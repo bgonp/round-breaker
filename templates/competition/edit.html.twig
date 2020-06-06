@@ -121,10 +121,10 @@
                         <ul class="list-group">
                             {% for player in team.players %}
                                 <li class="list-group-item sport-text">{{ player.username }}
-                                    <form action="{{ path('kick_member') }}" method="post">
+                                    <form action="{{ path('kick_member') }}" method="post" class="d-inline">
                                         <input type="hidden" name="team_id" value="{{ team.id }}">
                                         <input type="hidden" name="player_id" value="{{ player.id }}">
-                                        <button type="submit">KICK</button>
+                                        <span class="float-right"><button class="fas fa-random controls confirmable" type="submit" title="cambiar jugador"></button></span>
                                     </form>
                                 </li>
                             {% endfor %}
