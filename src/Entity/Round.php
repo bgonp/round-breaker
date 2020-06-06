@@ -19,6 +19,7 @@ class Round extends Base
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Team", inversedBy="rounds", cascade={"remove"})
+     * @ORM\OrderBy({"id" = "ASC"})
      */
     private $teams;
 

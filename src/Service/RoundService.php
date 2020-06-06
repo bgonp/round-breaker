@@ -59,7 +59,10 @@ class RoundService
         }
         $this->roundRepository->flush();
 
-        return $nextRound;
+        // Call repository again to obtain teams ordered
+        $this->roundRepository->clear();
+
+        return $this->roundRepository->find($nextRound->getId());
     }
 
     /** @return Round|null Affected round */
@@ -87,7 +90,7 @@ class RoundService
         return $this->roundRepository->findOneBy([
             'competition' => $round->getCompetition(),
             'bracketLevel' => $round->getBracketLevel() + 1,
-            'bracketOrder' => ceil($round->getBracketOrder() / 2),
+            'bracketOrder' => (int) ceil($round->getBracketOrder() / 2),
         ]);
     }
 }
