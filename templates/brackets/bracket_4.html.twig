@@ -1,0 +1,49 @@
+<link rel="stylesheet" href="{{ asset('css/brackets.css') }}" />
+<link rel="stylesheet" href="{{ asset('css/bracket_4.css') }}" />
+<div class="single bracket">
+	<div class="bracket-container scrollable-x">
+		<table class="bracket refresh" align="center">
+			<thead>
+				<tr>
+					<th colspan="2">Semis</th>
+					<th>Final</th>
+				</tr>
+				<tr class="spacer"></tr>
+			</thead>
+			<tbody>
+				<tr>
+                    {% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[0], team_index: 0, position: [1,1,1] } %}
+					<td class="line bb"></td>
+					<td class="line"></td>
+				</tr>
+				<tr>
+                    {% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[0], team_index: 1, position: [1,1,1] } %}
+					<td class="line br"></td>
+					<td class="line"></td>
+				</tr>
+				<tr>
+					<td class="line"></td>
+                    <td class="line br"></td>
+                    {% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[2], team_index: 0, position: [2,1,1] } %}
+				</tr>
+				<tr>
+					<td class="empty"></td>
+                    <td class="line br"></td>
+                    {% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[2], team_index: 1, position: [2,1,2] } %}
+				</tr>
+				<tr>
+                    {% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[1], team_index: 0, position: [1,2,1] } %}
+					<td class="line br bb"></td>
+					<td class="line"></td>
+				</tr>
+				<tr>
+                    {% include 'brackets/bracket_team.html.twig' with {round: competition.rounds[1], team_index: 1, position: [1,2,2] } %}
+					<td class="empty"></td>
+					<td class="empty"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<a href="#" class="bracket-zoom"><i class="fas fa-expand-arrows-alt"></i></a>
+</div>
+{% if clickable %}<script src="{{ asset('js/bracket.js') }}"></script>{% endif %}

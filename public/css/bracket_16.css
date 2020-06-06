@@ -1,0 +1,32 @@
+.single.bracket .bracket td {
+	border: 2px solid transparent;
+}
+
+.single.bracket .bracket .match span,
+.single.bracket .bracket .match a,
+.single.bracket .bracket .match a:hover,
+.single.bracket .bracket .match a:active,
+.single.bracket .bracket .match a:focus {
+	font-size: 0.8rem;
+	padding: 12px;
+	width: 180px;
+}
+
+.single.bracket .bracket .match::before,
+.single.bracket .bracket .match::after {
+	width: 9px;
+	right: 4px;
+}
+.single.bracket .bracket .match::before,
+.single.bracket .bracket .match::before {
+	right: 13px;
+}
+
+.single.bracket .bracket .match span,
+.single.bracket .bracket .match a {
+	padding: 0 12px 0 12px!important;
+    margin-right: 5px;
+    line-height: 26px;
+    height: 26px;
+    background: #000;
+}
