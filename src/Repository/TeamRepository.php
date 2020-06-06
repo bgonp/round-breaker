@@ -26,12 +26,12 @@ class TeamRepository extends ServiceEntityRepository
             ->getQuery()->getOneOrNullResult();
     }
 
-	public function save(Team $team, bool $flush = true): void
-	{
-		$this->getEntityManager()->persist($team);
-		if ($flush) {
-			$this->getEntityManager()->flush();
-		}
+    public function save(Team $team, bool $flush = true): void
+    {
+        $this->getEntityManager()->persist($team);
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
     }
 
     public function flush(): void

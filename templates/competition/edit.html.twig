@@ -115,7 +115,7 @@
         <div class="col-12 col-lg-6">
             <h1>Equipos</h1>
             {% for team in competition.teams %}
-                <div class="my-2 bg-light border">
+                <div class="my-2 bg-light border team-item">
                     <div class="card-body">
                         <h5 class="card-title sport-text">{{ team.name }}</h5>
                         <ul class="list-group">
@@ -139,7 +139,7 @@
         <h1>Inscripciones</h1>
         <ul class="list-group list-group-flush sport-text mb-3 registrations">
             {% for registration in competition.registrations %}
-                <li id="registration-{{ registration.id }}" class="list-group-item {{ registration.isConfirmed ? ' confirmed' : '' }}">
+                <li id="registration-{{ registration.id }}" class="registration-item list-group-item{{ registration.isConfirmed ? ' confirmed' : '' }}">
                     {{ registration.player.username }}
                     <span class="float-right">
                         {% if competition.isOpen %}

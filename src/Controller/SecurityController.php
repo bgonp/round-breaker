@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Player;
 use App\Repository\PlayerRepository;
-use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,6 +26,7 @@ class SecurityController extends AbstractController
             $this->addFlash('error', 'Credenciales incorrectas');
         }
         $params = $error ? ['last_username' => $authenticationUtils->getLastUsername()] : [];
+
         return $this->redirectToRoute('main', $params);
     }
 
@@ -37,6 +37,7 @@ class SecurityController extends AbstractController
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
+
     /**
      * @Route("/register", name="user_registration", methods={"POST"})
      */
@@ -51,14 +52,18 @@ class SecurityController extends AbstractController
         $twitchname = $request->get('twitchname');
 
         $invalidFields = [];
-        if (!$username || $playerRepository->findOneBy(['username' => $username]))
+        if (!$username || $playerRepository->findOneBy(['username' => $username])) {
             $invalidFields[] = 'username';
-        if (!$twitchname || $playerRepository->findOneBy(['twitchName' => $twitchname]))
+        }
+        if (!$twitchname || $playerRepository->findOneBy(['twitchName' => $twitchname])) {
             $invalidFields[] = 'twitch name';
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL) || $playerRepository->findOneBy(['email' => $email]))
+        }
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL) || $playerRepository->findOneBy(['email' => $email])) {
             $invalidFields[] = 'e-mail';
-        if (!$plainPassword)
+        }
+        if (!$plainPassword) {
             $invalidFields[] = 'password';
+        }
 
         if ($invalidFields) {
             $this->addFlash('error',
@@ -77,7 +82,7 @@ class SecurityController extends AbstractController
         return $this->redirectToRoute('main', [
             'last_username' => $username,
             'last_email' => $email,
-            'last_twitchname' => $twitchname
+            'last_twitchname' => $twitchname,
         ]);
     }
 }

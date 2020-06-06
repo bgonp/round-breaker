@@ -2,12 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\Competition;
-use App\Entity\Player;
 use App\Entity\Team;
-use App\Repository\PlayerRepository;
 use App\Repository\TeamRepository;
-use App\Service\TeamService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,9 +28,10 @@ class TeamController extends AbstractController
                 $teamRepository->save($team->setName($request->request->get('name')));
             }
         }
+
         return $this->render('team/show.html.twig', [
             'team' => $team,
-            'canEditName' => $canEditName
+            'canEditName' => $canEditName,
         ]);
     }
 }

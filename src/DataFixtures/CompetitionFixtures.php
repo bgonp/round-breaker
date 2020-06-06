@@ -33,21 +33,22 @@ class CompetitionFixtures extends Fixture implements DependentFixtureInterface
     {
         $faker = Faker\Factory::create();
         $games = $this->gameRepository->findAll();
-        $streamersNeeded = (count($games)*(count($games) + 1)) / 2;
+        $streamersNeeded = (count($games) * (count($games) + 1)) / 2;
         $streamers = $this->playerRepository->findRandomized($streamersNeeded);
         $counter = 0;
         foreach ($games as $index => $game) {
-            for ($i = 0; $i <= $index; $i++) {
-                $playersPerTeam = rand(1, 5);
-                $numberOfTeams = pow(2, rand(1,4));
+            for ($i = 0; $i <= $index; ++$i) {
+                $playersPerTeam = 2 + $i % 4;
+                $numberOfTeams = pow(2, 3 - $i);
+                $heldAtAfter = ($days = ($counter - 4) * 10) >= 0 ? "+$days days" : "$days days";
+                $heldAtBefore = ($days = ($counter - 3) * 10) >= 0 ? "+$days days" : "$days days";
                 $this->competitionRepository->save((new Competition())
                     ->setGame($game)
                     ->setStreamer($streamers[$counter])
-                    ->setHeldAt($faker->dateTimeBetween('-30 days', '+30 days'))
-                    ->setName('Competición #' . substr('0'.(++$counter), -2))
+                    ->setName('Competición #'.substr('0'.(++$counter), -2))
+                    ->setHeldAt($faker->dateTimeBetween($heldAtAfter, $heldAtBefore))
                     ->setPlayersPerTeam($playersPerTeam)
-                    ->setMaxPlayers($playersPerTeam * $numberOfTeams)
-                , false);
+                    ->setMaxPlayers($playersPerTeam * $numberOfTeams), false);
             }
         }
         $this->competitionRepository->flush();

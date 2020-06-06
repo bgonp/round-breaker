@@ -2,15 +2,17 @@
 
 namespace App\Controller;
 
+use App\Entity\Competition;
 use App\Entity\Player;
 use App\Entity\Team;
+use App\Exception\NotEnoughConfirmedRegistrationsException;
 use App\Repository\CompetitionRepository;
 use App\Repository\GameRepository;
 use App\Repository\RegistrationRepository;
 use App\Repository\RoundRepository;
+use App\Service\CompetitionService;
 use App\Service\TeamService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use App\Entity\Competition;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -29,10 +31,11 @@ class CompetitionController extends AbstractController
     ): Response {
         /** @var Player $player */
         $player = $this->getUser();
+
         return $this->render('competition/index.html.twig', [
             'competitions' => $competitionRepository->findAllOrdered(),
             'canEditGame' => $this->isGranted('ROLE_ADMIN'),
-            'player'=> $player,
+            'player' => $player,
             'registrations' => $player ? $registrationRepository->findOpenByPlayer($player) : [],
         ]);
     }
@@ -47,12 +50,13 @@ class CompetitionController extends AbstractController
     ) {
         if (!($player = $this->getUser())) {
             $this->addFlash('error', 'No puedes crear una competición sin haber iniciado sesión');
+
             return $this->redirectToRoute('main');
         }
         if ($request->isMethod('POST')) {
             if (!($name = $request->request->get('name'))) {
                 $this->addFlash('error', 'El campo nombre es obligatorio');
-            } else if (!($heldAt = new \DateTime($request->request->get('heldAt')))) {
+            } elseif (!($heldAt = new \DateTime($request->request->get('heldAt')))) {
                 $this->addFlash('error', 'El campo fecha y hora es obligatorio');
             } else {
                 $playersPerTeam = $request->request->get('playersPerTeam');
@@ -60,8 +64,6 @@ class CompetitionController extends AbstractController
                 $competition = (new Competition())
                     ->setName($name)
                     ->setDescription($request->request->get('description'))
-                    ->setIsOpen(true)
-                    ->setIsFinished(false)
                     ->setStreamer($player)
                     ->setMaxPlayers($teamNum * $playersPerTeam)
                     ->setGame($gameRepository->find($request->request->get('game')))
@@ -74,11 +76,13 @@ class CompetitionController extends AbstractController
                         ->setTwitchBotToken($previousCompetition->getTwitchBotToken());
                 }
                 $competitionRepository->save($competition);
+
                 return $this->redirectToRoute('competition_show', ['id' => $competition->getId()]);
             }
         }
+
         return $this->render('competition/new.html.twig', [
-            'games' => $gameRepository->findAll()
+            'games' => $gameRepository->findAll(),
         ]);
     }
 
@@ -93,6 +97,7 @@ class CompetitionController extends AbstractController
         $competition = $competitionRepository->findCompleteById($id);
         if (!$competition) {
             $this->addFlash('error', 'No existe competición con ese ID');
+
             return $this->redirectToRoute('competition_list');
         }
         /** @var Player $player */
@@ -100,9 +105,10 @@ class CompetitionController extends AbstractController
         if ($player && $competition->getStreamer()->equals($player)) {
             return $this->redirectToRoute('competition_edit', ['id' => $competition->getId()]);
         }
+
         return $this->render('competition/show.html.twig', [
             'competition' => $competition,
-            'showRegistrationButton'=> $player !== null,
+            'showRegistrationButton' => null !== $player,
             'playerRegistration' => $player ? $registrationRepository->findOneByPlayerAndCompetition($player, $competition) : null,
             'clickable' => false,
             'showEditButtons' => $this->isGranted('ROLE_ADMIN'),
@@ -123,16 +129,18 @@ class CompetitionController extends AbstractController
         $competition = $competitionRepository->findCompleteById($id);
         if (!$competition) {
             $this->addFlash('error', 'No existe competición con ese ID');
+
             return $this->redirectToRoute('competition_list');
         }
         if (!$this->isGranted('ROLE_ADMIN') && !$competition->getStreamer()->equals($this->getUser())) {
             $this->addFlash('error', 'No puedes editar competiciones de otos usuarios');
+
             return $this->redirectToRoute('competition_show', ['id' => $competition->getId()]);
         }
         if ($request->isMethod('POST')) {
             if ($competition->getIsFinished()) {
                 $this->addFlash('error', 'No puedes editar una competición finalizada');
-            } else if (!($name = $request->request->get('name'))) {
+            } elseif (!($name = $request->request->get('name'))) {
                 $this->addFlash('error', 'El campo nombre es obligatorio');
             } else {
                 if ($competition->getIsOpen()) {
@@ -143,7 +151,7 @@ class CompetitionController extends AbstractController
                         ->setPlayersPerTeam($playersPerTeam)
                         ->setGame($gameRepository->find($request->request->get('game')))
                         ->setHeldAt(new \DateTime($request->request->get('heldAt')));
-                } else if ($request->request->get('open')) {
+                } elseif ($request->request->get('open')) {
                     $roundRepository->removeRounds($competition->getRounds());
                 }
                 $competition
@@ -153,6 +161,7 @@ class CompetitionController extends AbstractController
                 $competitionRepository->save($competition);
             }
         }
+
         return $this->render('competition/edit.html.twig', [
             'games' => $gameRepository->findAll(),
             'competition' => $competition,
@@ -164,30 +173,35 @@ class CompetitionController extends AbstractController
     /**
      * @Route("/delete", name="competition_delete", methods={"POST"})
      */
-    public function delete(Competition $competition, CompetitionRepository $competitionRepository) {
+    public function delete(Competition $competition, CompetitionRepository $competitionRepository)
+    {
         if (!$this->isGranted('ROLE_ADMIN') && !$competition->getStreamer()->equals($this->getUser())) {
             $this->addFlash('error', 'No puedes borrar una competición de otro usuario');
         } else {
             $competitionRepository->remove($competition);
         }
+
         return $this->redirectToRoute('competition_list');
     }
 
     /**
      * @Route("/randomize", name="competition_randomize", methods={"POST"})
      */
-    public function randomizeTeams(Competition $competition, TeamService $teamService): Response
+    public function randomize(Competition $competition, CompetitionService $competitionService): Response
     {
         if (
             $competition->getIsOpen() &&
             ($this->isGranted('ROLE_ADMIN') || $competition->getStreamer()->equals($this->getUser()))
         ) {
-            if (!$teamService->randomize($competition)) {
-                $this->addFlash('error', 'No hay suficientes jugadores confirmados');
+            try {
+                $competitionService->randomize($competition);
+            } catch (NotEnoughConfirmedRegistrationsException $e) {
+                $this->addFlash('error', $e->getMessage());
             }
         } else {
             $this->addFlash('error', 'La competición esta cerrada o no tienes permisos para editar');
         }
+
         return $this->redirectToRoute('competition_edit', ['id' => $competition->getId()]);
     }
 
@@ -203,9 +217,14 @@ class CompetitionController extends AbstractController
             if ($team->getCompetition()->getIsFinished()) {
                 $this->addFlash('error', 'No puedes eliminar a un jugador de un equipo en una competición terminada');
             } else {
-                $teamService->replacePlayer($team, $player);
+                try {
+                    $teamService->replacePlayer($team, $player);
+                } catch (NotEnoughConfirmedRegistrationsException $e) {
+                    $this->addFlash('error', $e->getMessage());
+                }
             }
         }
+
         return $this->redirectToRoute('competition_edit', ['id' => $team->getCompetition()->getId()]);
     }
 }

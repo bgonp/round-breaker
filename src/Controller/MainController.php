@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Repository\CompetitionRepository;
 use App\Repository\GameRepository;
-use App\Repository\PlayerRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,24 +19,17 @@ class MainController extends AbstractController
         CompetitionRepository $competitionRepository,
         GameRepository $gameRepository
     ): Response {
-        $randomCompetition = $competitionRepository->findOneRandomFinishedWithRoundsAndTeams();
+        $competition = $competitionRepository->findOneRandomFinished();
+        $competition = $competitionRepository->findCompleteById($competition->getId());
+
         return $this->render('main/index.html.twig', [
-            'last_username' => $request->get('last_username'),
-            'last_email' => $request->get('last_email'),
-            'last_twitchname' => $request->get('last_twitchname'),
-            'competition' => $randomCompetition,
+            'last_username' => $request->query->get('last_username'),
+            'last_email' => $request->query->get('last_email'),
+            'last_twitchname' => $request->query->get('last_twitchname'),
+            'competition' => $competition,
             'clickable' => false,
             'player' => $this->getUser(),
-            'mostsPlayed' => $gameRepository->findMostsPlayed()
+            'mostsPlayed' => $gameRepository->findMostsPlayed(),
         ]);
-    }
-
-    /**
-     * @Route("/test", name="test")
-     */
-    public function test(PlayerRepository $playerRepository, CompetitionRepository $competitionRepository): void
-    {
-        $competition = $competitionRepository->findLastByStreamer($playerRepository->find(357));
-        dd($competition);
     }
 }

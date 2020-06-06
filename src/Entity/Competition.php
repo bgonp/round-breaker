@@ -33,6 +33,16 @@ class Competition extends Base
     private $description;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $lobbyName;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $lobbyPassword;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     private $heldAt;
@@ -44,16 +54,19 @@ class Competition extends Base
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Registration", mappedBy="competition")
+     * @ORM\OrderBy({"isConfirmed" = "DESC", "updatedAt" = "DESC"})
      */
     private $registrations;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Team", mappedBy="competition")
+     * @ORM\OrderBy({"id" = "ASC"})
      */
     private $teams;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Round", mappedBy="competition")
+     * @ORM\OrderBy({"bracketLevel" = "ASC", "bracketOrder" = "ASC"})
      */
     private $rounds;
 
@@ -70,12 +83,7 @@ class Competition extends Base
 
     /**
      * @ORM\Column(type="integer")
-     * @Assert\Range(
-     *      min = 2,
-     *      max = 64,
-     *      minMessage = "You must have at least {{ limit }} players",
-     *      maxMessage = "You cannot have more than {{ limit }} players"
-     * )
+     * @Assert\Range(min = 2, max = 64)
      */
     private $maxPlayers;
 
@@ -150,6 +158,30 @@ class Competition extends Base
         return $this;
     }
 
+    public function getLobbyName(): string
+    {
+        return $this->lobbyName;
+    }
+
+    public function setLobbyName(string $lobbyName): self
+    {
+        $this->lobbyName = $lobbyName;
+
+        return $this;
+    }
+
+    public function getLobbyPassword(): string
+    {
+        return $this->lobbyPassword;
+    }
+
+    public function setLobbyPassword(string $lobbyPassword): self
+    {
+        $this->lobbyPassword = $lobbyPassword;
+
+        return $this;
+    }
+
     public function getHeldAt(): ?\DateTimeInterface
     {
         return $this->heldAt;
@@ -199,9 +231,9 @@ class Competition extends Base
     }
 
     public function getPlayersPerTeam(): ?int
-	{
-		return $this->playersPerTeam;
-	}
+    {
+        return $this->playersPerTeam;
+    }
 
     public function setPlayersPerTeam(?int $playersPerTeam): self
     {
@@ -218,29 +250,6 @@ class Competition extends Base
         return $this->registrations;
     }
 
-    public function addRegistration(Registration $registration): self
-    {
-        if (!$this->registrations->contains($registration)) {
-            $this->registrations[] = $registration;
-            $registration->setCompetition($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRegistration(Registration $registration): self
-    {
-        if ($this->registrations->contains($registration)) {
-            $this->registrations->removeElement($registration);
-            // set the owning side to null (unless already changed)
-            if ($registration->getCompetition() === $this) {
-                $registration->setCompetition(null);
-            }
-        }
-
-        return $this;
-    }
-
     /**
      * @return Collection|Team[]
      */
@@ -254,19 +263,6 @@ class Competition extends Base
         if (!$this->teams->contains($team)) {
             $this->teams[] = $team;
             $team->setCompetition($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTeam(Team $team): self
-    {
-        if ($this->teams->contains($team)) {
-            $this->teams->removeElement($team);
-            // set the owning side to null (unless already changed)
-            if ($team->getCompetition() === $this) {
-                $team->setCompetition(null);
-            }
         }
 
         return $this;
@@ -290,19 +286,6 @@ class Competition extends Base
         return $this;
     }
 
-    public function removeRound(Round $round): self
-    {
-        if ($this->rounds->contains($round)) {
-            $this->rounds->removeElement($round);
-            // set the owning side to null (unless already changed)
-            if ($round->getCompetition() === $this) {
-                $round->setCompetition(null);
-            }
-        }
-
-        return $this;
-    }
-
     /**
      * @return mixed
      */
@@ -314,6 +297,7 @@ class Competition extends Base
     public function setTwitchBotName($twitchBotName): self
     {
         $this->twitchBotName = $twitchBotName;
+
         return $this;
     }
 
@@ -325,6 +309,7 @@ class Competition extends Base
     public function setTwitchBotToken($twitchBotToken): self
     {
         $this->twitchBotToken = $twitchBotToken;
+
         return $this;
     }
 
@@ -336,6 +321,7 @@ class Competition extends Base
     public function setTwitchChannel($twitchChannel): self
     {
         $this->twitchChannel = $twitchChannel;
+
         return $this;
     }
 }

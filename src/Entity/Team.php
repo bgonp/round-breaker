@@ -18,16 +18,6 @@ class Team extends Base
     private $competition;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $lobbyName;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $lobbyPassword;
-
-    /**
      * @ORM\Column(type="integer", nullable=true)
      */
     private $ranking;
@@ -80,30 +70,6 @@ class Team extends Base
     public function setCaptain(?Player $player): self
     {
         $this->captain = $player;
-
-        return $this;
-    }
-
-    public function getLobbyName(): ?string
-    {
-        return $this->lobbyName;
-    }
-
-    public function setLobbyName(?string $lobbyName): self
-    {
-        $this->lobbyName = $lobbyName;
-
-        return $this;
-    }
-
-    public function getLobbyPassword(): ?string
-    {
-        return $this->lobbyPassword;
-    }
-
-    public function setLobbyPassword(?string $lobbyPassword): self
-    {
-        $this->lobbyPassword = $lobbyPassword;
 
         return $this;
     }

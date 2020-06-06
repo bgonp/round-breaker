@@ -13,29 +13,24 @@
         }
     }
 
-    const setWinner = (round_id, team_id) => {
-        const xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function() {
-            if (this.readyState == 4) {
-                const response = JSON.parse(this.responseText);
-                if (this.status == 200) {
-                    const inputFinished = document.getElementById('inputFinished');
-                    if (response.origin)
-                        updateRound(response.origin.round_id, response.origin.teams, response.origin.winner);
-                    if (response.destination)
-                        updateRound(response.destination.round_id, response.destination.teams, response.destination.winner);
-                    if (response.finished)
-                        inputFinished.setAttribute('checked', 'checked');
-                    else
-                        inputFinished.removeAttribute('checked');
-                } else {
-                    alert(response.message);
-                }
-            }
+    const setWinner = async (round_id, team_id) => {
+        const requestData = new FormData();
+        requestData.set('round_id', round_id);
+        requestData.set('team_id', team_id);
+        const response = await fetch(endpoint, { method: 'post', body: requestData });
+        const data = await response.json();
+        if (response.status === 200) {
+            const inputFinished = document.getElementById('inputFinished');
+            updateRound(data.origin.round_id, data.origin.teams, data.origin.winner);
+            if (data.destination)
+                updateRound(data.destination.round_id, data.destination.teams, data.destination.winner);
+            if (data.finished)
+                inputFinished.setAttribute('checked', 'checked');
+            else
+                inputFinished.removeAttribute('checked');
+        } else {
+            alert(data.message ?? 'Ocurrió un error');
         }
-        xhr.open("PUT", endpoint, true);
-        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xhr.send(`round_id=${round_id}&team_id=${team_id}`);
     }
 
     const updateRound = (round, teams, winner) => {

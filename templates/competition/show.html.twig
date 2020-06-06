@@ -5,6 +5,9 @@
 <div class="row competition-title">
     <div class="col-12">
         <h1 class="text-center">{{competition.name}}</h1>
+        <h3 class="text-center streamer">Organiza: <a href="{{ path('player_show', { id: competition.streamer.id }) }}">
+            {{ competition.streamer.username }}
+        </a></h3>
     </div>
 </div>
 
@@ -54,7 +57,7 @@
         <div class="col-12 col-lg-6">
             <h1>Equipos</h1>
             {% for team in competition.teams %}
-                <div class="my-2 bg-light border">
+                <div class="my-2 bg-light border team-item">
                     <div class="card-body">
                         <h5 class="card-title sport-text">{{ team.name }}</h5>
                         <ul class="list-group">
@@ -72,7 +75,9 @@
         <h1>Inscripciones</h1>
         <ul class="list-group list-group-flush sport-text mb-3">
             {% for registration in competition.registrations %}
-                <li class="list-group-item">{{ registration.player.username }}</li>
+                <li class="list-group-item registration-item{{ registration.isConfirmed ? ' confirmed' : '' }}">
+                    {{ registration.player.username }}
+                </li>
             {% endfor %}
         </ul>
     </div>
