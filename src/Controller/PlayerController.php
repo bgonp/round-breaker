@@ -14,7 +14,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class PlayerController extends AbstractController
 {
     /**
-     * @Route("/player/{id}", name="player_show", methods={"GET"})
+     * @Route("/player/{id<\d+>}", name="player_show", methods={"GET"})
      */
     public function view(PlayerRepository $playerRepository, Player $player): Response
     {
@@ -44,7 +44,7 @@ class PlayerController extends AbstractController
     }
 
     /**
-     * @Route("/player/{id}/edit", name="player_edit", methods={"GET", "POST"})
+     * @Route("/player/{id<\d+>}/edit", name="player_edit", methods={"GET", "POST"})
      */
     public function edit(
         Player $player,

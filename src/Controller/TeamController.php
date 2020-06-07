@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class TeamController extends AbstractController
 {
     /**
-     * @Route("/{id}", name="team_show", methods={"GET", "POST"})
+     * @Route("/{id<\d+>}", name="team_show", methods={"GET", "POST"})
      */
     public function show(Request $request, Team $team, TeamRepository $teamRepository): Response
     {
