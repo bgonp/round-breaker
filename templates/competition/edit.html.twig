@@ -34,9 +34,9 @@
                 <input type="text" value="{{ competition.name }}" name="name" id="inputName"
                     class="form-control mb-3 form-control-lg" required>
 
-                <label for="inputDescription" class="sport-text-form">Descripción<span class="text-danger">*</span></label>
+                <label for="inputDescription" class="sport-text-form">Descripción</label>
                 <input type="text" value="{{ competition.description }}" name="description" id="inputDescription"
-                    class="form-control mb-3 form-control-lg" required>
+                    class="form-control mb-3 form-control-lg">
 
 
                 {% if not competition.isfinished %}

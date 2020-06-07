@@ -28,7 +28,7 @@ class CompetitionController extends AbstractController
     public function index(
         CompetitionRepository $competitionRepository,
         RegistrationRepository $registrationRepository,
-        int $page = 0
+        int $page = 0,
         GameRepository $gameRepository
     ): Response {
         $perPage = 20;
