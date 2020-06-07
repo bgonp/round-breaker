@@ -8,6 +8,7 @@ use App\Repository\GameRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 
 class MainController extends AbstractController
@@ -22,7 +23,18 @@ class MainController extends AbstractController
     ): Response {
         $competition = $competitionRepository->findOneRandomFinished();
         $competition = $competitionRepository->findCompleteById($competition->getId());
-
+        if ($request->query->get('login')) {
+            $session = new Session();
+            $session->set("login", true);
+            $referer = $request->headers->get('referer');
+            if ($referer) {
+                $refererPathInfo = Request::create($referer)->getPathInfo();
+                $refererPathInfo = str_replace($request->getScriptName(), '', $refererPathInfo);
+                if ($refererPathInfo != "/") {
+                    $session->set("referer", $refererPathInfo);
+                }
+            }
+        }
         return $this->render('main/index.html.twig', [
             'last_username' => $request->query->get('last_username'),
             'last_email' => $request->query->get('last_email'),

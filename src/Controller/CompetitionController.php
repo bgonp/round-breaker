@@ -27,7 +27,8 @@ class CompetitionController extends AbstractController
      */
     public function index(
         CompetitionRepository $competitionRepository,
-        RegistrationRepository $registrationRepository
+        RegistrationRepository $registrationRepository,
+        GameRepository $gameRepository
     ): Response {
         /** @var Player $player */
         $player = $this->getUser();
@@ -36,6 +37,7 @@ class CompetitionController extends AbstractController
             'competitions' => $competitionRepository->findAllOrdered(),
             'canEditGame' => $this->isGranted('ROLE_ADMIN'),
             'player' => $player,
+            'games' => $gameRepository->findAll(),
             'registrations' => $player ? $registrationRepository->findOpenByPlayer($player) : [],
         ]);
     }
@@ -108,11 +110,11 @@ class CompetitionController extends AbstractController
 
         return $this->render('competition/show.html.twig', [
             'competition' => $competition,
-            'showRegistrationButton' => null !== $player,
+            'showRegistrationButton' => $competition->getIsOpen(),
             'playerRegistration' => $player ? $registrationRepository->findOneByPlayerAndCompetition($player, $competition) : null,
             'clickable' => false,
             'showEditButtons' => $this->isGranted('ROLE_ADMIN'),
-            'bracketType' => $competition->getIsOpen() ? 0 : $competition->getTeams()->count(),
+            'bracketType' => count($competition->getRounds()) < 1 ? 0 : $competition->getTeams()->count(),
         ]);
     }
 
@@ -124,8 +126,10 @@ class CompetitionController extends AbstractController
         int $id,
         CompetitionRepository $competitionRepository,
         GameRepository $gameRepository,
-        RoundRepository $roundRepository
+        RoundRepository $roundRepository,
+        RegistrationRepository $registrationRepository
     ): Response {
+        $player = $this->getUser();
         $competition = $competitionRepository->findCompleteById($id);
         if (!$competition) {
             $this->addFlash('error', 'No existe competición con ese ID');
@@ -162,13 +166,17 @@ class CompetitionController extends AbstractController
                     $roundRepository->removeFromCompetition($competition);
                 }
             }
+            return $this->redirectToRoute('competition_edit', ['id' => $competition->getId()]);
         }
 
         return $this->render('competition/edit.html.twig', [
             'games' => $gameRepository->findAll(),
             'competition' => $competition,
             'clickable' => true,
-            'bracketType' => $competition->getIsOpen() ? 0 : $competition->getTeams()->count(),
+            'showRegistrationButton' => $competition->getIsOpen(),
+            'playerRegistration' => $registrationRepository->findOneByPlayerAndCompetition($player, $competition),
+            'bracketType' => count($competition->getRounds()) < 1 ? 0 : $competition->getTeams()->count(),
+            'randomize' => count($competition->getRounds()) < 1
         ]);
     }
 

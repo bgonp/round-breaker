@@ -7,7 +7,7 @@
     </div>
 </div>
 
-{% if competition.isOpen %}
+{% if randomize %}
 <form action="{{ path('competition_randomize') }}" method="POST" class="d-inline">
     <input type="hidden" name="competition_id" value="{{ competition.id }}">
     <button class="btn btn-lg btn-block btn-dark break-text-large my-3" type="submit">Asignar equipos!</button>
@@ -92,7 +92,7 @@
                 <label class="sport-text-form" for="inputBotName">Twitch bot name</label>
                 <input class="form-control mb-3 form-control-lg" type="text"
                     id="inputBotName" name="twitch_bot_name" value="{{ competition.twitchBotName }}" />
-                <label class="sport-text-form" for="inputBotToken">Twitch bot token</label>
+                <label class="sport-text-form" for="inputBotToken">Twitch bot token (<a href="https://twitchapps.com/tmi">twitchapps.com/tmi</a>)</label>
                 <input class="form-control mb-3 form-control-lg" type="text"
                     id="inputBotToken" name="twitch_bot_token" value="{{ competition.twitchBotToken }}" />
                 <label class="sport-text-form" for="inputChannel">Twitch channel</label>
@@ -145,7 +145,7 @@
                         {% if competition.isOpen %}
                             <form action="{{ path('registration_delete') }}" method="POST" class="d-inline">
                                 <input type="hidden" name="registration_id" value="{{ registration.id }}">
-                                <button class="fas fa-skull controls confirmable" type="submit" title="ban"></button>
+                                <button class="fas fa-skull controls confirmable" type="submit" title="Ban"></button>
                             </form>
                             <form action="{{ path('toggle_confirmation') }}" method="POST" class="d-inline">
                                 <input type="hidden" name="registration_id" value="{{ registration.id }}">
@@ -161,7 +161,23 @@
                 </li>
             {% endfor %}
         </ul>
+        <form action="{{ path('competition_delete') }}" method="POST" class="d-inline">
+            <input type="hidden" name="competition_id" value="{{ competition.id }}">
+            <input class="btn btn-dark sport-text mb-3 confirmable" type="submit" value="Eliminar Torneo">
+        </form>
+        {% if showRegistrationButton %}
+            {% if playerRegistration %}
+            <form action="{{ path('registration_delete') }}" method="POST" class="d-inline">
+                <input type="hidden" name="registration_id" value="{{ playerRegistration.id }}">
+                <input class="btn btn-dark sport-text mb-3" type="submit" value="Abandonar">
+            </form>
+            {% else %}
+            <form action="{{ path('registration_new') }}" method="POST" class="d-inline">
+                <input type="hidden" name="competition_id" value="{{ competition.id }}">
+                <input class="btn btn-dark sport-text mb-3" type="submit" value="Unirse">
+            </form>
+            {% endif %}
+        {% endif %}
     </div>
-
 </div>
 {% endblock %}

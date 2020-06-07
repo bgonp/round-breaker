@@ -4,10 +4,18 @@
 <div class="pt-3">
 
     <h1>{% if game is defined %}{{ game.name }} - {% endif %}Torneos</h1>
-    {% if game is defined %}<p>{{ game.description }}</p>{% endif %}
-    <ul class="list-group list-group-flush sport-text mb-3">
+    {% if game is defined %}<p>{{ game.description }}</p>{% else %}
+
+    <select id="gameFilter" name="gameFilter" class="form-control col-12 mb-3 sport-text-form form-control-lg">
+        <option name="gameFilterOption" value="">Filtrar por juegos</option>
+        {% for game in games %}
+            <option name="gameFilterOption" value="{{ game.id }}">{{ game.name }}</option>
+        {% endfor %}
+        {% endif %}
+    </select>
+    <ul id="competitionList" class="list-group list-group-flush sport-text mb-3">
         {% for competition in competitions %}
-        <li class="list-group-item d-flex justify-content-between w-75 competition-item{{ competition.isFinished ? ' finished' : '' }}{{ competition.isOpen ? ' open' : '' }}">
+        <li value="{{ competition.game.id }}" class="list-group-item d-flex justify-content-between w-75 competition-item{{ competition.isFinished ? ' finished' : '' }}{{ competition.isOpen ? ' open' : '' }}">
             <span class="d-flex align-items-center">
                 <a class="mr-1" href="{{ path('competition_show', {id: competition.id}) }}">{{ competition.name }}</a>
                 {% if game is not defined %}({{ competition.game.name }}){% endif %}{% if competition.heldAt %} {{ competition.heldAt|toDateTimeLocal }}{% endif %}
