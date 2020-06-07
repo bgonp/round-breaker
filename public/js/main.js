@@ -60,6 +60,32 @@
         if (inputOpen.checked && !confirm('Si reabres una competición cerrada se borrarán los equipos y el progreso. ¿Estas seguro?')) {
             e.preventDefault();
         }
-    })
-})
-()
+    });
+
+    const inputPassword = document.getElementById('inputPassword');
+    const inputPasswordRepeat = document.getElementById('inputPasswordRepeat');
+    const submit = document.getElementById('submit');
+      
+    if (inputPassword && inputPasswordRepeat && submit){
+        inputPassword.addEventListener('keyup', function(e){
+            e.preventDefault();
+            if (inputPassword.value ==
+                inputPasswordRepeat.value) {
+                    submit.disabled = false;
+          } else {
+            submit.disabled = true;
+          }
+        });
+        inputPasswordRepeat.addEventListener('keyup', function(e){
+            e.preventDefault();
+            if (inputPassword.value ==
+                inputPasswordRepeat.value) {
+                    submit.disabled = false;
+          } else {
+            submit.disabled = true;
+          }
+        });
+    }
+
+
+})()

@@ -32,7 +32,7 @@ class CompetitionFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager)
     {
         $faker = Faker\Factory::create();
-        $games = $this->gameRepository->findAll();
+        $games = $this->gameRepository->findAllOrdered();
         $streamersNeeded = (count($games) * (count($games) + 1)) / 2;
         $streamers = $this->playerRepository->findRandomized($streamersNeeded);
         $counter = 0;

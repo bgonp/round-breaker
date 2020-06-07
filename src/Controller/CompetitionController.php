@@ -23,18 +23,29 @@ use Symfony\Component\Routing\Annotation\Route;
 class CompetitionController extends AbstractController
 {
     /**
-     * @Route("/", name="competition_list", methods={"GET"})
+     * @Route("/page/{page<\d+>}", name="competition_list", methods={"GET"})
      */
     public function index(
         CompetitionRepository $competitionRepository,
         RegistrationRepository $registrationRepository,
+        int $page = 0
         GameRepository $gameRepository
     ): Response {
+        $perPage = 20;
+        $lastPage = (int) ceil($competitionRepository->count([]) / $perPage);
+        $currentPage = $page < 1 ? 1 : ($page > $lastPage ? $lastPage : $page);
+        if ($currentPage !== $page) {
+            return $this->redirectToRoute('competition_list', ['page' => $currentPage]);
+        }
+
         /** @var Player $player */
         $player = $this->getUser();
 
         return $this->render('competition/index.html.twig', [
-            'competitions' => $competitionRepository->findAllOrdered(),
+            'currentPage' => $currentPage,
+            'perPage' => $perPage,
+            'lastPage' => $lastPage,
+            'competitions' => $competitionRepository->findAllOrdered($page, $perPage),
             'canEditGame' => $this->isGranted('ROLE_ADMIN'),
             'player' => $player,
             'games' => $gameRepository->findAll(),
@@ -70,7 +81,10 @@ class CompetitionController extends AbstractController
                     ->setMaxPlayers($teamNum * $playersPerTeam)
                     ->setGame($gameRepository->find($request->request->get('game')))
                     ->setPlayersPerTeam($playersPerTeam)
-                    ->setHeldAt($heldAt);
+                    ->setHeldAt($heldAt)
+                    ->setLobbyName($request->request->get('lobbyname'))
+                    ->setLobbyPassword($request->request->get('lobbypassword'))
+                    ;
                 if ($previousCompetition = $competitionRepository->findLastByStreamer($player)) {
                     $competition
                         ->setTwitchChannel($previousCompetition->getTwitchChannel())
@@ -84,12 +98,12 @@ class CompetitionController extends AbstractController
         }
 
         return $this->render('competition/new.html.twig', [
-            'games' => $gameRepository->findAll(),
+            'games' => $gameRepository->findAllOrdered(),
         ]);
     }
 
     /**
-     * @Route("/{id}", name="competition_show", methods={"GET"})
+     * @Route("/{id<\d+>}", name="competition_show", methods={"GET"})
      */
     public function show(
         int $id,
@@ -119,7 +133,7 @@ class CompetitionController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="competition_edit", methods={"GET", "POST"})
+     * @Route("/{id<\d+>}/edit", name="competition_edit", methods={"GET", "POST"})
      */
     public function edit(
         Request $request,
@@ -149,7 +163,7 @@ class CompetitionController extends AbstractController
             } else {
                 $wasOpen = $competition->getIsOpen();
                 $competition
-                    ->setName($request->request->get('name'))
+                    ->setName($name)
                     ->setDescription($request->request->get('description'))
                     ->setIsOpen((bool) $request->request->get('open'));
                 if ($wasOpen) {
@@ -170,7 +184,7 @@ class CompetitionController extends AbstractController
         }
 
         return $this->render('competition/edit.html.twig', [
-            'games' => $gameRepository->findAll(),
+            'games' => $gameRepository->findAllOrdered(),
             'competition' => $competition,
             'clickable' => true,
             'showRegistrationButton' => $competition->getIsOpen(),

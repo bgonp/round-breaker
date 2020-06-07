@@ -158,7 +158,7 @@ class Competition extends Base
         return $this;
     }
 
-    public function getLobbyName(): string
+    public function getLobbyName(): ?string
     {
         return $this->lobbyName;
     }
@@ -170,7 +170,7 @@ class Competition extends Base
         return $this;
     }
 
-    public function getLobbyPassword(): string
+    public function getLobbyPassword(): ?string
     {
         return $this->lobbyPassword;
     }

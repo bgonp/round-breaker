@@ -6,7 +6,6 @@ use App\Entity\Competition;
 use App\Entity\Game;
 use App\Entity\Player;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 class CompetitionRepository extends ServiceEntityRepository
@@ -37,16 +36,24 @@ class CompetitionRepository extends ServiceEntityRepository
         $this->getEntityManager()->flush();
     }
 
-    /** @return Competition[]|Collection */
-    public function findAllOrdered(): array
+    /** @return Competition[] */
+    public function findAllOrdered(int $page = null, int $perPage = 20): array
     {
-        return $this->findBy([], ['heldAt' => 'DESC']);
+        if (!$page) {
+            return $this->findBy([], ['heldAt' => 'DESC']);
+        } else {
+            return $this->findBy([], ['heldAt' => 'DESC'], $perPage, ($page - 1) * $perPage);
+        }
     }
 
-    /** @return Competition[]|Collection */
-    public function findByGame(Game $game): array
+    /** @return Competition[] */
+    public function findByGameOrdered(Game $game, int $page = null, int $perPage = 20): array
     {
-        return $this->findBy(['game' => $game], ['heldAt' => 'DESC']);
+        if (!$page) {
+            return $this->findBy(['game' => $game], ['heldAt' => 'DESC']);
+        } else {
+            return $this->findBy(['game' => $game], ['heldAt' => 'DESC'], $perPage, ($page - 1) * $perPage);
+        }
     }
 
     public function findLastByStreamer(Player $player): ?Competition
@@ -54,7 +61,6 @@ class CompetitionRepository extends ServiceEntityRepository
         return $this->findOneBy(['streamer' => $player], ['updatedAt' => 'DESC']);
     }
 
-    /** @return Competition|null Random competition from the last 3 months or null if it doesn't exists */
     public function findOneRandomFinished(): ?Competition
     {
         return $this->createQueryBuilder('c')
