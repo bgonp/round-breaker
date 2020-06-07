@@ -111,11 +111,11 @@
                     {% else %}
                     <h6 class="card-title">Inicia sesión como jugador para gestionar tus inscripciones</h6>
                     <div class="form-group">
-                        <label for="inputUsername" class="d-none">Username</label>
+                        <label for="inputUsernameLogin" class="d-none">Username</label>
                         <input type="text" value="{{ last_username is defined ? last_username : '' }}" name="username"
-                            id="inputUsername" class="mb-3 form-control" placeholder="Usuario" required autofocus>
-                        <label for="inputPassword" class="d-none">Password</label>
-                        <input type="password" name="password" id="inputPassword" class="form-control"
+                            id="inputUsernameLogin" class="mb-3 form-control" placeholder="Usuario" required autofocus>
+                        <label for="inputPasswordLogin" class="d-none">Password</label>
+                        <input type="password" name="password" id="inputPasswordLogin" class="form-control"
                             placeholder="Contraseña" required>
                     </div>
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
@@ -135,14 +135,17 @@
                         <label for="inputPassword" class="d-none">Password</label>
                         <input type="password" name="password" id="inputPassword" class="mb-3 form-control"
                             placeholder="Contraseña" required>
-                            <label for="inputUsername" class="d-none">Email</label>
+                        <label for="inputPasswordRepeat" class="d-none">Repetir Password</label>
+                        <input type="password" name="passwordrepeat" id="inputPasswordRepeat" class="mb-3 form-control"
+                            placeholder="Repetir Contraseña" required>
+                        <label for="inputEmail" class="d-none">Email</label>
                         <input type="email" name="email" value="{{ last_email is defined ? last_email : '' }}"
-                            id="inputUsername" class="mb-3 form-control" placeholder="Email" required>
-                            <label for="inputUsername" class="d-none">Twitchname</label>
+                            id="inputEmail" class="mb-3 form-control" placeholder="Email" required>
+                            <label for="inputTwitchname" class="d-none">Twitchname</label>
                         <input type="text" name="twitchname" value="{{ last_twitchname is defined ? last_twitchname : '' }}"
-                            id="inputUsername" class="mb-3 form-control" placeholder="Twitchname" required>
+                            id="inputTwitchname" class="mb-3 form-control" placeholder="Twitchname" required>
                     </div>
-                    <button class="btn btn-lg btn-primary btn-dark sport-text form-control" type="submit">
+                    <button class="btn btn-lg btn-primary btn-dark sport-text form-control" type="submit" id="submit">
                         Registrar
                     </button>
                 </form>

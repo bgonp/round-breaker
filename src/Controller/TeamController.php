@@ -22,7 +22,7 @@ class TeamController extends AbstractController
         if (
             !$this->isGranted('ROLE_ADMIN') && (
             !($player = $this->getUser()) ||
-            $team->getPlayers()->contains($player))
+            !$team->getPlayers()->contains($player))
         ) {
             return $this->redirectToRoute('competition_show', ['id' => $team->getCompetition()->getId()]);
         }

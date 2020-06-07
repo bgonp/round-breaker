@@ -1,21 +1,32 @@
 {% extends 'base.html.twig' %}
 
 {% block content %}
-<div>
-    <div class="w-50">
+<div class="row">
+    <div class="col-sm-6">
         <div class="card-body">
             <h1 class="card-title sport-text">{{ team.name }}</h1>
             <ul class="list-group">
                 {% for player in team.players %}
                 <li class="list-group-item sport-text">{{ player.username }}
-                    <!--<a href="#"><i class="fas fa-skull"></i></a>-->
                 </li>
                 {% endfor %}
             </ul>
-            {% if team.captain.username == app.user.username %}
-            <a class="btn btn-dark mt-3 sport-text" href="{{ path('team_edit', {id: team.id}) }}">Renombrar Equipo</a>
-            {% endif %}
         </div>
     </div>
+    {% if canEditName %}
+    <div class="col-sm-6 p-3">
+        <form method="post">
+            <div class="card form-group border border-secondary p-3">
+                <label for="inputName" class="sport-text-form">Eres capitán, cambia el nombre a tu equipo.</label>
+                <input type="text" value="{{ team.name }}" name="name" id="inputName"
+                    class="form-control form-control-lg">
+
+                <button class="btn btn-lg btn-dark break-text-large mt-3" type="submit">
+                    Cambiar!
+                </button>
+            </div>
+        </form>
+    </div>
+    {% endif %}
 </div>
 {% endblock %}
