@@ -30,16 +30,27 @@
     <div class="col-md-12 col-lg-8 col-xl-6 border-0">
         <form method="post" class="{{ competition.isOpen ? 'open' : 'close' }}-competition">
             <div class="card form-group border border-secondary p-3 custom-control custom-checkbox">
-                <label for="inputName" class="sport-text-form">Nombre</label>
+                <label for="inputName" class="sport-text-form">Nombre<span class="text-danger">*</span></label>
                 <input type="text" value="{{ competition.name }}" name="name" id="inputName"
                     class="form-control mb-3 form-control-lg" required>
 
-                <label for="inputDescription" class="sport-text-form">Descripción</label>
+                <label for="inputDescription" class="sport-text-form">Descripción<span class="text-danger">*</span></label>
                 <input type="text" value="{{ competition.description }}" name="description" id="inputDescription"
+                    class="form-control mb-3 form-control-lg" required>
+
+
+                {% if not competition.isfinished %}
+                <label for="inputLobbyName" class="sport-text-form">Nombre de sala</label>
+                <input type="text" value="{{ competition.lobbyname }}" name="lobbyname" id="inputLobbyName"
                     class="form-control mb-3 form-control-lg">
 
+                <label for="inputLobbyPassword" class="sport-text-form">Contraseña de sala</label>
+                <input type="text" value="{{ competition.lobbypassword }}" name="lobbypassword" id="inputLobbyPassword"
+                    class="form-control mb-3 form-control-lg">
+                {% endif %}
+
                 {% if competition.isOpen %}
-                <label for="inputTeamNum" class="sport-text-form">Número de Equipos</label>
+                <label for="inputTeamNum" class="sport-text-form">Número de Equipos<span class="text-danger">*</span></label>
                 <select id="inputTeamNum" name="teamNum"
                     class="form-control col-12 mb-3 sport-text-form form-control-lg" required>
                     <option value="">Escoge...</option>
@@ -49,7 +60,7 @@
                     <option value="16"{{ competition|teamsNumber == 16 ? ' selected' : '' }}>16</option>
                 </select>
 
-                <label for="inputPlayersPerTeam" class="sport-text-form">Jugadores por Equipo</label>
+                <label for="inputPlayersPerTeam" class="sport-text-form">Jugadores por Equipo<span class="text-danger">*</span></label>
                 <select id="inputPlayersPerTeam" name="playersPerTeam" class="form-control col-12 mb-3 sport-text-form form-control-lg" required>
                     <option value="">Escoge...</option>
                     <option value="1"{{ competition.playersPerTeam == 1 ? ' selected' : '' }}>1</option>
@@ -59,7 +70,7 @@
                     <option value="5"{{ competition.playersPerTeam == 5 ? ' selected' : '' }}>5</option>
                 </select>
 
-                <label for="inputGame" class="sport-text-form">Juego</label>
+                <label for="inputGame" class="sport-text-form">Juego<span class="text-danger">*</span></label>
                 <select name="game" id="inputGame" class="form-control col-12 mb-3 sport-text-form form-control-lg" required>
                     <option value="">Escoge...</option>
                     {% for game in games %}
@@ -67,14 +78,14 @@
                     {% endfor %}
                 </select>
 
-                <label for="dateAndTime" class="sport-text-form mb-3">Fecha y Hora</label>
+                <label for="dateAndTime" class="sport-text-form mb-3">Fecha y Hora<span class="text-danger">*</span></label>
                 <input class="form-control mb-3 form-control-lg" type="datetime-local"
                        value="{{ competition.heldAt|toDateTimeFormat }}" id="dateAndTime" name="heldAt">
                 {% endif %}
 
                 <div class="custom-control custom-checkbox check">
                     <input type="checkbox" name="open" id="inputOpen"{{ competition.isOpen ? ' checked' : '' }}>
-                    <label for="inputOpen" class="sport-text-form">Abierta</label>
+                    <label for="inputOpen" class="sport-text-form">Preinscripción abierta</label>
                 </div>
 
                 <button class="btn btn-lg btn-dark break-text-large mt-3" type="submit">

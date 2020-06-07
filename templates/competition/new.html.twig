@@ -6,16 +6,24 @@
     <div class="col-md-12 col-lg-8 col-xl-5 border-0 p-3 my-0 mx-auto">
         <h1 class="text-center">Crear Competición</h1>
         <div class="card form-group border border-secondary p-3">
-            <label for="inputName" class="sport-text-form">Nombre</label>
+            <label for="inputName" class="sport-text-form">Nombre<span class="text-danger">*</span></label>
             <input type="text" name="name" id="inputName"
-                   class="form-control mb-3 form-control-lg" required>
+                   class="form-control mb-3 form-control" required>
 
-            <label for="inputDescription" class="sport-text-form">Descripción</label>
+            <label for="inputDescription" class="sport-text-form">Descripción<span class="text-danger">*</span></label>
             <input type="text" name="description" id="inputDescription"
-                   class="form-control mb-3 form-control-lg">
+                   class="form-control mb-3 form-control">
 
-            <label for="inputTeamNum" class="sport-text-form">Número de Equipos</label>
-            <select id="inputTeamNum" name="teamNum" class="form-control col-12 mb-3 sport-text-form form-control-lg" required>
+            <label for="inputLobbyName" class="sport-text-form">Nombre de sala</label>
+            <input type="text" name="lobbyname" id="inputLobbyName"
+                   class="form-control mb-3 form-control" required>
+
+            <label for="inputLobbyPassword" class="sport-text-form">Contraseña de sala</label>
+            <input type="text" name="lobbypassword" id="inputLobbyPassword"
+                   class="form-control mb-3 form-control">
+
+            <label for="inputTeamNum" class="sport-text-form">Número de Equipos<span class="text-danger">*</span></label>
+            <select id="inputTeamNum" name="teamNum" class="form-control col-12 mb-3 sport-text-form form-control" required>
                 <option value="">Escoge...</option>
                 <option value="2">2</option>
                 <option value="4">4</option>
@@ -23,8 +31,8 @@
                 <option value="16">16</option>
             </select>
 
-            <label for="inputPlayersPerTeam" class="sport-text-form">Jugadores por Equipo</label>
-            <select id="inputPlayersPerTeam" name="playersPerTeam" class="form-control col-12 mb-3 sport-text-form form-control-lg" required>
+            <label for="inputPlayersPerTeam" class="sport-text-form">Jugadores por Equipo<span class="text-danger">*</span></label>
+            <select id="inputPlayersPerTeam" name="playersPerTeam" class="form-control col-12 mb-3 sport-text-form form-control" required>
                 <option value="">Escoge...</option>
                 <option value="1">1</option>
                 <option value="2">2</option>
@@ -33,16 +41,16 @@
                 <option value="5">5</option>
             </select>
 
-            <label for="inputGame" class="sport-text-form">Juego</label>
-            <select name="game" id="inputGame" class="form-control col-12 mb-3 sport-text-form form-control-lg" required>
+            <label for="inputGame" class="sport-text-form">Juego<span class="text-danger">*</span></label>
+            <select name="game" id="inputGame" class="form-control col-12 mb-3 sport-text-form form-control" required>
                 <option value="">Escoge...</option>
                 {% for game in games %}
                     <option value="{{ game.id }}">{{ game.name }}</option>
                 {% endfor %}
             </select>
 
-            <label for="dateAndTime" class="sport-text-form mb-3">Fecha y Hora</label>
-            <input class="form-control mb-3 form-control-lg" type="datetime-local" id="dateAndTime" name="heldAt" required>
+            <label for="dateAndTime" class="sport-text-form mb-3">Fecha y Hora<span class="text-danger">*</span></label>
+            <input class="form-control mb-3 form-control" type="datetime-local" id="dateAndTime" name="heldAt" required>
 
             <button class="btn btn-lg btn-dark break-text-large mt-3" type="submit">
                 Crear!

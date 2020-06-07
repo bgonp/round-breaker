@@ -79,7 +79,10 @@ class CompetitionController extends AbstractController
                     ->setMaxPlayers($teamNum * $playersPerTeam)
                     ->setGame($gameRepository->find($request->request->get('game')))
                     ->setPlayersPerTeam($playersPerTeam)
-                    ->setHeldAt($heldAt);
+                    ->setHeldAt($heldAt)
+                    ->setLobbyName($request->request->get('lobbyname'))
+                    ->setLobbyPassword($request->request->get('lobbypassword'))
+                    ;
                 if ($previousCompetition = $competitionRepository->findLastByStreamer($player)) {
                     $competition
                         ->setTwitchChannel($previousCompetition->getTwitchChannel())
