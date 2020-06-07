@@ -156,10 +156,11 @@ class CompetitionController extends AbstractController
                         ->setPlayersPerTeam($playersPerTeam)
                         ->setGame($gameRepository->find($request->request->get('game')))
                         ->setHeldAt(new \DateTime($request->request->get('heldAt')));
-                } elseif ($request->request->get('open')) {
-                    $roundRepository->removeFromCompetition($competition);
                 }
                 $competitionRepository->save($competition);
+                if (!$wasOpen && $competition->getIsOpen()) {
+                    $roundRepository->removeFromCompetition($competition);
+                }
             }
         }
 

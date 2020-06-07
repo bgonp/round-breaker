@@ -24,28 +24,22 @@ class PlayerFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         $admin = new Player();
+        // Same encoded password to all users to prevent big loading fixture time.
+        $encodedPassword = $this->encoder->encodePassword($admin, 'randompassword');
         $admin->setUsername('admin');
         $admin->setEmail('admin@admin.com');
         $admin->setRoles(['ROLE_ADMIN']);
         $admin->setTwitchName('admin');
-        $admin->setPassword($this->encoder->encodePassword($admin, 'randompassword'));
-        $faker = Faker\Factory::create();
+        $admin->setPassword($encodedPassword);
+        $faker = Faker\Factory::create()->unique();
         $this->playerRepository->save($admin, false);
         for ($i = 1; $i < 100; ++$i) {
             $player = new Player();
-            do {
-                $username = $faker->userName;
-            } while ($this->playerRepository->findBy(['username' => $username]));
+            $username = $faker->userName;
             $player->setUsername($username);
-            do {
-                $email = $faker->email;
-            } while ($this->playerRepository->findBy(['username' => $username]));
-            $player->setEmail($email);
-            while ($this->playerRepository->findBy(['twitchName' => $username])) {
-                $username = $faker->userName;
-            }
             $player->setTwitchName($username);
-            $player->setPassword($this->encoder->encodePassword($player, 'randompassword'));
+            $player->setEmail($faker->email);
+            $player->setPassword($encodedPassword);
             $this->playerRepository->save($player, false);
         }
         $this->playerRepository->flush();
