@@ -32,19 +32,10 @@
 
     const gameFilterOption = document.getElementsByName('gameFilterOption');
     if (gameFilterOption.length > 0) {
-        let competitionList = document.getElementById('competitionList').getElementsByTagName("li");
         for (let i = 0; i < gameFilterOption.length; i++) {
             gameFilterOption[i].addEventListener('click', (e) => {
                 e.preventDefault();
-                for (let j = 0; j < competitionList.length; j++) {
-                    if (gameFilterOption[i].value === competitionList[j].value.toString() || gameFilterOption[i].value === "") {
-                        competitionList[j].classList.remove("d-none");
-                        competitionList[j].classList.add("d-flex");
-                    } else {
-                        competitionList[j].classList.remove("d-flex");
-                        competitionList[j].classList.add("d-none");
-                    }
-                }
+                location.href = "/game/"+gameFilterOption[i].value+"/page/1";
             });
         }
     }

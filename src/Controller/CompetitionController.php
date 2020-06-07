@@ -28,8 +28,8 @@ class CompetitionController extends AbstractController
     public function index(
         CompetitionRepository $competitionRepository,
         RegistrationRepository $registrationRepository,
-        int $page = 0,
-        GameRepository $gameRepository
+        GameRepository $gameRepository,
+        int $page = 0
     ): Response {
         $perPage = 20;
         $lastPage = (int) ceil($competitionRepository->count([]) / $perPage);
