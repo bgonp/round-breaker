@@ -62,13 +62,10 @@ class CompetitionEditTest extends CompetitionBaseTest
         $form = $crawler->selectButton('submit-edit')->form();
 
         $this->assertEquals(200, $this->response()->getStatusCode());
-        $editables = ['name', 'description', 'open'];
-        foreach ($competitionData as $name => $value) {
-            if (in_array($name, $editables, true)) {
-                $this->assertEquals($value, $form[$name]->getValue());
-            } else {
-                $this->assertFalse(isset($form[$name]));
-            }
+        $this->assertNull($form['open']->getValue());
+        $notAllowed = ['playersPerTeam', 'teamNum', 'heldAt'];
+        foreach ($notAllowed as $name) {
+            $this->assertFalse(isset($form[$name]));
         }
     }
 
@@ -82,7 +79,6 @@ class CompetitionEditTest extends CompetitionBaseTest
             'playersPerTeam' => 3,
             'teamNum' => 8,
             'heldAt' => (new \DateTime())->format('Y-m-d\TH:i'),
-            'open' => false,
         ];
         $this->login($competition->getStreamer());
         $this->request('GET', 'competition_edit', ['id' => $competition->getId()]);
@@ -92,13 +88,8 @@ class CompetitionEditTest extends CompetitionBaseTest
         $form = $crawler->selectButton('submit-edit')->form();
 
         $this->assertEquals(200, $this->response()->getStatusCode());
-        $editables = ['name', 'description', 'open'];
         foreach ($competitionData as $name => $value) {
-            if (in_array($name, $editables, true)) {
-                $this->assertEquals($value, $form[$name]->getValue());
-            } else {
-                $this->assertFalse(isset($form[$name]));
-            }
+            $this->assertEquals($value, $form[$name]->getValue());
         }
     }
 }
