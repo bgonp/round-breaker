@@ -38,9 +38,13 @@ class CompetitionRepository extends ServiceEntityRepository
     }
 
     /** @return Competition[]|Collection */
-    public function findAllOrdered(): array
+    public function findAllOrdered(int $page = null, int $perPage = 20): array
     {
-        return $this->findBy([], ['heldAt' => 'DESC']);
+        if (!$page) {
+            return $this->findBy([], ['heldAt' => 'DESC']);
+        } else {
+            return $this->findBy([], ['heldAt' => 'DESC'], $perPage, ($page - 1) * $perPage);
+        }
     }
 
     /** @return Competition[]|Collection */
