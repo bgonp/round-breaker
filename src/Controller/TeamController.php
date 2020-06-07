@@ -20,7 +20,7 @@ class TeamController extends BaseController
     {
         if (
             !$this->isGranted('ROLE_ADMIN') && (
-            !($player = $this->getUser()) ||
+            !($player = $this->getPlayer()) ||
             !$team->getPlayers()->contains($player))
         ) {
             $this->addFlash('error', 'Solo puedes ver los equipos a los que perteneces');

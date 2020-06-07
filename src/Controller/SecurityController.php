@@ -24,11 +24,11 @@ class SecurityController extends BaseController
 
         $session = new Session();
 
-        if ($session->get('referer') && $session->get('login') && $this->getUser()) {
+        if ($session->get('referer') && $session->get('login') && $this->getPlayer()) {
             $session->remove('login');
 
             return $this->redirect($session->remove('referer'));
-        } elseif ($this->getUser()) {
+        } elseif ($this->getPlayer()) {
             return $this->redirectToRoute('main');
         }
         $error = $authenticationUtils->getLastAuthenticationError();

@@ -28,16 +28,16 @@ class CompetitionNewTest extends CompetitionBaseTest
         $this->submit('submit-new', $competitionData);
 
         $this->assertTrue($this->response()->isRedirect());
-
         $crawler = $this->followRedirect();
+
+        $this->reloadFixtures();
+
         $form = $crawler->selectButton('submit-edit')->form();
 
         $this->assertEquals(200, $this->response()->getStatusCode());
         foreach ($competitionData as $name => $value) {
             $this->assertEquals($value, $form[$name]->getValue());
         }
-
-        $this->reloadFixtures();
     }
 
     public function testSubmitError(): void

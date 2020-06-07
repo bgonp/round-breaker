@@ -131,8 +131,8 @@ class CompetitionController extends BaseController
         RoundRepository $roundRepository,
         RegistrationRepository $registrationRepository
     ): Response {
-        $player = $this->getUser();
-        $competition = $competitionRepository->findCompleteById($id);
+        $player = $this->getPlayer();
+        $competition = $competitionRepository->find($id);
         if (!$competition) {
             $this->addFlash('error', 'No existe competición con ese ID');
 
@@ -168,9 +168,9 @@ class CompetitionController extends BaseController
                     $roundRepository->removeFromCompetition($competition);
                 }
             }
-
-            return $this->redirectToRoute('competition_edit', ['id' => $competition->getId()]);
         }
+
+        $competition = $competitionRepository->findCompleteById($id);
 
         return $this->render('competition/edit.html.twig', [
             'games' => $gameRepository->findAllOrdered(),

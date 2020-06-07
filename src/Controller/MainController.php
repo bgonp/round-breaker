@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 
-class MainController extends AbstractController
+class MainController extends BaseController
 {
     /**
      * @Route("/", name="main", methods={"GET"})
@@ -41,7 +41,7 @@ class MainController extends AbstractController
             'last_twitchname' => $request->query->get('last_twitchname'),
             'competition' => $competition,
             'clickable' => false,
-            'player' => $this->getUser(),
+            'player' => $this->getPlayer(),
             'mostsPlayed' => $gameRepository->findMostPlayed(),
             'bracketType' => $competition->getIsOpen() ? 0 : $competition->getTeams()->count(),
         ]);

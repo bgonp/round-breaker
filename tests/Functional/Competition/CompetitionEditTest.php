@@ -50,6 +50,28 @@ class CompetitionEditTest extends CompetitionBaseTest
         }
     }
 
+    public function testSubmitClose(): void
+    {
+        $competition = $this->getCompetition(true, false);
+        $competitionData = ['open' => false];
+        $this->login($competition->getStreamer());
+        $this->request('GET', 'competition_edit', ['id' => $competition->getId()]);
+        $crawler = $this->submit('submit-edit', $competitionData);
+        $this->reloadFixtures();
+
+        $form = $crawler->selectButton('submit-edit')->form();
+
+        $this->assertEquals(200, $this->response()->getStatusCode());
+        $editables = ['name', 'description', 'open'];
+        foreach ($competitionData as $name => $value) {
+            if (in_array($name, $editables, true)) {
+                $this->assertEquals($value, $form[$name]->getValue());
+            } else {
+                $this->assertFalse(isset($form[$name]));
+            }
+        }
+    }
+
     public function testSubmitOpen(): void
     {
         $competition = $this->getCompetition(true, false);
@@ -65,6 +87,8 @@ class CompetitionEditTest extends CompetitionBaseTest
         $this->login($competition->getStreamer());
         $this->request('GET', 'competition_edit', ['id' => $competition->getId()]);
         $crawler = $this->submit('submit-edit', $competitionData);
+        $this->reloadFixtures();
+
         $form = $crawler->selectButton('submit-edit')->form();
 
         $this->assertEquals(200, $this->response()->getStatusCode());
@@ -76,7 +100,5 @@ class CompetitionEditTest extends CompetitionBaseTest
                 $this->assertFalse(isset($form[$name]));
             }
         }
-
-        $this->reloadFixtures();
     }
 }
