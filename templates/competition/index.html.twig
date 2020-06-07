@@ -1,13 +1,21 @@
 {% extends 'base.html.twig' %}
 
 {% block content %}
-<div class="pt-3">
+<div class="py-3">
 
     <h1>{% if game is defined %}{{ game.name }} - {% endif %}Torneos</h1>
-    {% if game is defined %}<p>{{ game.description }}</p>{% endif %}
+    {% if game is defined %}<p>{{ game.description }}</p>{% else %}
+
+    <select class="form-control col-12 mb-3 sport-text-form form-control-lg">
+        <option selected disabled hidden>Filtrar por juegos</option>
+        {% for game in games %}
+            <option name="gameFilterOption" value="{{ game.id }}">{{ game.name }}</option>
+        {% endfor %}
+        {% endif %}
+    </select>
     <ul class="list-group list-group-flush sport-text mb-3">
         {% for competition in competitions %}
-        <li class="list-group-item d-flex justify-content-between w-75 competition-item{{ competition.isFinished ? ' finished' : '' }}{{ competition.isOpen ? ' open' : '' }}">
+        <li class="list-group-item d-flex justify-content-between w-100 competition-item{{ competition.isFinished ? ' finished' : '' }}{{ competition.isOpen ? ' open' : '' }}">
             <span class="d-flex align-items-center">
                 <a class="mr-1" href="{{ path('competition_show', {id: competition.id}) }}">{{ competition.name }}</a>
                 {% if game is not defined %}({{ competition.game.name }}){% endif %}{% if competition.heldAt %} {{ competition.heldAt|toDateTimeLocal }}{% endif %}
@@ -34,7 +42,12 @@
         </li>
         {% endfor %}
     </ul>
-
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            {% if currentPage != 1 %}<li class="page-item"><a class="page-link" href="{{ currentPage - 1 }}">Previous</a></li>{% endif %}
+          {% if currentPage != lastPage %}<li class="page-item"><a class="page-link" href="{{ currentPage + 1 }}">Next</a></li>{% endif %}
+        </ul>
+      </nav>
     {% if game is defined and canEditGame %}
         <a class="btn btn-dark sport-text" href="{{ path('game_edit', {id: game.id}) }}">Editar Juego</a>
         <form action="{{ path('game_delete') }}" method="POST" class="d-inline">

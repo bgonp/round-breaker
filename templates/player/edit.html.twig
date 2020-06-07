@@ -11,16 +11,19 @@
             <label for="inputUsername" class="sport-text">Username</label>
             <input type="text" value="{{ player.username is defined ? player.username : '' }}" name="username"
                 id="inputUsername" class="mb-3 form-control" placeholder="Usuario" required autofocus>
-            <label for="inputPassword" class="sport-text">Password</label>
+            <label for="inputPassword" class="sport-text">Contraseña</label>
             <input type="password" name="password" id="inputPassword" class="mb-3 form-control" placeholder="Contraseña"
                 required>
-            <label for="inputUsername" class="sport-text">Email</label>
+            <label for="inputPasswordRepeat" class="sport-text">Repetir contraseña</label>
+            <input type="password" name="passwordrepeat" id="inputPasswordRepeat" class="mb-3 form-control"
+            placeholder="Repetir contraseña" required>    
+            <label for="inputEmail" class="sport-text">Email</label>
             <input type="email" name="email" value="{{ player.email is defined ? player.email : '' }}"
-                id="inputUsername" class="mb-3 form-control" placeholder="Email" required>
-            <label for="inputUsername" class="sport-text">Twitchname</label>
+                id="inputEmail" class="mb-3 form-control" placeholder="Email" required>
+            <label for="inputTwitchname" class="sport-text">Twitchname</label>
             <input type="text" name="twitch_name" value="{{ player.twitchname is defined ? player.twitchname : '' }}"
-                id="inputUsername" class="mb-3 form-control" placeholder="Twitchname" required>
-            <button class="btn btn-lg btn-primary btn-dark break-text-large form-control" type="submit">
+                id="inputTwitchname" class="mb-3 form-control" placeholder="Twitchname" required>
+            <button class="btn btn-lg btn-primary btn-dark break-text-large form-control" type="submit" id="submit">
                 Editar mis detalles
             </button>
         </div>

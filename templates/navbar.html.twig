@@ -1,7 +1,7 @@
 <div class="container-fluid bg-dark">
     <div class="row">
         <div class="d-flex align-items-center ml-2 col-md-2">
-            <img src="{{ asset('img/logo.svg') }}" width="100" alt="logo" class="align-self-center rounded">
+            <a href="{{ path('main') }}"><img src="{{ asset('img/logo.svg') }}" width="100" alt="logo" class="align-self-center rounded"></a>
         </div>
         <div class="col flex-grow-1">
             <nav class="navbar navbar-expand-xl navbar-dark bg-dark">
@@ -26,8 +26,17 @@
                             <b><a href="{{ path('game_list') }}" class="nav-link">Games</a></b>
                         </li>
                         <li class="nav-item">
-                            <b><a href="{{ path('profile') }}" class="nav-link">Panel de Jugador</a></b>
+                            {% if is_granted('ROLE_USER') %}
+                            <b><a href="{{ path('profile') }}" class="nav-link">Perfil</a></b>
                         </li>
+                        <li class="nav-item">
+                                <b><a href="{{ path('app_logout') }}" class="nav-link">Logout</a></b>
+                            {% else %}
+                            <b><a href="{{ path('main', {login: true}) }}" class="nav-link">Login/Register</a></b>
+                            {% endif %}
+                        </li>
+
+
                     </ul>
                 </div>
             </nav>

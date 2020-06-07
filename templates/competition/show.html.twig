@@ -28,11 +28,13 @@
                     <input type="hidden" name="registration_id" value="{{ playerRegistration.id }}">
                     <input class="btn btn-dark sport-text mb-3" type="submit" value="Abandonar">
                 </form>
-            {% else %}
+            {% elseif is_granted('ROLE_USER') %}
                 <form action="{{ path('registration_new') }}" method="POST" class="d-inline">
                     <input type="hidden" name="competition_id" value="{{ competition.id }}">
                     <input class="btn btn-dark sport-text mb-3" type="submit" value="Unirse">
                 </form>
+                {% else %}
+                    <a class="btn btn-dark mb-3 sport-text" href="{{ path('main', {login: true}) }}">Login/Registo para unirte</a>
             {% endif %}
         {% endif %}
 
@@ -53,7 +55,7 @@
 
 <div class="row competition-data">
 
-    {% if not competition.isOpen %}
+    {% if bracketType > 0 %}
         <div class="col-12 col-lg-6">
             <h1>Equipos</h1>
             {% for team in competition.teams %}

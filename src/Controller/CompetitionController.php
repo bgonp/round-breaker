@@ -27,6 +27,7 @@ class CompetitionController extends BaseController
     public function index(
         CompetitionRepository $competitionRepository,
         RegistrationRepository $registrationRepository,
+        GameRepository $gameRepository,
         int $page = 0
     ): Response {
         $perPage = 20;
@@ -43,6 +44,7 @@ class CompetitionController extends BaseController
             'competitions' => $competitionRepository->findAllOrdered($page, $perPage),
             'canEditGame' => $this->isGranted('ROLE_ADMIN'),
             'player' => $this->getPlayer(),
+            'games' => $gameRepository->findAll(),
             'registrations' => $this->getPlayer() ? $registrationRepository->findOpenByPlayer($this->getPlayer()) : [],
         ]);
     }
@@ -75,7 +77,10 @@ class CompetitionController extends BaseController
                     ->setMaxPlayers($teamNum * $playersPerTeam)
                     ->setGame($gameRepository->find($request->request->get('game')))
                     ->setPlayersPerTeam($playersPerTeam)
-                    ->setHeldAt($heldAt);
+                    ->setHeldAt($heldAt)
+                    ->setLobbyName($request->request->get('lobbyname'))
+                    ->setLobbyPassword($request->request->get('lobbypassword'))
+                    ;
                 if ($previousCompetition = $competitionRepository->findLastByStreamer($player)) {
                     $competition
                         ->setTwitchChannel($previousCompetition->getTwitchChannel())
@@ -107,11 +112,11 @@ class CompetitionController extends BaseController
 
         return $this->render('competition/show.html.twig', [
             'competition' => $competition,
-            'showRegistrationButton' => null !== $player,
+            'showRegistrationButton' => $competition->getIsOpen(),
             'playerRegistration' => $player ? $registrationRepository->findOneByPlayerAndCompetition($player, $competition) : null,
             'clickable' => false,
             'showEditButtons' => $this->isGranted('ROLE_ADMIN'),
-            'bracketType' => $competition->getIsOpen() ? 0 : $competition->getTeams()->count(),
+            'bracketType' => count($competition->getRounds()) < 1 ? 0 : $competition->getTeams()->count(),
         ]);
     }
 
@@ -123,8 +128,10 @@ class CompetitionController extends BaseController
         int $id,
         CompetitionRepository $competitionRepository,
         GameRepository $gameRepository,
-        RoundRepository $roundRepository
+        RoundRepository $roundRepository,
+        RegistrationRepository $registrationRepository
     ): Response {
+        $player = $this->getUser();
         $competition = $competitionRepository->findCompleteById($id);
         if (!$competition) {
             $this->addFlash('error', 'No existe competición con ese ID');
@@ -161,13 +168,18 @@ class CompetitionController extends BaseController
                     $roundRepository->removeFromCompetition($competition);
                 }
             }
+
+            return $this->redirectToRoute('competition_edit', ['id' => $competition->getId()]);
         }
 
         return $this->render('competition/edit.html.twig', [
             'games' => $gameRepository->findAllOrdered(),
             'competition' => $competition,
             'clickable' => true,
-            'bracketType' => $competition->getIsOpen() ? 0 : $competition->getTeams()->count(),
+            'showRegistrationButton' => $competition->getIsOpen(),
+            'playerRegistration' => $registrationRepository->findOneByPlayerAndCompetition($player, $competition),
+            'bracketType' => count($competition->getRounds()) < 1 ? 0 : $competition->getTeams()->count(),
+            'randomize' => count($competition->getRounds()) < 1,
         ]);
     }
 

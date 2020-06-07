@@ -6,6 +6,7 @@ use App\Entity\Player;
 use App\Repository\PlayerRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -15,16 +16,26 @@ class SecurityController extends BaseController
     /**
      * @Route("/login", name="app_login")
      */
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    public function login(AuthenticationUtils $authenticationUtils, Request $request): Response
     {
         if ($this->getPlayer()) {
+            return $this->redirectToRoute('main');
+        }
+
+        $session = new Session();
+
+        if ($session->get('referer') && $session->get('login') && $this->getUser()) {
+            $session->remove('login');
+
+            return $this->redirect($session->remove('referer'));
+        } elseif ($this->getUser()) {
             return $this->redirectToRoute('main');
         }
         $error = $authenticationUtils->getLastAuthenticationError();
         if ($error) {
             $this->addFlash('error', 'Credenciales incorrectas');
         }
-        $params = $error ? ['last_username' => $authenticationUtils->getLastUsername()] : [];
+        $params = $error ? ['last_username' => $authenticationUtils->getLastUsername(), 'login' => $session->get('login')] : [];
 
         return $this->redirectToRoute('main', $params);
     }
@@ -45,6 +56,10 @@ class SecurityController extends BaseController
         UserPasswordEncoderInterface $passwordEncoder,
         PlayerRepository $playerRepository
     ): Response {
+        if ($this->getPlayer()) {
+            return $this->redirectToRoute('main');
+        }
+
         $username = $request->get('username');
         $plainPassword = $request->get('password');
         $email = $request->get('email');

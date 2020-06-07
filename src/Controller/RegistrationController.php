@@ -35,7 +35,10 @@ class RegistrationController extends BaseController
             $registrationRepository->save($registration);
         }
 
-        return $this->redirectToRoute('competition_show', ['id' => $competition->getId()]);
+        return $this->redirectToRoute(
+            $this->isGranted('ROLE_ADMIN') ? 'competition_edit' : 'competition_show', [
+            'id' => $registration->getCompetition()->getId(),
+        ]);
     }
 
     /**

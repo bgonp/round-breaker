@@ -30,6 +30,16 @@
         document.getElementById('register-form').classList.remove('d-none');
     });
 
+    const gameFilterOption = document.getElementsByName('gameFilterOption');
+    if (gameFilterOption.length > 0) {
+        for (let i = 0; i < gameFilterOption.length; i++) {
+            gameFilterOption[i].addEventListener('click', (e) => {
+                e.preventDefault();
+                location.href = "/game/"+gameFilterOption[i].value+"/page/1";
+            });
+        }
+    }
+
     const bracketFull = document.querySelector('.bracket .bracket-zoom');
     if (bracketFull) bracketFull.addEventListener('click', (e) => {
         e.preventDefault();
@@ -41,5 +51,32 @@
         if (inputOpen.checked && !confirm('Si reabres una competición cerrada se borrarán los equipos y el progreso. ¿Estas seguro?')) {
             e.preventDefault();
         }
-    })
+    });
+
+    const inputPassword = document.getElementById('inputPassword');
+    const inputPasswordRepeat = document.getElementById('inputPasswordRepeat');
+    const submit = document.getElementById('submit');
+      
+    if (inputPassword && inputPasswordRepeat && submit){
+        inputPassword.addEventListener('keyup', function(e){
+            e.preventDefault();
+            if (inputPassword.value ==
+                inputPasswordRepeat.value) {
+                    submit.disabled = false;
+          } else {
+            submit.disabled = true;
+          }
+        });
+        inputPasswordRepeat.addEventListener('keyup', function(e){
+            e.preventDefault();
+            if (inputPassword.value ==
+                inputPasswordRepeat.value) {
+                    submit.disabled = false;
+          } else {
+            submit.disabled = true;
+          }
+        });
+    }
+
+
 })()
