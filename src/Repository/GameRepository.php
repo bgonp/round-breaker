@@ -13,7 +13,7 @@ class GameRepository extends ServiceEntityRepository
         parent::__construct($registry, Game::class);
     }
 
-    public function findAll(): array
+    public function findAllOrdered(): array
     {
         return $this->findBy([], ['name' => 'ASC']);
     }

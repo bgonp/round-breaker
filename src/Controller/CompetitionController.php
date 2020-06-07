@@ -23,7 +23,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class CompetitionController extends AbstractController
 {
     /**
-     * @Route("/page/{page}", name="competition_list", methods={"GET"}, requirements={"page"="\d+"})
+     * @Route("/page/{page<\d+>}", name="competition_list", methods={"GET"})
      */
     public function index(
         CompetitionRepository $competitionRepository,
@@ -93,12 +93,12 @@ class CompetitionController extends AbstractController
         }
 
         return $this->render('competition/new.html.twig', [
-            'games' => $gameRepository->findAll(),
+            'games' => $gameRepository->findAllOrdered(),
         ]);
     }
 
     /**
-     * @Route("/{id}", name="competition_show", methods={"GET"})
+     * @Route("/{id<\d+>}", name="competition_show", methods={"GET"})
      */
     public function show(
         int $id,
@@ -128,7 +128,7 @@ class CompetitionController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="competition_edit", methods={"GET", "POST"})
+     * @Route("/{id<\d+>}/edit", name="competition_edit", methods={"GET", "POST"})
      */
     public function edit(
         Request $request,
@@ -176,7 +176,7 @@ class CompetitionController extends AbstractController
         }
 
         return $this->render('competition/edit.html.twig', [
-            'games' => $gameRepository->findAll(),
+            'games' => $gameRepository->findAllOrdered(),
             'competition' => $competition,
             'clickable' => true,
             'bracketType' => $competition->getIsOpen() ? 0 : $competition->getTeams()->count(),

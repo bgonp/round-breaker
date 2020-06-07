@@ -25,7 +25,7 @@ class GameController extends AbstractController
     public function index(GameRepository $gameRepository, PlayerRepository $playerRepository): Response
     {
         return $this->render('game/index.html.twig', [
-            'games' => $gameRepository->findAll(),
+            'games' => $gameRepository->findAllOrdered(),
             'player' => $this->getUser(),
         ]);
     }
@@ -79,7 +79,7 @@ class GameController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="game_edit", methods={"GET", "POST"})
+     * @Route("/{id<\d+>}/edit", name="game_edit", methods={"GET", "POST"})
      */
     public function edit(
         Request $request,
@@ -103,19 +103,30 @@ class GameController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="game_show", methods={"GET"})
+     * @Route("/{id<\d+>}/page/{page<\d+>}", name="game_show", methods={"GET"})
      */
     public function view(
         Game $game,
         CompetitionRepository $competitionRepository,
-        RegistrationRepository $registrationRepository
+        RegistrationRepository $registrationRepository,
+        int $page = 0
     ): Response {
+        $perPage = 20;
+        $lastPage = (int) ceil($competitionRepository->count(['game' => $game]) / $perPage);
+        $currentPage = $page < 1 ? 1 : ($page > $lastPage ? $lastPage : $page);
+        if ($currentPage !== $page) {
+            return $this->redirectToRoute('game_show', ['id' => $game->getId(), 'page' => $currentPage]);
+        }
+
         /** @var Player $player */
         $player = $this->getUser();
 
         return $this->render('game/show.html.twig', [
             'game' => $game,
-            'competitions' => $competitionRepository->findByGame($game),
+            'currentPage' => $currentPage,
+            'perPage' => $perPage,
+            'lastPage' => $lastPage,
+            'competitions' => $competitionRepository->findByGameOrdered($game, $page, $perPage),
             'canEditGame' => $this->isGranted('ROLE_ADMIN'),
             'player' => $player,
             'registrations' => $player ? $registrationRepository->findOpenByPlayer($player) : [],
