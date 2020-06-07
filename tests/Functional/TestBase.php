@@ -33,7 +33,7 @@ abstract class TestBase extends WebTestCase
     {
         parent::setUp();
         $this->getBrowser();
-        $this->initDatabase(); // TODO: Volver a poner
+        $this->initDatabase();
     }
 
     protected function request(string $method, string $url, array $params = []): Crawler

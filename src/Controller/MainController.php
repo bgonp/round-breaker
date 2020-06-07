@@ -41,6 +41,7 @@ class MainController extends AbstractController
     public function test(PlayerFixtures $playerFixtures): Response
     {
         $playerFixtures->load($this->getDoctrine()->getManager());
+
         return $this->render('base.html.twig');
     }
 }

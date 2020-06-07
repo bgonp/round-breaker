@@ -9,14 +9,18 @@ use App\Entity\Round;
 use App\Entity\Team;
 use App\Exception\CannotModifyWinnerException;
 use App\Repository\RoundRepository;
+use App\Repository\TeamRepository;
 
 class RoundService
 {
     private RoundRepository $roundRepository;
 
-    public function __construct(RoundRepository $roundRepository)
+    private TeamRepository $teamRepository;
+
+    public function __construct(RoundRepository $roundRepository, TeamRepository $teamRepository)
     {
         $this->roundRepository = $roundRepository;
+        $this->teamRepository = $teamRepository;
     }
 
     public function createFromCompetition(Competition $competition)
@@ -52,6 +56,10 @@ class RoundService
             $this->undoAdvanceTeam($round->getWinner(), $round, false);
         }
         $round->setWinner($team);
+        if (!$nextRound) {
+            $team->setRanking(1);
+        }
+        $this->setLosersRanking($round);
         $this->roundRepository->save($round, false);
         if ($nextRound) {
             $nextRound->addTeam($team);
@@ -75,6 +83,9 @@ class RoundService
             throw CannotModifyWinnerException::create();
         }
         $round->setWinner(null);
+        foreach ($round->getTeams() as $roundTeam) {
+            $this->teamRepository->save($roundTeam->setRanking(null), false);
+        }
         $this->roundRepository->save($round, false);
         if ($nextRound) {
             $nextRound->removeTeam($team);
@@ -94,5 +105,17 @@ class RoundService
             'bracketLevel' => $round->getBracketLevel() + 1,
             'bracketOrder' => (int) ceil($round->getBracketOrder() / 2),
         ]);
+    }
+
+    private function setLosersRanking(Round $round): void
+    {
+        $teamsPerRound = $round->getTeams()->count();
+        $competitionLevels = (int) log($round->getCompetition()->getTeams()->count(), 2);
+        $losersRanking = max(2, ($competitionLevels - $round->getBracketLevel()) * $teamsPerRound + 1);
+        foreach ($round->getTeams() as $opponent) {
+            if (!$opponent->equals($round->getWinner())) {
+                $opponent->setRanking($losersRanking);
+            }
+        }
     }
 }

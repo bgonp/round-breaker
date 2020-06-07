@@ -26,16 +26,22 @@ class TeamController extends AbstractController
         ) {
             return $this->redirectToRoute('competition_show', ['id' => $team->getCompetition()->getId()]);
         }
-        $canEditName = $team->getCaptain()->equals($player) || $this->isGranted('ROLE_ADMIN');
-        if ($canEditName) {
-            if ($request->isMethod('POST')) {
+        $canEdit = $this->isGranted('ROLE_ADMIN') ||
+            ($team->getCaptain()->equals($player) && !$team->getCompetition()->getIsFinished());
+        if ($request->isMethod('POST')) {
+            if ($canEdit) {
                 $teamRepository->save($team->setName($request->request->get('name')));
+            } else {
+                $this->addFlash(
+                    'error',
+                    'No tienes permisos para editar el nombre del equipo o la competición ya ha finalizado'
+                );
             }
         }
 
         return $this->render('team/show.html.twig', [
             'team' => $team,
-            'canEditName' => $canEditName,
+            'canEditName' => $canEdit,
         ]);
     }
 }
