@@ -16,54 +16,54 @@ class Player extends Base implements UserInterface
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      */
-    private $username;
+    private string $username;
 
     /**
      * @ORM\Column(type="json")
      */
-    private $roles = [];
+    private array $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
      */
-    private $password;
+    private string $password;
 
     /**
      * @Assert\NotBlank()
      * @Assert\Length(max=4096)
      */
-    private $plainPassword;
+    private ?string $plainPassword = null;
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
      */
-    private $twitchName;
+    private string $twitchName;
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
      */
-    private $email;
+    private string $email;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Registration", mappedBy="player")
      */
-    private $registrations;
+    private Collection $registrations;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Team", mappedBy="players")
      */
-    private $teams;
+    private Collection $teams;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Competition", mappedBy="streamer")
      */
-    private $competitionsCreated;
+    private Collection $competitionsCreated;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Team", mappedBy="captain")
      */
-    private $teamsCaptained;
+    private Collection $teamsCaptained;
 
     public function __construct()
     {
@@ -96,7 +96,6 @@ class Player extends Base implements UserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
@@ -156,14 +155,14 @@ class Player extends Base implements UserInterface
         return $this->twitchName;
     }
 
-    public function setTwitchName(?string $twitchName): self
+    public function setTwitchName(string $twitchName): self
     {
         $this->twitchName = $twitchName;
 
         return $this;
     }
 
-    public function getEmail(): ?string
+    public function getEmail(): string
     {
         return $this->email;
     }

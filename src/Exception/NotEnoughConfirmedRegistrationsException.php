@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Exception;
 
-class NotEnoughConfirmedRegistrationsException extends \RuntimeException
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+
+class NotEnoughConfirmedRegistrationsException extends BadRequestHttpException
 {
     const MESSAGE = 'Número de inscripciones confirmadas insuficiente';
 

@@ -41,9 +41,19 @@ abstract class TestBase extends WebTestCase
         return $this->getBrowser()->request($method, $this->getUrl($url, $params));
     }
 
+    protected function submit(string $buttonId, array $params): Crawler
+    {
+        return $this->client->submitForm($buttonId, $params);
+    }
+
     protected function response(): Response
     {
         return $this->getBrowser()->getResponse();
+    }
+
+    protected function followRedirect(): Crawler
+    {
+        return $this->getBrowser()->followRedirect();
     }
 
     private function getBrowser()
@@ -55,8 +65,12 @@ abstract class TestBase extends WebTestCase
         return $this->client;
     }
 
-    protected function login(Player $player): void
+    protected function login(Player $player = null): void
     {
+        if (!$player) {
+            $playerRepository = self::$container->get('App\Repository\PlayerRepository');
+            $player = $playerRepository->findBy([], ['id' => 'DESC'])[0];
+        }
         $this->client->loginUser($player);
     }
 
@@ -76,6 +90,18 @@ abstract class TestBase extends WebTestCase
         return $this->router->generate($name, $params);
     }
 
+    protected function reloadFixtures(): void
+    {
+        $this->postFixtureSetup();
+        $this->loadFixtures([
+            PlayerFixtures::class,
+            GameFixtures::class,
+            CompetitionFixtures::class,
+            RegistrationFixtures::class,
+            BracketFixtures::class,
+        ]);
+    }
+
     /**
      * @throws ToolsException
      */
@@ -91,14 +117,7 @@ abstract class TestBase extends WebTestCase
             $schemaTool->dropDatabase();
             $schemaTool->createSchema($metadata);
 
-            $this->postFixtureSetup();
-            $this->loadFixtures([
-                PlayerFixtures::class,
-                GameFixtures::class,
-                CompetitionFixtures::class,
-                RegistrationFixtures::class,
-                BracketFixtures::class,
-            ]);
+            $this->reloadFixtures();
         }
     }
 }

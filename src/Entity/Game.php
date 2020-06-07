@@ -14,17 +14,17 @@ class Game extends Base
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private string $name;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $description;
+    private ?string $description = null;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Competition", mappedBy="game")
      */
-    private $competitions;
+    private Collection $competitions;
 
     public function __construct()
     {
@@ -32,7 +32,7 @@ class Game extends Base
         $this->competitions = new ArrayCollection();
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }

@@ -15,34 +15,34 @@ class Team extends Base
      * @ORM\ManyToOne(targetEntity="App\Entity\Competition", inversedBy="teams")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
-    private $competition;
+    private Competition $competition;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $ranking;
+    private ?int $ranking = null;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $name;
+    private ?string $name = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Player", inversedBy="teamsCaptained")
      * @ORM\JoinColumn(nullable=true)
      */
-    private $captain;
+    private ?Player $captain = null;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Round", mappedBy="teams")
      * @ORM\JoinColumn(onDelete="CASCADE")
      */
-    private $rounds;
+    private Collection $rounds;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Player", inversedBy="teams")
      */
-    private $players;
+    private Collection $players;
 
     public function __construct()
     {
@@ -51,12 +51,12 @@ class Team extends Base
         $this->players = new ArrayCollection();
     }
 
-    public function getCompetition(): ?Competition
+    public function getCompetition(): Competition
     {
         return $this->competition;
     }
 
-    public function setCompetition(?Competition $competition): self
+    public function setCompetition(Competition $competition): self
     {
         $this->competition = $competition;
 

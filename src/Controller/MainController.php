@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\DataFixtures\PlayerFixtures;
 use App\Repository\CompetitionRepository;
 use App\Repository\GameRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -33,15 +32,5 @@ class MainController extends AbstractController
             'mostsPlayed' => $gameRepository->findMostPlayed(),
             'bracketType' => $competition->getIsOpen() ? 0 : $competition->getTeams()->count(),
         ]);
-    }
-
-    /**
-     * @Route("/test")
-     */
-    public function test(PlayerFixtures $playerFixtures): Response
-    {
-        $playerFixtures->load($this->getDoctrine()->getManager());
-
-        return $this->render('base.html.twig');
     }
 }

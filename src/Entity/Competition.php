@@ -15,92 +15,92 @@ class Competition extends Base
     /**
      * @ORM\Column(type="boolean")
      */
-    private $isOpen = true;
+    private bool $isOpen = true;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $isFinished = false;
+    private bool $isFinished = false;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private string $name;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $description;
+    private ?string $description = null;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $lobbyName;
+    private ?string $lobbyName = null;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $lobbyPassword;
+    private ?string $lobbyPassword = null;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $heldAt;
+    private \DateTimeInterface $heldAt;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Game", inversedBy="competitions")
      */
-    private $game;
+    private Game $game;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Registration", mappedBy="competition")
      * @ORM\OrderBy({"isConfirmed" = "DESC", "updatedAt" = "DESC"})
      */
-    private $registrations;
+    private Collection $registrations;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Team", mappedBy="competition")
      * @ORM\OrderBy({"id" = "ASC"})
      */
-    private $teams;
+    private Collection $teams;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Round", mappedBy="competition")
      * @ORM\OrderBy({"bracketLevel" = "ASC", "bracketOrder" = "ASC"})
      */
-    private $rounds;
+    private Collection $rounds;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Player", inversedBy="competitionsCreated")
      */
-    private $streamer;
+    private Player $streamer;
 
     /**
      * @ORM\Column(type="integer")
      * @Assert\Range(min = 1, max = 5)
      */
-    private $playersPerTeam;
+    private int $playersPerTeam;
 
     /**
      * @ORM\Column(type="integer")
      * @Assert\Range(min = 2, max = 64)
      */
-    private $maxPlayers;
+    private int $maxPlayers;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $twitchBotName;
+    private ?string $twitchBotName = null;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $twitchBotToken;
+    private ?string $twitchBotToken = null;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $twitchChannel;
+    private ?string $twitchChannel = null;
 
     public function __construct()
     {
@@ -110,7 +110,7 @@ class Competition extends Base
         $this->rounds = new ArrayCollection();
     }
 
-    public function getIsOpen(): ?bool
+    public function getIsOpen(): bool
     {
         return $this->isOpen;
     }
@@ -122,7 +122,7 @@ class Competition extends Base
         return $this;
     }
 
-    public function getIsFinished(): ?bool
+    public function getIsFinished(): bool
     {
         return $this->isFinished;
     }
@@ -134,7 +134,7 @@ class Competition extends Base
         return $this;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -158,7 +158,7 @@ class Competition extends Base
         return $this;
     }
 
-    public function getLobbyName(): string
+    public function getLobbyName(): ?string
     {
         return $this->lobbyName;
     }
@@ -170,7 +170,7 @@ class Competition extends Base
         return $this;
     }
 
-    public function getLobbyPassword(): string
+    public function getLobbyPassword(): ?string
     {
         return $this->lobbyPassword;
     }
@@ -187,55 +187,55 @@ class Competition extends Base
         return $this->heldAt;
     }
 
-    public function setHeldAt(?\DateTimeInterface $heldAt): self
+    public function setHeldAt(\DateTimeInterface $heldAt): self
     {
         $this->heldAt = $heldAt;
 
         return $this;
     }
 
-    public function getGame(): ?Game
+    public function getGame(): Game
     {
         return $this->game;
     }
 
-    public function setGame(?Game $game): self
+    public function setGame(Game $game): self
     {
         $this->game = $game;
 
         return $this;
     }
 
-    public function getStreamer(): ?Player
+    public function getStreamer(): Player
     {
         return $this->streamer;
     }
 
-    public function setStreamer(?Player $streamer): self
+    public function setStreamer(Player $streamer): self
     {
         $this->streamer = $streamer;
 
         return $this;
     }
 
-    public function getMaxPlayers(): ?int
+    public function getMaxPlayers(): int
     {
         return $this->maxPlayers;
     }
 
-    public function setMaxPlayers(?int $maxPlayers): self
+    public function setMaxPlayers(int $maxPlayers): self
     {
         $this->maxPlayers = $maxPlayers;
 
         return $this;
     }
 
-    public function getPlayersPerTeam(): ?int
+    public function getPlayersPerTeam(): int
     {
         return $this->playersPerTeam;
     }
 
-    public function setPlayersPerTeam(?int $playersPerTeam): self
+    public function setPlayersPerTeam(int $playersPerTeam): self
     {
         $this->playersPerTeam = $playersPerTeam;
 
@@ -289,36 +289,36 @@ class Competition extends Base
     /**
      * @return mixed
      */
-    public function getTwitchBotName()
+    public function getTwitchBotName(): ?string
     {
         return $this->twitchBotName;
     }
 
-    public function setTwitchBotName($twitchBotName): self
+    public function setTwitchBotName(?string $twitchBotName): self
     {
         $this->twitchBotName = $twitchBotName;
 
         return $this;
     }
 
-    public function getTwitchBotToken()
+    public function getTwitchBotToken(): ?string
     {
         return $this->twitchBotToken;
     }
 
-    public function setTwitchBotToken($twitchBotToken): self
+    public function setTwitchBotToken(?string $twitchBotToken): self
     {
         $this->twitchBotToken = $twitchBotToken;
 
         return $this;
     }
 
-    public function getTwitchChannel()
+    public function getTwitchChannel(): ?string
     {
         return $this->twitchChannel;
     }
 
-    public function setTwitchChannel($twitchChannel): self
+    public function setTwitchChannel(?string $twitchChannel): self
     {
         $this->twitchChannel = $twitchChannel;
 

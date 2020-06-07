@@ -5,13 +5,12 @@ namespace App\Controller;
 use App\Entity\Player;
 use App\Repository\PlayerRepository;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-class PlayerController extends AbstractController
+class PlayerController extends BaseController
 {
     /**
      * @Route("/player/{id<\d+>}", name="player_show", methods={"GET"})
@@ -31,7 +30,7 @@ class PlayerController extends AbstractController
         UserPasswordEncoderInterface $passwordEncoder,
         PlayerRepository $playerRepository
     ): Response {
-        if (!($player = $this->getUser())) {
+        if (!($player = $this->getPlayer())) {
             $this->addFlash('error', 'Inicia sesión para entrar en tu perfil');
 
             return $this->redirectToRoute('main');
@@ -53,7 +52,7 @@ class PlayerController extends AbstractController
         UserPasswordEncoderInterface $passwordEncoder
     ): Response {
         if (!$this->isGranted('ROLE_ADMIN')) {
-            if ($player->equals($this->getUser())) {
+            if ($player->equals($this->getPlayer())) {
                 return $this->redirectToRoute('profile');
             } else {
                 $this->addFlash('error', 'No puedes editar información de otros jugadores');

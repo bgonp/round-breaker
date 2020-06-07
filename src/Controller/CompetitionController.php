@@ -12,7 +12,6 @@ use App\Repository\RegistrationRepository;
 use App\Repository\RoundRepository;
 use App\Service\CompetitionService;
 use App\Service\TeamService;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,7 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/competition")
  */
-class CompetitionController extends AbstractController
+class CompetitionController extends BaseController
 {
     /**
      * @Route("/page/{page<\d+>}", name="competition_list", methods={"GET"})
@@ -37,17 +36,14 @@ class CompetitionController extends AbstractController
             return $this->redirectToRoute('competition_list', ['page' => $currentPage]);
         }
 
-        /** @var Player $player */
-        $player = $this->getUser();
-
         return $this->render('competition/index.html.twig', [
             'currentPage' => $currentPage,
             'perPage' => $perPage,
             'lastPage' => $lastPage,
             'competitions' => $competitionRepository->findAllOrdered($page, $perPage),
             'canEditGame' => $this->isGranted('ROLE_ADMIN'),
-            'player' => $player,
-            'registrations' => $player ? $registrationRepository->findOpenByPlayer($player) : [],
+            'player' => $this->getPlayer(),
+            'registrations' => $this->getPlayer() ? $registrationRepository->findOpenByPlayer($this->getPlayer()) : [],
         ]);
     }
 
@@ -59,7 +55,7 @@ class CompetitionController extends AbstractController
         CompetitionRepository $competitionRepository,
         GameRepository $gameRepository
     ) {
-        if (!($player = $this->getUser())) {
+        if (!($player = $this->getPlayer())) {
             $this->addFlash('error', 'No puedes crear una competición sin haber iniciado sesión');
 
             return $this->redirectToRoute('main');
@@ -101,18 +97,10 @@ class CompetitionController extends AbstractController
      * @Route("/{id<\d+>}", name="competition_show", methods={"GET"})
      */
     public function show(
-        int $id,
-        CompetitionRepository $competitionRepository,
+        Competition $competition,
         RegistrationRepository $registrationRepository
     ): Response {
-        $competition = $competitionRepository->findCompleteById($id);
-        if (!$competition) {
-            $this->addFlash('error', 'No existe competición con ese ID');
-
-            return $this->redirectToRoute('competition_list');
-        }
-        /** @var Player $player */
-        $player = $this->getUser();
+        $player = $this->getPlayer();
         if ($player && $competition->getStreamer()->equals($player)) {
             return $this->redirectToRoute('competition_edit', ['id' => $competition->getId()]);
         }
@@ -143,7 +131,7 @@ class CompetitionController extends AbstractController
 
             return $this->redirectToRoute('competition_list');
         }
-        if (!$this->isGranted('ROLE_ADMIN') && !$competition->getStreamer()->equals($this->getUser())) {
+        if (!$this->isGranted('ROLE_ADMIN') && !$competition->getStreamer()->equals($this->getPlayer())) {
             $this->addFlash('error', 'No puedes editar competiciones de otos usuarios');
 
             return $this->redirectToRoute('competition_show', ['id' => $competition->getId()]);
@@ -188,7 +176,7 @@ class CompetitionController extends AbstractController
      */
     public function delete(Competition $competition, CompetitionRepository $competitionRepository)
     {
-        if (!$this->isGranted('ROLE_ADMIN') && !$competition->getStreamer()->equals($this->getUser())) {
+        if (!$this->isGranted('ROLE_ADMIN') && !$competition->getStreamer()->equals($this->getPlayer())) {
             $this->addFlash('error', 'No puedes borrar una competición de otro usuario');
         } else {
             $competitionRepository->remove($competition);
@@ -204,7 +192,7 @@ class CompetitionController extends AbstractController
     {
         if (
             $competition->getIsOpen() &&
-            ($this->isGranted('ROLE_ADMIN') || $competition->getStreamer()->equals($this->getUser()))
+            ($this->isGranted('ROLE_ADMIN') || $competition->getStreamer()->equals($this->getPlayer()))
         ) {
             try {
                 $competitionService->randomize($competition);
@@ -225,7 +213,7 @@ class CompetitionController extends AbstractController
     {
         if (
             $this->isGranted('ROLE_ADMIN') ||
-            $team->getCompetition()->getStreamer()->equals($this->getUser())
+            $team->getCompetition()->getStreamer()->equals($this->getPlayer())
         ) {
             if ($team->getCompetition()->getIsFinished()) {
                 $this->addFlash('error', 'No puedes eliminar a un jugador de un equipo en una competición terminada');

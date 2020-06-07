@@ -8,7 +8,6 @@ use App\Entity\Competition;
 use App\Entity\Registration;
 use App\Repository\RegistrationRepository;
 use App\Repository\TeamRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/registration")
  */
-class RegistrationController extends AbstractController
+class RegistrationController extends BaseController
 {
     /**
      * @Route("/new", name="registration_new", methods={"POST"})
@@ -25,7 +24,7 @@ class RegistrationController extends AbstractController
         Competition $competition,
         RegistrationRepository $registrationRepository
     ): Response {
-        if (!($player = $this->getUser())) {
+        if (!($player = $this->getPlayer())) {
             $this->addFlash('error', 'Tienes que iniciar sesión para unirte a una competición');
         } elseif (!$competition->getIsOpen()) {
             $this->addFlash('error', 'Esta competición esta cerrada');
@@ -52,15 +51,15 @@ class RegistrationController extends AbstractController
         } elseif ($competitionId = $request->request->get('competition_id')) {
             $registration = $registrationRepository->findOneBy([
                 'competition' => $competitionId,
-                'player' => $this->getUser(),
+                'player' => $this->getPlayer(),
             ]);
         }
 
         if (!$registration) {
             $this->addFlash('error', 'No se ha podido obtener la inscripción');
         } elseif (
-            !$registration->getPlayer()->equals($this->getUser()) &&
-            !$registration->getCompetition()->getStreamer()->equals($this->getUser()) &&
+            !$registration->getPlayer()->equals($this->getPlayer()) &&
+            !$registration->getCompetition()->getStreamer()->equals($this->getPlayer()) &&
             !$this->isGranted('ROLE_ADMIN')
         ) {
             $this->addFlash('error', 'No puedes eliminar la inscripción de otro jugador');
@@ -87,15 +86,14 @@ class RegistrationController extends AbstractController
         RegistrationRepository $registrationRepository
     ): Response {
         if (
-            !$registration->getPlayer()->equals($this->getUser()) &&
-            !$registration->getCompetition()->getStreamer()->equals($this->getUser()) &&
+            !$registration->getCompetition()->getStreamer()->equals($this->getPlayer()) &&
             !$this->isGranted('ROLE_ADMIN')
         ) {
             $this->addFlash('error', 'No puedes editar la inscripción de otro jugador');
         } elseif (!$registration->getCompetition()->getIsOpen()) {
             $this->addFlash('error', 'No puedes editar una inscripción si la competición esta cerrada');
         } else {
-            $registration->setIsConfirmed('1' == $request->request->get('confirm'));
+            $registration->setIsConfirmed((bool) $request->request->get('confirm'));
             $registrationRepository->save($registration);
         }
 

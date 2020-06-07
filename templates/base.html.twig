@@ -20,7 +20,7 @@
     {% include 'footer.html.twig' %}
     {% for message in app.session.flashBag.get('error') %}
         <div class="message-container">
-            <div class="message">
+            <div class="message error">
                 <p class="m-0">{{ message }}</p>
                 <a href="#" class="close"><i class="fas fa-window-close"></i></a>
             </div>

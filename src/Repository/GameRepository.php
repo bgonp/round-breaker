@@ -3,8 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\Game;
+use App\Exception\CannotDeleteGameException;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 
 class GameRepository extends ServiceEntityRepository
 {
@@ -39,9 +41,13 @@ class GameRepository extends ServiceEntityRepository
 
     public function remove(Game $game, bool $flush = true): void
     {
-        $this->getEntityManager()->remove($game);
-        if ($flush) {
-            $this->flush();
+        try {
+            $this->getEntityManager()->remove($game);
+            if ($flush) {
+                $this->flush();
+            }
+        } catch (ForeignKeyConstraintViolationException $e) {
+            throw CannotDeleteGameException::create();
         }
     }
 

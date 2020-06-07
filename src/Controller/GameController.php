@@ -3,13 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Game;
-use App\Entity\Player;
+use App\Exception\CannotDeleteGameException;
 use App\Repository\CompetitionRepository;
 use App\Repository\GameRepository;
 use App\Repository\PlayerRepository;
 use App\Repository\RegistrationRepository;
-use Exception;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/game")
  */
-class GameController extends AbstractController
+class GameController extends BaseController
 {
     /**
      * @Route("/", name="game_list", methods={"GET"})
@@ -26,7 +24,7 @@ class GameController extends AbstractController
     {
         return $this->render('game/index.html.twig', [
             'games' => $gameRepository->findAllOrdered(),
-            'player' => $this->getUser(),
+            'player' => $this->getPlayer(),
         ]);
     }
 
@@ -69,10 +67,8 @@ class GameController extends AbstractController
         }
         try {
             $gameRepository->remove($game);
-        } catch (Exception $e) {
-            $this->addFlash('error', 'No puedes borrar este juego');
-
-            return $this->redirectToRoute('game_edit', ['id' => $game->getId()]);
+        } catch (CannotDeleteGameException $e) {
+            $this->addFlash('error', $e->getMessage());
         }
 
         return $this->redirectToRoute('game_list');
@@ -111,15 +107,12 @@ class GameController extends AbstractController
         RegistrationRepository $registrationRepository,
         int $page = 0
     ): Response {
-        $perPage = 20;
+        $perPage = 12;
         $lastPage = (int) ceil($competitionRepository->count(['game' => $game]) / $perPage);
         $currentPage = $page < 1 ? 1 : ($page > $lastPage ? $lastPage : $page);
         if ($currentPage !== $page) {
             return $this->redirectToRoute('game_show', ['id' => $game->getId(), 'page' => $currentPage]);
         }
-
-        /** @var Player $player */
-        $player = $this->getUser();
 
         return $this->render('game/show.html.twig', [
             'game' => $game,
@@ -128,8 +121,8 @@ class GameController extends AbstractController
             'lastPage' => $lastPage,
             'competitions' => $competitionRepository->findByGameOrdered($game, $page, $perPage),
             'canEditGame' => $this->isGranted('ROLE_ADMIN'),
-            'player' => $player,
-            'registrations' => $player ? $registrationRepository->findOpenByPlayer($player) : [],
+            'player' => $this->getPlayer(),
+            'registrations' => $this->getPlayer() ? $registrationRepository->findOpenByPlayer($this->getPlayer()) : [],
         ]);
     }
 }

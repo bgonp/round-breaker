@@ -15,29 +15,29 @@ class Round extends Base
      * @ORM\ManyToOne(targetEntity="App\Entity\Competition", inversedBy="rounds")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
-    private $competition;
+    private Competition $competition;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Team", inversedBy="rounds")
      * @ORM\OrderBy({"id" = "ASC"})
      */
-    private $teams;
+    private Collection $teams;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $bracketLevel;
+    private int $bracketLevel = 1;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $bracketOrder;
+    private int $bracketOrder = 1;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Team")
      * @ORM\JoinColumn(nullable=true)
      */
-    private $winner;
+    private ?Team $winner = null;
 
     public function __construct()
     {
@@ -45,12 +45,12 @@ class Round extends Base
         $this->teams = new ArrayCollection();
     }
 
-    public function getCompetition(): ?Competition
+    public function getCompetition(): Competition
     {
         return $this->competition;
     }
 
-    public function setCompetition(?Competition $competition): self
+    public function setCompetition(Competition $competition): self
     {
         $this->competition = $competition;
 
@@ -83,7 +83,7 @@ class Round extends Base
         return $this;
     }
 
-    public function getBracketLevel(): ?int
+    public function getBracketLevel(): int
     {
         return $this->bracketLevel;
     }
@@ -95,7 +95,7 @@ class Round extends Base
         return $this;
     }
 
-    public function getBracketOrder(): ?int
+    public function getBracketOrder(): int
     {
         return $this->bracketOrder;
     }

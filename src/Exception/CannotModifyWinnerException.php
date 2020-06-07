@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Exception;
 
-class CannotModifyWinnerException extends \InvalidArgumentException
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
+
+class CannotModifyWinnerException extends BadRequestException
 {
     const MESSAGE = 'No se puede modificar una ronda si la siguiente ya ha finalizado';
 

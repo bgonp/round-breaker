@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Team;
 use App\Repository\TeamRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/team")
  */
-class TeamController extends AbstractController
+class TeamController extends BaseController
 {
     /**
      * @Route("/{id<\d+>}", name="team_show", methods={"GET", "POST"})
@@ -21,9 +20,11 @@ class TeamController extends AbstractController
     {
         if (
             !$this->isGranted('ROLE_ADMIN') && (
-            !($player = $this->getUser()) ||
+            !($player = $this->getPlayer()) ||
             $team->getPlayers()->contains($player))
         ) {
+            $this->addFlash('error', 'Solo puedes ver los equipos a los que perteneces');
+
             return $this->redirectToRoute('competition_show', ['id' => $team->getCompetition()->getId()]);
         }
         $canEdit = $this->isGranted('ROLE_ADMIN') ||

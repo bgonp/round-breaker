@@ -11,13 +11,12 @@ use App\Exception\CannotModifyWinnerException;
 use App\Repository\CompetitionRepository;
 use App\Repository\RegistrationRepository;
 use App\Service\RoundService;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /** @Route("/api") */
-class ApiController extends AbstractController
+class ApiController extends BaseController
 {
     /** @Route("/set_round_winner", name="api_winner", methods={"POST"}) */
     public function setRoundWinner(
@@ -29,7 +28,7 @@ class ApiController extends AbstractController
         if (
             !$this->isGranted('ROLE_ADMIN') &&
             (!$this->isGranted('ROLE_USER') ||
-            !$round->getCompetition()->getStreamer()->equals($this->getUser()))
+            !$round->getCompetition()->getStreamer()->equals($this->getPlayer()))
         ) {
             return new JsonResponse(
                 ['message' => 'No puedes asignar ganador de una competción que no es tuya'],
@@ -98,7 +97,7 @@ class ApiController extends AbstractController
     ): JsonResponse {
         if (
             !$this->isGranted('ROLE_ADMIN') &&
-            !$competition->getStreamer()->equals($this->getUser())
+            !$competition->getStreamer()->equals($this->getPlayer())
         ) {
             return new JsonResponse([], JsonResponse::HTTP_FORBIDDEN);
         }
@@ -126,7 +125,7 @@ class ApiController extends AbstractController
     ): JsonResponse {
         if (
             !$this->isGranted('ROLE_ADMIN') &&
-            !$competition->getStreamer()->equals($this->getUser())
+            !$competition->getStreamer()->equals($this->getPlayer())
         ) {
             return new JsonResponse([], JsonResponse::HTTP_FORBIDDEN);
         }
