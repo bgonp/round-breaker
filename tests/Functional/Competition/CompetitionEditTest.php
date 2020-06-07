@@ -43,6 +43,7 @@ class CompetitionEditTest extends CompetitionBaseTest
             $crawler = $this->request('GET', 'competition_edit', ['id' => $competition->getId()]);
 
             $this->assertEquals(200, $this->response()->getStatusCode());
+            $this->assertCount(1, $crawler->filter('#submit-randomize'));
             $this->assertCount(0, $crawler->filter('.match'));
             $this->assertCount(0, $crawler->filter('.team-item'));
             $this->assertCount(21, $crawler->filter('.registration-item'));
@@ -50,26 +51,28 @@ class CompetitionEditTest extends CompetitionBaseTest
         }
     }
 
-    public function testSubmitClose(): void
+    public function testAsStreamerAndAdminNotOpen(): void
     {
-        $competition = $this->getCompetition(true, false);
-        $competitionData = ['open' => false];
-        $this->login($competition->getStreamer());
-        $this->request('GET', 'competition_edit', ['id' => $competition->getId()]);
-        $crawler = $this->submit('submit-edit', $competitionData);
-        $this->reloadFixtures();
+        $competition = $this->getCompetition(false, false);
+        for ($i = 0; $i < 2; ++$i) {
+            if (0 === $i) {
+                $this->login($competition->getStreamer());
+            } else {
+                $this->loginAsAdmin();
+            }
+            $crawler = $this->request('GET', 'competition_edit', ['id' => $competition->getId()]);
 
-        $form = $crawler->selectButton('submit-edit')->form();
-
-        $this->assertEquals(200, $this->response()->getStatusCode());
-        $this->assertNull($form['open']->getValue());
-        $notAllowed = ['playersPerTeam', 'teamNum', 'heldAt'];
-        foreach ($notAllowed as $name) {
-            $this->assertFalse(isset($form[$name]));
+            $this->assertEquals(200, $this->response()->getStatusCode());
+            $this->assertCount(0, $crawler->filter('#submit-randomize'));
+            $this->assertCount(14, $crawler->filter('.match'));
+            $this->assertCount(6, $crawler->filter('a[data-team=""]'));
+            $this->assertCount(8, $crawler->filter('.team-item'));
+            $this->assertCount(22, $crawler->filter('.registration-item'));
+            $this->assertCount(19, $crawler->filter('.registration-item.confirmed'));
         }
     }
 
-    public function testSubmitOpen(): void
+    public function testSubmitEdit(): void
     {
         $competition = $this->getCompetition(true, false);
         $competitionData = [
@@ -91,5 +94,91 @@ class CompetitionEditTest extends CompetitionBaseTest
         foreach ($competitionData as $name => $value) {
             $this->assertEquals($value, $form[$name]->getValue());
         }
+    }
+
+    public function testSubmitOpen(): void
+    {
+        $competition = $this->getCompetition(false, false);
+        $this->login($competition->getStreamer());
+
+        $crawler = $this->request('GET', 'competition_edit', ['id' => $competition->getId()]);
+        $form = $crawler->selectButton('submit-edit')->form();
+        foreach ($this->getFieldsNames(true) as $name) {
+            $this->assertFalse(isset($form[$name]));
+        }
+        $this->assertFalse((bool) $form['open']->getValue());
+
+        $crawler = $this->submit('submit-edit', ['open' => true]);
+        $this->reloadFixtures();
+
+        $form = $crawler->selectButton('submit-edit')->form();
+
+        $this->assertEquals(200, $this->response()->getStatusCode());
+        foreach ($this->getFieldsNames() as $name) {
+            $this->assertTrue(isset($form[$name]));
+        }
+        $this->assertTrue((bool) $form['open']->getValue());
+    }
+
+    public function testSubmitOpenFinished(): void
+    {
+        $competition = $this->getCompetition(false, true);
+        $this->login($competition->getStreamer());
+        $this->request('GET', 'competition_edit', ['id' => $competition->getId()]);
+        $crawler = $this->submit('submit-edit', ['open' => true]);
+        $form = $crawler->selectButton('submit-edit')->form();
+
+        $this->assertEquals(200, $this->response()->getStatusCode());
+        $this->assertCount(1, $crawler->filter('.message.error'));
+        $this->assertCount(0, $crawler->filter('#submit-randomize'));
+        $this->assertFalse((bool) $form['open']->getValue());
+    }
+
+    public function testSubmitClose(): void
+    {
+        $competition = $this->getCompetition(true, false);
+        $this->login($competition->getStreamer());
+        $this->request('GET', 'competition_edit', ['id' => $competition->getId()]);
+        $crawler = $this->submit('submit-edit', ['open' => false]);
+        $this->reloadFixtures();
+
+        $form = $crawler->selectButton('submit-edit')->form();
+
+        $this->assertEquals(200, $this->response()->getStatusCode());
+        $this->assertFalse((bool) $form['open']->getValue());
+        $notAllowed = ['playersPerTeam', 'teamNum', 'heldAt'];
+        foreach ($notAllowed as $name) {
+            $this->assertFalse(isset($form[$name]));
+        }
+    }
+
+    public function testRandomize(): void
+    {
+        $competition = $this->getCompetition(true, false);
+        $this->login($competition->getStreamer());
+        $this->request('GET', 'competition_edit', ['id' => $competition->getId()]);
+        $this->submit('submit-randomize', ['competition_id' => $competition->getId()]);
+
+        $this->assertTrue($this->response()->isRedirect(
+            $this->getUrl('competition_edit', ['id' => $competition->getId()])
+        ));
+        $crawler = $this->followRedirect();
+        $this->reloadFixtures();
+
+        $this->assertEquals(200, $this->response()->getStatusCode());
+        $this->assertCount(0, $crawler->filter('#submit-randomize'));
+        $this->assertCount(6, $crawler->filter('.match'));
+        $this->assertCount(2, $crawler->filter('a[data-team=""]'));
+        $this->assertCount(4, $crawler->filter('.team-item'));
+        $this->assertCount(21, $crawler->filter('.registration-item'));
+        $this->assertCount(18, $crawler->filter('.registration-item.confirmed'));
+    }
+
+    private function getFieldsNames(bool $onlyHidden = false): array
+    {
+        if ($onlyHidden) {
+            return ['game', 'playersPerTeam', 'teamNum', 'heldAt'];
+        }
+        return ['name', 'description', 'game', 'playersPerTeam', 'teamNum', 'heldAt', 'open'];
     }
 }
