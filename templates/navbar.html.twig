@@ -23,7 +23,7 @@
                             <b><a href="{{ path('competition_list') }}" class="nav-link">Torneos</a></b>
                         </li>
                         <li class="nav-item">
-                            <b><a href="{{ path('game_list') }}" class="nav-link">Games</a></b>
+                            <b><a href="{{ path('game_list') }}" class="nav-link">Juegos</a></b>
                         </li>
                         <li class="nav-item">
                             {% if is_granted('ROLE_USER') %}
@@ -34,7 +34,7 @@
                             {% else %}
                             <form method="post" action="{{ path('main') }}">
                                 <input type="hidden" name="redirect_to" value="{{ app.request.attributes.get('_route') }}" />
-                                <button type="submit" class="nav-link btn btn-link"><b>Login/Register</b></button>
+                                <button type="submit" class="nav-link btn btn-link"><b>Login / Registro</b></button>
                             </form>
                             {% endif %}
                         </li>
