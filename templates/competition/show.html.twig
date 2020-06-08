@@ -69,7 +69,7 @@
                             {% for player in team.players %}
                                 <li class="list-group-item sport-text"><a href="{{ path('player_show', { id: player.id }) }}">
                                     {{ player.username }}
-                                </a></li>
+                                </a>{{player == team.captain ? '<i class="fas fa-crown text-warning"></i>' : '' }}</li>
                             {% endfor %}
                         </ul>
                     </div>

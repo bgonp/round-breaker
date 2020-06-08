@@ -137,7 +137,7 @@
                         <h5 class="card-title sport-text">{{ team.name }}</h5>
                         <ul class="list-group">
                             {% for player in team.players %}
-                                <li class="list-group-item sport-text">{{ player.username }}
+                                <li class="list-group-item sport-text">{{ player.username }} {{player == team.captain ? '<i class="fas fa-crown text-warning"></i>' : '' }} 
                                     <form action="{{ path('kick_member') }}" method="post" class="d-inline">
                                         <input type="hidden" name="team_id" value="{{ team.id }}">
                                         <input type="hidden" name="player_id" value="{{ player.id }}">
