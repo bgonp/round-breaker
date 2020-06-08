@@ -10,8 +10,8 @@
             <ul class="list-group">
                 {% for player in team.players %}
                 <li class="list-group-item sport-text"><a href="{{ path('player_show', { id: player.id }) }}">
-                        {{ player.username }}</a> - <a href="http://www.twitch.tv/{{ player.twitchName }}">
-                            Canal Twitch
+                        {{ player.username }}</a><a href="http://www.twitch.tv/{{ player.twitchName }}">
+                            <i class="fab fa-twitch"></i>
                         </a>
                     </a>
                 </li>
