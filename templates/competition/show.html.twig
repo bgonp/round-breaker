@@ -21,7 +21,7 @@
             <a class="btn btn-dark mb-3 sport-text" href="{{ path('competition_edit', {id: competition.id}) }}">Editar Torneo</a>
             <form action="{{ path('competition_delete') }}" method="POST" class="d-inline">
                 <input type="hidden" name="competition_id" value="{{ competition.id }}">
-                <input class="btn btn-dark sport-text mb-3 confirmable" type="submit" value="Eliminar">
+                <input id="submit_delete" class="btn btn-dark sport-text mb-3 confirmable" type="submit" value="Eliminar">
             </form>
         {% endif %}
 
@@ -29,12 +29,12 @@
             {% if playerRegistration %}
                 <form action="{{ path('registration_delete') }}" method="POST" class="d-inline">
                     <input type="hidden" name="registration_id" value="{{ playerRegistration.id }}">
-                    <input class="btn btn-dark sport-text mb-3" type="submit" value="Abandonar">
+                    <input id="submit_delete" class="btn btn-dark sport-text mb-3" type="submit" value="Abandonar">
                 </form>
             {% elseif is_granted('ROLE_USER') %}
                 <form action="{{ path('registration_new') }}" method="POST" class="d-inline">
                     <input type="hidden" name="competition_id" value="{{ competition.id }}">
-                    <input class="btn btn-dark sport-text mb-3" type="submit" value="Unirse">
+                    <input id="submit_new" class="btn btn-dark sport-text mb-3" type="submit" value="Unirse">
                 </form>
                 {% else %}
                     <a class="btn btn-dark mb-3 sport-text" href="{{ path('main', {login: true}) }}">Login/Registo para unirte</a>

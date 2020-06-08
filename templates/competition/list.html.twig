@@ -12,7 +12,7 @@
                     {% set leave = true %}
                     <form action="{{ path('registration_delete') }}" method="POST" class="d-inline">
                         <input type="hidden" name="competition_id" value="{{ competition.id }}">
-                        <input class="btn btn-dark sport-text confirmable" type="submit" value="Abandonar">
+                        <input id="submit_delete" class="btn btn-dark sport-text confirmable" type="submit" value="Abandonar">
                     </form>
                 {% endif %}
             {% endfor %}
@@ -20,7 +20,7 @@
                 <form action="{{ path('registration_new') }}" method="POST" class="d-inline">
                     <input type="hidden" name="competition_id" value="{{ competition.id }}">
                     <input type="hidden" name="player_id" value="{{ player.id }}">
-                    <input class="btn btn-dark sport-text" type="submit" value="Unirse">
+                    <input id="submit_new" class="btn btn-dark sport-text" type="submit" value="Unirse">
                 </form>
             {% endif %}
         {% endif %}

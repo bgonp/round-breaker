@@ -115,7 +115,7 @@
                 <label class="sport-text-form" for="inputChannel">Canal de Twitch</label>
                 <input class="form-control mb-3 form-control-lg" type="text"
                     id="inputChannel" name="twitch_channel" value="{{ competition.twitchChannel }}" />
-                <button class="btn btn-lg btn-dark break-text-large mt-3" type="submit"{{ competition.isOpen ? '' : ' disabled' }}>
+                <button id ="submit-new" class="btn btn-lg btn-dark break-text-large mt-3" type="submit"{{ competition.isOpen ? '' : ' disabled' }}>
                     Abrir confirmaciones!
                 </button>
             </div>
@@ -141,7 +141,7 @@
                                     <form action="{{ path('kick_member') }}" method="post" class="d-inline">
                                         <input type="hidden" name="team_id" value="{{ team.id }}">
                                         <input type="hidden" name="player_id" value="{{ player.id }}">
-                                        <span class="float-right"><button class="fas fa-random controls confirmable" type="submit" title="cambiar jugador"></button></span>
+                                        <span id ="submit-edit" class="float-right"><button class="fas fa-random controls confirmable" type="submit" title="cambiar jugador"></button></span>
                                     </form>
                                 </li>
                             {% endfor %}
@@ -162,12 +162,12 @@
                         {% if competition.isOpen %}
                             <form action="{{ path('registration_delete') }}" method="POST" class="d-inline">
                                 <input type="hidden" name="registration_id" value="{{ registration.id }}">
-                                <button class="fas fa-skull controls confirmable" type="submit" title="Ban"></button>
+                                <button id="submit-delete" class="fas fa-skull controls confirmable" type="submit" title="Ban"></button>
                             </form>
                             <form action="{{ path('toggle_confirmation') }}" method="POST" class="d-inline">
                                 <input type="hidden" name="registration_id" value="{{ registration.id }}">
                                 <input type="hidden" name="confirm" value="{{ registration.isConfirmed ? 0 : 1 }}">
-                                <button class="controls" type="submit"
+                                <button id="submit-edit" class="controls" type="submit"
                                         title="{{ registration.isConfirmed ? 'Unconfirm' : 'Confirm' }}">
                                     <i class="far fa-square"></i>
                                     <i class="far fa-check-square"></i>
@@ -180,18 +180,18 @@
         </ul>
         <form action="{{ path('competition_delete') }}" method="POST" class="d-inline">
             <input type="hidden" name="competition_id" value="{{ competition.id }}">
-            <input class="btn btn-dark sport-text mb-3 confirmable" type="submit" value="Eliminar Torneo">
+            <input id="submit-delete" class="btn btn-dark sport-text mb-3 confirmable" type="submit" value="Eliminar Torneo">
         </form>
         {% if showRegistrationButton %}
             {% if playerRegistration %}
             <form action="{{ path('registration_delete') }}" method="POST" class="d-inline">
                 <input type="hidden" name="registration_id" value="{{ playerRegistration.id }}">
-                <input class="btn btn-dark sport-text mb-3" type="submit" value="Abandonar">
+                <input id="submit-delete" class="btn btn-dark sport-text mb-3" type="submit" value="Abandonar">
             </form>
             {% else %}
             <form action="{{ path('registration_new') }}" method="POST" class="d-inline">
                 <input type="hidden" name="competition_id" value="{{ competition.id }}">
-                <input class="btn btn-dark sport-text mb-3" type="submit" value="Unirse">
+                <input id="submit-new" class="btn btn-dark sport-text mb-3" type="submit" value="Unirse">
             </form>
             {% endif %}
         {% endif %}
