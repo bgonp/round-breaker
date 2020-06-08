@@ -1,1 +1,22 @@
-{% include 'competition/index.html.twig' %}
+{% extends 'base.html.twig' %}
+
+{% block title %}Ver juego | Round Breaker{% endblock %}
+
+{% block content %}
+    <div class="py-3">
+
+        <h1>Juego: {{ game.name }}</h1>
+        <p>{{ game.description }}</p>
+
+        {% include('competition/list.html.twig') %}
+
+        {% if canEditGame %}
+            <a class="btn btn-dark sport-text" href="{{ path('game_edit', {id: game.id}) }}">Editar Juego</a>
+            <form action="{{ path('game_delete') }}" method="POST" class="d-inline">
+                <input type="hidden" name="game_id" value="{{ game.id }}">
+                <input class="btn btn-dark sport-text confirmable" type="submit" value="Eliminar Juego" id="submit-delete">
+            </form>
+        {% endif %}
+
+    </div>
+{% endblock %}

@@ -35,6 +35,7 @@ class CompetitionNewTest extends CompetitionBaseTest
         $form = $crawler->selectButton('submit-edit')->form();
 
         $this->assertEquals(200, $this->response()->getStatusCode());
+        $this->assertEquals('Crear torneo | Round Breaker', $crawler->filter('title'));
         foreach ($competitionData as $name => $value) {
             $this->assertEquals($value, $form[$name]->getValue());
         }

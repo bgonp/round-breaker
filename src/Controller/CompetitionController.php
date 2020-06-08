@@ -30,7 +30,7 @@ class CompetitionController extends BaseController
         GameRepository $gameRepository,
         int $page = 0
     ): Response {
-        $perPage = 20;
+        $perPage = 2;
         $lastPage = (int) ceil($competitionRepository->count([]) / $perPage);
         $currentPage = $page < 1 ? 1 : ($page > $lastPage ? $lastPage : $page);
         if ($currentPage !== $page) {

@@ -138,3 +138,7 @@ h1 {
 .message-container .message a .fas {
     color: #ff2c2c;
 }
+
+.pagination .active .page-link {
+    background: #343a40;
+}

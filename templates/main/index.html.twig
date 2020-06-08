@@ -1,32 +1,30 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}RoundBreaker{% endblock %}
-
 {% block content %}
 <div class="row">
     <div class="col-md-9 p-3">
         {%  if competition %}
-        {% if bracketType == 2 %}{% include 'brackets/bracket_2.html.twig' %}
-        {% elseif bracketType == 4 %}{% include 'brackets/bracket_4.html.twig' %}
-        {% elseif bracketType == 8 %}{% include 'brackets/bracket_8.html.twig' %}
-        {% elseif bracketType == 16 %}{% include 'brackets/bracket_16.html.twig' %}
-        {% endif %}
+            {% if bracketType == 2 %}{% include 'brackets/bracket_2.html.twig' %}
+            {% elseif bracketType == 4 %}{% include 'brackets/bracket_4.html.twig' %}
+            {% elseif bracketType == 8 %}{% include 'brackets/bracket_8.html.twig' %}
+            {% elseif bracketType == 16 %}{% include 'brackets/bracket_16.html.twig' %}
+            {% endif %}
         {% endif %}
         <div class="col-md-12 pt-2 px-0">
             <h1>¿Qué es roundbreaker?</h1>
-            <p class="text-left">Round Breaker es un
-                sistema de gestión de competiciones de e-sports que abarca inscripciones,
-                formaciones de equipos y gestión de rondas y resultados,
-                además de integración con el sistema de retransmisión Twitch y con su chat.</p>
+            <p class="text-left">Round Breaker es un sistema de gestión de competiciones de e-sports que abarca
+                inscripciones,formaciones de equipos y gestión de rondas y resultados, además de integración con el
+                sistema de retransmisión Twitch y con su chat.</p>
 
-            <p class="text-left">Es una aplicación web desde donde los usuarios pueden registrarse,
-                gestionar su perfil e inscripciones. Cada usuario puede también organizar competiciones,
-                obteniendo todos los permisos sobre ellas a través de un panel de organizador para ver los detalles y editar
-                las opciones y resultados. Desde este panel, el organizador se conectará con el chat de Twitch del canal indicado
-                donde los jugadores inscritos deben confirmar que estan presentes para marcar su registro en la competición como confirmado.</p>
+            <p class="text-left">Es una aplicación web desde donde los usuarios pueden registrarse, gestionar su perfil
+                e inscripciones. Cada usuario puede también organizar competiciones, obteniendo todos los permisos sobre
+                ellas a través de un panel de organizador para ver los detalles y editarlas opciones y resultados. Desde
+                este panel, el organizador se conectará con el chat de Twitch del canal indicado donde los jugadores
+                inscritos deben confirmar que estan presentes para marcar su registro en la competición como
+                confirmado.</p>
 
-            <p class="text-left">Desde la aplicación web podrán consultarse
-                públicamente los resultados y un histórico de competiciones.</p>
+            <p class="text-left">Desde la aplicación web podrán consultarse públicamente los resultados y un histórico
+                de competiciones.</p>
         </div>
     </div>
     <div class="col-md-3 p-3">

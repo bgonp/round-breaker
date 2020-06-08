@@ -1,5 +1,7 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Mi equipo | Round Breaker{% endblock %}
+
 {% block content %}
 <div class="row">
     <div class="col-sm-6">
@@ -21,7 +23,7 @@
                 <input type="text" value="{{ team.name }}" name="name" id="inputName"
                     class="form-control form-control-lg">
 
-                <button class="btn btn-lg btn-dark break-text-large mt-3" type="submit">
+                <button class="btn btn-lg btn-dark break-text-large mt-3" type="submit" id="submit-edit">
                     Cambiar!
                 </button>
             </div>
