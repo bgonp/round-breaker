@@ -36,9 +36,9 @@ abstract class TestBase extends WebTestCase
         $this->initDatabase();
     }
 
-    protected function request(string $method, string $url, array $params = []): Crawler
+    protected function request(string $method, string $url, array $getParams = [], array $postParams = []): Crawler
     {
-        return $this->getBrowser()->request($method, $this->getUrl($url, $params));
+        return $this->getBrowser()->request($method, $this->getUrl($url, $getParams), $postParams);
     }
 
     protected function submit(string $buttonId, array $params): Crawler

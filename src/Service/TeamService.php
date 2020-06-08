@@ -50,7 +50,9 @@ class TeamService
      */
     public function createFromCompetition(Competition $competition): void
     {
-        $registrations = $this->registrationRepository->findConfirmedByCompetitionRandomized($competition, $competition->getMaxPlayers());
+        $registrations = $this->registrationRepository->findConfirmedByCompetitionRandomized(
+            $competition, $competition->getMaxPlayers()
+        );
         if (count($registrations) < $competition->getMaxPlayers()) {
             $competition->setMaxPlayers($competition->getMaxPlayers() / 2);
             if ($competition->getMaxPlayers() < $competition->getPlayersPerTeam() * 2) {
