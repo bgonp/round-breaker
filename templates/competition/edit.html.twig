@@ -5,11 +5,11 @@
 {% block content %}
 <div class="row competition-title">
     <div class="col-12">
-        <h1 class="text-center">Editar {{ competition.name }}</h1>
-        <h3 class="text-center streamer">Organiza: <a href="{{ path('player_show', { id: competition.streamer.id }) }}">
-                {{ competition.streamer.username }}
-            </a></h3>
-        <h3 class="text-center">{{ competition.isOpen ? "Abierta" : "Cerrada" }} y {{ competition.isFinished ? "Terminada" : "En Curso" }}</h3>
+        <h1 class="text-center">{{competition.name}}</h1>
+        <h4 class="text-center streamer">Organiza: <a href="{{ path('player_show', { id: competition.streamer.id }) }}">
+            {{ competition.streamer.username }}
+        </a></h4>
+        <h4 class="text-center">Estado: {{ competition.isOpen ? "Abierta" : "Cerrada" }} y {{ competition.isFinished ? "Terminada" : "En Curso" }} - {{ competition.heldAt|toDateTimeLocal }}</h4>
     </div>
 </div>
 
@@ -141,7 +141,7 @@
                                     <form action="{{ path('kick_member') }}" method="post" class="d-inline">
                                         <input type="hidden" name="team_id" value="{{ team.id }}">
                                         <input type="hidden" name="player_id" value="{{ player.id }}">
-                                        <span id ="submit-edit" class="float-right"><button class="fas fa-random controls confirmable" type="submit" title="cambiar jugador"></button></span>
+                                        <div class="float-right"><button class="fas fa-random controls confirmable" type="submit" title="cambiar jugador"></button></div>
                                     </form>
                                 </li>
                             {% endfor %}
@@ -158,7 +158,7 @@
             {% for registration in competition.registrations %}
                 <li id="registration-{{ registration.id }}" class="registration-item list-group-item{{ registration.isConfirmed ? ' confirmed' : '' }}">
                     {{ registration.player.username }}
-                    <span class="float-right">
+                    <div class="float-right">
                         {% if competition.isOpen %}
                             <form action="{{ path('registration_delete') }}" method="POST" class="d-inline">
                                 <input type="hidden" name="registration_id" value="{{ registration.id }}">
@@ -174,7 +174,7 @@
                                 </button>
                         </form>
                         {% endif %}
-                    </span>
+                    </div>
                 </li>
             {% endfor %}
         </ul>
