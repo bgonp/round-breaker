@@ -4,17 +4,22 @@
 
 {% block content %}
     <div class="pt-3">
-        <h1>Games</h1>
+        <h1>Juegos</h1>
         <ul class="list-group list-group-flush sport-text mb-3">
             {% for game in games %}
-            <li class="list-group-item d-flex justify-content-between w-75">
+            <li class="list-group-item d-flex justify-content-between col-12">
                 <span class="d-flex align-items-center">
                     <a class="mr-1" href="{{ path('game_show', {id: game.id}) }}">{{ game.name }}&nbsp;</a>- {{ game.description }}
-                    <form action="{{ path('game_delete') }}" method="post">
-                        <input type="hidden" name="game_id" value="{{ game.id }}">
-                        <input class="btn btn-dark sport-text" type="submit" value="borrar" />
-                    </form>
                 </span>
+                {% if is_granted('ROLE_ADMIN') %}
+                <span class="d-flex align-items-center">
+                <a class="btn btn-dark sport-text mr-2" href="{{ path('game_edit', {id: game.id}) }}">Editar</a>
+                <form action="{{ path('game_delete') }}" method="POST" class="d-inline">
+                    <input type="hidden" name="game_id" value="{{ game.id }}">
+                    <input class="btn btn-dark sport-text confirmable" type="submit" value="borrar" id="submit-delete">
+                </form>
+            </span>
+                {% endif %}
             </li>
             {% endfor %}
         </ul>
