@@ -32,11 +32,13 @@
 <nav>
     <ul class="pagination sport-text">
         <li class="page-item{% if currentPage == 1 %} disabled{% endif %}"><a class="page-link" href="{{ path('competition_list', {page: currentPage - 1}) }}">Anterior</a></li>
-        {% if currentPage > 2 %}<li class="page-item"><a class="page-link" href="{{ path('competition_list', {page: currentPage - 2}) }}">{{ currentPage - 2 }}</a></li>{% endif %}
-        {% if currentPage > 1 %}<li class="page-item"><a class="page-link" href="{{ path('competition_list', {page: currentPage - 1}) }}">{{ currentPage - 1 }}</a></li>{% endif %}
+        {% if currentPage > 1 %}
+            {% for i in 1..(currentPage - 1) %}<li class="page-item"><a class="page-link" href="{{ path('competition_list', {page: i}) }}">{{ i }}</a></li>{% endfor %}
+        {% endif %}
         <li class="page-item active"><a class="page-link">{{ currentPage }}</a></li>
-        {% if currentPage < lastPage %}<li class="page-item"><a class="page-link" href="{{ path('competition_list', {page: currentPage + 1}) }}">{{ currentPage + 1 }}</a></li>{% endif %}
-        {% if currentPage < lastPage - 1 %}<li class="page-item"><a class="page-link" href="{{ path('competition_list', {page: currentPage + 2}) }}">{{ currentPage + 2 }}</a></li>{% endif %}
+        {% if currentPage < lastPage %}
+            {% for i in (currentPage + 1)..lastPage %}<li class="page-item"><a class="page-link" href="{{ path('competition_list', {page: i}) }}">{{ i }}</a></li>{% endfor %}
+        {% endif %}
         <li class="page-item{% if currentPage == lastPage %} disabled{% endif %}"><a class="page-link" href="{{ path('competition_list', {page: currentPage + 1}) }}">Siguiente</a></li>
     </ul>
 </nav>

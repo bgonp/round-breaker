@@ -53,25 +53,12 @@
     const submit = document.getElementById('submit');
       
     if (inputPassword && inputPasswordRepeat && submit){
-        inputPassword.addEventListener('keyup', function(e){
-            e.preventDefault();
-            if (inputPassword.value ==
-                inputPasswordRepeat.value) {
-                    submit.disabled = false;
-          } else {
-            submit.disabled = true;
-          }
-        });
-        inputPasswordRepeat.addEventListener('keyup', function(e){
-            e.preventDefault();
-            if (inputPassword.value ==
-                inputPasswordRepeat.value) {
-                    submit.disabled = false;
-          } else {
-            submit.disabled = true;
-          }
-        });
+        inputPassword.addEventListener('keyup', () =>
+            submit.disabled = inputPassword.value !== inputPasswordRepeat.value
+        );
+        inputPasswordRepeat.addEventListener('keyup', () =>
+            submit.disabled = inputPassword.value !== inputPasswordRepeat.value
+        );
     }
-
 
 })()
