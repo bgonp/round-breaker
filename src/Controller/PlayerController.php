@@ -18,10 +18,18 @@ class PlayerController extends BaseController
     /**
      * @Route("/player/{id<\d+>}", name="player_show", methods={"GET"})
      */
-    public function view(PlayerRepository $playerRepository, Player $player): Response
+    public function view(
+        PlayerRepository $playerRepository,
+        Player $player,
+        CompetitionRepository $competitionRepository,
+        RegistrationRepository $registrationRepository,
+        TeamRepository $teamRepository)
     {
         return $this->render('player/show.html.twig', [
             'player' => $player,
+            'competitions' => $competitionRepository->findByStreamer($player),
+            'teams' => $teamRepository->findWithCompetitionByPlayer($player),
+            'registrations' => $registrationRepository->findWithCompetitionByPlayer($player)
         ]);
     }
 

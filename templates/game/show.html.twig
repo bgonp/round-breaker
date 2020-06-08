@@ -5,8 +5,8 @@
 {% block content %}
     <div class="py-3">
 
-        <h1>Juego: {{ game.name }}</h1>
-        <p>{{ game.description }}</p>
+        <h1>{{ game.name }}</h1>
+        <h3 class="sport-text pl-3">{{ game.description }}</h3>
 
         {% include('competition/list.html.twig') %}
 

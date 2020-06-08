@@ -31,8 +31,8 @@
 </div>
     {% if competitions is defined %}
     <div class="col-md-12 col-lg-8 col-xl-7 py-3">
+        <h1>Tus Torneos</h1>
         {% if competitions|length > 0 %}
-<h1>Tus Torneos</h1>
 <ul class="list-group list-group-flush sport-text mb-3">
     {% for competition in competitions %}
     <li class="list-group-item d-flex justify-content-between w-100 {{ competition.isfinished ? ' bg-light' : '' }}">
@@ -49,8 +49,8 @@
 {% endif %}
     {% endif %}
     {% if registrations is defined %}
+        <h1>Registros</h1>
         {% if registrations|length > 0 %}
-<h1>Registros</h1>
 <ul class="list-group list-group-flush sport-text mb-3">
     {% for registration in registrations %}
     <li class="list-group-item d-flex justify-content-between w-100 {{ registration.competition.isfinished ? ' bg-light' : '' }}">
@@ -67,15 +67,15 @@
 {% endif %}
     {% endif %}
     {% if teams is defined %}
+        <h1>Tus Equipos</h1>
         {% if teams|length > 0 %}
-<h1>Tus Equipos</h1>
 <ul class="list-group list-group-flush sport-text mb-3">
     {% for team in teams %}
     <li class="list-group-item d-flex justify-content-between w-100 {{ team.competition.isfinished ? ' bg-light' : '' }}">
         <span class="d-flex align-items-center">
             <a class="mr-1" href="{{ path('team_show', {id: team.id}) }}">{{ team.name }}</a>
-            ({{ team.competition.game.name }}){% if team.competition.heldAt %}
-            {{ team.competition.heldAt|toDateTimeLocal }}{% endif %}
+            ({{ team.competition.game.name }}){% if team.competition.heldAt %}{% if team.ranking is not null %} - Ranking: {{ team.ranking }}{% endif %}
+            {% endif %}
         </span>
     </li>
     {% endfor %}

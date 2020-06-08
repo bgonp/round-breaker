@@ -25,6 +25,7 @@
                 {% if team.competition.heldAt %}<li class="list-group-item sport-text">Celebrado en: {{ team.competition.heldAt|toDateTimeLocal }}</li>{% endif %}
                 {% if team.competition.lobbyName %}<li class="list-group-item sport-text">Lobby: {{ team.competition.lobbyName }}</li>{% endif %}
                 {% if team.competition.lobbyPassword %}<li class="list-group-item sport-text">Lobby Password: {{ team.competition.lobbypassword }}</li>{% endif %}
+                {% if team.ranking is not null %}<li class="list-group-item sport-text">Team Ranking: {{ team.ranking }}</li>{% endif %}
                 <li class="list-group-item sport-text">{{ team.competition.isOpen ? "Abierta" : "Cerrada" }} y {{ team.competition.isFinished ? "Terminada" : "En Curso" }}
                 </li>
         </div>
