@@ -10,6 +10,7 @@
         <h3 class="text-center streamer">Organiza: <a href="{{ path('player_show', { id: competition.streamer.id }) }}">
             {{ competition.streamer.username }}
         </a></h3>
+        <h3 class="text-center">{{ competition.isOpen ? "Abierta" : "Cerrada" }} y {{ competition.isFinished ? "Terminada" : "En Curso" }}</h3>
     </div>
 </div>
 

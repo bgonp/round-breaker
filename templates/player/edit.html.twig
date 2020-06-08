@@ -31,9 +31,10 @@
         </div>
     </form>
 </div>
-<div class="col-md-12 col-lg-8 col-xl-7 py-3">
+    {% if competitions is defined %}
+    <div class="col-md-12 col-lg-8 col-xl-7 py-3">
+        {% if competitions|length > 0 %}
 <h1>Tus Torneos</h1>
-{% if competitions %}
 <ul class="list-group list-group-flush sport-text mb-3">
     {% for competition in competitions %}
     <li class="list-group-item d-flex justify-content-between w-100 {{ competition.isfinished ? ' bg-light' : '' }}">
@@ -48,8 +49,10 @@
 {% else %}
 <p>No has organizado ningún torneo. <a href="{{ path('competition_new') }}">Crea un torneo!</a></p>
 {% endif %}
+    {% endif %}
+    {% if registrations is defined %}
+        {% if registrations|length > 0 %}
 <h1>Registros</h1>
-{% if registrations %}
 <ul class="list-group list-group-flush sport-text mb-3">
     {% for registration in registrations %}
     <li class="list-group-item d-flex justify-content-between w-100 {{ registration.competition.isfinished ? ' bg-light' : '' }}">
@@ -64,8 +67,10 @@
 {% else %}
 <p>No estás preinscrito a ningún torneo.</p>
 {% endif %}
+    {% endif %}
+    {% if teams is defined %}
+        {% if teams|length > 0 %}
 <h1>Tus Equipos</h1>
-{% if teams %}
 <ul class="list-group list-group-flush sport-text mb-3">
     {% for team in teams %}
     <li class="list-group-item d-flex justify-content-between w-100 {{ team.competition.isfinished ? ' bg-light' : '' }}">
@@ -77,9 +82,10 @@
     </li>
     {% endfor %}
 </ul>
-{% else %}
-<p>No has participado en torneos con ningún equipo.</p>
-{% endif %}
-</div>
+    {% else %}
+    <p>No has participado en torneos con ningún equipo.</p>
+    {% endif %}
+        </div>
+    {% endif %}
 </div>
 {% endblock %}

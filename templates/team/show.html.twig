@@ -13,6 +13,13 @@
                 </li>
                 {% endfor %}
             </ul>
+            <h1>Competición:</h1>
+            <ul class="list-group">
+                <li class="list-group-item sport-text"><a href="{{ path('competition_show', {id: team.competition.id}) }}">{{team.competition.name}}</a></li>
+                <li class="list-group-item sport-text">Organiza: <a href="{{ path('player_show', { id: team.competition.streamer.id }) }}">
+                        {{ team.competition.streamer.username }}</a></li>
+                <li class="list-group-item sport-text">{{ team.competition.isOpen ? "Abierta" : "Cerrada" }} y {{ team.competition.isFinished ? "Terminada" : "En Curso" }}
+                </li>
         </div>
     </div>
     {% if canEditName %}

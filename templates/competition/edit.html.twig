@@ -6,6 +6,10 @@
 <div class="row competition-title">
     <div class="col-12">
         <h1 class="text-center">Editar {{ competition.name }}</h1>
+        <h3 class="text-center streamer">Organiza: <a href="{{ path('player_show', { id: competition.streamer.id }) }}">
+                {{ competition.streamer.username }}
+            </a></h3>
+        <h3 class="text-center">{{ competition.isOpen ? "Abierta" : "Cerrada" }} y {{ competition.isFinished ? "Terminada" : "En Curso" }}</h3>
     </div>
 </div>
 
@@ -102,13 +106,13 @@
             <div class="card form-group border border-secondary p-3">
                 <input class="form-control mb-3 form-control-lg" type="hidden" name="competition_id"
                     value="{{ competition.id }}" />
-                <label class="sport-text-form" for="inputBotName">Twitch bot name</label>
+                <label class="sport-text-form" for="inputBotName">Nombre del Twitch Bot</label>
                 <input class="form-control mb-3 form-control-lg" type="text"
                     id="inputBotName" name="twitch_bot_name" value="{{ competition.twitchBotName }}" />
-                <label class="sport-text-form" for="inputBotToken">Twitch bot token (<a href="https://twitchapps.com/tmi">twitchapps.com/tmi</a>)</label>
+                <label class="sport-text-form" for="inputBotToken">Token del Twitch Bot (<a href="https://twitchapps.com/tmi">Obtén un Token</a>)</label>
                 <input class="form-control mb-3 form-control-lg" type="text"
                     id="inputBotToken" name="twitch_bot_token" value="{{ competition.twitchBotToken }}" />
-                <label class="sport-text-form" for="inputChannel">Twitch channel</label>
+                <label class="sport-text-form" for="inputChannel">Canal de Twitch</label>
                 <input class="form-control mb-3 form-control-lg" type="text"
                     id="inputChannel" name="twitch_channel" value="{{ competition.twitchChannel }}" />
                 <button class="btn btn-lg btn-dark break-text-large mt-3" type="submit"{{ competition.isOpen ? '' : ' disabled' }}>
@@ -126,7 +130,7 @@
 
     {% if not competition.isOpen %}
         <div class="col-12 col-lg-6">
-            <h1>Equipos</h1>
+            <h1 class="text-center">Equipos</h1>
             {% for team in competition.teams %}
                 <div class="my-2 bg-light border team-item">
                     <div class="card-body">
@@ -149,7 +153,7 @@
     {% endif %}
 
     <div class="col-12 col-lg-6 {{ competition.isOpen ? 'offset-lg-3' : '' }}">
-        <h1>Inscripciones</h1>
+        <h1 class="text-center">Inscripciones</h1>
         <ul class="list-group list-group-flush sport-text mb-3 registrations">
             {% for registration in competition.registrations %}
                 <li id="registration-{{ registration.id }}" class="registration-item list-group-item{{ registration.isConfirmed ? ' confirmed' : '' }}">
