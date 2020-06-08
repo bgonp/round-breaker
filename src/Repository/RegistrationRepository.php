@@ -48,6 +48,7 @@ class RegistrationRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('r')
             ->join('r.competition', 'c')
+            ->orderBy('c.heldAt', 'DESC')
             ->where('r.player = :player')
             ->setParameter('player', $player)
             ->getQuery()->execute();

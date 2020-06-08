@@ -32,11 +32,11 @@
     </form>
 </div>
 <div class="col-md-12 col-lg-8 col-xl-7 py-3">
-<h1>Histórico de Torneos</h1>
-{% if competitions is defined %}
+<h1>Tus Torneos</h1>
+{% if competitions %}
 <ul class="list-group list-group-flush sport-text mb-3">
     {% for competition in competitions %}
-    <li class="list-group-item d-flex justify-content-between w-100">
+    <li class="list-group-item d-flex justify-content-between w-100 {{ competition.isfinished ? ' bg-light' : '' }}">
         <span class="d-flex align-items-center">
             <a class="mr-1" href="{{ path('competition_show', {id: competition.id}) }}">{{ competition.name }}</a>
             ({{ competition.game.name }}){% if competition.heldAt %}
@@ -45,7 +45,40 @@
     </li>
     {% endfor %}
 </ul>
-</div>
+{% else %}
+<p>No has organizado ningún torneo. <a href="{{ path('competition_new') }}">Crea un torneo!</a></p>
+{% endif %}
+<h1>Registros</h1>
+{% if registrations %}
+<ul class="list-group list-group-flush sport-text mb-3">
+    {% for registration in registrations %}
+    <li class="list-group-item d-flex justify-content-between w-100 {{ registration.competition.isfinished ? ' bg-light' : '' }}">
+        <span class="d-flex align-items-center">
+            <a class="mr-1" href="{{ path('competition_show', {id: registration.competition.id}) }}">{{ registration.competition.name }}</a>
+            ({{ registration.competition.game.name }}){% if registration.competition.heldAt %}
+            {{ registration.competition.heldAt|toDateTimeLocal }}{% endif %}
+        </span>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No estás preinscrito a ningún torneo.</p>
+{% endif %}
+<h1>Tus Equipos</h1>
+{% if teams %}
+<ul class="list-group list-group-flush sport-text mb-3">
+    {% for team in teams %}
+    <li class="list-group-item d-flex justify-content-between w-100 {{ team.competition.isfinished ? ' bg-light' : '' }}">
+        <span class="d-flex align-items-center">
+            <a class="mr-1" href="{{ path('team_show', {id: team.id}) }}">{{ team.name }}</a>
+            ({{ team.competition.game.name }}){% if team.competition.heldAt %}
+            {{ team.competition.heldAt|toDateTimeLocal }}{% endif %}
+        </span>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No has participado en torneos con ningún equipo.</p>
 {% endif %}
 </div>
 </div>
