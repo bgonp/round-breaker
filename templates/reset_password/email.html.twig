@@ -1,5 +1,9 @@
-<h1>Round Breaker</h1>
-<h2>Obtén una nueva contraseña</h2>
+{% extends 'base.html.twig' %}
 
-<p>Para crear una nueva contraseña, visita <a href="{{ url('app_reset_password', {token: resetToken.token}) }}">este enlace</a><p>
-<p>Este enlace expirará dentro de {{ tokenLifetime|date('g') }} horas.</p>
+{% block title %}Recuperación de contraseña{% endblock %}
+
+{% block content %}
+    <h1>Nueva contraseña</h1>
+    <p>Para crear una nueva contraseña, visita <a href="{{ url('app_reset_password', {token: resetToken.token}) }}">este enlace</a>.<p>
+    <p>Este enlace expirará dentro de {{ tokenLifetime|date('g') }} horas.</p>
+{% endblock %}

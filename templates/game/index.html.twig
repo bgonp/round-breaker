@@ -8,7 +8,10 @@
             <li class="list-group-item d-flex justify-content-between w-75">
                 <span class="d-flex align-items-center">
                     <a class="mr-1" href="{{ path('game_show', {id: game.id}) }}">{{ game.name }}&nbsp;</a>- {{ game.description }}
-                    <form action="{{ path('game_delete') }}" method="post"><input type="hidden" name="game_id" value="{{ game.id }}"><input type="submit" value="borrar" /></form>
+                    <form action="{{ path('game_delete') }}" method="post">
+                        <input type="hidden" name="game_id" value="{{ game.id }}">
+                        <input class="btn btn-dark sport-text" type="submit" value="borrar" />
+                    </form>
                 </span>
             </li>
             {% endfor %}
