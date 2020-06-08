@@ -8,7 +8,6 @@ use App\Entity\Competition;
 use App\Entity\Registration;
 use App\Exception\RegistrationAlreadyExistsException;
 use App\Repository\RegistrationRepository;
-use App\Repository\TeamRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -49,11 +48,8 @@ class RegistrationController extends BaseController
     /**
      * @Route("/delete", name="registration_delete", methods={"POST"})
      */
-    public function delete(
-        Request $request,
-        RegistrationRepository $registrationRepository,
-        TeamRepository $teamRepository
-    ): Response {
+    public function delete(Request $request, RegistrationRepository $registrationRepository): Response
+    {
         if ($registrationId = $request->request->get('registration_id')) {
             $registration = $registrationRepository->find($registrationId);
         } elseif ($competitionId = $request->request->get('competition_id')) {
@@ -65,6 +61,8 @@ class RegistrationController extends BaseController
 
         if (!$registration) {
             $this->addFlash('error', 'No se ha podido obtener la inscripción');
+
+            return $this->redirectToRoute('competition_list', ['page' => 1]);
         } elseif (
             !$registration->getPlayer()->equals($this->getPlayer()) &&
             !$registration->getCompetition()->getStreamer()->equals($this->getPlayer()) &&
@@ -74,17 +72,12 @@ class RegistrationController extends BaseController
         } elseif (!$registration->getCompetition()->getIsOpen()) {
             $this->addFlash('error', 'No puedes eliminar una inscripción de una competición cerrada');
         } else {
-            if ($team = $teamRepository->findOneByPlayerAndCompetition($registration->getPlayer(), $registration->getCompetition())) {
-                $team->removePlayer($registration->getPlayer());
-                $teamRepository->save($team);
-            }
             $registrationRepository->remove($registration);
+
+            return $this->redirectToRoute('competition_edit', ['id' => $registration->getCompetition()->getId()]);
         }
 
-        return $this->redirectToRoute(
-            $this->isGranted('ROLE_ADMIN') ? 'competition_edit' : 'competition_show', [
-            'id' => $registration->getCompetition()->getId(),
-        ]);
+        return $this->redirectToRoute('competition_show', ['id' => $registration->getCompetition()->getId()]);
     }
 
     /** @Route("/toggle_confirmation", name="toggle_confirmation", methods={"POST"}) */

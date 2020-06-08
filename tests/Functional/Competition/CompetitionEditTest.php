@@ -89,7 +89,6 @@ class CompetitionEditTest extends CompetitionBaseTest
         $this->login($competition->getStreamer());
         $this->request('GET', 'competition_edit', ['id' => $competition->getId()]);
         $crawler = $this->submit('submit-edit', $competitionData);
-        $this->reloadFixtures();
 
         $form = $crawler->selectButton('submit-edit')->form();
 
@@ -97,6 +96,8 @@ class CompetitionEditTest extends CompetitionBaseTest
         foreach ($competitionData as $name => $value) {
             $this->assertEquals($value, $form[$name]->getValue());
         }
+
+        $this->reloadFixtures();
     }
 
     public function testSubmitOpen(): void
@@ -112,7 +113,6 @@ class CompetitionEditTest extends CompetitionBaseTest
         $this->assertFalse((bool) $form['open']->getValue());
 
         $crawler = $this->submit('submit-edit', ['open' => true]);
-        $this->reloadFixtures();
 
         $form = $crawler->selectButton('submit-edit')->form();
 
@@ -121,6 +121,8 @@ class CompetitionEditTest extends CompetitionBaseTest
             $this->assertTrue(isset($form[$name]));
         }
         $this->assertTrue((bool) $form['open']->getValue());
+
+        $this->reloadFixtures();
     }
 
     public function testSubmitOpenFinished(): void
@@ -135,6 +137,8 @@ class CompetitionEditTest extends CompetitionBaseTest
         $this->assertCount(1, $crawler->filter('.message.error'));
         $this->assertCount(0, $crawler->filter('#submit-randomize'));
         $this->assertFalse((bool) $form['open']->getValue());
+
+        $this->reloadFixtures();
     }
 
     public function testSubmitClose(): void
@@ -143,7 +147,6 @@ class CompetitionEditTest extends CompetitionBaseTest
         $this->login($competition->getStreamer());
         $this->request('GET', 'competition_edit', ['id' => $competition->getId()]);
         $crawler = $this->submit('submit-edit', ['open' => false]);
-        $this->reloadFixtures();
 
         $form = $crawler->selectButton('submit-edit')->form();
 
@@ -153,6 +156,8 @@ class CompetitionEditTest extends CompetitionBaseTest
         foreach ($notAllowed as $name) {
             $this->assertFalse(isset($form[$name]));
         }
+
+        $this->reloadFixtures();
     }
 
     public function testRandomize(): void
@@ -166,7 +171,6 @@ class CompetitionEditTest extends CompetitionBaseTest
             $this->getUrl('competition_edit', ['id' => $competition->getId()])
         ));
         $crawler = $this->followRedirect();
-        $this->reloadFixtures();
 
         $this->assertEquals(200, $this->response()->getStatusCode());
         $this->assertCount(0, $crawler->filter('#submit-randomize'));
@@ -175,6 +179,8 @@ class CompetitionEditTest extends CompetitionBaseTest
         $this->assertCount(4, $crawler->filter('.team-item'));
         $this->assertCount(21, $crawler->filter('.registration-item'));
         $this->assertCount(18, $crawler->filter('.registration-item.confirmed'));
+
+        $this->reloadFixtures();
     }
 
     public function testOpenRandomized(): void
@@ -184,13 +190,14 @@ class CompetitionEditTest extends CompetitionBaseTest
         $this->request('GET', 'competition_edit', ['id' => $competition->getId()]);
         $crawler = $this->submit('submit-edit', ['open' => true]);
         $form = $crawler->selectButton('submit-edit')->form();
-        $this->reloadFixtures();
 
         $this->assertEquals(200, $this->response()->getStatusCode());
         $this->assertTrue((bool) $form['open']->getValue());
         $this->assertCount(1, $crawler->filter('#submit-randomize'));
         $this->assertCount(0, $crawler->filter('.match'));
         $this->assertCount(0, $crawler->filter('.team-item'));
+
+        $this->reloadFixtures();
     }
 
     public function testOpenFinished(): void
@@ -200,14 +207,13 @@ class CompetitionEditTest extends CompetitionBaseTest
         $this->request('GET', 'competition_edit', ['id' => $competition->getId()]);
         $crawler = $this->submit('submit-edit', ['open' => true]);
         $form = $crawler->selectButton('submit-edit')->form();
-        $this->reloadFixtures();
 
         $this->assertEquals(200, $this->response()->getStatusCode());
         $this->assertFalse((bool) $form['open']->getValue());
         $this->assertCount(1, $crawler->filter('.message.error'));
         $this->assertCount(0, $crawler->filter('#submit-randomize'));
-        $this->assertCount(14, $crawler->filter('.match'));
-        $this->assertCount(8, $crawler->filter('.team-item'));
+        $this->assertCount(6, $crawler->filter('.match'));
+        $this->assertCount(4, $crawler->filter('.team-item'));
     }
 
     private function getFieldsNames(bool $onlyHidden = false): array
