@@ -33,7 +33,9 @@
                                 <b><a href="{{ path('app_logout') }}" class="nav-link">Logout</a></b>
                             {% else %}
                             <form method="post" action="{{ path('main') }}">
-                                <input type="hidden" name="redirect_to" value="{{ app.request.attributes.get('_route') }}" />
+                                <input type="hidden" name="redirect_to" value="{{
+                                    path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params'))
+                                }}" />
                                 <button id="submit_new" type="submit" class="nav-link btn btn-link"><b>Login / Registro</b></button>
                             </form>
                             {% endif %}

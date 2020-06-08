@@ -24,7 +24,7 @@ class MainController extends BaseController
         $competition = $competitionRepository->findOneRandomFinished();
         $competition = $competitionRepository->findCompleteById($competition->getId());
         if ($redirectTo = $request->request->get('redirect_to')) {
-            $session->set('_security.main.target_path', $this->generateUrl($redirectTo));
+            $session->set('_security.main.target_path', $redirectTo);
         }
 
         return $this->render('main/index.html.twig', [

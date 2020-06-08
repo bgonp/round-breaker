@@ -22,6 +22,10 @@ class GameFixtures extends Fixture
             ['Rocket League', 'Supersonic Acrobatic Rocket-Powered Battle-Cars'],
             ['Counter Strike', 'Pium pium'],
             ['League of Legends', 'Best community EVER'],
+            ['Quake Champions', ''],
+            ['Rainbow Six', ''],
+            ['DOTA 2', ''],
+            ['Starcraft 2: Legacy of the Void', ''],
         ];
         foreach ($games as $game) {
             $this->gameRepository->save((new Game())
