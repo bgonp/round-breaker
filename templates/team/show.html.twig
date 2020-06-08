@@ -9,7 +9,11 @@
             <h1 class="card-title sport-text">{{ team.name }}</h1>
             <ul class="list-group">
                 {% for player in team.players %}
-                <li class="list-group-item sport-text">{{ player.username }}
+                <li class="list-group-item sport-text"><a href="{{ path('player_show', { id: player.id }) }}">
+                        {{ player.username }}</a> - <a href="http://www.twitch.tv/{{ player.twitchName }}">
+                            Canal Twitch
+                        </a>
+                    </a>
                 </li>
                 {% endfor %}
             </ul>
@@ -18,6 +22,9 @@
                 <li class="list-group-item sport-text"><a href="{{ path('competition_show', {id: team.competition.id}) }}">{{team.competition.name}}</a></li>
                 <li class="list-group-item sport-text">Organiza: <a href="{{ path('player_show', { id: team.competition.streamer.id }) }}">
                         {{ team.competition.streamer.username }}</a></li>
+                {% if team.competition.heldAt %}<li class="list-group-item sport-text">Held at: {{ team.competition.heldAt|toDateTimeLocal }}</li>{% endif %}
+                {% if team.competition.lobbyName %}<li class="list-group-item sport-text">Lobby: {{ team.competition.lobbyName }}</li>{% endif %}
+                {% if team.competition.lobbyPassword %}<li class="list-group-item sport-text">Lobby Password: {{ team.competition.lobbypassword }}</li>{% endif %}
                 <li class="list-group-item sport-text">{{ team.competition.isOpen ? "Abierta" : "Cerrada" }} y {{ team.competition.isFinished ? "Terminada" : "En Curso" }}
                 </li>
         </div>

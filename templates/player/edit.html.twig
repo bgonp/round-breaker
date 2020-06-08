@@ -6,9 +6,7 @@
 <div class="row">
 <div class="col-md-12 col-lg-4 col-xl-5 py-3">
     <form method="post">
-        <h6 class="card-title">Bienvenido:</h6>
         <h5 class=" sport-text">{{ player ? player.username : 'Not logged in' }}</h5>
-        <h6>Edita tus datos de usuario.</h6>
         <div class="form-group card form-group border border-secondary p-3">
             <label for="inputUsername" class="sport-text">Username</label>
             <input type="text" value="{{ player.username is defined ? player.username : '' }}" name="username"
