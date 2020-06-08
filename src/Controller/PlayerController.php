@@ -3,7 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Player;
+use App\Repository\CompetitionRepository;
 use App\Repository\PlayerRepository;
+use App\Repository\RegistrationRepository;
+use App\Repository\TeamRepository;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,7 +31,10 @@ class PlayerController extends BaseController
     public function profile(
         Request $request,
         UserPasswordEncoderInterface $passwordEncoder,
-        PlayerRepository $playerRepository
+        PlayerRepository $playerRepository,
+        CompetitionRepository $competitionRepository,
+        RegistrationRepository $registrationRepository,
+        TeamRepository $teamRepository
     ): Response {
         if (!($player = $this->getPlayer())) {
             $this->addFlash('error', 'Inicia sesión para entrar en tu perfil');
@@ -39,7 +45,12 @@ class PlayerController extends BaseController
             $this->editPlayer($player, $request, $passwordEncoder, $playerRepository);
         }
 
-        return $this->render('player/edit.html.twig', ['player' => $player]);
+        return $this->render('player/edit.html.twig', [
+            'player' => $player,
+            'competitions' => $competitionRepository->findByStreamer($player),
+            'teams' => $teamRepository->findWithCompetitionByPlayer($player),
+            'registrations' => $registrationRepository->findWithCompetitionByPlayer($player),
+        ]);
     }
 
     /**
