@@ -57,22 +57,22 @@ class TeamService
                 throw NotEnoughConfirmedRegistrationsException::create();
             }
             $this->createFromCompetition($competition);
-        }
-
-        $playersPerTeam = $competition->getPlayersPerTeam();
-        $faker = Faker\Factory::create();
-        for ($registrationIndex = 0; $registrationIndex < $competition->getMaxPlayers(); ++$registrationIndex) {
-            if (0 === $registrationIndex % $playersPerTeam) {
-                $team = (new Team())->setName($faker->streetName);
-                $competition->addTeam($team);
+        } else {
+            $playersPerTeam = $competition->getPlayersPerTeam();
+            $faker = Faker\Factory::create();
+            for ($registrationIndex = 0; $registrationIndex < $competition->getMaxPlayers(); ++$registrationIndex) {
+                if (0 === $registrationIndex % $playersPerTeam) {
+                    $team = (new Team())->setName($faker->streetName);
+                    $competition->addTeam($team);
+                }
+                $team->addPlayer($registrations[$registrationIndex]->getPlayer());
+                if (0 === ($registrationIndex + 1) % $playersPerTeam) {
+                    $team->setCaptain($team->getPlayers()->get(rand(0, $playersPerTeam - 1)));
+                    $this->teamRepository->save($team, false);
+                }
             }
-            $team->addPlayer($registrations[$registrationIndex]->getPlayer());
-            if (0 === ($registrationIndex + 1) % $playersPerTeam) {
-                $team->setCaptain($team->getPlayers()->get(rand(0, $playersPerTeam - 1)));
-                $this->teamRepository->save($team, false);
-            }
+            $this->competitionRepository->save($competition->setIsOpen(false));
         }
-        $this->competitionRepository->save($competition->setIsOpen(false));
     }
 
     public function replacePlayer(Team $team, Player $player): void
