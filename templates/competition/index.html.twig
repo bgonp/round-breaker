@@ -5,7 +5,7 @@
 {% block content %}
 <div class="py-3">
 
-    <h1>Torneos</h1>
+    <h1>Torneos {% if player %}<a class="btn btn-dark sport-text" href="{{ path('competition_new') }}">Crear Torneo</a>{% endif %}</h1>
 
     <select id="filter-by-game" class="form-control col-12 mb-3 sport-text-form form-control-lg">
         <option value="">Filtrar por juegos</option>

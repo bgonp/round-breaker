@@ -144,3 +144,7 @@ h1 {
 .pagination .active .page-link {
     background: #343a40;
 }
+
+.list-group-item span {
+    height: 38px;
+}
