@@ -80,6 +80,7 @@ class SecurityController extends BaseController
                 ->setEmail($email)
                 ->setPassword($passwordEncoder->encodePassword($player, $plainPassword));
             $playerRepository->save($player);
+            $this->addFlash('success', '¡Felicidades! Ya eres parte de la cominad Round Breaker, ahora puedes iniciar sesión y empezar a participar en los torneos.');
         }
 
         return $this->redirectToRoute('main', [

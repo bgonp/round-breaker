@@ -29,7 +29,7 @@
 
 a {
     color:#f7921e !important;
-    
+
 }
 
 a:hover {
@@ -119,12 +119,19 @@ h1 {
     position: absolute;
     top: 50%;
     left: 50%;
+    width: 100%;
+    max-width: 500px;
     transform: translate(-50%, -50%);
     padding: 1rem 1.5rem;
     background: #ffd9d9;
     border: 1px solid #ff2c2c;
     border-radius: 0.2rem;
     overflow: hidden;
+}
+
+.message-container .message.success {
+    background: #dcffdc;
+    border: 1px solid #0c0;
 }
 
 .message-container .message a {
@@ -139,6 +146,10 @@ h1 {
 
 .message-container .message a .fas {
     color: #ff2c2c;
+}
+
+.message-container .message.success a .fas {
+    color: #0c0;
 }
 
 .pagination .active .page-link {
