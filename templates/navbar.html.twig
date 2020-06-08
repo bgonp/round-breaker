@@ -32,11 +32,12 @@
                         <li class="nav-item">
                                 <b><a href="{{ path('app_logout') }}" class="nav-link">Logout</a></b>
                             {% else %}
-                            <b><a href="{{ path('main', {login: true}) }}" class="nav-link">Login/Register</a></b>
+                            <form method="post" action="{{ path('main') }}">
+                                <input type="hidden" name="redirect_to" value="{{ app.request.attributes.get('_route') }}" />
+                                <button type="submit" class="nav-link btn btn-link"><b>Login/Register</b></button>
+                            </form>
                             {% endif %}
                         </li>
-
-
                     </ul>
                 </div>
             </nav>

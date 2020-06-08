@@ -7,31 +7,24 @@ use App\Repository\GameRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class MainController extends BaseController
 {
     /**
-     * @Route("/", name="main", methods={"GET"})
+     * @Route("/", name="main", methods={"GET", "POST"})
      */
     public function main(
         Request $request,
         CompetitionRepository $competitionRepository,
-        GameRepository $gameRepository
+        GameRepository $gameRepository,
+        SessionInterface $session
     ): Response {
         $competition = $competitionRepository->findOneRandomFinished();
         $competition = $competitionRepository->findCompleteById($competition->getId());
-        if ($request->query->get('login')) {
-            $session = new Session();
-            $session->set('login', true);
-            $referer = $request->headers->get('referer');
-            if ($referer) {
-                $refererPathInfo = Request::create($referer)->getPathInfo();
-                $refererPathInfo = str_replace($request->getScriptName(), '', $refererPathInfo);
-                if ('/' != $refererPathInfo) {
-                    $session->set('referer', $refererPathInfo);
-                }
-            }
+        if ($redirectTo = $request->request->get('redirect_to')) {
+            $session->set('_security.main.target_path', $this->generateUrl($redirectTo));
         }
 
         return $this->render('main/index.html.twig', [

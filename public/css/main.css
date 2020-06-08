@@ -142,3 +142,12 @@ h1 {
 .pagination .active .page-link {
     background: #343a40;
 }
+
+.navbar-dark .navbar-nav .nav-link {
+    color: #f7921e !important;
+    border: none;
+    letter-spacing: 2px;
+}
+.navbar-dark .navbar-nav .nav-link:hover {
+    color: #4cd365 !important;
+}
