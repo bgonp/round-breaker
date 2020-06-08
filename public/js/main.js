@@ -32,7 +32,7 @@
 
     const filterByGame = document.getElementById('filter-by-game');
     if (filterByGame) filterByGame.addEventListener('change', () => {
-        location.href = filterByGame.dataset.target.replace('0', filterByGame.value);
+        location.href = location.pathname + (filterByGame.value ? '?game=' + filterByGame.value : '');
     });
 
     const bracketFull = document.querySelector('.bracket .bracket-zoom');

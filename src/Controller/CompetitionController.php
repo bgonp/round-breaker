@@ -25,25 +25,44 @@ class CompetitionController extends BaseController
      * @Route("/page/{page<\d+>}", name="competition_list", methods={"GET"})
      */
     public function index(
+        Request $request,
         CompetitionRepository $competitionRepository,
         RegistrationRepository $registrationRepository,
         GameRepository $gameRepository,
         int $page = 0
     ): Response {
         $perPage = 2;
-        $lastPage = (int) ceil($competitionRepository->count([]) / $perPage);
-        $currentPage = $page < 1 ? 1 : ($page > $lastPage ? $lastPage : $page);
-        if ($currentPage !== $page) {
-            return $this->redirectToRoute('competition_list', ['page' => $currentPage]);
+
+        if ($gameId = $request->query->get('game')) {
+            $game = $gameRepository->find($gameId);
+            if (!$game) {
+                $this->addFlash('error', 'ID de juego incorrecto');
+                return $this->redirectToRoute('competition_list', ['page' => 1]);
+            }
+            $lastPage = (int) ceil($competitionRepository->count(['game' => $game]) / $perPage);
+            $currentPage = $page < 1 ? 1 : ($page > $lastPage ? $lastPage : $page);
+            $competitions = $competitionRepository->findByGameOrdered($game, $page, $perPage);
+            if ($currentPage !== $page) {
+                return $this->redirectToRoute('competition_list', ['page' => $currentPage, 'game' => $gameId]);
+            }
+        } else {
+            $game = null;
+            $lastPage = (int) ceil($competitionRepository->count([]) / $perPage);
+            $currentPage = $page < 1 ? 1 : ($page > $lastPage ? $lastPage : $page);
+            $competitions = $competitionRepository->findAllOrdered($page, $perPage);
+            if ($currentPage !== $page) {
+                return $this->redirectToRoute('competition_list', ['page' => $currentPage]);
+            }
         }
 
         return $this->render('competition/index.html.twig', [
             'currentPage' => $currentPage,
             'perPage' => $perPage,
             'lastPage' => $lastPage,
-            'competitions' => $competitionRepository->findAllOrdered($page, $perPage),
+            'competitions' => $competitions,
             'canEditGame' => $this->isGranted('ROLE_ADMIN'),
             'player' => $this->getPlayer(),
+            'game' => $game,
             'games' => $gameRepository->findAll(),
             'registrations' => $this->getPlayer() ? $registrationRepository->findOpenByPlayer($this->getPlayer()) : [],
         ]);
