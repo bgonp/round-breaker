@@ -4,6 +4,7 @@
 <div class="row">
     <div class="col-md-9 p-3">
         {%  if competition %}
+        <h1 class="text-center"><a href="{{ path('competition_show', {id: competition.id}) }}">{{ competition.name }}</a></h1>
             {% if bracketType == 2 %}{% include 'brackets/bracket_2.html.twig' %}
             {% elseif bracketType == 4 %}{% include 'brackets/bracket_4.html.twig' %}
             {% elseif bracketType == 8 %}{% include 'brackets/bracket_8.html.twig' %}

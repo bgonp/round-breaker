@@ -29,10 +29,12 @@
 
 a {
     color:#f7921e !important;
+    
 }
 
 a:hover {
     color:#4cd365 !important;
+    text-decoration: none;
 }
 
 input.sport-text:hover {
