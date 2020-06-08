@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Entity\Competition;
 use App\Entity\Registration;
+use App\Exception\RegistrationAlreadyExistsException;
 use App\Repository\RegistrationRepository;
 use App\Repository\TeamRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,12 +33,16 @@ class RegistrationController extends BaseController
             $registration = (new Registration())
                 ->setCompetition($competition)
                 ->setPlayer($player);
-            $registrationRepository->save($registration);
+            try {
+                $registrationRepository->save($registration);
+            } catch (RegistrationAlreadyExistsException $e) {
+                $this->addFlash('error', $e->getMessage());
+            }
         }
 
         return $this->redirectToRoute(
             $this->isGranted('ROLE_ADMIN') ? 'competition_edit' : 'competition_show', [
-            'id' => $registration->getCompetition()->getId(),
+            'id' => $competition->getId(),
         ]);
     }
 

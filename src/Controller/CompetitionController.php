@@ -214,7 +214,7 @@ class CompetitionController extends BaseController
             $competitionRepository->remove($competition);
         }
 
-        return $this->redirectToRoute('competition_list');
+        return $this->redirectToRoute('competition_list', ['page' => 1]);
     }
 
     /**

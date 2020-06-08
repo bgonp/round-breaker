@@ -5,9 +5,11 @@ namespace App\Repository;
 use App\Entity\Competition;
 use App\Entity\Player;
 use App\Entity\Registration;
+use App\Exception\RegistrationAlreadyExistsException;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 
 class RegistrationRepository extends ServiceEntityRepository
 {
@@ -80,7 +82,11 @@ class RegistrationRepository extends ServiceEntityRepository
     {
         $this->getEntityManager()->persist($registration);
         if ($flush) {
-            $this->getEntityManager()->flush();
+            try {
+                $this->getEntityManager()->flush();
+            } catch (UniqueConstraintViolationException $e) {
+                throw RegistrationAlreadyExistsException::create();
+            }
         }
     }
 

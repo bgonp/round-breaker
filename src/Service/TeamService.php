@@ -57,6 +57,7 @@ class TeamService
                 throw NotEnoughConfirmedRegistrationsException::create();
             }
             $this->createFromCompetition($competition);
+            return;
         }
 
         $playersPerTeam = $competition->getPlayersPerTeam();
