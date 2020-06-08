@@ -22,7 +22,7 @@
                 <li class="list-group-item sport-text"><a href="{{ path('competition_show', {id: team.competition.id}) }}">{{team.competition.name}}</a></li>
                 <li class="list-group-item sport-text">Organiza: <a href="{{ path('player_show', { id: team.competition.streamer.id }) }}">
                         {{ team.competition.streamer.username }}</a></li>
-                {% if team.competition.heldAt %}<li class="list-group-item sport-text">Held at: {{ team.competition.heldAt|toDateTimeLocal }}</li>{% endif %}
+                {% if team.competition.heldAt %}<li class="list-group-item sport-text">Celebrado en: {{ team.competition.heldAt|toDateTimeLocal }}</li>{% endif %}
                 {% if team.competition.lobbyName %}<li class="list-group-item sport-text">Lobby: {{ team.competition.lobbyName }}</li>{% endif %}
                 {% if team.competition.lobbyPassword %}<li class="list-group-item sport-text">Lobby Password: {{ team.competition.lobbypassword }}</li>{% endif %}
                 <li class="list-group-item sport-text">{{ team.competition.isOpen ? "Abierta" : "Cerrada" }} y {{ team.competition.isFinished ? "Terminada" : "En Curso" }}

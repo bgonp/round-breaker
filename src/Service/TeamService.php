@@ -83,6 +83,9 @@ class TeamService
         if (!$newPlayer || !$team->getPlayers()->contains($player)) {
             throw NotEnoughConfirmedRegistrationsException::create();
         }
+        if ($team->getCaptain() === $player) {
+            $team->setCaptain($newPlayer);
+        }
         $registration = $this->registrationRepository->findOneByPlayerAndCompetition($player, $team->getCompetition());
         $this->registrationRepository->save($registration->setIsConfirmed(false), false);
         $this->teamRepository->save($team->removePlayer($player)->addPlayer($newPlayer));
