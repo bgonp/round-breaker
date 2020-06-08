@@ -30,15 +30,10 @@
         document.getElementById('register-form').classList.remove('d-none');
     });
 
-    const gameFilterOption = document.getElementsByName('gameFilterOption');
-    if (gameFilterOption.length > 0) {
-        for (let i = 0; i < gameFilterOption.length; i++) {
-            gameFilterOption[i].addEventListener('click', (e) => {
-                e.preventDefault();
-                location.href = "/game/"+gameFilterOption[i].value+"/page/1";
-            });
-        }
-    }
+    const filterByGame = document.getElementById('filter-by-game');
+    if (filterByGame) filterByGame.addEventListener('change', () => {
+        location.href = filterByGame.dataset.target.replace('0', filterByGame.value);
+    });
 
     const bracketFull = document.querySelector('.bracket .bracket-zoom');
     if (bracketFull) bracketFull.addEventListener('click', (e) => {

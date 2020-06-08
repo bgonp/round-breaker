@@ -7,7 +7,7 @@
 
     <h1>Torneos</h1>
 
-    <select class="form-control col-12 mb-3 sport-text-form form-control-lg">
+    <select id="filter-by-game" class="form-control col-12 mb-3 sport-text-form form-control-lg" data-target="{{ path('game_show', {id: 0, page: 1}) }}">
         <option value="">Filtrar por juegos</option>
         {% for game in games %}
             <option name="gameFilterOption" value="{{ game.id }}">{{ game.name }}</option>
