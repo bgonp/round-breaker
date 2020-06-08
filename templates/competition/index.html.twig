@@ -3,7 +3,7 @@
 {% block title %}Lista de torneos | Round Breaker{% endblock %}
 
 {% block content %}
-<div class="py-3">
+
 
     <h1>Torneos {% if player %}<a class="btn btn-dark sport-text" href="{{ path('competition_new') }}">Crear Torneo</a>{% endif %}</h1>
 
@@ -16,5 +16,5 @@
 
     {% include('competition/list.html.twig') %}
 
-</div>
+
 {% endblock %}

@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="row">
-    <div class="col-md-9 p-3">
+    <div class="col-md-9">
         {%  if competition %}
         <h1 class="text-center"><a href="{{ path('competition_show', {id: competition.id}) }}">{{ competition.name }}</a></h1>
             {% if bracketType == 2 %}{% include 'brackets/bracket_2.html.twig' %}
@@ -11,20 +11,20 @@
             {% elseif bracketType == 16 %}{% include 'brackets/bracket_16.html.twig' %}
             {% endif %}
         {% endif %}
-        <div class="col-md-12 pt-2 px-0">
+        <div class="col-md-12 px-0">
             <h1>¿Qué es roundbreaker?</h1>
-            <p class="text-left">Round Breaker es un sistema de gestión de competiciones de e-sports que abarca
+            <p class="text-left">RoundBreaker es un sistema de gestión de competiciones de e-sports que abarca
                 inscripciones, formaciones de equipos y gestión de rondas además de integración con Twitch.</p>
 
             <p class="text-left">Para streamers, jugadores profesionales y todo el que tenga un afán para la competición.
-            En Round Breaker podrás crear y unirte a torneos para demostrar de una vez por todas, quién es el mejor. Con nuestro sistema
+            En RoundBreaker podrás crear y unirte a torneos para demostrar de una vez por todas, quién es el mejor. Con nuestro sistema
             de randomización siempre encontrarás un nuevo rival con el que competir.</p>
 
             <p class="text-left">Con un historial de resultados y competiciones público, podrás explorar y encontrar
                 un torneo que se adapte a ti. ¿A qué esperas? ¡Apúntate!</p>
         </div>
     </div>
-    <div class="col-md-3 p-3">
+    <div class="col-md-3">
         <div class="card mb-3">
             <div class="card-header">
                 <ul class="nav nav-tabs card-header-tabs">
@@ -91,7 +91,7 @@
                 {% endif %}
             </div>
         </div>
-        <div class="card bg-light mb-3">
+        <div class="card mb-3">
             <div class="card-header text-center cards">¡lo más jugado!</div>
             <ul class="list-unstyled my-1 px-3">
             {% for game in mostsPlayed %}
