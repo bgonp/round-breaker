@@ -37,6 +37,7 @@ class CompetitionController extends BaseController
             $game = $gameRepository->find($gameId);
             if (!$game) {
                 $this->addFlash('error', 'ID de juego incorrecto');
+
                 return $this->redirectToRoute('competition_list', ['page' => 1]);
             }
             $lastPage = (int) ceil($competitionRepository->count(['game' => $game]) / $perPage);
