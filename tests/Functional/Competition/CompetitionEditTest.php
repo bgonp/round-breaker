@@ -69,6 +69,9 @@ class CompetitionEditTest extends CompetitionBaseTest
             $this->assertCount(8, $crawler->filter('.team-item'));
             $this->assertCount(22, $crawler->filter('.registration-item'));
             $this->assertCount(19, $crawler->filter('.registration-item.confirmed'));
+            foreach ($this->getFieldsNames(true) as $name) {
+                $this->assertCount(0, $crawler->filter(sprintf('[name="%s"]', $name)));
+            }
         }
     }
 
@@ -172,6 +175,39 @@ class CompetitionEditTest extends CompetitionBaseTest
         $this->assertCount(4, $crawler->filter('.team-item'));
         $this->assertCount(21, $crawler->filter('.registration-item'));
         $this->assertCount(18, $crawler->filter('.registration-item.confirmed'));
+    }
+
+    public function testOpenRandomized(): void
+    {
+        $competition = $this->getCompetition(false, false);
+        $this->login($competition->getStreamer());
+        $this->request('GET', 'competition_edit', ['id' => $competition->getId()]);
+        $crawler = $this->submit('submit-edit', ['open' => true]);
+        $form = $crawler->selectButton('submit-edit')->form();
+        $this->reloadFixtures();
+
+        $this->assertEquals(200, $this->response()->getStatusCode());
+        $this->assertTrue((bool) $form['open']->getValue());
+        $this->assertCount(1, $crawler->filter('#submit-randomize'));
+        $this->assertCount(0, $crawler->filter('.match'));
+        $this->assertCount(0, $crawler->filter('.team-item'));
+    }
+
+    public function testOpenFinished(): void
+    {
+        $competition = $this->getCompetition(false, true);
+        $this->login($competition->getStreamer());
+        $this->request('GET', 'competition_edit', ['id' => $competition->getId()]);
+        $crawler = $this->submit('submit-edit', ['open' => true]);
+        $form = $crawler->selectButton('submit-edit')->form();
+        $this->reloadFixtures();
+
+        $this->assertEquals(200, $this->response()->getStatusCode());
+        $this->assertFalse((bool) $form['open']->getValue());
+        $this->assertCount(1, $crawler->filter('.message.error'));
+        $this->assertCount(0, $crawler->filter('#submit-randomize'));
+        $this->assertCount(14, $crawler->filter('.match'));
+        $this->assertCount(8, $crawler->filter('.team-item'));
     }
 
     private function getFieldsNames(bool $onlyHidden = false): array

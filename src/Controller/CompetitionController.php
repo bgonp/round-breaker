@@ -31,7 +31,7 @@ class CompetitionController extends BaseController
         GameRepository $gameRepository,
         int $page = 0
     ): Response {
-        $perPage = 2;
+        $perPage = 16;
 
         if ($gameId = $request->query->get('game')) {
             $game = $gameRepository->find($gameId);

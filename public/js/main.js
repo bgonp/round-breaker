@@ -50,14 +50,14 @@
 
     const inputPassword = document.getElementById('inputPassword');
     const inputPasswordRepeat = document.getElementById('inputPasswordRepeat');
-    const submit = document.getElementById('submit');
+    const submitRegister = document.getElementById('submit-register');
       
-    if (inputPassword && inputPasswordRepeat && submit){
-        inputPassword.addEventListener('keyup', () =>
-            submit.disabled = inputPassword.value !== inputPasswordRepeat.value
+    if (inputPassword && inputPasswordRepeat && submitRegister){
+        inputPassword.addEventListener('input', () =>
+            submitRegister.disabled = inputPassword.value !== inputPasswordRepeat.value
         );
-        inputPasswordRepeat.addEventListener('keyup', () =>
-            submit.disabled = inputPassword.value !== inputPasswordRepeat.value
+        inputPasswordRepeat.addEventListener('input', () =>
+            submitRegister.disabled = inputPassword.value !== inputPasswordRepeat.value
         );
     }
 
