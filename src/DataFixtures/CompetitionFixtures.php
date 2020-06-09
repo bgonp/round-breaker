@@ -48,7 +48,9 @@ class CompetitionFixtures extends Fixture implements DependentFixtureInterface
                     ->setName('Competición #'.substr('0'.(++$counter), -2))
                     ->setHeldAt($faker->dateTimeBetween($heldAtAfter, $heldAtBefore))
                     ->setPlayersPerTeam($playersPerTeam)
-                    ->setMaxPlayers($playersPerTeam * $numberOfTeams), false);
+                    ->setMaxPlayers($playersPerTeam * $numberOfTeams)
+                    ->setLobbyName('LobbyName')
+                    ->setLobbyPassword('LobbyPassword'), false);
             }
         }
         $this->competitionRepository->flush();
