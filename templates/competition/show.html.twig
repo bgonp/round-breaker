@@ -38,7 +38,14 @@
                     <input id="submit_new" class="btn btn-dark sport-text mb-3" type="submit" value="Unirse">
                 </form>
                 {% else %}
-                    <a class="btn btn-dark mb-3 sport-text" href="{{ path('main', {login: true}) }}">Login/Registo para unirte</a>
+                    <form method="post" action="{{ path('main') }}">
+                        <input type="hidden" name="redirect_to" value="{{
+                        path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params'))
+                        }}" />
+                        <button id="submit_new" type="submit" class="btn btn-dark mb-3 sport-text text-orange">
+                            Login/Registo para unirte
+                        </button>
+                    </form>
             {% endif %}
         {% endif %}
 
