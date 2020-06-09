@@ -146,11 +146,11 @@ h1 {
     opacity: 1!important;
 }
 
-.message-container .message a .fas {
+.message-container .message a .fa {
     color: #ff2c2c;
 }
 
-.message-container .message.success a .fas {
+.message-container .message.success a .fa {
     color: #0c0;
 }
 
