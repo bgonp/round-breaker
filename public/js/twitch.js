@@ -44,6 +44,8 @@
         client.opts.identity.password = data.get('twitch_bot_token'); // oauth:l81j2b4wknlagdmbwcgezw77v5c44b
         try {
             await client.connect();
+            document.getElementsByName("open-confirmations-button")[0].setAttribute('disabled',"");
+            document.getElementById("confirmedDiv").classList.remove("d-none");
         } catch (error) {
             alert('Wrong credentials');
         }

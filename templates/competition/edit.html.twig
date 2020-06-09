@@ -116,9 +116,13 @@
                 <label class="sport-text-form" for="inputChannel">Canal de Twitch</label>
                 <input class="form-control mb-3 form-control-lg" type="text"
                     id="inputChannel" name="twitch_channel" value="{{ competition.twitchChannel }}" />
-                <button id ="submit-new" class="btn btn-lg btn-dark break-text-large mt-3" type="submit"{{ competition.isOpen ? '' : ' disabled' }}>
-                    Abrir confirmaciones!
+                <button name="open-confirmations-button" id ="submit-new" class="btn btn-lg btn-dark break-text-large mt-3" type="submit"{{ competition.isOpen ? '' : ' disabled' }}>
+                    ¡Abrir confirmaciones!
                 </button>
+            </div>
+                <div id="confirmedDiv" class="confirmedMessage d-none">
+                    ¡Confirmaciones abiertas! Mantén la pestaña para permitir confirmaciones.
+                </div>
             </div>
         </form>
     </div>

@@ -131,9 +131,14 @@ h1 {
     overflow: hidden;
 }
 
-.message-container .message.success {
+.message-container .message.success, .confirmedMessage {
     background: #dcffdc;
     border: 1px solid #0c0;
+}
+
+.confirmedMessage {
+    padding: 0.5em 0;
+    text-align: center;
 }
 
 .message-container .message a {
