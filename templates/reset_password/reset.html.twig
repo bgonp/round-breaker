@@ -6,7 +6,9 @@
     <h1>Nueva contraseña</h1>
 
     {{ form_start(resetForm) }}
-        {{ form_row(resetForm.plainPassword) }}
+        <div class="password-form">
+            {{ form_row(resetForm.plainPassword) }}
+        </div>
         <button class="btn btn-dark sport-text">Cambiar contraseña</button>
     {{ form_end(resetForm) }}
 {% endblock %}
