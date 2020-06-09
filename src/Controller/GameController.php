@@ -62,13 +62,12 @@ class GameController extends BaseController
     {
         if (!$this->isGranted('ROLE_ADMIN')) {
             $this->addFlash('error', 'No puedes eliminar juegos');
-
-            return $this->redirectToRoute('game_list');
-        }
-        try {
-            $gameRepository->remove($game);
-        } catch (CannotDeleteGameException $e) {
-            $this->addFlash('error', $e->getMessage());
+        } else {
+            try {
+                $gameRepository->remove($game);
+            } catch (CannotDeleteGameException $e) {
+                $this->addFlash('error', $e->getMessage());
+            }
         }
 
         return $this->redirectToRoute('game_list');
@@ -83,17 +82,20 @@ class GameController extends BaseController
         GameRepository $gameRepository
     ): Response {
         if ($this->isGranted('ROLE_ADMIN')) {
-            if ($request->request->has('name')) {
-                $game->setName($request->request->get('name'));
-                $game->setDescription($request->request->get('description'));
-                $gameRepository->save($game);
+            if ($name = $request->request->has('name')) {
+                if ($gameRepository->findOneBy(['name' => $name])) {
+                    $this->addFlash('error', 'Ya existe un juego con el mismo nombre');
+                } else {
+                    $game->setName($name);
+                    $game->setDescription($request->request->get('description'));
+                    $gameRepository->save($game);
+                }
             }
 
-            return $this->render('game/edit.html.twig', [
-                'controller_name' => 'GameController',
-                'game' => $game,
-            ]);
+            return $this->render('game/edit.html.twig', ['game' => $game]);
         } else {
+            $this->addFlash('error', 'Solo el administrador puede editar juegos');
+
             return $this->redirectToRoute('main');
         }
     }

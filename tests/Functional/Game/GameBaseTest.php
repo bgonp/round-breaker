@@ -13,9 +13,9 @@ abstract class GameBaseTest extends TestBase
     protected function getGame(bool $hasCompetitions = true): ?Game
     {
         /** @var Game[] $games */
-        $games = $this->getRepository('Game')->findBy([], ['id', 'ASC']);
+        $games = $this->getRepository('Game')->findBy([], ['id' => 'ASC']);
         foreach ($games as $game) {
-            if (0 === $game->getCompetitions()->count() && !$hasCompetitions) {
+            if ($game->getCompetitions()->count() xor !$hasCompetitions) {
                 return $game;
             }
         }
