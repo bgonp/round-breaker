@@ -4,86 +4,94 @@
 
 {% block content %}
 <div class="row">
-<div class="col-md-12 col-lg-4 col-xl-5 py-3">
-    <form method="post">
-        <h5 class=" sport-text">{{ player ? player.username : 'Not logged in' }}</h5>
-        <div class="form-group card form-group border border-secondary p-3">
-            <label for="inputUsername" class="sport-text">Username</label>
-            <input type="text" value="{{ player.username is defined ? player.username : '' }}" name="username"
-                id="inputUsername" class="mb-3 form-control" placeholder="Usuario" required autofocus>
-            <label for="inputPassword" class="sport-text">Contraseña</label>
-            <input type="password" name="password" id="inputPassword" class="mb-3 form-control" placeholder="Contraseña"
-                required>
-            <label for="inputPasswordRepeat" class="sport-text">Repetir contraseña</label>
-            <input type="password" name="passwordrepeat" id="inputPasswordRepeat" class="mb-3 form-control"
-            placeholder="Repetir contraseña" required>    
-            <label for="inputEmail" class="sport-text">Email</label>
-            <input type="email" name="email" value="{{ player.email is defined ? player.email : '' }}"
-                id="inputEmail" class="mb-3 form-control" placeholder="Email" required>
-            <label for="inputTwitchname" class="sport-text">Twitchname</label>
-            <input type="text" name="twitch_name" value="{{ player.twitchname is defined ? player.twitchname : '' }}"
-                id="inputTwitchname" class="mb-3 form-control" placeholder="Twitchname" required>
-            <button class="btn btn-lg btn-primary btn-dark break-text-large form-control" type="submit" id="submit-edit">
-                Editar mis detalles
-            </button>
-        </div>
-    </form>
-</div>
+    <div class="col-md-12 col-lg-4 col-xl-5 py-3">
+        <h1>Perfil</h1>
+        <form method="post">
+            <h5 class=" sport-text">{{ player ? player.username : 'Not logged in' }}</h5>
+            <div class="form-group card form-group border border-secondary p-3">
+                <label for="inputUsername" class="sport-text">Username</label>
+                <input type="text" value="{{ player.username is defined ? player.username : '' }}" name="username"
+                    id="inputUsername" class="mb-3 form-control" placeholder="Usuario" required autofocus>
+                <label for="inputPassword" class="sport-text">Contraseña</label>
+                <input type="password" name="password" id="inputPassword" class="mb-3 form-control"
+                    placeholder="Contraseña" required>
+                <label for="inputPasswordRepeat" class="sport-text">Repetir contraseña</label>
+                <input type="password" name="passwordrepeat" id="inputPasswordRepeat" class="mb-3 form-control"
+                    placeholder="Repetir contraseña" required>
+                <label for="inputEmail" class="sport-text">Email</label>
+                <input type="email" name="email" value="{{ player.email is defined ? player.email : '' }}"
+                    id="inputEmail" class="mb-3 form-control" placeholder="Email" required>
+                <label for="inputTwitchname" class="sport-text">Twitchname</label>
+                <input type="text" name="twitch_name"
+                    value="{{ player.twitchname is defined ? player.twitchname : '' }}" id="inputTwitchname"
+                    class="mb-3 form-control" placeholder="Twitchname" required>
+                <button class="btn btn-lg btn-primary btn-dark break-text-large form-control" type="submit"
+                    id="submit-edit">
+                    Editar mis detalles
+                </button>
+            </div>
+        </form>
+    </div>
     {% if competitions is defined %}
     <div class="col-md-12 col-lg-8 col-xl-7 py-3">
         <h1>Tus Torneos</h1>
         {% if competitions|length > 0 %}
-<ul class="list-group list-group-flush sport-text mb-3">
-    {% for competition in competitions %}
-    <li class="list-group-item d-flex justify-content-between w-100 {{ competition.isfinished ? ' bg-light' : '' }}">
-        <div class="pl-3 row d-flex align-items-center">
-            <a class="mr-1" href="{{ path('competition_show', {id: competition.id}) }}">{{ competition.name }}</a>
-            ({{ competition.game.name }}){% if competition.heldAt %}
-            {{ competition.heldAt|toDateTimeLocal }}{% endif %}
-        </div>
-    </li>
-    {% endfor %}
-</ul>
-{% else %}
-<p>No has organizado ningún torneo. <a href="{{ path('competition_new') }}">Crea un torneo!</a></p>
-{% endif %}
-    {% endif %}
-    {% if registrations is defined %}
-        <h1>Registros</h1>
-        {% if registrations|length > 0 %}
-<ul class="list-group list-group-flush sport-text mb-3">
-    {% for registration in registrations %}
-    <li class="list-group-item d-flex justify-content-between w-100 {{ registration.competition.isfinished ? ' bg-light' : '' }}">
-        <div class="pl-3 row d-flex align-items-center">
-            <a class="mr-1" href="{{ path('competition_show', {id: registration.competition.id}) }}">{{ registration.competition.name }}</a>
-            ({{ registration.competition.game.name }}){% if registration.competition.heldAt %}
-            {{ registration.competition.heldAt|toDateTimeLocal }}{% endif %}
-        </div>
-    </li>
-    {% endfor %}
-</ul>
-{% else %}
-<p>No estás preinscrito a ningún torneo.</p>
-{% endif %}
-    {% endif %}
-    {% if teams is defined %}
+        <ul class="list-group list-group-flush sport-text mb-3">
+            {% for competition in competitions %}
+            <li
+                class="list-group-item d-flex justify-content-between w-100 {{ competition.isfinished ? ' bg-light' : '' }}">
+                <div class="pl-3 row d-flex align-items-center">
+                    <a class="mr-1"
+                        href="{{ path('competition_show', {id: competition.id}) }}">{{ competition.name }}</a>
+                    ({{ competition.game.name }}){% if competition.heldAt %}
+                    {{ competition.heldAt|toDateTimeLocal }}{% endif %}
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>No has organizado ningún torneo. <a href="{{ path('competition_new') }}">Crea un torneo!</a></p>
+        {% endif %}
+        {% endif %}
+        {% if teams is defined %}
         <h1>Tus Equipos</h1>
         {% if teams|length > 0 %}
-<ul class="list-group list-group-flush sport-text mb-3">
-    {% for team in teams %}
-    <li class="list-group-item d-flex justify-content-between w-100 {{ team.competition.isfinished ? ' bg-light' : '' }}">
-        <div class="pl-3 row d-flex align-items-center">
-            <a class="mr-1" href="{{ path('team_show', {id: team.id}) }}">{{ team.name }}</a>
-            ({{ team.competition.game.name }}){% if team.competition.heldAt %}{% if team.ranking is not null %} - Ranking: {{ team.ranking }}{% endif %}
-            {% endif %}
-        </div>
-    </li>
-    {% endfor %}
-</ul>
-    {% else %}
-    <p>No has participado en torneos con ningún equipo.</p>
-    {% endif %}
-        </div>
-    {% endif %}
-</div>
-{% endblock %}
+        <ul class="list-group list-group-flush sport-text mb-3">
+            {% for team in teams %}
+            <li
+                class="list-group-item d-flex justify-content-between w-100 {{ team.competition.isfinished ? ' bg-light' : '' }}">
+                <div class="pl-3 row d-flex align-items-center">
+                    <a class="mr-1" href="{{ path('team_show', {id: team.id}) }}">{{ team.name }}</a>
+                    ({{ team.competition.game.name }}){% if team.competition.heldAt %}{% if team.ranking is not null %}
+                    - Ranking: {{ team.ranking }}{% endif %}
+                    {% endif %}
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>No has participado en torneos con ningún equipo.</p>
+        {% endif %}
+        {% endif %}
+        {% if registrations is defined %}
+        <h1>Registros</h1>
+        {% if registrations|length > 0 %}
+        <ul class="list-group list-group-flush sport-text mb-3">
+            {% for registration in registrations %}
+            <li
+                class="list-group-item d-flex justify-content-between w-100 {{ registration.competition.isfinished ? ' bg-light' : '' }}">
+                <div class="pl-3 row d-flex align-items-center">
+                    <a class="mr-1"
+                        href="{{ path('competition_show', {id: registration.competition.id}) }}">{{ registration.competition.name }}</a>
+                    ({{ registration.competition.game.name }}){% if registration.competition.heldAt %}
+                    {{ registration.competition.heldAt|toDateTimeLocal }}{% endif %}
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>No estás preinscrito a ningún torneo.</p>
+        {% endif %}
+        {% endif %}
+    </div>
+    {% endblock %}
