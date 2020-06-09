@@ -15,4 +15,12 @@ class CompetitionIndexTest extends CompetitionBaseTest
         $this->assertCount(13, $crawler->filter('.competition-item.finished'));
         $this->assertCount(2, $crawler->filter('.competition-item.open'));
     }
+
+    public function testFiltered(): void
+    {
+        $crawler = $this->request('GET', 'competition_list', ['game' => $this->getGame()->getId(), 'page' => 1]);
+
+        $this->assertEquals(200, $this->response()->getStatusCode());
+        $this->assertCount(2, $crawler->filter('.competition-item'));
+    }
 }
