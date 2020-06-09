@@ -2,15 +2,29 @@
 
 namespace App\Controller;
 
+use App\DataFixtures\BracketFixtures;
+use App\DataFixtures\CompetitionFixtures;
+use App\DataFixtures\GameFixtures;
+use App\DataFixtures\PlayerFixtures;
+use App\DataFixtures\RegistrationFixtures;
+use App\Entity\Player;
+use App\Exception\InvalidPlayerDataException;
+use App\Kernel;
 use App\Repository\CompetitionRepository;
 use App\Repository\GameRepository;
+use App\Repository\PlayerRepository;
+use App\Service\PlayerService;
+use Liip\TestFixturesBundle\Test\FixturesTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class MainController extends BaseController
 {
+    use FixturesTrait;
+
     /**
      * @Route("/", name="main", methods={"GET", "POST"})
      */
@@ -38,5 +52,33 @@ class MainController extends BaseController
             'mostsPlayed' => $gameRepository->findMostPlayed(),
             'bracketType' => $competition ? $competition->getTeams()->count() : 0,
         ]);
+    }
+
+    /**
+     * @Route("/install", name="install", methods={"GET", "POST"})
+     */
+    public function install(
+        Request $request,
+        UserPasswordEncoderInterface $passwordEncoder,
+        PlayerRepository $playerRepository,
+        PlayerService $playerService
+    ): Response {
+        if (0 < $playerRepository->count([])) {
+            return $this->redirectToRoute('main');
+        }
+
+        if ($request->isMethod('POST')) {
+            $player = (new Player())->setRoles(['ROLE_ADMIN']);
+            try {
+                $playerService->editPlayer($player, $request, $passwordEncoder, $playerRepository, true, false);
+                $this->addFlash('success', '¡Felicidades! Ahora inicia sesión y crea juegos para que los usuarios puedan organizar competiciones.');
+
+                return $this->redirectToRoute('main');
+            } catch (InvalidPlayerDataException $e) {
+                $this->addFlash('error', $e->getMessage());
+            }
+        }
+
+        return $this->render('main/install.html.twig');
     }
 }
