@@ -7,8 +7,8 @@
         <ul class="list-group list-group-flush sport-text">
             {% for game in games %}
             <li class="list-group-item d-flex justify-content-between col-12 col-xs-9">
-                <span class="d-flex align-items-center text-truncate">
-                    <a class="mr-1" href="{{ path('game_show', {id: game.id}) }}">{{ game.name }}&nbsp;</a> - {{ game.description }}
+                <span class="pl-3 row d-flex align-items-center">
+                    <a class="mr-1" href="{{ path('game_show', {id: game.id}) }}">{{ game.name }}&nbsp;</a> {{ game.description }}
                 </span>
                 {% if is_granted('ROLE_ADMIN') %}
                 <span class="d-flex align-items-center">

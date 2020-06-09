@@ -1,7 +1,7 @@
 <ul class="list-group list-group-flush sport-text">
     {% for competition in competitions %}
     <li class="list-group-item d-flex justify-content-between col-12 competition-item{{ competition.isFinished ? ' finished' : '' }}{{ competition.isOpen ? ' open' : '' }}">
-        <span class="d-flex align-items-center">
+        <span class="pl-3 row d-flex align-items-center">
             <a class="mr-1" href="{{ path('competition_show', {id: competition.id}) }}">{{ competition.name }}</a>
             {% if not game %}({{ competition.game.name }}){% endif %} - {% if competition.heldAt %} {{ competition.heldAt|toDateTimeLocal }}{% endif %}
         </span>

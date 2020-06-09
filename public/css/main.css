@@ -169,7 +169,7 @@ h1 {
 }
 
 .list-group-item span {
-    height: 38px;
+    min-height: 38px;
 }
 
 .password-form input{
