@@ -30,7 +30,7 @@ class PlayerController extends BaseController
             'user' => $this->getUser(),
             'competitions' => $competitionRepository->findByStreamer($player),
             'teams' => $teamRepository->findWithCompetitionByPlayer($player),
-            'registrations' => $registrationRepository->findWithCompetitionByPlayer($player)
+            'registrations' => $registrationRepository->findWithCompetitionByPlayer($player),
         ]);
     }
 

@@ -129,6 +129,7 @@ abstract class TestBase extends WebTestCase
         if (!isset($this->repositories[$entity])) {
             $this->repositories[$entity] = self::$container->get("App\\Repository\\{$entity}Repository");
         }
+
         return $this->repositories[$entity];
     }
 }

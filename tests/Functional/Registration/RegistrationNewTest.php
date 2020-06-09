@@ -21,15 +21,10 @@ class RegistrationNewTest extends RegistrationBaseTest
 
     public function testAsRegistered(): void
     {
-        $playerRepository = self::$container->get('App\Repository\PlayerRepository');
-        $competitionRepository = self::$container->get('App\Repository\CompetitionRepository');
         $competition = $this->getCompetition(true, false);
         do {
-            $player = $playerRepository->findRandomized(1)[0];
-        } while (
-            in_array('ROLE_ADMIN', $player->getRoles()) ||
-            !in_array($competition, $competitionRepository->findByPlayer($player))
-        );
+            $player = $this->getRandomPlayer();
+        } while (!in_array($competition, $this->getCompetitionByPlayer($player)));
         $this->login($player);
 
         $this->request('POST', 'registration_new', ['competition_id' => $competition->getId()]);
@@ -44,35 +39,25 @@ class RegistrationNewTest extends RegistrationBaseTest
 
     public function testAsPlayer(): void
     {
-        $playerRepository = self::$container->get('App\Repository\PlayerRepository');
-        $competitionRepository = self::$container->get('App\Repository\CompetitionRepository');
         $competition = $this->getCompetition(true, false);
         do {
-            $player = $playerRepository->findRandomized(1)[0];
-        } while (
-            in_array('ROLE_ADMIN', $player->getRoles()) ||
-            in_array($competition, $competitionRepository->findByPlayer($player))
-        );
+            $player = $this->getRandomPlayer();
+        } while (in_array($competition, $this->getCompetitionByPlayer($player)));
         $this->login($player);
 
         $this->request('POST', 'registration_new', ['competition_id' => $competition->getId()]);
         $this->assertTrue($this->response()->isRedirect(
             $this->getUrl('competition_show', ['id' => $competition->getId()])
         ));
-        $this->assertTrue(in_array($competition, $competitionRepository->findByPlayer($player)));
+        $this->assertTrue(in_array($competition, $this->getCompetitionByPlayer($player)));
     }
 
     public function testOnNotOpen(): void
     {
-        $playerRepository = self::$container->get('App\Repository\PlayerRepository');
-        $competitionRepository = self::$container->get('App\Repository\CompetitionRepository');
         $competition = $this->getCompetition(false, false);
         do {
-            $player = $playerRepository->findRandomized(1)[0];
-        } while (
-            in_array('ROLE_ADMIN', $player->getRoles()) ||
-            in_array($competition, $competitionRepository->findByPlayer($player))
-        );
+            $player = $this->getRandomPlayer();
+        } while (in_array($competition, $this->getCompetitionByPlayer($player)));
         $this->login($player);
 
         $this->request('POST', 'registration_new', ['competition_id' => $competition->getId()]);

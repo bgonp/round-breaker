@@ -19,10 +19,11 @@ class GameFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         $games = [
-            ['Rocket League', 'Supersonic Acrobatic Rocket-Powered Battle-Cars'],
+            ['Hearthstone', 'Heroes of WarCraft'],
             ['Counter Strike', 'Pium pium'],
             ['League of Legends', 'Best community EVER'],
             ['Quake Champions', ''],
+            ['Rocket League', 'Supersonic Acrobatic Rocket-Powered Battle-Cars'],
             ['Rainbow Six', ''],
             ['DOTA 2', ''],
             ['Starcraft 2', 'Legacy of the Void'],

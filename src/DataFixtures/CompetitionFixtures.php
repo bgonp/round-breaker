@@ -33,11 +33,11 @@ class CompetitionFixtures extends Fixture implements DependentFixtureInterface
     {
         $faker = Faker\Factory::create();
         $games = $this->gameRepository->findAllOrdered();
-        $streamersCount = ((count($games) * (count($games) + 1)) / 2) - 2;
+        $streamersCount = (((count($games) - 1) * ((count($games) - 1) + 1)) / 2) - 2;
         $streamers = $this->playerRepository->findRandomized($streamersCount);
         $counter = 0;
         foreach ($games as $index => $game) {
-            for ($i = 0; $i <= $index; ++$i) {
+            for ($i = 0; $i < $index; ++$i) {
                 $playersPerTeam = $i % 5 + 1;
                 $numberOfTeams = pow(2, $i % 4 + 1);
                 $heldAtAfter = ($days = ($counter - $streamersCount) * 10) >= 0 ? "+$days days" : "$days days";

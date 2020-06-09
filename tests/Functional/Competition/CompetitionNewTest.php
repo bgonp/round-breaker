@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional\Competition;
 
+use DateTime;
+
 class CompetitionNewTest extends CompetitionBaseTest
 {
     public function testAsAnonymous()
@@ -21,7 +23,7 @@ class CompetitionNewTest extends CompetitionBaseTest
             'game' => $this->getGame()->getId(),
             'playersPerTeam' => 3,
             'teamNum' => 8,
-            'heldAt' => (new \DateTime())->format('Y-m-d\TH:i'),
+            'heldAt' => (new DateTime())->format('Y-m-d\TH:i'),
         ];
         $this->login();
         $this->request('GET', 'competition_new');

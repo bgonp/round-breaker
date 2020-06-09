@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional\Competition;
 
+use App\Repository\PlayerRepository;
+use DateTime;
+
 class CompetitionEditTest extends CompetitionBaseTest
 {
     public function testAsAnonymous(): void
@@ -18,11 +21,10 @@ class CompetitionEditTest extends CompetitionBaseTest
 
     public function testAsUser(): void
     {
-        $playerRepository = self::$container->get('App\Repository\PlayerRepository');
         $competition = $this->getCompetition(true, false);
         do {
-            $player = $playerRepository->findRandomized(1)[0];
-        } while ($competition->getStreamer()->equals($player) || in_array('ROLE_ADMIN', $player->getRoles()));
+            $player = $this->getRandomPlayer();
+        } while ($competition->getStreamer()->equals($player));
         $this->login($player);
         $this->request('GET', 'competition_edit', ['id' => $competition->getId()]);
 
@@ -87,7 +89,7 @@ class CompetitionEditTest extends CompetitionBaseTest
             'game' => $this->getGame()->getId(),
             'playersPerTeam' => 3,
             'teamNum' => 8,
-            'heldAt' => (new \DateTime())->format('Y-m-d\TH:i'),
+            'heldAt' => (new DateTime())->format('Y-m-d\TH:i'),
         ];
         $this->login($competition->getStreamer());
         $this->request('GET', 'competition_edit', ['id' => $competition->getId()]);
@@ -224,6 +226,7 @@ class CompetitionEditTest extends CompetitionBaseTest
         if ($onlyHidden) {
             return ['game', 'playersPerTeam', 'teamNum', 'heldAt'];
         }
+
         return ['name', 'description', 'game', 'playersPerTeam', 'teamNum', 'heldAt', 'open'];
     }
 }

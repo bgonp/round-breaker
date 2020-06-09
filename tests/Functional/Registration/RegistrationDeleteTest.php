@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional\Registration;
 
+use App\Repository\CompetitionRepository;
+use App\Repository\PlayerRepository;
+
 class RegistrationDeleteTest extends RegistrationBaseTest
 {
     public function testByRegistrationAsStreamer(): void
@@ -39,15 +42,15 @@ class RegistrationDeleteTest extends RegistrationBaseTest
 
     public function testAsNotRegistered(): void
     {
-        $playerRepository = self::$container->get('App\Repository\PlayerRepository');
-        $competitionRepository = self::$container->get('App\Repository\CompetitionRepository');
+        /** @var PlayerRepository $playerRepository */
+        $playerRepository = $this->getRepository('Player');
+        /** @var CompetitionRepository $competitionRepository */
+        $competitionRepository = $this->getRepository('Competition');
+
         $competition = $this->getCompetition(true, false);
         do {
             $player = $playerRepository->findRandomized(1)[0];
-        } while (
-            in_array('ROLE_ADMIN', $player->getRoles()) ||
-            in_array($competition, $competitionRepository->findByPlayer($player))
-        );
+        } while (in_array($competition, $competitionRepository->findByPlayer($player)));
         $this->login($player);
 
         $this->request('POST', 'registration_delete', [], ['competition_id' => $competition->getId()]);
@@ -60,15 +63,15 @@ class RegistrationDeleteTest extends RegistrationBaseTest
 
     public function testAsPlayer(): void
     {
-        $playerRepository = self::$container->get('App\Repository\PlayerRepository');
-        $competitionRepository = self::$container->get('App\Repository\CompetitionRepository');
+        /** @var PlayerRepository $playerRepository */
+        $playerRepository = $this->getRepository('Player');
+        /** @var CompetitionRepository $competitionRepository */
+        $competitionRepository = $this->getRepository('Competition');
+
         $competition = $this->getCompetition(true, false);
         do {
             $player = $playerRepository->findRandomized(1)[0];
-        } while (
-            in_array('ROLE_ADMIN', $player->getRoles()) ||
-            in_array($competition, $competitionRepository->findByPlayer($player))
-        );
+        } while (in_array($competition, $competitionRepository->findByPlayer($player)));
         $this->login($player);
 
         $this->request('POST', 'registration_new', [], ['competition_id' => $competition->getId()]);
@@ -81,15 +84,15 @@ class RegistrationDeleteTest extends RegistrationBaseTest
 
     public function testOnNotOpen(): void
     {
-        $playerRepository = self::$container->get('App\Repository\PlayerRepository');
-        $competitionRepository = self::$container->get('App\Repository\CompetitionRepository');
+        /** @var PlayerRepository $playerRepository */
+        $playerRepository = $this->getRepository('Player');
+        /** @var CompetitionRepository $competitionRepository */
+        $competitionRepository = $this->getRepository('Competition');
+
         $competition = $this->getCompetition(false, false);
         do {
             $player = $playerRepository->findRandomized(1)[0];
-        } while (
-            in_array('ROLE_ADMIN', $player->getRoles()) ||
-            in_array($competition, $competitionRepository->findByPlayer($player))
-        );
+        } while (in_array($competition, $competitionRepository->findByPlayer($player)));
         $this->login($player);
 
         $this->request('POST', 'registration_new', [], ['competition_id' => $competition->getId()]);
