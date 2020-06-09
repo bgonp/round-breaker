@@ -27,6 +27,7 @@ class PlayerController extends BaseController
     {
         return $this->render('player/show.html.twig', [
             'player' => $player,
+            'user' => $this->getUser(),
             'competitions' => $competitionRepository->findByStreamer($player),
             'teams' => $teamRepository->findWithCompetitionByPlayer($player),
             'registrations' => $registrationRepository->findWithCompetitionByPlayer($player)

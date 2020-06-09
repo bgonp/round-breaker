@@ -170,6 +170,7 @@ h1 {
 
 .list-group-item span {
     height: 38px;
+    min-height: 38px;
 }
 
 .main-menu .navbar-toggler {
@@ -195,4 +196,12 @@ h1 {
         background: #343a40;
         height: auto !important;
     }
+}
+
+.password-form input{
+    border-radius: 5px;
+    border: 1px solid grey;
+    opacity: 0.5;
+    height: 2.2em;
+    margin: 0 0 0.5em 0.5em;
 }
