@@ -173,7 +173,9 @@ class CompetitionController extends BaseController
                 $competition
                     ->setName($name)
                     ->setDescription($request->request->get('description'))
-                    ->setIsOpen((bool) $request->request->get('open'));
+                    ->setIsOpen((bool) $request->request->get('open'))
+                    ->setLobbyName( $request->request->get('lobbyname'))
+                    ->setLobbyPassword($request->request->get('lobbypassword'));
                 if ($wasOpen) {
                     $playersPerTeam = $request->request->get('playersPerTeam');
                     $teamNum = $request->request->get('teamNum');
