@@ -61,13 +61,15 @@ class CompetitionRepository extends ServiceEntityRepository
         return $this->findOneBy(['streamer' => $player], ['updatedAt' => 'DESC']);
     }
 
-    public function findOneRandomFinished(): ?Competition
+    public function findOneRandomFinished(int $greaterThan = 1): ?Competition
     {
         return $this->createQueryBuilder('c')
             ->orderBy('RAND()')
             ->where('c.heldAt >= :since')
             ->andWhere('c.isFinished = 1')
+            ->andWhere('c.maxPlayers > :greater_than')
             ->setParameter('since', strtotime('-3 month'))
+            ->setParameter('greater_than', $greaterThan)
             ->setMaxResults(1)
             ->getQuery()->getOneOrNullResult();
     }

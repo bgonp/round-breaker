@@ -21,7 +21,7 @@ class MainController extends BaseController
         GameRepository $gameRepository,
         SessionInterface $session
     ): Response {
-        $competition = $competitionRepository->findOneRandomFinished();
+        $competition = $competitionRepository->findOneRandomFinished(10);
         $competition = $competitionRepository->findCompleteById($competition->getId());
         if ($redirectTo = $request->request->get('redirect_to')) {
             $session->set('_security.main.target_path', $redirectTo);
