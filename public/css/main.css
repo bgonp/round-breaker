@@ -99,8 +99,8 @@ h1 {
     color:#4cd365;
 }
 
-.registrations > li.confirmed .far.fa-square,
-.registrations > li:not(.confirmed) .far.fa-check-square {
+.registrations > li.confirmed .fa.fa-square-o,
+.registrations > li:not(.confirmed) .fa.fa-check-square-o {
     display: none;
 }
 
