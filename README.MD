@@ -19,9 +19,15 @@ Es una aplicación web desde donde los usuarios pueden registrarse, gestionar su
 
 Una vez haya suficientes inscripciones confirmadas el organizador podrá generar los equipos, las rondas y el árbol de competición a través de un solo botón. La competición entonces se marcará como cerrada y todos los jugadores que hayan sido elegidos aleatoriamente para participar podrán acceder a los datos de su equipo para ponerse en contacto con sus compañeros. Podrán ver, además, las credenciales necesarias para unirse a la sala del juego donde se disputarán los encuentros. En cada equipo, uno de los jugadores será elegido como capitán y representará a su equipo, siendo además el único que puede cambiar el nombre del equipo.
 
+Desde la aplicación web podrán consultarse públicamente los resultados y un histórico de competiciones de los usuarios.
 
+## Idea
 
-inscripciones de los jugadores y de entre todos los confirmados se generarán equipos y las rondas basándose en su nivel y puntuación. Desde la propia plataforma Twitch, la aplicación pondrá en contacto a los jugadores y les avisará de los detalles y se les avisará cuando llegue su ronda, enviándoles además los datos de acceso. El organizador puede transmitir las rondas en directo e indicará en la aplicación los ganadores para actualizar el árbol de competición y avisar a los siguientes jugadores.
+La idea de Round Breaker surge de observar el crecimiento exponencial de los e-sports y cómo han aparecido muchas herramientas enfocadas a competiciones online pero siempre pensando desde un punto de vista profesional, con equipos ya formados y de buen nivel.
 
-Desde la aplicación web podrán consultarse públicamente los resultados y un histórico de competiciones.
+Nosotros queremos ofrecer un enfoque distinto, orientado a competiciones más informales y fortaleciendo el componente social creando equipos en vivo y poniendo en contacto a sus integrantes.
+
+Round Breaker provee una integración completa con la principal plataforma de retransmisión de e-sports del mundo: Twitch. Los participantes confirman su inscripción desde el chat del propio Twitch para que el organizador tenga visitas garantizadas.
+
+Nuestra aplicación ofrece una forma rápida y ágil de organizar todo lo necesario para que pueda hacerse en vivo mientras se retransmite, para hacerlo así también atractivo para el espectador.
 
