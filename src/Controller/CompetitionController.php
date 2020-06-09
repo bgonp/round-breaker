@@ -51,7 +51,7 @@ class CompetitionController extends BaseController
             $lastPage = (int) ceil($competitionRepository->count([]) / $perPage);
             $currentPage = $page < 1 ? 1 : ($page > $lastPage ? $lastPage : $page);
             $competitions = $competitionRepository->findAllOrdered($page, $perPage);
-            if ($currentPage !== $page) {
+            if ($competitions && $currentPage !== $page) {
                 return $this->redirectToRoute('competition_list', ['page' => $currentPage]);
             }
         }

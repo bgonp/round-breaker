@@ -21,7 +21,9 @@ class MainController extends BaseController
         SessionInterface $session
     ): Response {
         $competition = $competitionRepository->findOneRandomFinished(10);
-        $competition = $competitionRepository->findCompleteById($competition->getId());
+        if ($competition) {
+            $competition = $competitionRepository->findCompleteById($competition->getId());
+        }
         if ($redirectTo = $request->request->get('redirect_to')) {
             $session->set('_security.main.target_path', $redirectTo);
         }
@@ -34,7 +36,7 @@ class MainController extends BaseController
             'clickable' => false,
             'player' => $this->getPlayer(),
             'mostsPlayed' => $gameRepository->findMostPlayed(),
-            'bracketType' => $competition->getIsOpen() ? 0 : $competition->getTeams()->count(),
+            'bracketType' => $competition ? $competition->getTeams()->count() : 0,
         ]);
     }
 }
