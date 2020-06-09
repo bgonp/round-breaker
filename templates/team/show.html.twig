@@ -34,7 +34,7 @@
     <div class="col-sm-6 p-3">
         <form method="post">
             <div class="card form-group border border-secondary p-3">
-                <label for="inputName" class="sport-text-form">Eres capitán, cambia el nombre a tu equipo.</label>
+                <label for="inputName" class="sport-text-form">{% if is_granted("ROLE_ADMIN") %}Editar nombre de equipo{% else %}Eres capitán, cambia el nombre a tu equipo{% endif %}</label>
                 <input type="text" value="{{ team.name }}" name="name" id="inputName"
                     class="form-control form-control-lg">
 
