@@ -4,7 +4,9 @@
 
 {% block content %}
 <div class="row">
-    <div class="col-md-12 col-lg-4 col-xl-5 py-3">
+    <div class="col-md-12
+    {% if competitions is defined %} col-lg-4 col-xl-5 py-3
+        {% endif %}">
         <h1>Perfil</h1>
         <form method="post">
             <h5 class=" sport-text">{{ player ? player.username : 'Not logged in' }}</h5>
@@ -27,7 +29,7 @@
                     class="mb-3 form-control" placeholder="Twitchname" required>
                 <button class="btn btn-lg btn-primary btn-dark break-text-large form-control" type="submit"
                     id="submit-edit">
-                    Editar mis detalles
+                    Editar detalles
                 </button>
             </div>
         </form>
