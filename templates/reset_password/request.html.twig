@@ -1,18 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Recuperación de contraseña{% endblock %}
+{% block title %}Nueva contraseña{% endblock %}
 
 {% block content %}
-    {% for flashError in app.flashes('reset_password_error') %}
-        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
-    {% endfor %}
-    <h1>Recupera tu cuenta</h1>
+    <h1>Nueva contraseña</h1>
     {{ form_start(requestForm) }}
-    {{ form_row(requestForm.email) }}
-    <div>
-        Introduce tu dirección de correo asociada y te enviaremos un e-mail para crear una nueva contraseña.
-    </div>
-
-    <button class="btn btn-dark sport-text">Enviar correo de recuperación</button>
+    {{ form_label(requestForm.email, 'Introduzca su nueva contraseña.') }}
+    {{ form_widget(requestForm.email, {'attr': {'class': 'mb-2 form-control'}}) }}
+    <button class="mt-2 btn btn-primary btn-dark sport-text form-control">Cambiar contraseña</button>
     {{ form_end(requestForm) }}
 {% endblock %}

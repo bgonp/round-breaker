@@ -3,7 +3,6 @@
 {% block title %}Ver jugador | Round Breaker{% endblock %}
 
 {% block content %}
-    <div class="pt-3">
         <h1 class="sport-text">{{ player.username}}</h1>
         {%  if is_granted("ROLE_ADMIN") %}
             <a class="btn btn-dark mb-3 sport-text" href="{{ path('player_edit', {id: player.id}) }}">Editar Jugador</a>
@@ -14,7 +13,7 @@
             <ul class="list-group list-group-flush sport-text mb-3">
                 {% for competition in competitions %}
                     <li class="list-group-item d-flex justify-content-between w-100 {{ competition.isfinished ? ' bg-light' : '' }}">
-        <span class="d-flex align-items-center">
+        <span class="d-flex align-items-center text-truncate">
             <a class="mr-1" href="{{ path('competition_show', {id: competition.id}) }}">{{ competition.name }}</a>
             ({{ competition.game.name }}){% if competition.heldAt %}
                 {{ competition.heldAt|toDateTimeLocal }}{% endif %}
@@ -30,7 +29,7 @@
             <ul class="list-group list-group-flush sport-text mb-3">
                 {% for registration in registrations %}
                     <li class="list-group-item d-flex justify-content-between w-100 {{ registration.competition.isfinished ? ' bg-light' : '' }}">
-        <span class="d-flex align-items-center">
+        <span class="d-flex align-items-center text-truncate">
             <a class="mr-1" href="{{ path('competition_show', {id: registration.competition.id}) }}">{{ registration.competition.name }}</a>
             ({{ registration.competition.game.name }}){% if registration.competition.heldAt %}
                 {{ registration.competition.heldAt|toDateTimeLocal }}{% endif %}
@@ -46,7 +45,7 @@
             <ul class="list-group list-group-flush sport-text mb-3">
                 {% for team in teams %}
                     <li class="list-group-item d-flex justify-content-between w-100 {{ team.competition.isfinished ? ' bg-light' : '' }}">
-        <span class="d-flex align-items-center">
+        <span class="d-flex align-items-center text-truncate">
             <a class="mr-1" href="{{ path('team_show', {id: team.id}) }}">{{ team.name }}</a>
             ({{ team.competition.game.name }}){% if team.competition.heldAt %}
                 {{ team.competition.heldAt|toDateTimeLocal }}{% if team.ranking is not null %} - Ranking: {{ team.ranking }}{% endif %}
@@ -58,6 +57,5 @@
         {% else %}
             <p>No ha participado en torneos con ningún equipo.</p>
         {% endif %}
-    </div>
     </div>
 {% endblock %}
