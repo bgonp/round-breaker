@@ -33,18 +33,18 @@ class CompetitionFixtures extends Fixture implements DependentFixtureInterface
     {
         $faker = Faker\Factory::create();
         $games = $this->gameRepository->findAllOrdered();
-        $streamersNeeded = (count($games) * (count($games) + 1)) / 2;
-        $streamers = $this->playerRepository->findRandomized($streamersNeeded);
+        $streamersCount = ((count($games) * (count($games) + 1)) / 2) - 2;
+        $streamers = $this->playerRepository->findRandomized($streamersCount);
         $counter = 0;
         foreach ($games as $index => $game) {
             for ($i = 0; $i <= $index; ++$i) {
-                $playersPerTeam = 2 + $i % 4;
-                $numberOfTeams = pow(2, 3 - $i);
-                $heldAtAfter = ($days = ($counter - 4) * 10) >= 0 ? "+$days days" : "$days days";
-                $heldAtBefore = ($days = ($counter - 3) * 10) >= 0 ? "+$days days" : "$days days";
+                $playersPerTeam = $i % 5 + 1;
+                $numberOfTeams = pow(2, $i % 4 + 1);
+                $heldAtAfter = ($days = ($counter - $streamersCount - 1) * 10) >= 0 ? "+$days days" : "$days days";
+                $heldAtBefore = ($days = ($counter - $streamersCount) * 10) >= 0 ? "+$days days" : "$days days";
                 $this->competitionRepository->save((new Competition())
                     ->setGame($game)
-                    ->setStreamer($streamers[$counter])
+                    ->setStreamer($streamers[$counter % count($streamers)])
                     ->setName('Competición #'.substr('0'.(++$counter), -2))
                     ->setHeldAt($faker->dateTimeBetween($heldAtAfter, $heldAtBefore))
                     ->setPlayersPerTeam($playersPerTeam)

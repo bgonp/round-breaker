@@ -10,6 +10,7 @@ use App\DataFixtures\GameFixtures;
 use App\DataFixtures\PlayerFixtures;
 use App\DataFixtures\RegistrationFixtures;
 use App\Entity\Player;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\ORM\Tools\ToolsException;
 use Liip\TestFixturesBundle\Test\FixturesTrait;
@@ -27,7 +28,9 @@ abstract class TestBase extends WebTestCase
 
     private ?Router $router = null;
 
-    protected static bool $initializedDatabase = false;
+    private static bool $initializedDatabase = false;
+
+    private static array $repositories = [];
 
     public function setUp()
     {
@@ -119,5 +122,15 @@ abstract class TestBase extends WebTestCase
 
             $this->reloadFixtures();
         }
+    }
+
+    protected function getRepository(string $entity): ServiceEntityRepository
+    {
+        if (!isset(static::$repositories[$entity])) {
+            static::$repositories[$entity] = self::$container->get("App\Repository\{$entity}Repository");
+        } else {
+            static::$repositories[$entity]->clear();
+        }
+        return static::$repositories[$entity];
     }
 }

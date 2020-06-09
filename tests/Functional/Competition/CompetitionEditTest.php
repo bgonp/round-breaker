@@ -48,6 +48,9 @@ class CompetitionEditTest extends CompetitionBaseTest
             $this->assertCount(0, $crawler->filter('.team-item'));
             $this->assertCount(21, $crawler->filter('.registration-item'));
             $this->assertCount(18, $crawler->filter('.registration-item.confirmed'));
+            foreach ($this->getFieldsNames() as $name) {
+                $this->assertCount(1, $crawler->filter(sprintf('[name="%s"]', $name)));
+            }
         }
     }
 

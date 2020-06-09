@@ -6,6 +6,9 @@
     font-family: broken;
     src: url(../fonts/BrokenGlass.ttf);
 }
+body {
+    margin-bottom: 5rem;
+}
 .main-container {
     max-width: 1280px;
 }

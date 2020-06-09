@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\DataFixtures;
 
 use App\Entity\Competition;
+use App\Exception\NotEnoughConfirmedRegistrationsException;
 use App\Repository\CompetitionRepository;
 use App\Service\CompetitionService;
 use App\Service\RoundService;
@@ -37,13 +38,17 @@ class BracketFixtures extends Fixture implements DependentFixtureInterface
         $now = new \DateTime();
         foreach ($competitions as $competition) {
             if ($now > $competition->getHeldAt()) {
-                $this->competitionService->randomize($competition);
-                if ($finished) {
-                    $this->finishCompetition($competition);
-                } else {
-                    $finished = true;
+                try {
+                    $this->competitionService->randomize($competition);
+                    if ($finished) {
+                        $this->finishCompetition($competition);
+                    } else {
+                        $finished = true;
+                    }
+                    $this->competitionRepository->save($competition, false);
+                } catch (NotEnoughConfirmedRegistrationsException $e) {
+                    $this->competitionRepository->save($competition->setIsFinished(true), false);
                 }
-                $this->competitionRepository->save($competition, false);
             }
         }
         $this->competitionRepository->flush();
