@@ -12,6 +12,7 @@
                         {{ player.username }}</a> {{ team.captain == player ? '<i class="fa fa-star text-warning"></i>' : '' }}<a href="http://www.twitch.tv/{{ player.twitchName }}">
                             <i class="fa fa-twitch"></i>
                         </a>
+                    {{player == team.captain ? '<i class="fa fa-star text-warning"></i>' : '' }}
                     </a>
                 </li>
                 {% endfor %}
