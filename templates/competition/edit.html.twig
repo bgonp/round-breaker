@@ -10,6 +10,7 @@
             {{ competition.streamer.username }}
         </a></h4>
         <h4 class="text-center">Estado: {{ competition.isOpen ? "Abierta" : "Cerrada" }} y {{ competition.isFinished ? "Terminada" : "En Curso" }} - {{ competition.heldAt|toDateTimeLocal }}</h4>
+        <h4 class="text-center">Máximo de equipos: {{ competition.maxPlayers/competition.playersPerTeam }} - Jugadores por equipo: {{ competition.playersPerTeam }}</h4>
     </div>
 </div>
 

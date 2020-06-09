@@ -13,6 +13,7 @@
                         {{ player.username }}</a><a href="http://www.twitch.tv/{{ player.twitchName }}">
                             <i class="fa fa-twitch"></i>
                         </a>
+                    {{player == team.captain ? '<i class="fa fa-star text-warning"></i>' : '' }}
                     </a>
                 </li>
                 {% endfor %}
@@ -23,9 +24,9 @@
                 <li class="list-group-item sport-text">Organiza: <a href="{{ path('player_show', { id: team.competition.streamer.id }) }}">
                         {{ team.competition.streamer.username }}</a></li>
                 {% if team.competition.heldAt %}<li class="list-group-item sport-text">Celebrado en: {{ team.competition.heldAt|toDateTimeLocal }}</li>{% endif %}
-                {% if team.competition.lobbyName %}<li class="list-group-item sport-text">Lobby: {{ team.competition.lobbyName }}</li>{% endif %}
-                {% if team.competition.lobbyPassword %}<li class="list-group-item sport-text">Lobby Password: {{ team.competition.lobbypassword }}</li>{% endif %}
-                {% if team.ranking is not null %}<li class="list-group-item sport-text">Team Ranking: {{ team.ranking }}</li>{% endif %}
+                {% if team.competition.lobbyName %}<li class="list-group-item sport-text">Sala: {{ team.competition.lobbyName }}</li>{% endif %}
+                {% if team.competition.lobbyPassword %}<li class="list-group-item sport-text">Contraseña de sala: {{ team.competition.lobbypassword }}</li>{% endif %}
+                {% if team.ranking is not null %}<li class="list-group-item sport-text">Ranking: {{ team.ranking }}</li>{% endif %}
                 <li class="list-group-item sport-text">{{ team.competition.isOpen ? "Abierta" : "Cerrada" }} y {{ team.competition.isFinished ? "Terminada" : "En Curso" }}
                 </li>
         </div>
