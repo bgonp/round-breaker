@@ -10,9 +10,7 @@
                 {% for player in team.players %}
                 <li class="list-group-item sport-text"><a href="{{ path('player_show', { id: player.id }) }}">
                         {{ player.username }}</a> {{ team.captain == player ? '<i class="fa fa-star text-warning"></i>' : '' }}<a href="http://www.twitch.tv/{{ player.twitchName }}">
-                            <i class="fa fa-twitch"></i>
-                        </a>
-                    {{player == team.captain ? '<i class="fa fa-star text-warning"></i>' : '' }}
+                        <i class="fa fa-twitch"></i>
                     </a>
                 </li>
                 {% endfor %}
