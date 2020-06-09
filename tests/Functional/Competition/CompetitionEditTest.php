@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional\Competition;
 
-use App\Repository\PlayerRepository;
 use DateTime;
 
 class CompetitionEditTest extends CompetitionBaseTest

@@ -82,7 +82,7 @@ class GameController extends BaseController
         GameRepository $gameRepository
     ): Response {
         if ($this->isGranted('ROLE_ADMIN')) {
-            if ($name = $request->request->has('name')) {
+            if ($name = $request->request->get('name')) {
                 if ($gameRepository->findOneBy(['name' => $name])) {
                     $this->addFlash('error', 'Ya existe un juego con el mismo nombre');
                 } else {
