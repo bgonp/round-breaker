@@ -32,10 +32,7 @@ class RegistrationFixtures extends Fixture implements DependentFixtureInterface
     {
         $competitions = $this->competitionRepository->findAllOrdered();
         foreach ($competitions as $index => $competition) {
-            $registrationCount = $competition->getMaxPlayers() + (4 - ($index % 6)) * 5;
-            if ($registrationCount < 0) {
-                $registrationCount = $competition->getMaxPlayers();
-            }
+            $registrationCount = max(15, $competition->getMaxPlayers() + (4 - ($index % 6)) * 5);
             $players = $this->playerRepository->findRandomized($registrationCount);
             for ($i = 0; $i < count($players); ++$i) {
                 $this->registrationRepository->save((new Registration())

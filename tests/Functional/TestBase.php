@@ -28,9 +28,9 @@ abstract class TestBase extends WebTestCase
 
     private ?Router $router = null;
 
-    private static bool $initializedDatabase = false;
+    private array $repositories = [];
 
-    private static array $repositories = [];
+    private static bool $initializedDatabase = false;
 
     public function setUp()
     {
@@ -126,11 +126,9 @@ abstract class TestBase extends WebTestCase
 
     protected function getRepository(string $entity): ServiceEntityRepository
     {
-        if (!isset(static::$repositories[$entity])) {
-            static::$repositories[$entity] = self::$container->get("App\Repository\{$entity}Repository");
-        } else {
-            static::$repositories[$entity]->clear();
+        if (!isset($this->repositories[$entity])) {
+            $this->repositories[$entity] = self::$container->get("App\\Repository\\{$entity}Repository");
         }
-        return static::$repositories[$entity];
+        return $this->repositories[$entity];
     }
 }

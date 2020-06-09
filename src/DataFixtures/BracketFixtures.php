@@ -47,7 +47,6 @@ class BracketFixtures extends Fixture implements DependentFixtureInterface
                     }
                     $this->competitionRepository->save($competition, false);
                 } catch (NotEnoughConfirmedRegistrationsException $e) {
-                    $this->competitionRepository->save($competition->setIsFinished(true), false);
                 }
             }
         }

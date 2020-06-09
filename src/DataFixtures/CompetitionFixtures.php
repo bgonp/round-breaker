@@ -40,8 +40,8 @@ class CompetitionFixtures extends Fixture implements DependentFixtureInterface
             for ($i = 0; $i <= $index; ++$i) {
                 $playersPerTeam = $i % 5 + 1;
                 $numberOfTeams = pow(2, $i % 4 + 1);
-                $heldAtAfter = ($days = ($counter - $streamersCount - 1) * 10) >= 0 ? "+$days days" : "$days days";
-                $heldAtBefore = ($days = ($counter - $streamersCount) * 10) >= 0 ? "+$days days" : "$days days";
+                $heldAtAfter = ($days = ($counter - $streamersCount) * 10) >= 0 ? "+$days days" : "$days days";
+                $heldAtBefore = ($days = ($counter - $streamersCount + 1) * 10) >= 0 ? "+$days days" : "$days days";
                 $this->competitionRepository->save((new Competition())
                     ->setGame($game)
                     ->setStreamer($streamers[$counter % count($streamers)])
