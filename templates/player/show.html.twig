@@ -13,11 +13,11 @@
             <ul class="list-group list-group-flush sport-text mb-3">
                 {% for competition in competitions %}
                     <li class="list-group-item d-flex justify-content-between w-100 {{ competition.isfinished ? ' bg-light' : '' }}">
-        <span class="pl-3 row d-flex align-items-center">
+        <div class="pl-3 row d-flex align-items-center">
             <a class="mr-1" href="{{ path('competition_show', {id: competition.id}) }}">{{ competition.name }}</a>
             ({{ competition.game.name }}){% if competition.heldAt %}
                 {{ competition.heldAt|toDateTimeLocal }}{% endif %}
-        </span>
+        </div>
                     </li>
                 {% endfor %}
             </ul>
@@ -29,11 +29,11 @@
             <ul class="list-group list-group-flush sport-text mb-3">
                 {% for registration in registrations %}
                     <li class="list-group-item d-flex justify-content-between w-100 {{ registration.competition.isfinished ? ' bg-light' : '' }}">
-        <span class="pl-3 row d-flex align-items-center">
+        <div class="pl-3 row d-flex align-items-center">
             <a class="mr-1" href="{{ path('competition_show', {id: registration.competition.id}) }}">{{ registration.competition.name }}</a>
             ({{ registration.competition.game.name }}){% if registration.competition.heldAt %}
                 {{ registration.competition.heldAt|toDateTimeLocal }}{% endif %}
-        </span>
+        </div>
                     </li>
                 {% endfor %}
             </ul>
@@ -45,14 +45,14 @@
             <ul class="list-group list-group-flush sport-text mb-3">
                 {% for team in teams %}
                     <li class="list-group-item d-flex justify-content-between w-100 {{ team.competition.isfinished ? ' bg-light' : '' }}">
-        <span class="pl-3 row d-flex align-items-center">
+        <div class="pl-3 row d-flex align-items-center">
             {% if (user is not null and user in team.players) or is_granted("ROLE_ADMIN") %}
                 <a class="mr-1" href="{{ path('team_show', {id: team.id}) }}">{{ team.name }}</a>
             {% else %}{{ team.name }}{% endif %}
             ({{ team.competition.game.name }}){% if team.competition.heldAt %}
                 {{ team.competition.heldAt|toDateTimeLocal }}{% if team.ranking is not null %} - Ranking: {{ team.ranking }}{% endif %}
             {% endif %}
-        </span>
+        </div>
                     </li>
                 {% endfor %}
             </ul>

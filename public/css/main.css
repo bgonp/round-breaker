@@ -168,8 +168,7 @@ h1 {
     color: #4cd365 !important;
 }
 
-.list-group-item span {
-    height: 38px;
+.list-group-item div {
     min-height: 38px;
 }
 

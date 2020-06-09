@@ -6,18 +6,18 @@
         <h1>Juegos {% if is_granted('ROLE_ADMIN') %}<a class="btn btn-dark sport-text" href="{{ path('game_new') }}">Crear Juego</a>{% endif %}</h1>
         <ul class="list-group list-group-flush sport-text">
             {% for game in games %}
-            <li class="list-group-item d-flex justify-content-between col-12 col-xs-9 game-item">
-                <span class="pl-3 row d-flex align-items-center">
+            <li class="list-group-item d-flex justify-content-between col-12 col-xs-9">
+                <div class="pl-3 row d-flex align-items-center">
                     <a class="mr-1" href="{{ path('game_show', {id: game.id}) }}">{{ game.name }}&nbsp;</a> {{ game.description }}
-                </span>
+                </div>
                 {% if is_granted('ROLE_ADMIN') %}
-                <span class="d-flex align-items-center">
+                <div class="d-flex align-items-center">
                     <a class="btn btn-dark sport-text mr-2" href="{{ path('game_edit', {id: game.id}) }}">Editar</a>
                     <form action="{{ path('game_delete') }}" method="POST" class="d-inline">
                         <input type="hidden" name="game_id" value="{{ game.id }}">
                         <input class="btn btn-dark sport-text confirmable submit-delete" type="submit" value="borrar">
                     </form>
-                </span>
+                </div>
                 {% endif %}
             </li>
             {% endfor %}
