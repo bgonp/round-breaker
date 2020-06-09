@@ -137,11 +137,11 @@
                         <h5 class="card-title sport-text">{{ team.name }}</h5>
                         <ul class="list-group">
                             {% for player in team.players %}
-                                <li class="list-group-item sport-text">{{ player.username }} {{player == team.captain ? '<i class="fas fa-crown text-warning"></i>' : '' }} 
+                                <li class="list-group-item sport-text">{{ player.username }} {{player == team.captain ? '<i class="fa fa-star text-warning"></i>' : '' }}
                                     <form action="{{ path('kick_member') }}" method="post" class="d-inline">
                                         <input type="hidden" name="team_id" value="{{ team.id }}">
                                         <input type="hidden" name="player_id" value="{{ player.id }}">
-                                        <div class="float-right"><button class="fas fa-random controls confirmable" type="submit" title="cambiar jugador"></button></div>
+                                        <div class="float-right"><button class="fa fa-random controls confirmable" type="submit" title="cambiar jugador"></button></div>
                                     </form>
                                 </li>
                             {% endfor %}
@@ -162,15 +162,15 @@
                         {% if competition.isOpen %}
                             <form action="{{ path('registration_delete') }}" method="POST" class="d-inline">
                                 <input type="hidden" name="registration_id" value="{{ registration.id }}">
-                                <button id="submit-delete" class="fas fa-skull controls confirmable" type="submit" title="Ban"></button>
+                                <button id="submit-delete" class="fa fa-times-circle controls confirmable" type="submit" title="Ban"></button>
                             </form>
                             <form action="{{ path('toggle_confirmation') }}" method="POST" class="d-inline">
                                 <input type="hidden" name="registration_id" value="{{ registration.id }}">
                                 <input type="hidden" name="confirm" value="{{ registration.isConfirmed ? 0 : 1 }}">
                                 <button id="submit-edit" class="controls" type="submit"
                                         title="{{ registration.isConfirmed ? 'Unconfirm' : 'Confirm' }}">
-                                    <i class="far fa-square"></i>
-                                    <i class="far fa-check-square"></i>
+                                    <i class="fa fa-square-o"></i>
+                                    <i class="fa fa-check-square-o"></i>
                                 </button>
                         </form>
                         {% endif %}

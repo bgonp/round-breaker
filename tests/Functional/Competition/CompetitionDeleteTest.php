@@ -23,7 +23,7 @@ class CompetitionDeleteTest extends CompetitionBaseTest
     {
         $competition = $this->getCompetition(true, false);
         $competition_id = $competition->getId();
-        $playerRepository = self::$container->get('App\Repository\PlayerRepository');
+        $playerRepository = $this->getRepository('Player');
         do {
             $player = $playerRepository->findRandomized(1)[0];
         } while ($competition->getStreamer()->equals($player) || in_array('ROLE_ADMIN', $player->getRoles()));

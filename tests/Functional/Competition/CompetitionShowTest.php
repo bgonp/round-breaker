@@ -15,8 +15,8 @@ class CompetitionShowTest extends CompetitionBaseTest
         $this->assertEquals($competition->getStreamer()->getUsername(), $crawler->filter('.streamer a')->text());
         $this->assertCount(0, $crawler->filter('.match'));
         $this->assertCount(0, $crawler->filter('.team-item'));
-        $this->assertCount(21, $crawler->filter('.registration-item'));
-        $this->assertCount(18, $crawler->filter('.registration-item.confirmed'));
+        $this->assertCount(19, $crawler->filter('.registration-item'));
+        $this->assertCount(14, $crawler->filter('.registration-item.confirmed'));
     }
 
     public function testInProgress(): void
@@ -26,11 +26,11 @@ class CompetitionShowTest extends CompetitionBaseTest
 
         $this->assertEquals(200, $this->response()->getStatusCode());
         $this->assertEquals($competition->getStreamer()->getUsername(), $crawler->filter('.streamer a')->text());
-        $this->assertCount(14, $crawler->filter('.match'));
-        $this->assertCount(6, $crawler->filter('a[data-team=""]'));
-        $this->assertCount(8, $crawler->filter('.team-item'));
-        $this->assertCount(22, $crawler->filter('.registration-item'));
-        $this->assertCount(19, $crawler->filter('.registration-item.confirmed'));
+        $this->assertCount(2, $crawler->filter('.match'));
+        $this->assertCount(0, $crawler->filter('a[data-team=""]'));
+        $this->assertCount(2, $crawler->filter('.team-item'));
+        $this->assertCount(20, $crawler->filter('.registration-item'));
+        $this->assertCount(15, $crawler->filter('.registration-item.confirmed'));
     }
 
     public function testFinished(): void
@@ -40,10 +40,10 @@ class CompetitionShowTest extends CompetitionBaseTest
 
         $this->assertEquals(200, $this->response()->getStatusCode());
         $this->assertEquals($competition->getStreamer()->getUsername(), $crawler->filter('.streamer a')->text());
-        $this->assertCount(6, $crawler->filter('.match'));
+        $this->assertCount(2, $crawler->filter('.match'));
         $this->assertCount(0, $crawler->filter('a[data-team=""]'));
-        $this->assertCount(4, $crawler->filter('.team-item'));
-        $this->assertCount(13, $crawler->filter('.registration-item'));
+        $this->assertCount(2, $crawler->filter('.team-item'));
+        $this->assertCount(15, $crawler->filter('.registration-item'));
         $this->assertCount(10, $crawler->filter('.registration-item.confirmed'));
     }
 }

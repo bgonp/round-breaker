@@ -6,10 +6,9 @@
     <title>{% block title %}Round Breaker{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {% block stylesheets %}
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{{ asset('css/main.css') }}" />
-    <script src="https://kit.fontawesome.com/fb4c16e9c5.js" crossorigin="anonymous"></script>
     {% endblock %}
 </head>
 
@@ -23,7 +22,7 @@
         <div class="message-container">
             <div class="message error">
                 <p class="m-0">{{ message }}</p>
-                <a href="#" class="close"><i class="fas fa-window-close"></i></a>
+                <a href="#" class="close"><i class="fa fa-window-close"></i></a>
             </div>
         </div>
     {% endfor %}
@@ -31,7 +30,7 @@
         <div class="message-container">
             <div class="message success">
                 <p class="m-0">{{ message }}</p>
-                <a href="#" class="close"><i class="fas fa-window-close"></i></a>
+                <a href="#" class="close"><i class="fa fa-window-close"></i></a>
             </div>
         </div>
     {% endfor %}

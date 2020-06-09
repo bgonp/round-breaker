@@ -1,4 +1,9 @@
 ;(() => {
+    document.querySelector('.main-menu .navbar-toggler').addEventListener('click', (e) => {
+        e.preventDefault();
+        document.getElementById('main-menu').classList.toggle('show');
+    })
+
     const confirmables = document.querySelectorAll('a.confirmable, button.confirmable, input.confirmable');
     for (const confirmable of confirmables) {
         confirmable.addEventListener('click', (e) => {

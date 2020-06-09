@@ -46,8 +46,8 @@ class CompetitionEditTest extends CompetitionBaseTest
             $this->assertCount(1, $crawler->filter('#submit-randomize'));
             $this->assertCount(0, $crawler->filter('.match'));
             $this->assertCount(0, $crawler->filter('.team-item'));
-            $this->assertCount(21, $crawler->filter('.registration-item'));
-            $this->assertCount(18, $crawler->filter('.registration-item.confirmed'));
+            $this->assertCount(19, $crawler->filter('.registration-item'));
+            $this->assertCount(14, $crawler->filter('.registration-item.confirmed'));
             foreach ($this->getFieldsNames() as $name) {
                 $this->assertCount(1, $crawler->filter(sprintf('[name="%s"]', $name)));
             }
@@ -67,11 +67,11 @@ class CompetitionEditTest extends CompetitionBaseTest
 
             $this->assertEquals(200, $this->response()->getStatusCode());
             $this->assertCount(0, $crawler->filter('#submit-randomize'));
-            $this->assertCount(14, $crawler->filter('.match'));
-            $this->assertCount(6, $crawler->filter('a[data-team=""]'));
-            $this->assertCount(8, $crawler->filter('.team-item'));
-            $this->assertCount(22, $crawler->filter('.registration-item'));
-            $this->assertCount(19, $crawler->filter('.registration-item.confirmed'));
+            $this->assertCount(2, $crawler->filter('.match'));
+            $this->assertCount(0, $crawler->filter('a[data-team=""]'));
+            $this->assertCount(2, $crawler->filter('.team-item'));
+            $this->assertCount(20, $crawler->filter('.registration-item'));
+            $this->assertCount(15, $crawler->filter('.registration-item.confirmed'));
             foreach ($this->getFieldsNames(true) as $name) {
                 $this->assertCount(0, $crawler->filter(sprintf('[name="%s"]', $name)));
             }
@@ -180,8 +180,8 @@ class CompetitionEditTest extends CompetitionBaseTest
         $this->assertCount(6, $crawler->filter('.match'));
         $this->assertCount(2, $crawler->filter('a[data-team=""]'));
         $this->assertCount(4, $crawler->filter('.team-item'));
-        $this->assertCount(21, $crawler->filter('.registration-item'));
-        $this->assertCount(18, $crawler->filter('.registration-item.confirmed'));
+        $this->assertCount(19, $crawler->filter('.registration-item'));
+        $this->assertCount(14, $crawler->filter('.registration-item.confirmed'));
 
         $this->reloadFixtures();
     }
@@ -215,8 +215,8 @@ class CompetitionEditTest extends CompetitionBaseTest
         $this->assertFalse((bool) $form['open']->getValue());
         $this->assertCount(1, $crawler->filter('.message.error'));
         $this->assertCount(0, $crawler->filter('#submit-randomize'));
-        $this->assertCount(6, $crawler->filter('.match'));
-        $this->assertCount(4, $crawler->filter('.team-item'));
+        $this->assertCount(2, $crawler->filter('.match'));
+        $this->assertCount(2, $crawler->filter('.team-item'));
     }
 
     private function getFieldsNames(bool $onlyHidden = false): array

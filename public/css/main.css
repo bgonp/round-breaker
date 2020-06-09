@@ -12,11 +12,11 @@ body {
 .main-container {
     max-width: 1280px;
 }
-.titulo {
-    color:#f7921e;
-    font-size: 1.8vw;
-    font-family: deporte;
-    letter-spacing: 2.5px;
+.main-title {
+    font-size: 1.2rem;
+}
+.letter-spaced {
+    letter-spacing: 2px;
 }
 
 .cards {
@@ -30,12 +30,12 @@ body {
     letter-spacing: 2px;
 }
 
-a {
+a, .text-orange {
     color:#f7921e !important;
 
 }
 
-a:hover {
+a:hover, a.text-orange:hover, button.text-orange:hover {
     color:#4cd365 !important;
     text-decoration: none;
 }
@@ -169,7 +169,33 @@ h1 {
 }
 
 .list-group-item span {
+    height: 38px;
     min-height: 38px;
+}
+
+.main-menu .navbar-toggler {
+    font-size: 1.75rem;
+    border: 1px solid #f7921e;
+}
+
+#main-menu .nav-link {
+    font-size: 1rem;
+    font-weight: bold;
+    padding: .5rem .8rem;
+    border: none;
+}
+
+@media (max-width: 991px) {
+    #main-menu.show {
+        display: block !important;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        padding: .5rem;
+        text-align: right;
+        background: #343a40;
+        height: auto !important;
+    }
 }
 
 .password-form input{
@@ -177,5 +203,5 @@ h1 {
     border: 1px solid grey;
     opacity: 0.5;
     height: 2.2em;
-    margin: 0 0 0.5em 0.5em
+    margin: 0 0 0.5em 0.5em;
 }
