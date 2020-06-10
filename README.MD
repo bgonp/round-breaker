@@ -231,27 +231,74 @@ Carpeta principal con el código fuente de la página, dividida en subcarpetas s
 
 ### Migrations
 
+Contiene las migraciones de Doctrine de la base de datos.
+Las migraciones guardan los cambios a la base de datos y nos permiten actualizarla de forma segura a la vez de mantener un historial.
+Se pueden ejecutar en orden en una base de datos vacía para tener todas las entidades requeridas por la aplicación.
+
 ### Entity
+
+Clases requeridas por Doctrine para convertir nuestras tablas en entidades.
+Su función es disminuir la necesidad de queries de SQL y facilitar la adquisición de información.
 
 ### Repository
 
+Contiene métodos que hacen peticiones a base de datos.
+Utilizados para hacer queries más complicadas y evitar llamadas innecesarias al EntityManager.
+Su función es agilizar las peticiones y evitar duplicación de código en los controladores.
+
 ### Service
 
-### Controller 
+Métodos que editan información de la base de datos.
+Llaman a métodos de repositorios y entidades, reciben objetos y los editan de la forma deseada.
+Tras la edición de la entidad actualizan la base de datos de la tabla correspondiente.
+Sirven para reestructurar y dividir los métodos de la aplicación en clases específicas.
+
+### Controller
+
+Contiene todos los controladores de Symfony, los cuales dan lógica a toda la aplicación. Su función es dar instrucciones a
+las rutas de la página web y devolver datos a los modelos twig. Escritos en PHP.
 
 ### ArgumentResolver
 
+Contiene clases que implementan la interfaz ParamConverter.
+Nos permite resolver entidades mediante IDs introducidos como parámetros en las rutas de la página.
+Su función es facilitar la resolución de entidades en los controladores.
+
 ### Security
+
+Contiene el autenticador de inicio de sesión de la página web.
+Se encarga de manejar el formulario de login y resolver la adquisición del usuario logeado.
+La clase implementa la interfaz de autenticación de Symfony.
 
 ### DataFixtures
 
+Contiene clases Fixture de Doctrine, los cuales permiten rellenar una base de datos vacía con datos de prueba.
+Cada clase contiene métodos que rellenan las tablas de la forma programada.
+Su función es crear una base de datos con información realista con gran cantidad de entidades, 
+imprescindible para probar la funcionalidad de la página.
+
 ### Exception
+
+Excepciones personalizadas de Symfony, nos permiten dar mensajes de error precisos a nuestros métodos en caso de fallo.
+Evitan el uso de mensajes de excepción genéricos.
 
 ### TwigExtension
 
+Extensiones a la funcionalidad de archivos twig.
+Contienen métodos utilizados en modelos, disminuyen la lógica incluida en ellos.
+Sirven para mantener las vistas con la menor programación posible.
+
 ### Form
 
+Contienen tipos de formularios personalizados creados mediante Symfony.
+Implementan la interfaz AbstractType, la cual incluye métodos para crear formularios html en PHP.
+
 ## templates
+
+Modelos twig que reciben datos de los controladores y proporcionan una vista a la aplicación.
+Cada ruta tiene su propia vista, la cual renderiza los datos adecuadamente.
+El uso de archivos twig nos permite enseñar y esconder código html de forma inteligente, 
+dependiendo del tipo de usuario y sus permisos.
 
 ## tests
 
@@ -318,7 +365,6 @@ Set de iconos ligeros para mostrar y ayudar en la navegación.
 
 
 ## Manual de usuario  
-  
 Este manual cubrirá las dudas que puedan sugerir al navegar nuestra página por primera vez.  
 Empezaremos por la página de inicio.  
 
