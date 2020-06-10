@@ -41,6 +41,7 @@ class CompetitionRepository extends ServiceEntityRepository
         if ($game) {
             return $this->count(['game' => $game]);
         }
+
         return $this->count([]);
     }
 

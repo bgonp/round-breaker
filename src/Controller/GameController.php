@@ -6,7 +6,6 @@ use App\Entity\Game;
 use App\Exception\CannotDeleteGameException;
 use App\Repository\CompetitionRepository;
 use App\Repository\GameRepository;
-use App\Repository\PlayerRepository;
 use App\Repository\RegistrationRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

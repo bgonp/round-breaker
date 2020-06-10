@@ -2,14 +2,8 @@
 
 namespace App\Controller;
 
-use App\DataFixtures\BracketFixtures;
-use App\DataFixtures\CompetitionFixtures;
-use App\DataFixtures\GameFixtures;
-use App\DataFixtures\PlayerFixtures;
-use App\DataFixtures\RegistrationFixtures;
 use App\Entity\Player;
 use App\Exception\InvalidPlayerDataException;
-use App\Kernel;
 use App\Repository\CompetitionRepository;
 use App\Repository\GameRepository;
 use App\Repository\PlayerRepository;
