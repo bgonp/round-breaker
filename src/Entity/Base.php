@@ -14,17 +14,17 @@ abstract class Base
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    protected $id;
+    protected int $id;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    protected $createdAt;
+    protected \DateTime $createdAt;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    protected $updatedAt;
+    protected \DateTime $updatedAt;
 
     public function __construct()
     {
