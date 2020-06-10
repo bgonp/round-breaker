@@ -87,7 +87,7 @@
     {% endif %}
 
     <div class="col-12 col-lg-6 {{ competition.isOpen ? 'offset-lg-3' : '' }}">
-        <h1 class="d-inline">Inscripciones </h1><h4 class="d-inline"><span class="badge badge-dark sport-text text-orange ">{{competition.registrations|length}}</span></h4>
+        <div class="text-center"><h1 class="d-inline">Inscripciones </h1><h4 class="d-inline"><span class="badge badge-dark sport-text text-orange ">{{competition.registrations|length}}</span></h4></div>
         <ul class="list-group list-group-flush sport-text mb-3">
             {% for registration in competition.registrations %}
                 <li class="list-group-item registration-item{{ registration.isConfirmed ? ' confirmed' : '' }}">
