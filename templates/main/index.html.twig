@@ -4,28 +4,32 @@
 <div class="row">
     <div class="col-md-9">
         {%  if competition %}
-        <h1 class="text-center"><a href="{{ path('competition_show', {id: competition.id}) }}">{{ competition.name }}</a></h1>
-            {% if bracketType == 2 %}{% include 'brackets/bracket_2.html.twig' %}
-            {% elseif bracketType == 4 %}{% include 'brackets/bracket_4.html.twig' %}
-            {% elseif bracketType == 8 %}{% include 'brackets/bracket_8.html.twig' %}
-            {% elseif bracketType == 16 %}{% include 'brackets/bracket_16.html.twig' %}
-            {% endif %}
+        <h1 class="text-center"><a
+                href="{{ path('competition_show', {id: competition.id}) }}">{{ competition.name }}</a></h1>
+        {% if bracketType == 2 %}{% include 'brackets/bracket_2.html.twig' %}
+        {% elseif bracketType == 4 %}{% include 'brackets/bracket_4.html.twig' %}
+        {% elseif bracketType == 8 %}{% include 'brackets/bracket_8.html.twig' %}
+        {% elseif bracketType == 16 %}{% include 'brackets/bracket_16.html.twig' %}
+        {% endif %}
         {% endif %}
         <div class="col-md-12 px-0">
             <h1>¿Qué es roundbreaker?</h1>
             <p class="text-left">RoundBreaker es un sistema de gestión de competiciones de e-sports que abarca
                 inscripciones, formaciones de equipos y gestión de rondas además de integración con Twitch.</p>
 
-            <p class="text-left">Para streamers, jugadores profesionales y todo el que tenga un afán para la competición.
-            En RoundBreaker podrás crear y unirte a torneos para demostrar de una vez por todas, quién es el mejor. Con nuestro sistema
-            de randomización siempre encontrarás un nuevo rival con el que competir.</p>
+            <p class="text-left">Para streamers, jugadores profesionales y todo el que tenga un afán para la
+                competición.
+                En RoundBreaker podrás crear y unirte a torneos para demostrar de una vez por todas, quién es el mejor.
+                Con nuestro sistema
+                de randomización siempre encontrarás un nuevo rival con el que competir.</p>
 
             <p class="text-left">Con un historial de resultados y competiciones público, podrás explorar y encontrar
                 un torneo que se adapte a ti. ¿A qué esperas? ¡Apúntate!</p>
         </div>
         <div class="row">
             <img class="col-md-6 img-fluid" src="{{ asset('img/esports.jpg') }}" alt="Esports Players">
-            <img class="d-none d-sm-block col-md-6 img-fluid" src="{{ asset('img/esports2.jpg') }}" alt="Esports Tournament Crowd">
+            <img class="d-none d-sm-block col-md-6 img-fluid" src="{{ asset('img/esports2.jpg') }}"
+                alt="Esports Tournament Crowd">
         </div>
     </div>
     <div class="col-md-3">
@@ -48,7 +52,8 @@
                     <div class="m-3">
                         <p class="text-center">¡Hola, {{ player.username }}!</p>
                         <a class="btn btn-dark sport-text w-100 mb-3" href="{{ path('profile') }}">Mi Perfil</a>
-                        <a class="btn btn-dark sport-text w-100 mb-3" href="{{ path('competition_new') }}">Crear Torneo</a>
+                        <a class="btn btn-dark sport-text w-100 mb-3" href="{{ path('competition_new') }}">Crear
+                            Torneo</a>
                         <a class="btn btn-light sport-text w-100" href="{{ path('app_logout') }}">Logout</a>
                     </div>
                     {% else %}
@@ -57,12 +62,15 @@
                         <label for="inputUsernameLogin" class="d-none">Username</label>
                         <input type="text" value="{{ last_username is defined ? last_username : '' }}" name="username"
                             id="inputUsernameLogin" class="mb-3 form-control" placeholder="Usuario" required autofocus>
+                    </div>
+                    <div class="form-group">
                         <label for="inputPasswordLogin" class="d-none">Password</label>
                         <input type="password" name="password" id="inputPasswordLogin" class="form-control"
                             placeholder="Contraseña" required>
                     </div>
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-                    <button id="submit-login" class="btn btn-lg btn-primary btn-dark sport-text form-control mb-2" type="submit">
+                    <button id="submit-login" class="btn btn-lg btn-primary btn-dark sport-text form-control"
+                        type="submit">
                         Log in
                     </button>
                     <a href="{{ path('app_forgot_password_request') }}">He olvidado mi contraseña</a>
@@ -75,20 +83,30 @@
                         <label for="inputUsername" class="d-none">Username</label>
                         <input type="text" value="{{ last_username is defined ? last_username : '' }}" name="username"
                             id="inputUsername" class="mb-3 form-control" placeholder="Usuario" required>
+                    </div>
+                    <div class="form-group">
                         <label for="inputPassword" class="d-none">Password</label>
                         <input type="password" name="password" id="inputPassword" class="mb-3 form-control"
                             placeholder="Contraseña" required>
+                    </div>
+                    <div class="form-group">
                         <label for="inputPasswordRepeat" class="d-none">Repetir Password</label>
                         <input type="password" name="passwordrepeat" id="inputPasswordRepeat" class="mb-3 form-control"
                             placeholder="Repetir Contraseña" required>
+                    </div>
+                    <div class="form-group">
                         <label for="inputEmail" class="d-none">Email</label>
                         <input type="email" name="email" value="{{ last_email is defined ? last_email : '' }}"
                             id="inputEmail" class="mb-3 form-control" placeholder="Email" required>
-                            <label for="inputTwitchname" class="d-none">Twitchname</label>
-                        <input type="text" name="twitchname" value="{{ last_twitchname is defined ? last_twitchname : '' }}"
-                            id="inputTwitchname" class="mb-3 form-control" placeholder="Twitchname" required>
                     </div>
-                    <button class="btn btn-lg btn-primary btn-dark sport-text form-control" type="submit" id="submit-register">
+                    <div class="form-group">
+                        <label for="inputTwitchname" class="d-none">Twitchname</label>
+                        <input type="text" name="twitchname"
+                            value="{{ last_twitchname is defined ? last_twitchname : '' }}" id="inputTwitchname"
+                            class="mb-3 form-control" placeholder="Twitchname" required>
+                    </div>
+                    <button class="btn btn-lg btn-primary btn-dark sport-text form-control" type="submit"
+                        id="submit-register">
                         Registrar
                     </button>
                 </form>
@@ -98,20 +116,23 @@
         <div class="card mb-3">
             <div class="card-header text-center cards">¡lo más jugado!</div>
             <ul class="list-unstyled my-1 px-3">
-            {% for game in mostsPlayed %}
+                {% for game in mostsPlayed %}
                 <li class="my-2">
                     <a href="{{ path('game_show', { id: game[0].id }) }}">{{ game[0].name }}</a>
                     ({{ game[1] }} torneos)
                 </li>
-            {% endfor %}
+                {% endfor %}
             </ul>
         </div>
         <div class="card">
             <div class="card-header text-center cards">Redes Sociales</div>
             <div class="row p-3">
-                <div class="col rrss"><a target="_blank" href="https://www.facebook.com"><img alt="Enlace a Facebook" src="{{ asset('img/facebook.png') }}" class="img-fluid" /></a></div>
-                <div class="col rrss"><a target="_blank" href="https://www.twitch.tv"><img alt="Enlace a Twitch"  src="{{ asset('img/twitch.png') }}" class="img-fluid" /></a></div>
-                <div class="col rrss"><a target="_blank"  href="https://www.twitter.com"><img alt="Enlace a Twitter" src="{{ asset('img/gorjeo.png') }}" class="img-fluid" /></a></div>
+                <div class="col rrss"><a target="_blank" href="https://www.facebook.com"><img alt="Enlace a Facebook"
+                            src="{{ asset('img/facebook.png') }}" class="img-fluid" /></a></div>
+                <div class="col rrss"><a target="_blank" href="https://www.twitch.tv"><img alt="Enlace a Twitch"
+                            src="{{ asset('img/twitch.png') }}" class="img-fluid" /></a></div>
+                <div class="col rrss"><a target="_blank" href="https://www.twitter.com"><img alt="Enlace a Twitter"
+                            src="{{ asset('img/gorjeo.png') }}" class="img-fluid" /></a></div>
             </div>
         </div>
     </div>

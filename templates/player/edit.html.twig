@@ -4,29 +4,45 @@
 
 {% block content %}
 <div class="row">
-    <div class="col-md-12
+    <div class="col-md-6 mx-auto
     {% if competitions is defined %} col-lg-4 col-xl-5 py-3
         {% endif %}">
         <h1>Perfil</h1>
         <form method="post">
             <h5 class=" sport-text">{{ player ? player.username : 'Not logged in' }}</h5>
-            <div class="form-group card form-group border border-secondary p-3">
-                <label for="inputUsername" class="sport-text">Username</label>
-                <input type="text" value="{{ player.username is defined ? player.username : '' }}" name="username"
-                    id="inputUsername" class="mb-3 form-control" placeholder="Usuario" required autofocus>
-                <label for="inputPassword" class="sport-text">Contraseña</label>
-                <input type="password" name="password" id="inputPassword" class="mb-3 form-control"
-                    placeholder="Contraseña" required>
-                <label for="inputPasswordRepeat" class="sport-text">Repetir contraseña</label>
-                <input type="password" name="passwordrepeat" id="inputPasswordRepeat" class="mb-3 form-control"
-                    placeholder="Repetir contraseña" required>
-                <label for="inputEmail" class="sport-text">Email</label>
-                <input type="email" name="email" value="{{ player.email is defined ? player.email : '' }}"
-                    id="inputEmail" class="mb-3 form-control" placeholder="Email" required>
-                <label for="inputTwitchname" class="sport-text">Twitchname</label>
-                <input type="text" name="twitch_name"
-                    value="{{ player.twitchname is defined ? player.twitchname : '' }}" id="inputTwitchname"
-                    class="mb-3 form-control" placeholder="Twitchname" required>
+            <div class="card border border-secondary p-3">
+
+                <div class="form-group">
+                    <label for="inputUsername" class="sport-text">Username</label>
+                    <input type="text" value="{{ player.username is defined ? player.username : '' }}" name="username"
+                        id="inputUsername" class="form-control" placeholder="Usuario" required autofocus>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputPassword" class="sport-text">Contraseña</label>
+                    <input type="password" name="password" id="inputPassword" class="form-control"
+                        placeholder="Contraseña" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputPasswordRepeat" class="sport-text">Repetir contraseña</label>
+                    <input type="password" name="passwordrepeat" id="inputPasswordRepeat" class="form-control"
+                        placeholder="Repetir contraseña" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputEmail" class="sport-text">Email</label>
+                    <input type="email" name="email" value="{{ player.email is defined ? player.email : '' }}"
+                        id="inputEmail" class="form-control" placeholder="Email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputTwitchname" class="sport-text">Twitchname</label>
+                    <input type="text" name="twitch_name"
+                        value="{{ player.twitchname is defined ? player.twitchname : '' }}" id="inputTwitchname"
+                        class="form-control" placeholder="Twitchname" required>
+                </div>
+
                 <button class="btn btn-lg btn-primary btn-dark break-text-large form-control" type="submit"
                     id="submit-edit">
                     Editar detalles
@@ -96,5 +112,5 @@
         {% endif %}
         {% endif %}
     </div>
-    </div>
-    {% endblock %}
+</div>
+{% endblock %}

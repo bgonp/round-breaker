@@ -20,21 +20,22 @@
                 <li class="list-group-item sport-text"><a href="{{ path('competition_show', {id: team.competition.id}) }}">{{team.competition.name}}</a></li>
                 <li class="list-group-item sport-text">Organiza: <a href="{{ path('player_show', { id: team.competition.streamer.id }) }}">
                         {{ team.competition.streamer.username }}</a></li>
-                {% if team.competition.heldAt %}<li class="list-group-item sport-text">Celebrado en: {{ team.competition.heldAt|toDateTimeLocal }}</li>{% endif %}
+                {% if team.competition.heldAt %}<li class="list-group-item sport-text">Fecha y hora: {{ team.competition.heldAt|toDateTimeLocal }}</li>{% endif %}
                 {% if team.competition.lobbyName %}<li class="list-group-item sport-text">Sala: {{ team.competition.lobbyName }}</li>{% endif %}
                 {% if team.competition.lobbyPassword %}<li class="list-group-item sport-text">Contraseña de sala: {{ team.competition.lobbypassword }}</li>{% endif %}
-                {% if team.ranking is not null %}<li class="list-group-item sport-text">Team Ranking: {{ team.ranking }}</li>{% endif %}
+                {% if team.ranking is not null %}<li class="list-group-item sport-text">Ranking de equipo: {{ team.ranking }}</li>{% endif %}
                 <li class="list-group-item sport-text">{{ team.competition.isOpen ? "Abierta" : "Cerrada" }} y {{ team.competition.isFinished ? "Terminada" : "En Curso" }}
                 </li>
     </div>
     {% if canEditName %}
     <div class="col-sm-6 p-3">
         <form method="post">
-            <div class="card form-group border border-secondary p-3">
+            <div class="card border border-secondary p-3">
+                <div class="form-group">
                 <label for="inputName" class="sport-text-form">{% if is_granted("ROLE_ADMIN") %}Editar nombre de equipo{% else %}Eres capitán, cambia el nombre a tu equipo{% endif %}</label>
                 <input type="text" value="{{ team.name }}" name="name" id="inputName"
                     class="form-control form-control-lg">
-
+                </div>
                 <button class="btn btn-lg btn-dark break-text-large mt-3" type="submit" id="submit-edit">
                     Cambiar!
                 </button>
