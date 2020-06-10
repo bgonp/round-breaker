@@ -7,7 +7,6 @@
         "ext-iconv": "*",
         "beberlei/doctrineextensions": "^1.2",
         "fzaninotto/faker": "^1.9",
-        "nicklaw5/twitch-api-php": "^2.1",
         "sensio/framework-extra-bundle": "^5.5",
         "symfony/apache-pack": "^1.0",
         "symfony/asset": "5.1.*",

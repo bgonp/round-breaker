@@ -9,9 +9,9 @@
 - Borja González Pereiro
 - Pedro González-Tarrío Polo
 
-## Descripción del proyecto
+# Descripción del proyecto
 
-### ¿Qué es Round Breaker?
+## ¿Qué es Round Breaker?
 
 Round Breaker es un sistema de gestión de competiciones de e-sports que abarca inscripciones, formaciones de equipos y gestión de rondas y resultados, además de integración con el sistema de retransmisión Twitch y con su chat.
 
@@ -23,7 +23,7 @@ Una vez haya suficientes inscripciones confirmadas el organizador podrá generar
 
 Desde la aplicación web podrán consultarse públicamente los resultados y un histórico de competiciones de los usuarios.
 
-### Idea
+## Idea
 
 La idea de Round Breaker surge de observar el crecimiento exponencial de los e-sports y cómo han aparecido muchas herramientas enfocadas a competiciones online pero siempre pensando desde un punto de vista profesional, con equipos ya formados y de buen nivel.
 
@@ -33,34 +33,35 @@ Round Breaker provee una integración completa con la principal plataforma de re
 
 Nuestra aplicación ofrece una forma rápida y ágil de organizar todo lo necesario para que pueda hacerse en vivo mientras se retransmite, para hacerlo así también atractivo para el espectador.
 
-## Instalación
+# Instalación
 
-### Requisitos
+## Requisitos
 
 - PHP >= 7.4.2
 - Composer
 - MySQL >= 5.7
 
-### Paso a paso
+## Paso a paso
 
-#### - Clonación del proyecto
+### Clonación del proyecto
 Puedes clonar todo nuestro proyecto desde nuestro repositorio público de github [github.com/bgonp/round-breaker](https://github.com/bgonp/round-breaker):
 ```
 $ git clone https://github.com/bgonp/round-breaker
 ```
+Asegúrate que la carpeta `/var` tiene permisos de lectura y escritura, ya que es necesario para el uso de caché y log. 
 
-#### - Instalación de dependencias
+#### Instalación de dependencias
 Una vez con el repositorio clonado puedes instalar las dependencias necesarias usando composer ejecutando este comando desde la raíz del proyecto:
 ```
 $ composer install
 ```
-#### - Base de datos
-La aplicación necesita una base de datos MySQL para funcionar. Crea una base de datos y un usuario con permisos de lectura y escritura sobre ella. Necesitarás el nombre de la base de datos, el nombre de usuario y la contraseña para poder conectar la aplicación.
+#### Base de datos
+La aplicación necesita una base de datos MySQL para funcionar (versión mínima 5.7). Crea una base de datos y un usuario con permisos de lectura y escritura sobre ella. Necesitarás el nombre de la base de datos, el nombre de usuario y la contraseña para poder conectar la aplicación.
 
-#### - E-mail
+#### E-mail
 Para el sistema de recuperación de contraseña necesitas una cuenta de correo electrónico y sus credenciales de autenticación para correo saliente.
 
-#### - Configuración del entorno
+#### Configuración del entorno
 En la raíz del proyecto existe un archivo `.env` que contiene las variables de entorno. Copia este fichero y renómbralo a `.env.local` y sustituye aquí los valores necesarios:
 - Entorno de producción (dev para entorno de desarrollo):
 ```
@@ -75,41 +76,251 @@ MAILER_DSN=smtps://cuenta:contraseña@servidor:puerto
 DATABASE_URL=mysql://usuario:contraseña@servidor:puerto/nombre_db?serverVersion=5.7
 ```
 
-#### - Inicializar la base de datos
+#### Inicializar la base de datos
 El siguiente paso es ejecutar las migraciones del proyecto para crear todas las tablas y relaciones usando el siguiente comando desde la raíz del proyecto:
 ```
 $ php bin/console doctrine:migrations:migrate
 ```
 
-#### - Datos de prueba
-Puedes cargar datos de prueba en la aplicación para ver su funcionamiento ejecutando el siguiente comando (no hacer esto en entorno de producción):
+#### Datos de prueba
+Puedes cargar datos de prueba en la aplicación para ver su funcionamiento ejecutando el siguiente comando (solo en entorno dev y test):
 ```
 $ php bin/console doctrine:fixtures:load
 ```
+La contraseña inicial de todos los usuarios generados (incluido admin) es `randompassword`
 
-#### - Tests
+#### Usuario administrador
+Si no cargas los datos de prueba, puedes generar en base de datos un primer usuario con derechos de administrador a través de la ruta `/install`. Aquí aparece un formulario si en la base de datos no existe ningún usuario.
+
+#### Tests
 Existe una carpeta `tests` con una batería de tests que puedes ejecutar para comprobar el correcto funcionamiento de la aplicación.
 
-#### - Servidor
-El servidor que aloje la aplicación debe configurarse para que apunte a la carpeta `public/` que está en la raíz del proyecto. Se necesita el módulo rewrite para atender correctamente las peticiones a las rutas. Dejamos una configuración de ejemplo para servidores Apache:
+#### Servidor
+El servidor que aloje la aplicación debe configurarse para que apunte a la carpeta `public/` que está en la raíz del proyecto. Se necesita el módulo rewrite para atender correctamente las peticiones a las rutas. Dejamos una configuración de ejemplo para servidores Apache, es necesaria la instrucción `AllowOverride All` para usar el .htaccess ubicado en dicha carpeta `public/`:
 ```
 <VirtualHost *:80>
    DocumentRoot /var/www/round-breaker/public
    <Directory /var/www/round-breaker/public>
-       Options Indexes FollowSymLinks MultiViews
        AllowOverride All
        Require all granted
    </Directory>
 </VirtualHost>
 ```
 
-## Tecnologías usadas
-El proyecto se ha desarrollado en PHP usando el framework Symfony, comenzando en la versión 5.0.8 y migrando posteriormente a 5.1.0.
-Para la integración con el chat de twitch hemos usado la librería [tmi.js](https://github.com/tmijs/tmi.js) para conectar con el websocket del chat de twitch.
+# Diseño de base de datos
+
+### Diagrama entidad relación
+[IMG: ER]
+
+### Diagrama lógico
+[IMG: LM]
+
+## Descripción
+Definimos las entidades que forman el proyecto y sus relaciones. Hemos definido una clase abstracta `Base` de la que heredan el resto de entidades. Esta clase contiene los atributos que son comunes a todas las demás clases (`id`, `createdAt`, `updatedAt`) y un método `equals` para comparar instancias. Además tiene un método que, siguiendo el lifecycle de doctrine _PreUpdate_, actualiza en cada escritura el campo `updatedAt` con la hora y fechas actuales. Con esto hemos conseguido evitar la repetición de código y despejar mucho las entidades. Para el correcto mapeo del ORM hemos tenido que etiquetarla como `MappedSuperclass` y en las  
+
+#### Player
+Es la entidad que representa a los usuarios, implementa la interfaz `UserInterface` para ser la entidad sobre la que actúa el sistema de autenticación, implementando los métodos necesarios. El usuario se identifica usando el campo `username` y tanto éste como `email` y `twitch_name` son obligatorios y deben ser únicos (este último debe serlo ya que nuestro sistema de competiciones basa su sistema de confirmaciones en la conexión con el chat de Twitch).
+
+Es importante indicar que cada uno de estos jugadores, puede crear competiciones y actuará como organizador de la misma, teniendo permisos especiales sobre ella (esto no implica que no pueda inscribirse, un usuario puede ser organizador de una competición y participar en la misma).
+
+#### Game
+Es una entidad sencilla, que contiene únicamente nombre y descripción de un juego. Se usa como atributo de competición, ya que las competiciones se disputan en juegos concretos. Solo el administrador puede dar de alta nuevos juegos a los que dar soporte y editarlos o borrarlos (borrarlo solo si no existe ya alguna competición de ese juego).
+
+#### Competition
+Esta es la entidad más compleja y alrededor de la cual se desarrolla toda la lógica de la aplicación. Además de campos sencillos como el nombre (`name`) o la fecha de celebración de la competición (`heldAt`) podemos ampliar la información de las siguiente propiedades y relaciones:
+- Las propiedades booleanas `isOpen` y `isFinished` definen el estado de la competición. Una competición admite inscripciones hasta que se marca `isOpen` a `false` que es cuando se generan los equipos y puede comenzar la competición. Una vez que se ha llegado a la final y se ha declarado un vencedos, la competición para a tener `isFinished` a true y ya no admite más cambios. Resumiendo:
+    - `isOpen` true & `isFinished` false: Competición programada y aceptando inscripciones.
+    - `isOpen` false & `isFinished` false: Competición en curso, equipos generados y no se admiten más inscripciones.
+    - `isOpen` false & `isfinished` true: Competición finalizada, tiene un ganador y no admite más cambios.
+- `lobbyName` y `lobbyPassword` contienen las claves necesarias para conectarse a la sala del juego donde se celebrará la competición. Esta información será solo visible por los jugadores seleccionados para participar.
+- `playersPerTeam` y `maxPlayers` son dos enteros que definen el tipo de competición a celebrar, pudiendo ser equipos de entre 1 (individual) y 5 jugadores y un árbol de 2, 4, 8 o 16 equipos.
+- `streamer` es la relación `ManyToOne` con la entidad `Player` que representa al jugador que ha creado la competición y que actúa de organizador.
+- `game` es la relación `ManyToOne` con la entidad que representa el juego sobre el que se disputa la competición.
+- `registrations` es la relación `OneToMany` con la entidad que representa la inscripción de cada jugador a esta competición.
+- `teams` es la relación `OneToMany` con los equipos generados para esta competición.
+- `rounds` es la relación  `OneToMany` con las rondas que componen el árbol de la competición.
+- `twitchBotName` y `twitchBotToken` son las credenciales necesarias para conectarse al chat de Twitch del canal indicado en `twitchChannel` y escuchar las confirmaciones de las inscripciones. 
+
+#### Registration
+Representa la inscripción de un jugador a una competición. Esta inscripción solo se tendrá en cuenta para la generación de equipos de la competición si se marca la propiedad `isConfirmed` a true. Para hacer esto el usuario debe confirmar que está presente en el directo de Twitch donde se retransmita escribiendo en el chat el comando `!confirmo`, una vez el organizador abra las inscripciones desde el panel de competición.
+
+#### Team
+Representa una agrupación puntual de jugadores en un equipo para participar en una competición. Tal y como esta pensado nuestro sistema, siendo inscripciones individuales y equipos aleatorios, un equipo existe únicamente para una competición puntual, es por esto que la relación entre `Team` y `Competition` es  `ManyToOne` en lugar de `ManyToMany`.
+Hay dos relaciones entre `Team` y `Player`:
+- `captain` es una relación `ManyToOne` que representa a un único capitán de cada equipo. Este capitán será el portavoz del equipo y será el único con derechos para editarlo.
+- `players` es una relación `ManyToMany` que representa a cada uno de los integrantes del equipo. Aunque hemos limitado en el código a un máximo de 5 jugadores por equipo, esto se puede modificar fácilmente si el futuro queremos equipos más amplios.
+
+Además tiene el atributo `name` con el nombre del equipo (editable por su capitán), `ranking` que almacena el puesto finan y se actualiza según vayan finalizando las rondas, y una relación `ManyToMany` con las rondas en las que juega este equipo.
+
+#### Round
+Representa cada una de las rondas de las que se compone un árbol de competición. Cada ronda enfrenta a dos equipos, pero la relación entre `Round` u `Team` es `ManyToMany` (en lugar de una relación `ManyToOne` para cada equipo) porque queremos dar soporte a encuentros entre un mayor número de equipos, aunque de momento la lógica de nuestra aplicación lo limita a 2.
+Las rondas pertenecen a una única `Competition` y se determina su lugar en el árbol mediante dos atributos:
+- `bracketLevel`: un entero que representa el nivel en el árbol (cuartos, semifinales, final...)
+- `bracketOrder`: un entero que representa el orden de esta ronda dentro de su nivel.
+
+Con estas dos variables se puede ubicar correctamente cada ronda en el árbol y determina cual es la siguiente ronda de cada equipo ganador.
+Por último existe otra relación con `Team`, esta vez `ManyToOne` que es un nullable y pasa a apuntar al equipo ganador una vez que ha terminado la ronda. 
+
+#### ResetPasswordRequest
+Es una entidad generada por el bundle `SymfonyCastsResetPasswordBundle` que se encarga de almacenar los tokens y su fecha de caducidad cada vez que un usuario pide recuperar su contraseña.
+
+# Páginas
+Los controladores se encargan de gestionar las peticiones y devolver respuestas. Hemos recopilado en esta tabla cada una de las rutas existentes en el proyecto con los controladores que las gestionan.
+
+Hemos indicado permisos de player, competitor y streamer aunque todas ellas se refieren a la misma entidad `Player` ya que cada jugador ejerce de `streamer` sobre las competiciones que organiza él mismo y ejerce de `competitor` sobre las inscripciones en las que se registra él mismo o sobre los equipos a los que pertenece. Indicamos `player` en las páginas en las que solo se necesita haber iniciado sesión.
+
+Hemos omitido en esta tabla las páginas de recuperación de contraseña y de instalación por no formar parte de la navegación principal.
+
+|Vista|Permisos|Controlador|Nombre ruta|Descripción|métodos|
+| --- | --- | --- | --- | --- | --- |
+| SI | public | Main | main | Página principal | GET/POST |
+|  |  |  |  |  |  |
+| SI | public | Competition | competition_list | Lista de competiciones | GET |
+| SI | player | Competition | competition_new | Crear nueva competición | GET/POST |
+| NO | streamer | Competition | competition_delete | Borrar una competición | POST |
+| SI | streamer | Competition | competition_edit | Editar una competición | GET/POST |
+| SI | public | Competition | competition_show | Mostrar detalles de una competición | GET |
+|  |  |  |  |  |  |
+| NO | player | Registration | registration_new | Crear nueva inscripción | POST |
+| NO | competitor | Registration | registration_delete | Borrar una inscripción | POST |
+| NO | streamer | Registration | toggle_confirmation | Confirmar/Desconfirmar una inscripción | POST |
+|  |  |  |  |  |  |
+| SI | public | Game | game_list | Lista de juegos | GET |
+| SI | public | Game | game_show | Ver detalles de un juego | GET |
+| SI | admin | Game | game_new | Crear un nuevo juego | GET/POST |
+| NO | admin | Game | game_delete| Borrar un juego existente | POST |
+| SI | admin | Game | game_edit | Editar un juego | GET/POST |
+|  |  |  |  |  |  |
+| SI | competitor | Team | team_show | Detalles del equipo y credenciales | GET/POST |
+|  |  |  |  |  |  |
+| SI | public | Player | player_show | Información del jugador e histórico | GET |
+| SI | admin | Player | player_edit | Edición de datos de jugador | GET/POST |
+| SI | player | Player | profile | Edición de datos de jugador e histórico propio | GET/POST |
+|  |  |  |  |  |  |
+| NO | streamer | Api | api_winner | Indicar el ganador de una ronda | POST |
+| NO | streamer | Api | api_confirm | Confirmar una inscripción | POST |
+| NO | streamer | Api | open_confirmations | Abrir confirmaciones (inicia la escucha de Twitch) | POST |
+
+En [IMG: endpoints](este enlace) se puede ver una versión más extensa de esta tabla, con las rutas completas, los parámetros que se pasan y la plantilla que renderiza la vista.
+
+### Mapa de navegación
+La navegación entre las citadas páginas puede realizarse siguiendo el siguiente mapa de navegación, donde se puede ver las rutas con las que tiene contacto directo cada página.
+
+[IMG: sitemap]
+
+# Estructura del proyecto
+
+El proyecto se ha desarrollado en el framework PHP Symfony. Descripción de las principales carpetas y ficheros:
+
+## config
+Contiene los archivos de configuración del proyecto. 
+
+## public
+Carpeta pública hacía la que van las peticiones y las resuelve a través del fichero index.php, también contiene la configuración del directorio de apache (.htaccess). Todos los recursos públicos se ubican aquí:
+- **css/**: Contiene los archivos de estilos de la web. Es un archivo principal main.css y archivos extra para cada tipo de árbol de competición.
+- **fonts/**: Contiene las fuentes utilizadas para mostrar los textos de la web (Octin y BrokenGlass)
+- **img/**: Imágenes recurso (logo, favicon, imágenes de la home y logos de redes sociales).
+- **js/**:
+    - **main.js**: Principal funcionamiento y listeners de la interfaz de la web.
+    - **twitch.js**: Se carga en la página de edición de competición y se encarga de comunicarse con Twitch usando la librería tmi.js y envía peticiones al servidor para confirmar inscripciones.
+    - **bracket.js**: Se carga en las competiciones con rondas generadas y se encarga de enviar al servidor información del resultado de cada ronda y actualizar el árbol.
+    - **tmi.min.js**: Librería para comunicarse con Twitch usada por twitch.js.
+
+## src
+Carpeta principal con el código fuente de la página, dividida en subcarpetas según la funcionalidad y el tipo de lógica de las clases que contiene:
+
+### Migrations
+
+### Entity
+Contiene cada una de las entidades que componen el diseño de nuestra aplicación
+
+### Repository
+
+### Service
+
+### Controller
+Contiene los controladores que atienden las peticiones al servidor. Se definen aquí las rutas de las que contará 
+
+### ArgumentResolver
+
+### Security
+
+### DataFixtures
+
+### Exception
+
+### TwigExtension
+
+### Form
 
 
-## Organización del proyecto
-  
+
+## templates
+
+## tests
+
+# Organización del equipo
+El código completo del proyecto se puede consultar en el repositorio de GitHub [bgonp/round-breaker](https://github.com/bgonp/round-breaker), donde puede consultarse tanto el código final como los diferentes commits y ramas que hemos ido haciendo los tres integrantes del equipo.
+
+Hemos dividido el proyecto en áreas generales para organizar el equipo, cada uno de nosotros será el principal encargado de algunas de estas áreas, aunque los tres colaboramos en todas ellas:
+
+- Base de datos (Borja)
+- Entidades (Borja)
+- Repositorios (Borja)
+- Controladores (Lucas)
+- Back-end (Lucas)
+- Seguridad (Lucas)
+- Diseño (Pedro)
+- Formularios (Pedro)
+- Templates (Pedro)
+- Integración con Twitch (Borja)
+- Tests (Borja)
+
+# Tecnologías usadas
+
+#### Symfony
+El proyecto se ha desarrollado en PHP usando el framework Symfony, comenzando en la versión 5.0.7 y actualizando posteriormente a 5.1.0.
+
+#### DebugBundle
+Proporciona herramientas de ayuda durante el desarrollo, accesibles desde la barra mostrada en cada página de la aplicación. Nos ha servido para hacer un seguimiento más profundo de los errores y comprobar el buen funcionamiento y las llamadas a base de datos que se hacían.
+
+#### TwigBundle
+Gestor de templates para generar las vistas.
+
+#### DoctrineFixturesBundle
+Para generar datos de prueba útiles para probar la aplicación y ejecutar los tests basados en estas fixtures.
+
+#### LiipTestFixturesBundle
+Proporciona un trait con herramientas para cargar las fixtures en tiempo de ejecución de la aplicación, usado para cargar los datos de prueba durante la ejecución de los tests.
+
+#### SymfonyCastsResetPasswordBundle
+Para crear el sistema de recuperación de contraseñas a través de tokens con caducidad establecida en 2 horas.
+
+#### friendsofphp/php-cs-fixer
+Para unificar el estilo del código de los tres integrantes del equipo y prevenir errores aplicamos PHP CS Fixer antes de cada push al repositorio. La configuración de las reglas a aplicar esta en el fichero `.php_cs.dist` en la raíz del proyecto.
+
+#### beberlei/doctrineextensions
+Para añadir a las consultas efectuadas en los repositorios funcionalidades extra de MySQL que no están disponibles por defecto desde el query builder, como `RAND()` para devolver registros ordenados aleatoriamente.
+
+#### fzaninotto/faker
+Para generar datos aleatorios como nombres de usuario. Lo hemos usado en las fixtures para crear los datos de prueba y al generar equipos para ponerles un nombre inicial.
+
+#### sensio/framework-extra-bundle
+Herramientas para controladores, necesario para resolver entidades en los parámetros de los métodos de los controladores cuando la petición contiene un `id`.
+
+#### symfony/mailer
+Para enviar correos, usado en el sistema de recuperación de contraseñas.
+
+#### tmijs/tmi.js
+Para la integración con el chat de twitch hemos usado la librería [tmi.js](https://github.com/tmijs/tmi.js) para conectar con el websocket del chat de twitch. Usado para confirmar inscripciones de jugadores.
+
+#### bootstrap
+Herramienta para diseñar toda la parte front-end de la aplicación web responsive.
+
+#### fontawesome
+Set de iconos ligeros para mostrar y ayudar en la navegación.
+
+
 ## Manual de usuario  
   
 Este manual cubrirá las dudas que puedan sugerir al navegar nuestra página por primera vez.  
