@@ -4,7 +4,13 @@
             <a href="{{ path('main') }}"><img src="{{ asset('img/logo.svg') }}" width="100" alt="Round Breaker logo" class="rounded"></a>
         </div>
         <div class="p-2 mr-auto d-lg-flex align-items-center d-none letter-spaced main-title">
-            <strong>¡Más de {{ competitionsCount - 1 }} torneos organizados!</strong>
+            <strong>
+                {% if competitionsCount < 11 %}
+                    ¡Crea tus propios torneos de e-sports!
+                {% else %}
+                    ¡Más de {{ competitionsCount - 1 }} torneos organizados!
+                {% endif %}
+            </strong>
         </div>
         <div class="p-2 ml-auto">
             <button class="navbar-toggler d-lg-none text-orange h-100" type="button" data-toggle="collapse" data-target="#main-menu" aria-controls="main-menu" aria-expanded="false" aria-label="Abrir menú">
