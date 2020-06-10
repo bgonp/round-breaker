@@ -26,6 +26,8 @@ class MainController extends BaseController
         }
         if ($redirectTo = $request->request->get('redirect_to')) {
             $session->set('_security.main.target_path', $redirectTo);
+        } elseif (!$request->query->get('last_username')) {
+            $session->remove('_security.main.target_path');
         }
 
         return $this->render('main/index.html.twig', [

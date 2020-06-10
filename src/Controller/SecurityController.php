@@ -25,8 +25,9 @@ class SecurityController extends BaseController
         if ($error) {
             $this->addFlash('error', 'Credenciales incorrectas');
         }
+        $params = $error ? ['last_username' => $authenticationUtils->getLastUsername()] : [];
 
-        return $this->redirectToRoute('main');
+        return $this->redirectToRoute('main', $params);
     }
 
     /**

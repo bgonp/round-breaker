@@ -20,7 +20,7 @@ class GameController extends BaseController
     /**
      * @Route("/", name="game_list", methods={"GET"})
      */
-    public function index(GameRepository $gameRepository, PlayerRepository $playerRepository): Response
+    public function index(GameRepository $gameRepository): Response
     {
         return $this->render('game/index.html.twig', [
             'games' => $gameRepository->findAllOrdered(),

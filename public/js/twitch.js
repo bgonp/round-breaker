@@ -40,8 +40,8 @@
         e.preventDefault();
         const data = new FormData(e.target);
         client.opts.channels = [data.get('twitch_channel')];
-        client.opts.identity.username = data.get('twitch_bot_name'); // roundbreaker
-        client.opts.identity.password = data.get('twitch_bot_token'); // oauth:l81j2b4wknlagdmbwcgezw77v5c44b
+        client.opts.identity.username = data.get('twitch_bot_name');
+        client.opts.identity.password = data.get('twitch_bot_token');
         try {
             await client.connect();
             document.getElementsByName("open-confirmations-button")[0].setAttribute('disabled',"");
