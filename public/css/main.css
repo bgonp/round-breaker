@@ -32,7 +32,6 @@ body {
 
 a, .text-orange {
     color:#f7921e !important;
-
 }
 
 a:hover, a.text-orange:hover, button.text-orange:hover {
@@ -99,8 +98,8 @@ h1 {
     color:#4cd365;
 }
 
-.registrations > li.confirmed .far.fa-square,
-.registrations > li:not(.confirmed) .far.fa-check-square {
+.registrations > li.confirmed .fa.fa-square-o,
+.registrations > li:not(.confirmed) .fa.fa-check-square-o {
     display: none;
 }
 
@@ -132,9 +131,14 @@ h1 {
     overflow: hidden;
 }
 
-.message-container .message.success {
+.message-container .message.success, .confirmedMessage {
     background: #dcffdc;
     border: 1px solid #0c0;
+}
+
+.confirmedMessage {
+    padding: 0.5em 0;
+    text-align: center;
 }
 
 .message-container .message a {
@@ -147,11 +151,11 @@ h1 {
     opacity: 1!important;
 }
 
-.message-container .message a .fas {
+.message-container .message a .fa {
     color: #ff2c2c;
 }
 
-.message-container .message.success a .fas {
+.message-container .message.success a .fa {
     color: #0c0;
 }
 

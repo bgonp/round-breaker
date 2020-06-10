@@ -29,7 +29,7 @@ class PlayerFixtures extends Fixture
         $admin->setUsername('admin');
         $admin->setEmail('admin@admin.com');
         $admin->setRoles(['ROLE_ADMIN']);
-        $admin->setTwitchName('admin');
+        $admin->setTwitchName('');
         $admin->setPassword($encodedPassword);
         $faker = Faker\Factory::create()->unique();
         $this->playerRepository->save($admin, false);

@@ -24,10 +24,12 @@ class RegistrationController extends BaseController
         Competition $competition,
         RegistrationRepository $registrationRepository
     ): Response {
-        if (!($player = $this->getPlayer())) {
-            $this->addFlash('error', 'Tienes que iniciar sesión para unirte a una competición');
-        } elseif (!$competition->getIsOpen()) {
+        if (!$competition->getIsOpen()) {
             $this->addFlash('error', 'Esta competición esta cerrada');
+        } elseif (!($player = $this->getPlayer())) {
+            $this->addFlash('error', 'Tienes que iniciar sesión para unirte a una competición');
+        } elseif (!$player->getTwitchName()) {
+            $this->addFlash('error', 'Necesitas un nombre de usuario en Twitch para unirte');
         } else {
             $registration = (new Registration())
                 ->setCompetition($competition)

@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Player;
+use App\Exception\InvalidPlayerDataException;
 use App\Repository\PlayerRepository;
+use App\Service\PlayerService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -25,8 +27,9 @@ class SecurityController extends BaseController
         if ($error) {
             $this->addFlash('error', 'Credenciales incorrectas');
         }
+        $params = $error ? ['last_username' => $authenticationUtils->getLastUsername()] : [];
 
-        return $this->redirectToRoute('main');
+        return $this->redirectToRoute('main', $params);
     }
 
     /**
@@ -43,50 +46,27 @@ class SecurityController extends BaseController
     public function register(
         Request $request,
         UserPasswordEncoderInterface $passwordEncoder,
-        PlayerRepository $playerRepository
+        PlayerRepository $playerRepository,
+        PlayerService $playerService
     ): Response {
         if ($this->getPlayer()) {
             return $this->redirectToRoute('main');
         }
 
-        $username = $request->get('username');
-        $plainPassword = $request->get('password');
-        $email = $request->get('email');
-        $twitchname = $request->get('twitchname');
+        $player = new Player();
+        try {
+            $playerService->editPlayer($player, $request, $passwordEncoder, $playerRepository);
+        } catch (InvalidPlayerDataException $e) {
+            $this->addFlash('error', $e->getMessage());
 
-        $invalidFields = [];
-        if (!$username || $playerRepository->findOneBy(['username' => $username])) {
-            $invalidFields[] = 'username';
+            return $this->redirectToRoute('main', [
+                'last_username' => $request->request->get('username'),
+                'last_email' => $request->request->get('email'),
+                'last_twitchname' => $request->request->get('twitchname'),
+            ]);
         }
-        if (!$twitchname || $playerRepository->findOneBy(['twitchName' => $twitchname])) {
-            $invalidFields[] = 'twitch name';
-        }
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL) || $playerRepository->findOneBy(['email' => $email])) {
-            $invalidFields[] = 'e-mail';
-        }
-        if (!$plainPassword) {
-            $invalidFields[] = 'password';
-        }
+        $this->addFlash('success', '¡Felicidades! Ya eres parte de la comunidad Round Breaker, ahora puedes iniciar sesión y empezar a participar en los torneos.');
 
-        if ($invalidFields) {
-            $this->addFlash('error',
-                sprintf('Error. Usuario existente o campos incorrectos: %s', implode(', ', $invalidFields))
-            );
-        } else {
-            $player = new Player();
-            $player
-                ->setUsername($username)
-                ->setTwitchName($twitchname)
-                ->setEmail($email)
-                ->setPassword($passwordEncoder->encodePassword($player, $plainPassword));
-            $playerRepository->save($player);
-            $this->addFlash('success', '¡Felicidades! Ya eres parte de la cominad Round Breaker, ahora puedes iniciar sesión y empezar a participar en los torneos.');
-        }
-
-        return $this->redirectToRoute('main', [
-            'last_username' => $username,
-            'last_email' => $email,
-            'last_twitchname' => $twitchname,
-        ]);
+        return $this->redirectToRoute('main');
     }
 }

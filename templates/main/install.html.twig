@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Instalación | Round Breaker{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-8 col-lg-6 offset-2 offset-lg-3 py-3">
+        <form method="post">
+            <h5 class="sport-text">Crea una cuenta de administrador</h5>
+            <div class="form-group card form-group border border-secondary p-3">
+                <label for="inputUsername" class="sport-text">Username</label>
+                <input type="text" name="username" id="inputUsername" class="mb-3 form-control" placeholder="Usuario" required autofocus>
+                <label for="inputPassword" class="sport-text">Contraseña</label>
+                <input type="password" name="password" id="inputPassword" class="mb-3 form-control" placeholder="Contraseña" required>
+                <label for="inputPasswordRepeat" class="sport-text">Repetir contraseña</label>
+                <input type="password" name="passwordrepeat" id="inputPasswordRepeat" class="mb-3 form-control" placeholder="Repetir contraseña" required>
+                <label for="inputEmail" class="sport-text">Email</label>
+                <input type="email" name="email" id="inputEmail" class="mb-3 form-control" placeholder="Email" required>
+                <button class="btn btn-lg btn-primary btn-dark break-text-large form-control" type="submit" id="submit-register">
+                    Crear cuenta de administrador
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

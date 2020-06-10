@@ -32,29 +32,22 @@ class CompetitionController extends BaseController
         int $page = 0
     ): Response {
         $perPage = 16;
+        $gameId = $request->query->get('game');
+        $game = $gameId ? $gameRepository->find($gameId) : null;
+        if ($gameId && !$game) {
+            $this->addFlash('error', 'ID de juego incorrecto');
 
-        if ($gameId = $request->query->get('game')) {
-            $game = $gameRepository->find($gameId);
-            if (!$game) {
-                $this->addFlash('error', 'ID de juego incorrecto');
-
-                return $this->redirectToRoute('competition_list', ['page' => 1]);
-            }
-            $lastPage = (int) ceil($competitionRepository->count(['game' => $game]) / $perPage);
-            $currentPage = $page < 1 ? 1 : ($page > $lastPage ? $lastPage : $page);
-            $competitions = $competitionRepository->findByGameOrdered($game, $page, $perPage);
-            if ($currentPage !== $page) {
-                return $this->redirectToRoute('competition_list', ['page' => $currentPage, 'game' => $gameId]);
-            }
-        } else {
-            $game = null;
-            $lastPage = (int) ceil($competitionRepository->count([]) / $perPage);
-            $currentPage = $page < 1 ? 1 : ($page > $lastPage ? $lastPage : $page);
-            $competitions = $competitionRepository->findAllOrdered($page, $perPage);
-            if ($currentPage !== $page) {
-                return $this->redirectToRoute('competition_list', ['page' => $currentPage]);
-            }
+            return $this->redirectToRoute('competition_list', ['page' => 1]);
         }
+        $competitionsCount = $competitionRepository->countByGame($game);
+        $lastPage = (int) ceil($competitionsCount / $perPage);
+        $currentPage = $page < 1 ? 1 : ($page > $lastPage ? $lastPage : $page);
+        if (($currentPage && $page !== $currentPage) || (!$currentPage && 1 !== $page)) {
+            $params = $gameId ? ['page' => $currentPage ?: 1, 'game' => $gameId] : ['page' => $currentPage ?: 1];
+
+            return $this->redirectToRoute('competition_list', $params);
+        }
+        $competitions = $competitionRepository->findByGameOrdered($game, $page, $perPage);
 
         return $this->render('competition/index.html.twig', [
             'currentPage' => $currentPage,
@@ -99,8 +92,7 @@ class CompetitionController extends BaseController
                     ->setPlayersPerTeam($playersPerTeam)
                     ->setHeldAt($heldAt)
                     ->setLobbyName($request->request->get('lobbyname'))
-                    ->setLobbyPassword($request->request->get('lobbypassword'))
-                    ;
+                    ->setLobbyPassword($request->request->get('lobbypassword'));
                 if ($previousCompetition = $competitionRepository->findLastByStreamer($player)) {
                     $competition
                         ->setTwitchChannel($previousCompetition->getTwitchChannel())
@@ -122,9 +114,16 @@ class CompetitionController extends BaseController
      * @Route("/{id<\d+>}", name="competition_show", methods={"GET"})
      */
     public function show(
-        Competition $competition,
+        int $id,
+        CompetitionRepository $competitionRepository,
         RegistrationRepository $registrationRepository
     ): Response {
+        $competition = $competitionRepository->findCompleteById($id);
+        if (!$competition) {
+            $this->addFlash('error', 'No existe competición');
+
+            return $this->redirectToRoute('competition_list', ['page' => 1]);
+        }
         $player = $this->getPlayer();
         if ($player && $competition->getStreamer()->equals($player)) {
             return $this->redirectToRoute('competition_edit', ['id' => $competition->getId()]);
@@ -173,7 +172,9 @@ class CompetitionController extends BaseController
                 $competition
                     ->setName($name)
                     ->setDescription($request->request->get('description'))
-                    ->setIsOpen((bool) $request->request->get('open'));
+                    ->setIsOpen((bool) $request->request->get('open'))
+                    ->setLobbyName($request->request->get('lobbyname'))
+                    ->setLobbyPassword($request->request->get('lobbypassword'));
                 if ($wasOpen) {
                     $playersPerTeam = $request->request->get('playersPerTeam');
                     $teamNum = $request->request->get('teamNum');

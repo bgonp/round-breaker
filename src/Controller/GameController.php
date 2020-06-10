@@ -6,7 +6,6 @@ use App\Entity\Game;
 use App\Exception\CannotDeleteGameException;
 use App\Repository\CompetitionRepository;
 use App\Repository\GameRepository;
-use App\Repository\PlayerRepository;
 use App\Repository\RegistrationRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,7 +19,7 @@ class GameController extends BaseController
     /**
      * @Route("/", name="game_list", methods={"GET"})
      */
-    public function index(GameRepository $gameRepository, PlayerRepository $playerRepository): Response
+    public function index(GameRepository $gameRepository): Response
     {
         return $this->render('game/index.html.twig', [
             'games' => $gameRepository->findAllOrdered(),
@@ -110,9 +109,10 @@ class GameController extends BaseController
         int $page = 0
     ): Response {
         $perPage = 12;
-        $lastPage = (int) ceil($competitionRepository->count(['game' => $game]) / $perPage);
+        $competitionNum = $competitionRepository->count(['game' => $game]);
+        $lastPage = (int) ceil($competitionNum / $perPage);
         $currentPage = $page < 1 ? 1 : ($page > $lastPage ? $lastPage : $page);
-        if ($currentPage !== $page) {
+        if ($competitionNum && $currentPage !== $page) {
             return $this->redirectToRoute('game_show', ['id' => $game->getId(), 'page' => $currentPage]);
         }
 

@@ -5,14 +5,12 @@
 {% block content %}
 <div class="row">
     <div class="col-sm-6">
-        <div class="card-body">
-            <h1 class="card-title sport-text">{{ team.name }}</h1>
-            <ul class="list-group">
+            <h1 class="card-title sport-text">Equipo: {{ team.name }}</h1>
+            <ul class="list-group mb-3">
                 {% for player in team.players %}
                 <li class="list-group-item sport-text"><a href="{{ path('player_show', { id: player.id }) }}">
-                        {{ player.username }}</a><a href="http://www.twitch.tv/{{ player.twitchName }}">
-                            <i class="fa fa-twitch"></i>
-                        </a>
+                        {{ player.username }}</a> {{ team.captain == player ? '<i class="fa fa-star text-warning"></i>' : '' }}<a href="http://www.twitch.tv/{{ player.twitchName }}">
+                        <i class="fa fa-twitch"></i>
                     </a>
                 </li>
                 {% endfor %}
@@ -23,12 +21,11 @@
                 <li class="list-group-item sport-text">Organiza: <a href="{{ path('player_show', { id: team.competition.streamer.id }) }}">
                         {{ team.competition.streamer.username }}</a></li>
                 {% if team.competition.heldAt %}<li class="list-group-item sport-text">Celebrado en: {{ team.competition.heldAt|toDateTimeLocal }}</li>{% endif %}
-                {% if team.competition.lobbyName %}<li class="list-group-item sport-text">Lobby: {{ team.competition.lobbyName }}</li>{% endif %}
-                {% if team.competition.lobbyPassword %}<li class="list-group-item sport-text">Lobby Password: {{ team.competition.lobbypassword }}</li>{% endif %}
+                {% if team.competition.lobbyName %}<li class="list-group-item sport-text">Sala: {{ team.competition.lobbyName }}</li>{% endif %}
+                {% if team.competition.lobbyPassword %}<li class="list-group-item sport-text">Contraseña de sala: {{ team.competition.lobbypassword }}</li>{% endif %}
                 {% if team.ranking is not null %}<li class="list-group-item sport-text">Team Ranking: {{ team.ranking }}</li>{% endif %}
                 <li class="list-group-item sport-text">{{ team.competition.isOpen ? "Abierta" : "Cerrada" }} y {{ team.competition.isFinished ? "Terminada" : "En Curso" }}
                 </li>
-        </div>
     </div>
     {% if canEditName %}
     <div class="col-sm-6 p-3">

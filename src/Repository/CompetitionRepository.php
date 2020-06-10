@@ -36,23 +36,29 @@ class CompetitionRepository extends ServiceEntityRepository
         $this->getEntityManager()->flush();
     }
 
-    /** @return Competition[] */
-    public function findAllOrdered(int $page = null, int $perPage = 20): array
+    public function countByGame(Game $game = null): int
     {
-        if (!$page) {
-            return $this->findBy([], ['heldAt' => 'DESC']);
-        } else {
-            return $this->findBy([], ['heldAt' => 'DESC'], $perPage, ($page - 1) * $perPage);
+        if ($game) {
+            return $this->count(['game' => $game]);
         }
+
+        return $this->count([]);
     }
 
     /** @return Competition[] */
-    public function findByGameOrdered(Game $game, int $page = null, int $perPage = 20): array
+    public function findAllOrdered(int $page = null, int $perPage = 20): array
     {
+        return $this->findByGameOrdered(null, $page, $perPage);
+    }
+
+    /** @return Competition[] */
+    public function findByGameOrdered(Game $game = null, int $page = null, int $perPage = 20): array
+    {
+        $filter = $game ? ['game' => $game] : [];
         if (!$page) {
-            return $this->findBy(['game' => $game], ['heldAt' => 'DESC']);
+            return $this->findBy($filter, ['heldAt' => 'DESC']);
         } else {
-            return $this->findBy(['game' => $game], ['heldAt' => 'DESC'], $perPage, ($page - 1) * $perPage);
+            return $this->findBy($filter, ['heldAt' => 'DESC'], $perPage, ($page - 1) * $perPage);
         }
     }
 

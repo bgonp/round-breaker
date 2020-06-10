@@ -18,7 +18,7 @@ class GameFixtures extends Fixture
 
     public function load(ObjectManager $manager)
     {
-        $games = [
+        $games = [ // TODO: Descripciones
             ['Hearthstone', 'Heroes of WarCraft'],
             ['Counter Strike', 'Pium pium'],
             ['League of Legends', 'Best community EVER'],
