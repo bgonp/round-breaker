@@ -110,10 +110,10 @@ El servidor que aloje la aplicación debe configurarse para que apunte a la carp
 # Diseño de base de datos
 
 ### Diagrama entidad relación
-![diagrama entidad relación](https://raw.githubusercontent.com/bgonp/round-breaker/docs/docs/img/DB_ER_model.png)
+![diagrama entidad relación](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/DB_ER_model.png)
 
 ### Diagrama lógico
-![Diagrama lógico de base de datos](https://raw.githubusercontent.com/bgonp/round-breaker/docs/docs/img/DB_logical_model.png)
+![Diagrama lógico de base de datos](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/DB_logical_model.png)
 
 ## Descripción
 Definimos las entidades que forman el proyecto y sus relaciones. Hemos definido una clase abstracta `Base` de la que heredan el resto de entidades. Esta clase contiene los atributos que son comunes a todas las demás clases (`id`, `createdAt`, `updatedAt`) y un método `equals` para comparar instancias. Además tiene un método que, siguiendo el lifecycle de doctrine _PreUpdate_, actualiza en cada escritura el campo `updatedAt` con la hora y fechas actuales. Con esto hemos conseguido evitar la repetición de código y despejar mucho las entidades. Para el correcto mapeo del ORM hemos tenido que etiquetarla como `MappedSuperclass` para que lo interpretase correctamente.
@@ -201,12 +201,12 @@ Hemos omitido en esta tabla las páginas de recuperación de contraseña y de in
 | NO | streamer | Api | api_confirm | Confirmar una inscripción | POST |
 | NO | streamer | Api | open_confirmations | Abrir confirmaciones (inicia la escucha de Twitch) | POST |
 
-En [**este enlace**](https://raw.githubusercontent.com/bgonp/round-breaker/docs/docs/img/Endpoints.png) se puede ver una versión más extensa de esta tabla, con las rutas completas, los parámetros que se pasan y la plantilla que renderiza la vista.
+En [**este enlace**](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/Endpoints.png) se puede ver una versión más extensa de esta tabla, con las rutas completas, los parámetros que se pasan y la plantilla que renderiza la vista.
 
 ### Mapa de navegación
 La navegación entre las citadas páginas puede realizarse siguiendo el siguiente mapa de navegación, donde se puede ver las rutas con las que tiene contacto directo cada página. Hemos indicado como restringido (en naranja) las páginas `competition_edit` (que necesita además de estar logueado ser el creador de la competición) y `team_show` (que necesita que seas miembro del equipo que intentas ver).
 
-![mapa de navegación](https://raw.githubusercontent.com/bgonp/round-breaker/docs/docs/img/sitemap.png)
+![mapa de navegación](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/sitemap.png)
 
 # Estructura del proyecto
 
@@ -368,107 +368,107 @@ Set de iconos ligeros para mostrar y ayudar en la navegación.
 Este manual cubrirá las dudas que puedan sugerir al navegar nuestra página por primera vez.  
 Empezaremos por la página de inicio.  
 
-![manual-1](https://raw.githubusercontent.com/bgonp/round-breaker/docs/docs/img/manual/Screenshot-1.png)
+![manual-1](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-1.png)
   
 Esta es la primera página que verá un nuevo usuario. Desde aquí podrá hacer login/registro y acceder a las 3 ramas principales de la página: **Competiciones**, **Juegos** y su **Perfil**. Además tiene acceso a links a nuestras redes sociales y a los juegos más jugados en la plataforma. Lo competición mostrada en la portada es un torneo elegido aleatoriamente entre todos los torneos abiertos en ese momento.
 
-![manual-2](https://raw.githubusercontent.com/bgonp/round-breaker/docs/docs/img/manual/Screenshot-2.png)
-![manual-2b](https://raw.githubusercontent.com/bgonp/round-breaker/docs/docs/img/manual/Screenshot-2b.png)
+![manual-2](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-2.png)
+![manual-2b](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-2b.png)
 
 Como usuario anónimo se pueden ver todas las competiciones que se están jugando y se han jugado en la página de **Torneos**. Esta disponible el juego de la competición y la fecha en la que se disputará. Desde esta página el usuario puede hacer click y ver una competición con más detalle. Utilizando el filtro, el usuario tambien puede filtrar por juego para tener una lista más específica.
 
-![manual-3](https://raw.githubusercontent.com/bgonp/round-breaker/docs/docs/img/manual/Screenshot-3.png)
-![manual-4](https://raw.githubusercontent.com/bgonp/round-breaker/docs/docs/img/manual/Screenshot-4.png)
+![manual-3](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-3.png)
+![manual-4](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-4.png)
 
 Desde la página de un torneo se puede ver el estado de la competición, los brackets actuales, los equipos e inscripciones. Sin hacer login el usuario no podrá unirse a una competición, así que lo haremos antes de continuar.
 
-![manual-5](https://raw.githubusercontent.com/bgonp/round-breaker/docs/docs/img/manual/Screenshot-5.png)
+![manual-5](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-5.png)
 
 Rellenando este formulario el usuario se da de alta en nuestra plataforma. Desde la página de inicio podrá hacer login inmediatamente después. Al estar logeado, podemos ver que tenemos opciones en la página de torneo si nos vamos a una competición **abierta**:
 
-![manual-6](https://raw.githubusercontent.com/bgonp/round-breaker/docs/docs/img/manual/Screenshot-6.png)
+![manual-6](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-6.png)
 
 Ahora se presenta un botón para **Unirse**, si hacemos click en este botón nos inscribiremos en la competición , de esta forma tendremos la oportunidad de competir cuando el creador asigne los equipos aleatoriamente.
 Ahora que ya tenemos cuenta, tenemos nuestro **Perfil**:
 
-![manual-7](https://raw.githubusercontent.com/bgonp/round-breaker/docs/docs/img/manual/Screenshot-7.png)
+![manual-7](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-7.png)
 
 En nuestro perfil podemos editar nuestros datos, ver nuestros torneos, inscripciones y equipos.
 Accederemos a uno de nuestros equipos para ver más información:
 
-![manual-8](https://raw.githubusercontent.com/bgonp/round-breaker/docs/docs/img/manual/Screenshot-8.png)
+![manual-8](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-8.png)
 
 Aquí tenemos todos los jugadores de nuestro equipo, información sobre el torneo en el que está compitiendo y si somos el capitán del equipo podemos editar el nombre. Además, si nuestro equipo ha terminado su participación en el torneo, podemos ver el ranking en el que hemos quedado.
 Continuaremos creando nuestro propio torneo:
 
-![manual-9](https://raw.githubusercontent.com/bgonp/round-breaker/docs/docs/img/manual/Screenshot-9.png)
+![manual-9](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-9.png)
 
 Como podemos ver, ahora hay más opciones en la lista de torneos. Podemos unirnos a competiciones desde aquí y podemos crear una competición dándole al boton correspondiente.
 
-![manual-10](https://raw.githubusercontent.com/bgonp/round-breaker/docs/docs/img/manual/Screenshot-10.png)
-![manual-11](https://raw.githubusercontent.com/bgonp/round-breaker/docs/docs/img/manual/Screenshot-11.png)
+![manual-10](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-10.png)
+![manual-11](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-11.png)
 
 Rellenando este formulario podremos tener nuestra propia competición. Desde nuestro perfil podemos acceder a la competición que acabamos de crear.
 
-![manual-12](https://raw.githubusercontent.com/bgonp/round-breaker/docs/docs/img/manual/Screenshot-12.png)
-![manual-13](https://raw.githubusercontent.com/bgonp/round-breaker/docs/docs/img/manual/Screenshot-13.png)
+![manual-12](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-12.png)
+![manual-13](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-13.png)
 
 Esta es la página de edición de torneo, aquí podremos editar sus datos, randomizar los equipos, banear/confirmar/desconfirmar jugadores y añadir un **Twitch Bot**. Este bot podrá leer el chat de nuestro canal de Twitch para que nuestros espectadores puedan confirmar su presencia en un torneo mediante un simple mensaje en el chat. Debemos rellenar el formulario así:
 
-![manual-13b](https://raw.githubusercontent.com/bgonp/round-breaker/docs/docs/img/manual/Screenshot-13b.png)
+![manual-13b](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-13b.png)
 
 Tras abrir confirmaciones en nuestro canal de twitch aparecerá nuestro bot con instrucciones:
 
-![manual-14](https://raw.githubusercontent.com/bgonp/round-breaker/docs/docs/img/manual/Screenshot-14.png)
-![manual-15](https://raw.githubusercontent.com/bgonp/round-breaker/docs/docs/img/manual/Screenshot-15.png)
+![manual-14](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-14.png)
+![manual-15](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-15.png)
 
 Una vez estemos contentos las opciones de nuestro torneo y las confirmaciones obtenidas, podemos asignar equipos:
 
-![manual-16](https://raw.githubusercontent.com/bgonp/round-breaker/docs/docs/img/manual/Screenshot-16.png)
-![manual-17](https://raw.githubusercontent.com/bgonp/round-breaker/docs/docs/img/manual/Screenshot-17.png)
+![manual-16](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-16.png)
+![manual-17](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-17.png)
 
 De esta forma, ya han sido creados los 4 equipos de nuestro torneo, con jugadores aleatorios. Ahora se pueden ver los equipos con sus capitanes en el lado izquierdo de la pantalla. También podemos hacer click en el nombre del equipo ganador para que avance a la siguiente ronda:
 
-![manual-18](https://raw.githubusercontent.com/bgonp/round-breaker/docs/docs/img/manual/Screenshot-18.png)
-![manual-19](https://raw.githubusercontent.com/bgonp/round-breaker/docs/docs/img/manual/Screenshot-19.png)
+![manual-18](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-18.png)
+![manual-19](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-19.png)
 
 Una vez hayamos elegido todos nuestros ganadores, la competición quedará finalizada.
 
-![manual-20](https://raw.githubusercontent.com/bgonp/round-breaker/docs/docs/img/manual/Screenshot-20.png)
+![manual-20](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-20.png)
 
 Esto cubre lo básico para usar nuestra plataforma como jugador o streamer, por lo tanto pasaremos a mostrar las funcionalidades de **admin**.
 
-![manual-21](https://raw.githubusercontent.com/bgonp/round-breaker/docs/docs/img/manual/Screenshot-21.png)
-![manual-22](https://raw.githubusercontent.com/bgonp/round-breaker/docs/docs/img/manual/Screenshot-22.png)
+![manual-21](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-21.png)
+![manual-22](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-22.png)
 
 Desde la lista de juegos, podemos ver todos los juegos disponibles en la plataforma. Si hacemos click en uno, podemos ver más información y una lista de todas las competiciones que utilizan ese juego.
 
 Un admin puede crear torneos y editar todos los torneos de la plataforma, no solo los que haya creado él/ella.
 Además puede crear, editar y eliminar **Juegos**. Esto es una característica específica de admins. Un usuario normal puede ver la lista de juegos y acceder a ellos, pero no modificarlos de ninguna forma. Si hacemos click en el botón "Crear Juego", se nos presentará este formulario.
 
-![manual-23](https://raw.githubusercontent.com/bgonp/round-breaker/docs/docs/img/manual/Screenshot-23.png)
-![manual-24](https://raw.githubusercontent.com/bgonp/round-breaker/docs/docs/img/manual/Screenshot-24.png)
+![manual-23](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-23.png)
+![manual-24](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-24.png)
 
 Tras finalizar el formulario, todos los usuarios podrán utilizar nuestro nuevo juego para sus torneos.
 
-![manual-25](https://raw.githubusercontent.com/bgonp/round-breaker/docs/docs/img/manual/Screenshot-25.png)
-![manual-26](https://raw.githubusercontent.com/bgonp/round-breaker/docs/docs/img/manual/Screenshot-26.png)
+![manual-25](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-25.png)
+![manual-26](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-26.png)
 
 Como admin, también podemos editar información de un jugador desde su perfil.
 
 Para concluir este manual de usuario, demostraremos como recuperar nuestra contraseña si la hemos perdido:
 
-![manual-27](https://raw.githubusercontent.com/bgonp/round-breaker/docs/docs/img/manual/Screenshot-27.png)
-![manual-28](https://raw.githubusercontent.com/bgonp/round-breaker/docs/docs/img/manual/Screenshot-28.png)
-![manual-29](https://raw.githubusercontent.com/bgonp/round-breaker/docs/docs/img/manual/Screenshot-29.png)
+![manual-27](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-27.png)
+![manual-28](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-28.png)
+![manual-29](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-29.png)
 
 Si pinchamos en este enlace, podremos introducir nuestro email para recuperar nuestra cuenta. Tras unos momentos nos llegará un correo a nuestro email:
 
-![manual-30](https://raw.githubusercontent.com/bgonp/round-breaker/docs/docs/img/manual/Screenshot-30.png)
+![manual-30](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-30.png)
 
 Haciendo click en el enlace proporcionado, podremos recuperar nuestra contraseña introduciendo una nueva:
 
-![manual-31](https://raw.githubusercontent.com/bgonp/round-breaker/docs/docs/img/manual/Screenshot-31.png)
+![manual-31](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-31.png)
 
 Esto concluye nuestro manual de usuario.
 
