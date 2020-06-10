@@ -110,7 +110,7 @@ El servidor que aloje la aplicación debe configurarse para que apunte a la carp
 # Diseño de base de datos
 
 ### Diagrama entidad relación
-[IMG: ER]
+[IMG: ER](https://github.com/bgonp/round-breaker/blob/docs/DB_ER_model.png?raw=true)
 
 ### Diagrama lógico
 [IMG: LM]
