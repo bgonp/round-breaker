@@ -19,12 +19,16 @@ class PlayerRepository extends ServiceEntityRepository implements PasswordUpgrad
 
     public function findOneConfirmedNotInTeamRandomized(Competition $competition)
     {
+        $expr = $this->getEntityManager()->getExpressionBuilder();
+
         return $this->createQueryBuilder('p')
             ->join('p.registrations', 'r')
-            ->leftJoin('p.teams', 't')
             ->where('r.competition = :competition')
-            ->andWhere('t.competition IS NULL')
             ->andWhere('r.isConfirmed = 1')
+            ->andWhere($expr->notIn('p', $this->createQueryBuilder('sp')
+                ->join('sp.teams', 'st')
+                ->where('st.competition = :competition')
+                ->getDQL()))
             ->orderBy('RAND()')
             ->setParameter('competition', $competition)
             ->setMaxResults(1)
