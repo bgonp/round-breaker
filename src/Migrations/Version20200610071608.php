@@ -67,7 +67,7 @@ final class Version20200610071608 extends AbstractMigration
                     created_at DATETIME NOT NULL,
                     updated_at DATETIME NOT NULL,
                     CONSTRAINT FK_competition_game_id FOREIGN KEY (game_id) REFERENCES game (id),
-                    CONSTRAINT FK_competition_streamer_id FOREIGN KEY (streamer_id) REFERENCES player (id),
+                    CONSTRAINT FK_competition_streamer_id FOREIGN KEY (streamer_id) REFERENCES player (id)
             ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB'
         );
 
