@@ -392,37 +392,37 @@ Una vez hayamos elegido todos nuestros ganadores, la competición quedará final
 
 Esto cubre lo básico para usar nuestra plataforma como jugador o streamer, por lo tanto pasaremos a mostrar las funcionalidades de **admin**.
 
+![manual-21](https://raw.githubusercontent.com/bgonp/round-breaker/docs/docs/img/manual/Screenshot-21.png)
 ![manual-22](https://raw.githubusercontent.com/bgonp/round-breaker/docs/docs/img/manual/Screenshot-22.png)
-![manual-23](https://raw.githubusercontent.com/bgonp/round-breaker/docs/docs/img/manual/Screenshot-23.png)
 
 Desde la lista de juegos, podemos ver todos los juegos disponibles en la plataforma. Si hacemos click en uno, podemos ver más información y una lista de todas las competiciones que utilizan ese juego.
 
 Un admin puede crear torneos y editar todos los torneos de la plataforma, no solo los que haya creado él/ella.
 Además puede crear, editar y eliminar **Juegos**. Esto es una característica específica de admins. Un usuario normal puede ver la lista de juegos y acceder a ellos, pero no modificarlos de ninguna forma. Si hacemos click en el botón "Crear Juego", se nos presentará este formulario.
 
+![manual-23](https://raw.githubusercontent.com/bgonp/round-breaker/docs/docs/img/manual/Screenshot-23.png)
 ![manual-24](https://raw.githubusercontent.com/bgonp/round-breaker/docs/docs/img/manual/Screenshot-24.png)
-![manual-25](https://raw.githubusercontent.com/bgonp/round-breaker/docs/docs/img/manual/Screenshot-25.png)
 
 Tras finalizar el formulario, todos los usuarios podrán utilizar nuestro nuevo juego para sus torneos.
 
+![manual-25](https://raw.githubusercontent.com/bgonp/round-breaker/docs/docs/img/manual/Screenshot-25.png)
 ![manual-26](https://raw.githubusercontent.com/bgonp/round-breaker/docs/docs/img/manual/Screenshot-26.png)
-![manual-27](https://raw.githubusercontent.com/bgonp/round-breaker/docs/docs/img/manual/Screenshot-27.png)
 
 Como admin, también podemos editar información de un jugador desde su perfil.
 
 Para concluir este manual de usuario, demostraremos como recuperar nuestra contraseña si la hemos perdido:
 
+![manual-27](https://raw.githubusercontent.com/bgonp/round-breaker/docs/docs/img/manual/Screenshot-27.png)
 ![manual-28](https://raw.githubusercontent.com/bgonp/round-breaker/docs/docs/img/manual/Screenshot-28.png)
 ![manual-29](https://raw.githubusercontent.com/bgonp/round-breaker/docs/docs/img/manual/Screenshot-29.png)
-![manual-30](https://raw.githubusercontent.com/bgonp/round-breaker/docs/docs/img/manual/Screenshot-30.png)
 
 Si pinchamos en este enlace, podremos introducir nuestro email para recuperar nuestra cuenta. Tras unos momentos nos llegará un correo a nuestro email:
 
-![manual-31](https://raw.githubusercontent.com/bgonp/round-breaker/docs/docs/img/manual/Screenshot-31.png)
+![manual-30](https://raw.githubusercontent.com/bgonp/round-breaker/docs/docs/img/manual/Screenshot-30.png)
 
 Haciendo click en el enlace proporcionado, podremos recuperar nuestra contraseña introduciendo una nueva:
 
-![manual-32](https://raw.githubusercontent.com/bgonp/round-breaker/docs/docs/img/manual/Screenshot-32.png)
+![manual-31](https://raw.githubusercontent.com/bgonp/round-breaker/docs/docs/img/manual/Screenshot-31.png)
 
 Esto concluye nuestro manual de usuario.
 
