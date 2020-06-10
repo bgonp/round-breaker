@@ -15,11 +15,11 @@
 
 Round Breaker es un sistema de gestión de competiciones de e-sports que abarca inscripciones, formaciones de equipos y gestión de rondas y resultados, además de integración con el sistema de retransmisión Twitch y con su chat.
 
-Este sistema pretende abarcar un nicho poco atendido de la comunidad de deportes electrónicos como es el nivel no profesional, centrándose más en la característica social de los torneos, agrupando jugadores de forma aleatoria y poniéndolos en contacto entre ellos, resultando en competiciones informales y desenfadadas.
+Este sistema pretende abarcar un nicho poco atendido de la comunidad de deportes electrónicos como es el nivel no profesional, centrándose más en la característica social de los torneos, agrupando jugadores de forma aleatoria y poniéndolos en contacto entre si, resultando en competiciones informales y desenfadadas.
 
-Es una aplicación web desde donde los usuarios pueden registrarse, gestionar su perfil e inscripciones. Cada usuario puede también organizar competiciones, obteniendo todos los permisos sobre ellas a través de un panel de organizador para ver los detalles y editar las opciones y resultados. Desde este panel, el organizador se conectará con el chat de Twitch del canal indicado donde los jugadores inscritos deben confirmar que están presentes para marcar su registro en la competición como confirmado.
+Es una aplicación web desde donde los usuarios pueden registrarse y gestionar su propio perfil e inscripciones a competiciones organizadas por otros usuarios. Además, cada usuario puede también organizar competiciones, obteniendo todos los permisos sobre ellas mediante un panel de organizador donde ver los detalles y editar las opciones y resultados. Desde este panel, el organizador se conectará con el chat de Twitch del canal indicado donde los jugadores inscritos deben confirmar que están presentes para marcar su inscripción en la competición como confirmada.
 
-Una vez haya suficientes inscripciones confirmadas el organizador podrá generar los equipos, las rondas y el árbol de competición a través de un solo botón. La competición entonces se marcará como cerrada y todos los jugadores que hayan sido elegidos aleatoriamente para participar podrán acceder a los datos de su equipo para ponerse en contacto con sus compañeros. Podrán ver, además, las credenciales necesarias para unirse a la sala del juego donde se disputarán los encuentros. En cada equipo, uno de los jugadores será elegido como capitán y representará a su equipo, siendo además el único que puede cambiar el nombre del equipo.
+Una vez haya suficientes inscripciones confirmadas el organizador podrá generar los equipos, las rondas y el árbol de competición a través de un solo botón. La competición entonces se marcará como cerrada y todos los jugadores que hayan sido elegidos aleatoriamente para participar podrán acceder a los datos de su equipo para ponerse en contacto con sus compañeros. Podrán ver, además, las credenciales necesarias para unirse a la sala del juego donde se disputarán los encuentros. En cada equipo, uno de los jugadores será elegido al azar como capitán y representará a su equipo, siendo además el único que puede cambiar el nombre del equipo.
 
 Desde la aplicación web podrán consultarse públicamente los resultados y un histórico de competiciones de los usuarios.
 
@@ -29,7 +29,7 @@ La idea de Round Breaker surge de observar el crecimiento exponencial de los e-s
 
 Nosotros queremos ofrecer un enfoque distinto, orientado a competiciones más informales y fortaleciendo el componente social creando equipos en vivo y poniendo en contacto a sus integrantes.
 
-Round Breaker provee una integración completa con la principal plataforma de retransmisión de e-sports del mundo: Twitch. Los participantes confirman su inscripción desde el chat del propio Twitch para que el organizador tenga visitas garantizadas.
+Round Breaker provee una integración completa con la principal plataforma de retransmisión de e-sports del mundo: Twitch. Los participantes confirman su inscripción desde el chat del propio canal de Twitch del organizador, para que el éste tenga visitas garantizadas.
 
 Nuestra aplicación ofrece una forma rápida y ágil de organizar todo lo necesario para que pueda hacerse en vivo mientras se retransmite, para hacerlo así también atractivo para el espectador.
 
@@ -128,7 +128,7 @@ Es una entidad sencilla, que contiene únicamente nombre y descripción de un ju
 
 #### Competition
 Esta es la entidad más compleja y alrededor de la cual se desarrolla toda la lógica de la aplicación. Además de campos sencillos como el nombre (`name`) o la fecha de celebración de la competición (`heldAt`) podemos ampliar la información de las siguiente propiedades y relaciones:
-- Las propiedades booleanas `isOpen` y `isFinished` definen el estado de la competición. Una competición admite inscripciones hasta que se marca `isOpen` a `false` que es cuando se generan los equipos y puede comenzar la competición. Una vez que se ha llegado a la final y se ha declarado un vencedos, la competición para a tener `isFinished` a true y ya no admite más cambios. Resumiendo:
+- Las propiedades booleanas `isOpen` y `isFinished` definen el estado de la competición. Una competición admite inscripciones hasta que se marca `isOpen` a `false` que es cuando se generan los equipos y puede comenzar la competición. Una vez que se ha llegado a la final y se ha declarado un vencedor, la competición para a tener `isFinished` a true y ya no admite más cambios. Resumiendo:
     - `isOpen` true & `isFinished` false: Competición programada y aceptando inscripciones.
     - `isOpen` false & `isFinished` false: Competición en curso, equipos generados y no se admiten más inscripciones.
     - `isOpen` false & `isfinished` true: Competición finalizada, tiene un ganador y no admite más cambios.
@@ -142,7 +142,7 @@ Esta es la entidad más compleja y alrededor de la cual se desarrolla toda la l�
 - `twitchBotName` y `twitchBotToken` son las credenciales necesarias para conectarse al chat de Twitch del canal indicado en `twitchChannel` y escuchar las confirmaciones de las inscripciones. 
 
 #### Registration
-Representa la inscripción de un jugador a una competición. Esta inscripción solo se tendrá en cuenta para la generación de equipos de la competición si se marca la propiedad `isConfirmed` a true. Para hacer esto el usuario debe confirmar que está presente en el directo de Twitch donde se retransmita escribiendo en el chat el comando `!confirmo`, una vez el organizador abra las inscripciones desde el panel de competición.
+Representa la inscripción de un jugador a una competición. Esta inscripción solo se tendrá en cuenta para la generación de equipos de la competición si se marca la propiedad `isConfirmed` a true. Para hacer esto el usuario debe confirmar que está presente en el directo de Twitch donde se retransmita escribiendo en el chat el comando `!confirmo`, una vez el organizador abra las confirmaciones de inscripciones desde el panel de competición.
 
 #### Team
 Representa una agrupación puntual de jugadores en un equipo para participar en una competición. Tal y como esta pensado nuestro sistema, siendo inscripciones individuales y equipos aleatorios, un equipo existe únicamente para una competición puntual, es por esto que la relación entre `Team` y `Competition` es  `ManyToOne` en lugar de `ManyToMany`.
@@ -150,10 +150,10 @@ Hay dos relaciones entre `Team` y `Player`:
 - `captain` es una relación `ManyToOne` que representa a un único capitán de cada equipo. Este capitán será el portavoz del equipo y será el único con derechos para editarlo.
 - `players` es una relación `ManyToMany` que representa a cada uno de los integrantes del equipo. Aunque hemos limitado en el código a un máximo de 5 jugadores por equipo, esto se puede modificar fácilmente si el futuro queremos equipos más amplios.
 
-Además tiene el atributo `name` con el nombre del equipo (editable por su capitán), `ranking` que almacena el puesto finan y se actualiza según vayan finalizando las rondas, y una relación `ManyToMany` con las rondas en las que juega este equipo.
+Además tiene el atributo `name` con el nombre del equipo (editable por su capitán), `ranking` que almacena el puesto final en la competición y se actualiza según vayan finalizando las rondas, y una relación `ManyToMany` con las rondas en las que juega este equipo.
 
 #### Round
-Representa cada una de las rondas de las que se compone un árbol de competición. Cada ronda enfrenta a dos equipos, pero la relación entre `Round` u `Team` es `ManyToMany` (en lugar de una relación `ManyToOne` para cada equipo) porque queremos dar soporte a encuentros entre un mayor número de equipos, aunque de momento la lógica de nuestra aplicación lo limita a 2.
+Representa cada una de las rondas de las que se compone un árbol de competición. Cada ronda enfrenta a dos equipos, pero la relación entre `Round` y `Team` es `ManyToMany` (en lugar de una relación `ManyToOne` para cada equipo) porque queremos dar soporte a encuentros entre un mayor número de equipos, aunque de momento la lógica de nuestra aplicación lo limita a 2.
 Las rondas pertenecen a una única `Competition` y se determina su lugar en el árbol mediante dos atributos:
 - `bracketLevel`: un entero que representa el nivel en el árbol (cuartos, semifinales, final...)
 - `bracketOrder`: un entero que representa el orden de esta ronda dentro de su nivel.
@@ -204,7 +204,7 @@ Hemos omitido en esta tabla las páginas de recuperación de contraseña y de in
 En [**este enlace**](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/Endpoints.png) se puede ver una versión más extensa de esta tabla, con las rutas completas, los parámetros que se pasan y la plantilla que renderiza la vista.
 
 ### Mapa de navegación
-La navegación entre las citadas páginas puede realizarse siguiendo el siguiente mapa de navegación, donde se puede ver las rutas con las que tiene contacto directo cada página. Hemos indicado como restringido (en naranja) las páginas `competition_edit` (que necesita además de estar logueado ser el creador de la competición) y `team_show` (que necesita que seas miembro del equipo que intentas ver).
+La navegación entre las citadas páginas puede realizarse siguiendo el siguiente mapa de navegación, donde se puede ver las rutas con las que tiene contacto directo cada página. Hemos indicado como restringido (en naranja) las páginas `competition_edit`, que necesita además de estar logueado ser el creador de la competición, y `team_show`, que necesita que seas miembro del equipo que intentas ver, también desde `team_show` el `captain` del equipo tendrá un pequeño formularo donde puede renombrarlo.
 
 ![mapa de navegación](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/sitemap.png)
 
@@ -216,7 +216,7 @@ El proyecto se ha desarrollado en el framework PHP Symfony. Descripción de las 
 Contiene los archivos de configuración del proyecto. 
 
 ## public
-Carpeta pública hacía la que van las peticiones y las resuelve a través del fichero index.php, también contiene la configuración del directorio de apache (.htaccess). Todos los recursos públicos se ubican aquí:
+Carpeta pública hacia la que van las peticiones y las resuelve a través del fichero index.php, también contiene la configuración del directorio de apache (.htaccess). Todos los recursos públicos se ubican aquí:
 - **css/**: Contiene los archivos de estilos de la web. Es un archivo principal main.css y archivos extra para cada tipo de árbol de competición.
 - **fonts/**: Contiene las fuentes utilizadas para mostrar los textos de la web (Octin y BrokenGlass)
 - **img/**: Imágenes recurso (logo, favicon, imágenes de la home y logos de redes sociales).
@@ -272,7 +272,7 @@ La clase implementa la interfaz de autenticación de Symfony.
 
 ### DataFixtures
 
-Contiene clases Fixture de Doctrine, los cuales permiten rellenar una base de datos vacía con datos de prueba.
+Contiene clases Fixture de Doctrine, las cuales permiten rellenar una base de datos vacía con datos de prueba.
 Cada clase contiene métodos que rellenan las tablas de la forma programada.
 Su función es crear una base de datos con información realista con gran cantidad de entidades, 
 imprescindible para probar la funcionalidad de la página.
@@ -298,7 +298,8 @@ Implementan la interfaz AbstractType, la cual incluye métodos para crear formul
 Modelos twig que reciben datos de los controladores y proporcionan una vista a la aplicación.
 Cada ruta tiene su propia vista, la cual renderiza los datos adecuadamente.
 El uso de archivos twig nos permite enseñar y esconder código html de forma inteligente, 
-dependiendo del tipo de usuario y sus permisos.
+dependiendo del tipo de usuario, sus permisos o el estado de la entidad que se esté consultado
+o editando (Competición abierta o cerrada, finalizada o no...)
 
 ## tests
 
@@ -370,12 +371,12 @@ Empezaremos por la página de inicio.
 
 ![manual-1](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-1.png)
   
-Esta es la primera página que verá un nuevo usuario. Desde aquí podrá hacer login/registro y acceder a las 3 ramas principales de la página: **Competiciones**, **Juegos** y su **Perfil**. Además tiene acceso a links a nuestras redes sociales y a los juegos más jugados en la plataforma. Lo competición mostrada en la portada es un torneo elegido aleatoriamente entre todos los torneos abiertos en ese momento.
+Esta es la primera página que verá un nuevo usuario. Desde aquí podrá hacer login/registro y acceder a las 3 ramas principales de la página: **Competiciones**, **Juegos** y su **Perfil**. Además tiene acceso a links a nuestras redes sociales y a los juegos más jugados en la plataforma. Lo competición mostrada en la portada es un torneo elegido aleatoriamente entre todos los torneos de entre 4 y 16 equipos finalizados hasta el momento.
 
 ![manual-2](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-2.png)
 ![manual-2b](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-2b.png)
 
-Como usuario anónimo se pueden ver todas las competiciones que se están jugando y se han jugado en la página de **Torneos**. Esta disponible el juego de la competición y la fecha en la que se disputará. Desde esta página el usuario puede hacer click y ver una competición con más detalle. Utilizando el filtro, el usuario tambien puede filtrar por juego para tener una lista más específica.
+Como usuario anónimo se pueden ver todas las competiciones que se están jugando y se han jugado en la página de **Torneos**. Esta disponible el juego de la competición y la fecha en la que se disputará o ha disputado. Las competiciones que ya tengan sus equipos generados y por lo tanto no admitan más inscripciones, aparecen con un ligero sombreado gris como se puede ver en la imágen anterior. Desde esta página el usuario puede hacer click y ver una competición con más detalle. Utilizando el filtro, el usuario tambien puede filtrar por juego para tener una lista más específica. 
 
 ![manual-3](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-3.png)
 ![manual-4](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-4.png)
@@ -388,7 +389,7 @@ Rellenando este formulario el usuario se da de alta en nuestra plataforma. Desde
 
 ![manual-6](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-6.png)
 
-Ahora se presenta un botón para **Unirse**, si hacemos click en este botón nos inscribiremos en la competición , de esta forma tendremos la oportunidad de competir cuando el creador asigne los equipos aleatoriamente.
+Ahora podemos ver el número de jugadores ya inscritos y una lista de los mismos, además de los detalles del torneo, el número de equipos máximo y el número de jugadores por equipo. Se presenta también un botón para **Unirse**, si hacemos click en este botón nos inscribiremos en la competición , de esta forma tendremos la oportunidad de competir cuando el creador asigne los equipos aleatoriamente.
 Ahora que ya tenemos cuenta, tenemos nuestro **Perfil**:
 
 ![manual-7](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-7.png)
@@ -398,7 +399,7 @@ Accederemos a uno de nuestros equipos para ver más información:
 
 ![manual-8](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-8.png)
 
-Aquí tenemos todos los jugadores de nuestro equipo, información sobre el torneo en el que está compitiendo y si somos el capitán del equipo podemos editar el nombre. Además, si nuestro equipo ha terminado su participación en el torneo, podemos ver el ranking en el que hemos quedado.
+Aquí tenemos todos los jugadores de nuestro equipo, información sobre el torneo en el que está compitiendo y si somos el capitán del equipo podemos editar el nombre. Además, podemos ver el ranking actual de nuestro equipo en el torneo en el que está participando.
 Continuaremos creando nuestro propio torneo:
 
 ![manual-9](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-9.png)
@@ -422,7 +423,7 @@ Tras abrir confirmaciones en nuestro canal de twitch aparecerá nuestro bot con 
 ![manual-14](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-14.png)
 ![manual-15](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-15.png)
 
-Una vez estemos contentos las opciones de nuestro torneo y las confirmaciones obtenidas, podemos asignar equipos:
+Una vez estemos satisfechos con las opciones de nuestro torneo y las confirmaciones obtenidas, podemos asignar equipos:
 
 ![manual-16](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-16.png)
 ![manual-17](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-17.png)
