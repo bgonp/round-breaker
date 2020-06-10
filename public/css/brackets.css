@@ -1,7 +1,6 @@
 .single.bracket {
 	position: relative;
 	padding-bottom: 20px;
-	margin: 0 auto 20px;
 	max-width: 100%;
 }
 body.fullscreen-bracket {
@@ -15,7 +14,7 @@ body.fullscreen-bracket .single.bracket {
 	left: 0;
 	background: #FFF;
 	margin: 0!important;
-	z-index: 100;
+	z-index: 6000;
 }
 body.fullscreen-bracket .bracket-container {
 	position: absolute;
@@ -25,8 +24,8 @@ body.fullscreen-bracket .bracket-container {
 	overflow: hidden;
 }
 .single.bracket .bracket {
-	margin-bottom: 20px;
 	border-collapse: collapse;
+	margin: 0 auto;
 }
 .single.bracket .bracket tr.spacer {
 	height: 20px;
@@ -142,4 +141,7 @@ body.fullscreen-bracket .bracket-container {
 	display: none;
 }
 
-.scrollable-x {	overflow-x: scroll; }
+.scrollable-x {	
+	overflow-x: scroll; 
+	padding-bottom: 1em;
+}

@@ -1,5 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Round Breaker</title>
+    <meta charset="UTF-8">
+    <style>
+        h2, p, h1{
+            font-family: 'Arial', serif;
+        }
+        h1, a {
+            color:#f7921e !important;
+        }
+        a:hover {
+            color:#4cd365 !important;
+        }
+    </style>
+</head>
 <h1>Round Breaker</h1>
 <h2>Obtén una nueva contraseña</h2>
 
-<p>Para crear una nueva contraseña, visita <a href="{{ url('app_reset_password', {token: resetToken.token}) }}">este enlace</a><p>
-<p>Este enlace expirará dentro de {{ tokenLifetime|date('g') }} horas.</p></p>
+<p>Para crear una nueva contraseña, visita <a href="{{ url('app_reset_password', {token: resetToken.token}) }}">este enlace</a></p>
+<p>Este enlace expirará dentro de {{ tokenLifetime|date('g') }} horas.</p>
+</html>

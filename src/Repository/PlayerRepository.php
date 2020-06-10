@@ -34,6 +34,8 @@ class PlayerRepository extends ServiceEntityRepository implements PasswordUpgrad
     public function findRandomized(int $count): array
     {
         return $this->createQueryBuilder('p')
+            ->where('p.roles NOT LIKE :admin')
+            ->setParameter('admin', '%ROLE_ADMIN%')
             ->orderBy('RAND()')
             ->setMaxResults($count)
             ->getQuery()->execute();

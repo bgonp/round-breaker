@@ -1,6 +1,6 @@
 <ul class="list-group list-group-flush sport-text">
     {% for competition in competitions %}
-    <li class="list-group-item d-flex justify-content-between col-12 competition-item{{ competition.isFinished ? ' finished' : '' }}{{ competition.isOpen ? ' open' : '' }}">
+    <li class="list-group-item d-flex justify-content-between col-12 {{ not competition.isOpen ? 'bg-light' : '' }} competition-item{{ competition.isFinished ? ' finished' : '' }}{{ competition.isOpen ? ' open' : '' }}">
         <div class="pl-3 row d-flex align-items-center">
             <a class="mr-1" href="{{ path('competition_show', {id: competition.id}) }}">{{ competition.name }}</a>
             {% if not game %}({{ competition.game.name }}){% endif %} - {% if competition.heldAt %} {{ competition.heldAt|toDateTimeLocal }}{% endif %}
@@ -12,7 +12,7 @@
                     {% set leave = true %}
                     <form action="{{ path('registration_delete') }}" method="POST" class="d-inline">
                         <input type="hidden" name="competition_id" value="{{ competition.id }}">
-                        <input id="submit_delete" class="btn btn-dark sport-text confirmable" type="submit" value="Abandonar">
+                        <input id="submit_delete-{{ competition.id }}" class="btn btn-dark sport-text confirmable" type="submit" value="Abandonar">
                     </form>
                 {% endif %}
             {% endfor %}
@@ -20,7 +20,7 @@
                 <form action="{{ path('registration_new') }}" method="POST" class="d-inline">
                     <input type="hidden" name="competition_id" value="{{ competition.id }}">
                     <input type="hidden" name="player_id" value="{{ player.id }}">
-                    <input id="submit_new" class="btn btn-dark sport-text" type="submit" value="Unirse">
+                    <input id="submit_new-{{ competition.id }}" class="btn btn-dark sport-text" type="submit" value="Unirse">
                 </form>
             {% endif %}
         {% endif %}
