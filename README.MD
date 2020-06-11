@@ -545,3 +545,11 @@ Haciendo click en el enlace proporcionado, podremos recuperar nuestra contraseñ
 ![manual-31](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-31.png)
 
 # Conclusiones
+
+En todas partes del mundo, la competición es intrinsica al desarrollo humano y los e-sports son el siguiente paso.
+
+Los deportes virtuales aún están en su infancia y tienen mayor potencial de lo que nos podamos imaginar. Creemos que aún 
+faltan herramientas para crear y unir comunidades de este tipo y queremos formar parte de su crecimiento exponencial. 
+
+Esperamos que Round Breaker pueda aportar la intensidad y diversión de la competición a jugadores más casuales, personas que
+a lo mejor no tenían interés en ello antes. Si estos objetivos se cumplen, el resto depende de su imaginación.
