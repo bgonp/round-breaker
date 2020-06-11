@@ -18,6 +18,7 @@ use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\DomCrawler\Form;
 use Symfony\Component\HttpFoundation\Response;
 
 abstract class TestBase extends WebTestCase
@@ -44,9 +45,14 @@ abstract class TestBase extends WebTestCase
         return $this->getBrowser()->request($method, $this->getUrl($url, $getParams), $postParams);
     }
 
-    protected function submit(string $buttonId, array $params): Crawler
+    protected function submit(string $buttonId, array $params = []): Crawler
     {
         return $this->client->submitForm($buttonId, $params);
+    }
+
+    protected function submitForm(Form $form): Crawler
+    {
+        return $this->client->submit($form);
     }
 
     protected function response(): Response

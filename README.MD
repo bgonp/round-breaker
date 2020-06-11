@@ -44,7 +44,7 @@
 
 Round Breaker es un sistema de gestión de competiciones de e-sports que abarca inscripciones, formaciones de equipos y gestión de rondas y resultados, además de integración con el sistema de retransmisión Twitch y con su chat.
 
-Este sistema pretende abarcar un nicho poco atendido de la comunidad de deportes electrónicos como es el nivel no profesional, centrándose más en la característica social de los torneos, agrupando jugadores de forma aleatoria y poniéndolos en contacto entre si, resultando en competiciones informales y desenfadadas.
+Este sistema pretende abarcar un nicho poco atendido de la comunidad de deportes electrónicos como es el nivel no profesional, centrándose más en la característica social de los torneos, agrupando jugadores de forma aleatoria y poniéndolos en contacto entre sí, resultando en competiciones informales y desenfadadas.
 
 Es una aplicación web desde donde los usuarios pueden registrarse y gestionar su propio perfil e inscripciones a competiciones organizadas por otros usuarios. Además, cada usuario puede también organizar competiciones, obteniendo todos los permisos sobre ellas mediante un panel de organizador donde ver los detalles y editar las opciones y resultados. Desde este panel, el organizador se conectará con el chat de Twitch del canal indicado donde los jugadores inscritos deben confirmar que están presentes para marcar su inscripción en la competición como confirmada.
 
