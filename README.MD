@@ -117,7 +117,7 @@ El servidor que aloje la aplicación debe configurarse para que apunte a la carp
 ### Diagrama lógico
 ![Diagrama lógico de base de datos](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/DB_logical_model.png)
 
-## Descripción
+## Descripción de entidades
 Definimos las entidades que forman el proyecto y sus relaciones. Hemos definido una clase abstracta `Base` de la que heredan el resto de entidades. Esta clase contiene los atributos que son comunes a todas las demás clases (`id`, `createdAt`, `updatedAt`) y un método `equals` para comparar instancias. Además tiene un método que, siguiendo el lifecycle de doctrine _PreUpdate_, actualiza en cada escritura el campo `updatedAt` con la hora y fechas actuales. Con esto hemos conseguido evitar la repetición de código y despejar mucho las entidades. Para el correcto mapeo del ORM hemos tenido que etiquetarla como `MappedSuperclass` para que lo interpretase correctamente.
 
 #### Player
@@ -202,6 +202,10 @@ Hemos omitido en esta tabla las páginas de recuperación de contraseña y de in
 | NO | streamer | Api | api_winner | Indicar el ganador de una ronda | POST |
 | NO | streamer | Api | api_confirm | Confirmar una inscripción | POST |
 | NO | streamer | Api | open_confirmations | Abrir confirmaciones (inicia la escucha de Twitch) | POST |
+|  |  |  |  |  |  |
+| NO | public | Security | app_login | Inciar sesión | GET/POST |
+| NO | player | Security | app_logout | Cerrar sesión | POST |
+| NO | public | Security | user_registration | Registro de usuario | POST |
 
 En [**este enlace**](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/Endpoints.png) se puede ver una versión más extensa de esta tabla, con las rutas completas, los parámetros que se pasan y la plantilla que renderiza la vista.
 
@@ -237,7 +241,7 @@ Contiene las migraciones de Doctrine de la base de datos. Las migraciones guarda
 Se pueden ejecutar en orden en una base de datos vacía para tener todas las entidades requeridas por la aplicación.
 
 ### Entity
-Clases con las que crear objetos que representan cada uno de los registros de nuestras tablas principales de base de datos con sus relaciones entre ellas. Es importante que exista una fuerte sincronización entre los esquemas de base de datos y estas entidades, para que Doctrine pueda mapearlo todo correctamente. Las entidades principales con las que trabaja nuestra aplicación son: `Game`, `Competition`, `Player`, `Registration`, `Team` y `Round`.
+Clases con las que crear objetos que representan cada uno de los registros de nuestras tablas principales de base de datos con sus relaciones entre ellas. Es importante que exista una fuerte sincronización entre los esquemas de base de datos y estas entidades, para que Doctrine pueda mapearlo todo correctamente. Las entidades principales con las que trabaja nuestra aplicación son: `Game`, `Competition`, `Player`, `Registration`, `Team` y `Round`. El detalle de cada entidad está explicado más extensamente en la sección [Descripción de entidades](#descripción-de-entidades). 
 
 Al trabajar con entidades generadas con los datos de base de datos en lugar de directamente con la base de datos se consigue disminuir la necesidad de consultas y facilitar el manejo de información.
 
@@ -255,49 +259,54 @@ Son clases que contienen métodos con la lógica de funcionalidades concretas de
 - `RoundService`: Acciones sobre la entidad `Round`. Contiene la lógica para generar las rondas dada una competición con sus equipos y el hecho de marcar o desmarcar ganadores de rondas, actualizando resultados y siguientes rondas.
 - `PlayerService`: Contiene únicamente un método para editar los datos de un jugador, ya que es una acción que se repite en varios controladores.
 
+El inyector de dependencias de Symfony actúa al instanciar los servicios, por lo que hemos añadido constructores con las dependencias necesarias para efectuar la lógica en cada caso.
+
 
 ### Controller
+Contiene todos los controladores encargados de atender las peticiones web. Cada controlador tiene una ruta asignada a través del sistema de Router de symfony (nosotros hemos usado anotaciones, lo consideramos más claro que la configuración a través de yaml o xml) y devuelve una respuesta, ya sea con un `JsonResponse` o renderizando un template concreto para devolver un `Response`.
 
-Contiene todos los controladores de Symfony, los cuales dan lógica a toda la aplicación. Su función es dar instrucciones a
-las rutas de la página web y devolver datos a los modelos twig. Escritos en PHP.
+A cada controlador se le indica el nombre y dirección de la ruta a la que atender, además de los métodos aceptados. El sistema de inyección de dependencias de Symfony actúa sobre cada método de los controladores (al contrario de lo que pasa en servicios), por lo que es fácil usar los repositorios y servicios necesarios en cada caso.
+
+Para la gestión de mensajes de error o éxito hemos usado el método `addFlash` de `AbstractController` (del que heredan todos los controladores), que almacena en session el mensaje etiquetado y lo elimina una vez que es consultado por la plantilla para mostrarlo, asegurando que se muestre solo una vez.
+
+Se puede ver una descripción completa de los controladores con sus características en la sección [Páginas](#paginas).
 
 ### ArgumentResolver
+Como herramienta para hacer más ágil el manejo de entidades en los controladores hemos creado unas clases en este directorio que, al implementar `ParamConverterInterface`, pueden interceptar las llamadas a los controladores pudiendo diseñar así nuestras propias reglas de inyección de dependencias.
 
-Contiene clases que implementan la interfaz ParamConverter.
-Nos permite resolver entidades mediante IDs introducidos como parámetros en las rutas de la página.
-Su función es facilitar la resolución de entidades en los controladores.
+Hemos utilizado estas clases para que, cada vez que un controlador indique una entidad en sus parámetros, si la petición tiene un atributo que contenga el nombre de esa entidad seguido de `_id` (por ejemplo `competition_id`, `player_id`...) entre en acción nuestro resolver y se encargue de buscar la entidad correspondiente a través de su repositorio e inyectarla al controlador que lo haya pedido.
+
+De esta forma hemos podido ahorrarnos mucho código repetido y agilizar el desarrollo de los controladores, evitando en muchos casos las consultas a los repositorios en ellos.
 
 ### Security
-
-Contiene el autenticador de inicio de sesión de la página web.
-Se encarga de manejar el formulario de login y resolver la adquisición del usuario logeado.
-La clase implementa la interfaz de autenticación de Symfony.
+Contiene la clase encargada de la lógica de validar credenciales de usuario y autenticación y efectuar las acciones necesarias en caso de inicio de sesión correcto o incorrecto. Esta clase intercepta las peticiones a la ruta `app_login` de `SecurityController` para realizar las operaciones antes de entrar en juego este controlador. Es aquí, en `SecurityController` donde comprobamos si se ha realizado la autenticación correctamente y manejamos la redirección con o sin mensaje de error a donde proceda.
 
 ### DataFixtures
+Contiene las clases encargadas de cargar los datos de prueba en la base de datos. Existe una clase Fixture para cada entidad, excepto en el caso de `BracketFixtures` que hace uso del servicio correspondiente para generar equipos y rondas de una competición por lo que genera ambos en un solo fichero.
 
-Contiene clases Fixture de Doctrine, las cuales permiten rellenar una base de datos vacía con datos de prueba.
-Cada clase contiene métodos que rellenan las tablas de la forma programada.
-Su función es crear una base de datos con información realista con gran cantidad de entidades, 
-imprescindible para probar la funcionalidad de la página.
+Para generar direcciones de correo y nombres de usuario aleatorios y únicos hemos hecho uso de la librería [`fzaninotto/Faker`](https://github.com/fzaninotto/Faker).
+
+Al haber entidades que tienen relaciones con otras entidades es importante el orden en el que ejecutar estas fixtures para evitar errores de inconsistencia. Es por ello que algunas de estas clases implementan la interfaz `DependentFixtureInterface` que nos permite definir (implementando el método `getDependencies` de esta interfaz) las fixtures que deben haberse ejecutado antes de esta.
+
+Al igual que en los servicios, las dependencias necesarias para la ejecución de estos métodos se inyectan en el constructor y se guardan como propiedades de objeto para hacer uso de ellas.
+
+Esta funcionalidad no está disponible si el entorno del proyecto está configurado domo producción.
 
 ### Exception
-
-Excepciones personalizadas de Symfony, nos permiten dar mensajes de error precisos a nuestros métodos en caso de fallo.
-Evitan el uso de mensajes de excepción genéricos.
+Hemos creado varias excepciones propias que recogen errores que pueden ocurrir durante la ejecución de nuestra aplicación. Estas excepciones pueden ser capturadas por los controladores para mostrar su mensaje a través de `addFlash` si procede.
 
 ### TwigExtension
+Hemos definido extensiones accesibles desde los templates de twig para facilitar su uso en el diseño de plantillas.
 
-Extensiones a la funcionalidad de archivos twig.
-Contienen métodos utilizados en modelos, disminuyen la lógica incluida en ellos.
-Sirven para mantener las vistas con la menor programación posible.
+Estas funcionalidades son:
+- `DateTimeExtension`: Proporciona funcionalidades para formatear objetos DateTime a la forma correcta para pasarlos a inputs de tipo datetime.
+- `GetTeamsNumberExtension`: Agiliza una operación común que hay que realizar al mostrar información sobre competiciones a través de la función `getTeamsNumber`.
+- `CompetitionsCountExtension`: Crea una variable global con el número de competiciones existente en base de datos accesible desde cualquier template en cualquier momento. Usado para poner en el `header` un mensaje `¡Más de X torneos organizados!`.
 
 ### Form
-
-Contienen tipos de formularios personalizados creados mediante Symfony.
-Implementan la interfaz AbstractType, la cual incluye métodos para crear formularios html en PHP.
+Contiene las clases encargadas de generar los formularios de cambio de contraseña y petición de cambio de contraseña gestionados por el bundle `SymfonyCastsResetPasswordBundle`.
 
 ## templates
-
 Modelos twig que reciben datos de los controladores y proporcionan una vista a la aplicación.
 Cada ruta tiene su propia vista, la cual renderiza los datos adecuadamente.
 El uso de archivos twig nos permite enseñar y esconder código html de forma inteligente, 
