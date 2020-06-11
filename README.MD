@@ -10,6 +10,28 @@
 - Pedro González-Tarrío Polo
 
 ## Índice
+- [Descripción del proyecto](#descripción-del-proyecto)
+    - [¿Qué es Round Breaker?](#qué-es-round-breaker)
+    - [Idea](#idea)
+- [Instalación](#instalación)
+    - [Requisitos](#requisitos)
+    - [Paso a paso](#paso-a-paso)
+- [Base de datos y entidades](#base-de-datos-y-entidades)
+    - [Diagrama entidad relación](#diagrama-entidad-relación)
+    - [Diagrama lógico](#diagrama-lógico)
+    - [Descripción de entidades](#descripción-de-entidades)
+- [Controladores y páginas](#controladores-y-páginas)
+    - [Controladores](#controladores)
+    - [Mapa de navegación](#mapa-de-navegación)
+- [Estructura del proyecto](#estructura-del-proyecto)
+    - [config](#config)
+    - [public](#public)
+    - [src](#src)
+    - [templates](#templates)
+    - [tests](#tests)
+- [Organización del equipo](#organización-del-equipo)
+- [Tecnologías usadas](#tecnologías-usadas)
+- [Manual de usuario](#manual-de-usuario)
 
 # Descripción del proyecto
 
@@ -52,18 +74,18 @@ $ git clone https://github.com/bgonp/round-breaker
 ```
 Asegúrate que la carpeta `/var` tiene permisos de lectura y escritura, ya que es necesario para el uso de caché y log. 
 
-#### Instalación de dependencias
+### Instalación de dependencias
 Una vez con el repositorio clonado puedes instalar las dependencias necesarias usando composer ejecutando este comando desde la raíz del proyecto:
 ```
 $ composer install
 ```
-#### Base de datos
+### Base de datos
 La aplicación necesita una base de datos MySQL para funcionar (versión mínima 5.7). Crea una base de datos y un usuario con permisos de lectura y escritura sobre ella. Necesitarás el nombre de la base de datos, el nombre de usuario y la contraseña para poder conectar la aplicación.
 
-#### E-mail
+### E-mail
 Para el sistema de recuperación de contraseña necesitas una cuenta de correo electrónico y sus credenciales de autenticación para correo saliente.
 
-#### Configuración del entorno
+### Configuración del entorno
 En la raíz del proyecto existe un archivo `.env` que contiene las variables de entorno. Copia este fichero y renómbralo a `.env.local` y sustituye aquí los valores necesarios:
 - Entorno de producción (dev para entorno de desarrollo):
 ```
@@ -109,12 +131,12 @@ El servidor que aloje la aplicación debe configurarse para que apunte a la carp
 </VirtualHost>
 ```
 
-# Diseño de base de datos
+# Base de datos y entidades
 
-### Diagrama entidad relación
+## Diagrama entidad relación
 ![diagrama entidad relación](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/DB_ER_model.png)
 
-### Diagrama lógico
+## Diagrama lógico
 ![Diagrama lógico de base de datos](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/DB_logical_model.png)
 
 ## Descripción de entidades
@@ -166,7 +188,8 @@ Por último existe otra relación con `Team`, esta vez `ManyToOne` que es un nul
 #### ResetPasswordRequest
 Es una entidad generada por el bundle `SymfonyCastsResetPasswordBundle` que se encarga de almacenar los tokens y su fecha de caducidad cada vez que un usuario pide recuperar su contraseña.
 
-# Páginas
+# Controladores y páginas
+## Controladores
 Los controladores se encargan de gestionar las peticiones y devolver respuestas. Hemos recopilado en esta tabla cada una de las rutas existentes en el proyecto con los controladores que las gestionan.
 
 Hemos indicado permisos de player, competitor y streamer aunque todas ellas se refieren a la misma entidad `Player` ya que cada jugador ejerce de `streamer` sobre las competiciones que organiza él mismo y ejerce de `competitor` sobre las inscripciones en las que se registra él mismo o sobre los equipos a los que pertenece. Indicamos `player` en las páginas en las que solo se necesita haber iniciado sesión.
@@ -209,7 +232,7 @@ Hemos omitido en esta tabla las páginas de recuperación de contraseña y de in
 
 En [**este enlace**](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/Endpoints.png) se puede ver una versión más extensa de esta tabla, con las rutas completas, los parámetros que se pasan y la plantilla que renderiza la vista.
 
-### Mapa de navegación
+## Mapa de navegación
 La navegación entre las citadas páginas puede realizarse siguiendo el siguiente mapa de navegación, donde se puede ver las rutas con las que tiene contacto directo cada página. Hemos indicado como restringido (en naranja) las páginas `competition_edit`, que necesita además de estar logueado ser el creador de la competición, y `team_show`, que necesita que seas miembro del equipo que intentas ver, también desde `team_show` el `captain` del equipo tendrá un pequeño formularo donde puede renombrarlo.
 
 ![mapa de navegación](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/sitemap.png)
@@ -233,7 +256,7 @@ Carpeta pública hacia la que van las peticiones y las resuelve a través del fi
     - **tmi.min.js**: Librería para comunicarse con Twitch usada por twitch.js.
 
 ## src
-Carpeta principal con el código fuente de la página, dividida en subcarpetas según la funcionalidad y el tipo de lógica de las clases que contiene:
+Carpeta principal con el código fuente de la aplicación, dividida en subcarpetas según la funcionalidad y el tipo de lógica de las clases que contiene:
 
 ### Migrations
 Contiene las migraciones de Doctrine de la base de datos. Las migraciones guardan los cambios a la base de datos y nos permiten actualizarla de forma segura a la vez de mantener un historial. Después de varios cambios hemos sustituido muchas de las migraciones que hemos ido generando por una migración con nuestras tablas principales y sus relaciones en su estado final, de forma que hay que ejecutar muchas menos instrucciones sobre la base de datos y agiliza el proceso de puesta en marcha.  
@@ -347,11 +370,17 @@ Haciéndolo así y estando en contacto en todo momento no hemos tenido demasiado
 
 # Tecnologías usadas
 
+#### PHPStorm y VSCode
+El editor escogido por Lucas y Borja para desarrollar código ha sido **JetBrains PHPStorm** por considerarlo el editor más completo y con mayor integración con Symfony. Pedro ha preferido usar **Microsoft Visual Studio Code** al ser más flexible y adaptado al diseño y desarrollo de interfaces web.
+
+#### GitHub
+Se ha creado un repositorio en GitHub donde subir el proyecto con los tres integrantes del equipo con derechos de escritura para poder editar todos en paralelo como se ha explicado en [**flujo de trabajo**](#flujo-de-trabajo). 
+
 #### Symfony
 El proyecto se ha desarrollado en PHP usando el framework Symfony, comenzando en la versión 5.0.7 y actualizando posteriormente a 5.1.0.
 
 #### DebugBundle
-Proporciona herramientas de ayuda durante el desarrollo, accesibles desde la barra mostrada en cada página de la aplicación. Nos ha servido para hacer un seguimiento más profundo de los errores y comprobar el buen funcionamiento y las llamadas a base de datos que se hacían.
+Proporciona herramientas de ayuda durante el desarrollo, accesibles desde la barra mostrada en cada página de la aplicación (gracias a `symfony/profiler-pack`). Nos ha servido para hacer un seguimiento más profundo de los errores y comprobar el buen funcionamiento y las llamadas a base de datos que se hacían.
 
 #### TwigBundle
 Gestor de templates para generar las vistas.
@@ -379,6 +408,9 @@ Herramientas para controladores, necesario para resolver entidades en los parám
 
 #### symfony/mailer
 Para enviar correos, usado en el sistema de recuperación de contraseñas.
+
+### symfony/phpunit-bridge
+Necesario para ejecutar los tests correctamente en Symfony usando PHPUnit.
 
 #### tmijs/tmi.js
 Para la integración con el chat de twitch hemos usado la librería [tmi.js](https://github.com/tmijs/tmi.js) para conectar con el websocket del chat de twitch. Usado para confirmar inscripciones de jugadores.
