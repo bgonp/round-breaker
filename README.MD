@@ -547,10 +547,12 @@ Haciendo click en el enlace proporcionado, podremos recuperar nuestra contraseñ
 
 # Conclusiones
 
-En todas partes del mundo, la competición es intrinsica al desarrollo humano y los e-sports son el siguiente paso.
+Este proyecto nos ha empujado más que cualquier otro, pero también ha sido en el que más hemos aprendido. 
+Hemos tenido que trabajar y solucionar problemas imprevistos en cada paso del camino pero siempre hemos sacado una lección.
 
-Los deportes virtuales aún están en su infancia y tienen mayor potencial de lo que nos podamos imaginar. Creemos que aún 
-faltan herramientas para crear y unir comunidades de este tipo y queremos formar parte de su crecimiento exponencial. 
+Durante el desarrollo hemos replanteado conceptos clave, reescrito funcionalidades y solucionado errores que eran incomprensibles en un principio. Desde control de versiones hasta compartimentación de código, todo ha sido experiencia inestimable como programadores.
+Nos ha dado una pista de lo que es trabajar en una aplicación extensa, de trabajo en grupo y bajo presión. Aprender a poner una 
+aplicación en producción ha sido una prueba considerable pero ha valido la pena. 
 
-Esperamos que Round Breaker pueda aportar la intensidad y diversión de la competición a jugadores más casuales, personas que
-a lo mejor no tenían interés en ello antes. Si estos objetivos se cumplen, el resto depende de su imaginación.
+Nos ha dado mas ganas que nunca de dedicarnos a esto y hacer realidad nuestras ideas y proyectos.
+Sabemos que esto es solo el principio y hay mucho más trabajo por hacer, pero ver el fruto del trabajo siempre será especial.
