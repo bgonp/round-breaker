@@ -137,6 +137,9 @@ El servidor que aloje la aplicación debe configurarse para que apunte a la carp
 </VirtualHost>
 ```
 
+### Versión online
+Hemos instalado la última versión de la aplicación en un servidor y está disponible en el dominio [roundbreaker.dw2e.online](http://roundbreaker.dw2e.online/) y configurado en entorno de producción para usarlo libremente.
+
 # Base de datos y entidades
 
 ## Diagrama entidad relación
