@@ -18,14 +18,14 @@ class GameFixtures extends Fixture
 
     public function load(ObjectManager $manager)
     {
-        $games = [ // TODO: Descripciones
-            ['Hearthstone', 'Heroes of WarCraft'],
-            ['Counter Strike', 'Pium pium'],
-            ['League of Legends', 'Best community EVER'],
-            ['Quake Champions', ''],
+        $games = [
+            ['Hearthstone', 'Juego de cartas coleccionables en línea centrado en el universo de Warcraft'],
+            ['Counter Strike', 'Videojuegos de disparos multijugador en primera persona en los que equipos de terroristas luchan contra antiterroristas'],
+            ['League of Legends', 'Juego multijugador de arena de batalla en línea y deporte electrónico desarrollado por Riot Games'],
+            ['Quake Champions', 'FPS desarrollado por id Software y publicado por Bethesda Softworks. Forma parte de la serie Quake'],
             ['Rocket League', 'Supersonic Acrobatic Rocket-Powered Battle-Cars'],
-            ['Rainbow Six', ''],
-            ['DOTA 2', ''],
+            ['Rainbow Six', 'Tom Clancy\'s Rainbow Six: Siege es un videojuego de disparos en primera persona táctico multijugador'],
+            ['DOTA 2', 'Pertenece al género de Arena de batalla en línea MOBA (estrategia de acción en tiempo real)'],
             ['Starcraft 2', 'Legacy of the Void'],
         ];
         foreach ($games as $game) {

@@ -20,25 +20,25 @@ class PlayerService
         Request $request,
         UserPasswordEncoderInterface $passwordEncoder,
         PlayerRepository $playerRepository,
-        bool $requiredPassword = true,
-        bool $requiredTwitchName = true
+        bool $new = false,
+        bool $admin = false
     ): void {
         $username = $request->request->get('username');
         $plainPassword = $request->request->get('password');
         $email = $request->request->get('email');
-        $twitchName = $request->request->get('twitchname');
+        $twitchName = $request->request->get('twitch_name');
 
         $invalidFields = [];
-        if (!$username || $playerRepository->findOneBy(['username' => $username])) {
+        if (!$this->validUsername($username) || ($new && $playerRepository->findOneBy(['username' => $username]))) {
             $invalidFields[] = 'username';
         }
-        if (($requiredTwitchName && !$twitchName) || $playerRepository->findOneBy(['twitchName' => $twitchName])) {
+        if (!$admin && ((!$this->validTwitchName($twitchName)) || ($new && $playerRepository->findOneBy(['twitchName' => $twitchName])))) {
             $invalidFields[] = 'twitch name';
         }
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL) || $playerRepository->findOneBy(['email' => $email])) {
+        if (!$this->validEmail($email) || ($new && $playerRepository->findOneBy(['email' => $email]))) {
             $invalidFields[] = 'e-mail';
         }
-        if ($requiredPassword && !$plainPassword) {
+        if ($new && !$this->validPassword($plainPassword)) {
             $invalidFields[] = 'password';
         }
 
@@ -54,5 +54,25 @@ class PlayerService
             }
             $playerRepository->save($player);
         }
+    }
+
+    private function validUsername(string $username = null): bool
+    {
+        return $username ? (bool) preg_match('/^.{6,}$/', $username) : false;
+    }
+
+    private function validEmail(string $email = null): bool
+    {
+        return $email ? false !== filter_var($email, FILTER_VALIDATE_EMAIL) : false;
+    }
+
+    private function validPassword(string $password = null): bool
+    {
+        return $password ? (bool) preg_match('/^.{6,}$/', $password) : false;
+    }
+
+    private function validTwitchName(string $twitchName = null): bool
+    {
+        return $twitchName ? (bool) preg_match('/^\w{6,}$/', $twitchName) : false;
     }
 }

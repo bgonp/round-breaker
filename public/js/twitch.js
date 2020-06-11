@@ -1,7 +1,7 @@
 ;(() => {
     const conf = {
         options: {
-            debug: true // TODO
+            debug: false
         },
         connection: {
             reconnect: true,

@@ -17,11 +17,12 @@ class TeamRepository extends ServiceEntityRepository
     }
 
     /** @return Team[]|Collection */
-    public function findWithCompetitionByPlayer(Player $player): array
+    public function findWithCompetitionAndGameByPlayer(Player $player): array
     {
         return $this->createQueryBuilder('t')
-            ->select('t', 'c')
+            ->select('t', 'c', 'g')
             ->join('t.competition', 'c')
+            ->join('c.game', 'g')
             ->join('t.players', 'p')
             ->orderBy('c.isFinished', 'ASC')
             ->addOrderBy('c.heldAt', 'DESC')

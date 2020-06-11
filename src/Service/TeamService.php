@@ -11,7 +11,6 @@ use App\Exception\NotEnoughConfirmedRegistrationsException;
 use App\Repository\CompetitionRepository;
 use App\Repository\PlayerRepository;
 use App\Repository\RegistrationRepository;
-use App\Repository\RoundRepository;
 use App\Repository\TeamRepository;
 use Faker;
 

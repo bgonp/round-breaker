@@ -46,10 +46,12 @@ class RegistrationRepository extends ServiceEntityRepository
     }
 
     /** @return Registration[]|Collection */
-    public function findWithCompetitionByPlayer(Player $player): array
+    public function findWithCompetitionAndGameByPlayer(Player $player): array
     {
         return $this->createQueryBuilder('r')
+            ->select('r', 'c', 'g')
             ->join('r.competition', 'c')
+            ->join('c.game', 'g')
             ->orderBy('c.heldAt', 'DESC')
             ->where('r.player = :player')
             ->setParameter('player', $player)

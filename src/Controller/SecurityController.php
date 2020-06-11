@@ -55,7 +55,7 @@ class SecurityController extends BaseController
 
         $player = new Player();
         try {
-            $playerService->editPlayer($player, $request, $passwordEncoder, $playerRepository);
+            $playerService->editPlayer($player, $request, $passwordEncoder, $playerRepository, true);
         } catch (InvalidPlayerDataException $e) {
             $this->addFlash('error', $e->getMessage());
 

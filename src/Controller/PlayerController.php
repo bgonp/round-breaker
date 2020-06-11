@@ -27,10 +27,10 @@ class PlayerController extends BaseController
     {
         return $this->render('player/show.html.twig', [
             'player' => $player,
-            'user' => $this->getUser(),
+            'user' => $this->getPlayer(),
             'competitions' => $competitionRepository->findByStreamer($player),
-            'teams' => $teamRepository->findWithCompetitionByPlayer($player),
-            'registrations' => $registrationRepository->findWithCompetitionByPlayer($player),
+            'teams' => $teamRepository->findWithCompetitionAndGameByPlayer($player),
+            'registrations' => $registrationRepository->findWithCompetitionAndGameByPlayer($player),
         ]);
     }
 
@@ -62,8 +62,8 @@ class PlayerController extends BaseController
         return $this->render('player/edit.html.twig', [
             'player' => $player,
             'competitions' => $competitionRepository->findByStreamer($player),
-            'teams' => $teamRepository->findWithCompetitionByPlayer($player),
-            'registrations' => $registrationRepository->findWithCompetitionByPlayer($player),
+            'teams' => $teamRepository->findWithCompetitionAndGameByPlayer($player),
+            'registrations' => $registrationRepository->findWithCompetitionAndGameByPlayer($player),
         ]);
     }
 
