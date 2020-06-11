@@ -32,6 +32,11 @@
 - [Organización del equipo](#organización-del-equipo)
 - [Tecnologías usadas](#tecnologías-usadas)
 - [Manual de usuario](#manual-de-usuario)
+    - [Usuario anónimo](#usuario-anónimo)
+    - [Registro de usuario](#registro-de-usuario)
+    - [Usuario autenticado](#usuario-autenticado)
+    - [Administrador](#administrador)
+    - [Recuperación de contraseña](#recuperacin-de-contraseña)
 
 # Descripción del proyecto
 
@@ -116,10 +121,10 @@ La contraseña inicial de todos los usuarios generados (incluido admin) es `rand
 #### Usuario administrador
 Si no cargas los datos de prueba, puedes generar en base de datos un primer usuario con derechos de administrador a través de la ruta `/install`. Aquí aparece un formulario si en la base de datos no existe ningún usuario.
 
-#### Tests
+#### Tests del proyecto
 Existe una carpeta `tests` con una batería de tests que puedes ejecutar para comprobar el correcto funcionamiento de la aplicación.
 
-#### Servidor
+#### Configuración de servidor
 El servidor que aloje la aplicación debe configurarse para que apunte a la carpeta `public/` que está en la raíz del proyecto. Se necesita el módulo rewrite para atender correctamente las peticiones a las rutas. Dejamos una configuración de ejemplo para servidores Apache, es necesaria la instrucción `AllowOverride All` para usar el .htaccess ubicado en dicha carpeta `public/`:
 ```
 <VirtualHost *:80>
@@ -421,7 +426,7 @@ Herramienta para diseñar toda la parte front-end de la aplicación web responsi
 #### fontawesome
 Set de iconos ligero para mostrar y ayudar en la navegación.
 
-## Manual de usuario  
+# Manual de usuario  
 Este manual cubrirá las dudas que puedan sugerir al navegar nuestra página por primera vez.  
 Empezaremos por la página de inicio.  
 
@@ -432,6 +437,8 @@ Esta es la primera página que verá un nuevo usuario. Desde aquí podrá hacer 
 ![manual-2](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-2.png)
 ![manual-2b](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-2b.png)
 
+## Usuario anónimo
+
 Como usuario anónimo se pueden ver todas las competiciones que se están jugando y se han jugado en la página de **Torneos**. Esta disponible el juego de la competición y la fecha en la que se disputará o ha disputado. Las competiciones que ya tengan sus equipos generados y por lo tanto no admitan más inscripciones, aparecen con un ligero sombreado gris como se puede ver en la imágen anterior. Desde esta página el usuario puede hacer click y ver una competición con más detalle. Utilizando el filtro, el usuario tambien puede filtrar por juego para tener una lista más específica. 
 
 ![manual-3](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-3.png)
@@ -439,9 +446,15 @@ Como usuario anónimo se pueden ver todas las competiciones que se están jugand
 
 Desde la página de un torneo se puede ver el estado de la competición, los brackets actuales, los equipos e inscripciones. Sin hacer login el usuario no podrá unirse a una competición, así que lo haremos antes de continuar.
 
+## Registro de usuario
+
 ![manual-5](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-5.png)
 
-Rellenando este formulario el usuario se da de alta en nuestra plataforma. Desde la página de inicio podrá hacer login inmediatamente después. Al estar logeado, podemos ver que tenemos opciones en la página de torneo si nos vamos a una competición **abierta**:
+Rellenando este formulario el usuario se da de alta en nuestra plataforma. Desde la página de inicio podrá hacer login inmediatamente después.
+
+## Usuario autenticado
+
+Al haber iniciado sesión, podemos ver que tenemos opciones en la página de torneo si nos vamos a una competición **abierta**:
 
 ![manual-6](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-6.png)
 
@@ -484,7 +497,7 @@ Una vez estemos satisfechos con las opciones de nuestro torneo y las confirmacio
 ![manual-16](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-16.png)
 ![manual-17](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-17.png)
 
-De esta forma, ya han sido creados los 4 equipos de nuestro torneo, con jugadores aleatorios. Ahora se pueden ver los equipos con sus capitanes en el lado izquierdo de la pantalla. También podemos hacer click en el nombre del equipo ganador para que avance a la siguiente ronda:
+De esta forma, ya han sido creados los 4 equipos de nuestro torneo, con jugadores aleatorios de entre los inscritos confirmados. Ahora se pueden ver los equipos con sus capitanes en el lado izquierdo de la pantalla. Este árbol de competición está pensado para que el streamer pueda retransmitirlo, poniéndolo a pantalla completa haciendo click en el icono de ampliar de abajo a la derecha. También podemos hacer click en el nombre del equipo ganador para que avance a la siguiente ronda:
 
 ![manual-18](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-18.png)
 ![manual-19](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-19.png)
@@ -494,6 +507,8 @@ Una vez hayamos elegido todos nuestros ganadores, la competición quedará final
 ![manual-20](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-20.png)
 
 Esto cubre lo básico para usar nuestra plataforma como jugador o streamer, por lo tanto pasaremos a mostrar las funcionalidades de **admin**.
+
+## Administrador
 
 ![manual-21](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-21.png)
 ![manual-22](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-22.png)
@@ -512,6 +527,8 @@ Tras finalizar el formulario, todos los usuarios podrán utilizar nuestro nuevo 
 ![manual-26](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-26.png)
 
 Como admin, también podemos editar información de un jugador desde su perfil.
+
+## Recuperación de contraseña
 
 Para concluir este manual de usuario, demostraremos como recuperar nuestra contraseña si la hemos perdido:
 
