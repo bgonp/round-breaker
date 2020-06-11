@@ -4,9 +4,7 @@
 
 {% block content %}
 <div class="row">
-    <div class="col-md-6 mx-auto
-    {% if competitions is defined %} col-lg-4 col-xl-5 py-3
-        {% endif %}">
+    <div class="col-md-6 mx-auto{% if competitions is defined %} col-lg-4 col-xl-5 py-3{% endif %}">
         <h1>Perfil</h1>
         <form method="post" action="">
             <input type="hidden" name="player_id" value="{{ player.id }}">
@@ -51,66 +49,57 @@
             </div>
         </form>
     </div>
-    {% if competitions is defined %}
     <div class="col-md-12 col-lg-8 col-xl-7 py-3">
-        <h1>Tus Torneos</h1>
-        {% if competitions|length > 0 %}
-        <ul class="list-group list-group-flush sport-text mb-3">
-            {% for competition in competitions %}
-            <li
-                class="list-group-item d-flex justify-content-between w-100 {{ competition.isfinished ? ' bg-light' : '' }}">
-                <div class="pl-3 row d-flex align-items-center">
-                    <a class="mr-1"
-                        href="{{ path('competition_show', {id: competition.id}) }}">{{ competition.name }}</a>
-                    ({{ competition.game.name }}){% if competition.heldAt %}
-                    {{ competition.heldAt|toDateTimeLocal }}{% endif %}
-                </div>
-            </li>
-            {% endfor %}
-        </ul>
-        {% else %}
-        <p>No has organizado ningún torneo. <a href="{{ path('competition_new') }}">Crea un torneo!</a></p>
-        {% endif %}
+        {% if competitions is defined %}
+            <h1>Tus Torneos</h1>
+            {% if competitions|length > 0 %}
+                <ul class="list-group list-group-flush sport-text mb-3">
+                    {% for competition in competitions %}
+                    <li class="list-group-item d-flex justify-content-between w-100 {{ competition.isfinished ? ' bg-light' : '' }}">
+                        <div class="pl-3 row d-flex align-items-center">
+                            <a class="mr-1" href="{{ path('competition_show', {id: competition.id}) }}">{{ competition.name }}</a>
+                            ({{ competition.game.name }}){% if competition.heldAt %}{{ competition.heldAt|toDateTimeLocal }}{% endif %}
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No has organizado ningún torneo. <a href="{{ path('competition_new') }}">Crea un torneo!</a></p>
+            {% endif %}
         {% endif %}
         {% if teams is defined %}
-        <h1>Tus Equipos</h1>
-        {% if teams|length > 0 %}
-        <ul class="list-group list-group-flush sport-text mb-3">
-            {% for team in teams %}
-            <li
-                class="list-group-item d-flex justify-content-between w-100 {{ team.competition.isfinished ? ' bg-light' : '' }}">
-                <div class="pl-3 row d-flex align-items-center">
-                    <a class="mr-1" href="{{ path('team_show', {id: team.id}) }}">{{ team.name }}</a>
-                    ({{ team.competition.game.name }}){% if team.competition.heldAt %}{% if team.ranking is not null %}
-                    - Ranking: {{ team.ranking }}{% endif %}
-                    {% endif %}
-                </div>
-            </li>
-            {% endfor %}
-        </ul>
-        {% else %}
-        <p>No has participado en torneos con ningún equipo.</p>
-        {% endif %}
+            <h1>Tus Equipos</h1>
+            {% if teams|length > 0 %}
+            <ul class="list-group list-group-flush sport-text mb-3">
+                {% for team in teams %}
+                <li class="list-group-item d-flex justify-content-between w-100 {{ team.competition.isfinished ? ' bg-light' : '' }}">
+                    <div class="pl-3 row d-flex align-items-center">
+                        <a class="mr-1" href="{{ path('team_show', {id: team.id}) }}">{{ team.name }}</a>
+                        ({{ team.competition.game.name }}){% if team.ranking is not null %} - Ranking: {{ team.ranking }}{% endif %}
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+                <p>No has participado en torneos con ningún equipo.</p>
+            {% endif %}
         {% endif %}
         {% if registrations is defined %}
-        <h1>Registros</h1>
-        {% if registrations|length > 0 %}
-        <ul class="list-group list-group-flush sport-text mb-3">
-            {% for registration in registrations %}
-            <li
-                class="list-group-item d-flex justify-content-between w-100 {{ registration.competition.isfinished ? ' bg-light' : '' }}">
-                <div class="pl-3 row d-flex align-items-center">
-                    <a class="mr-1"
-                        href="{{ path('competition_show', {id: registration.competition.id}) }}">{{ registration.competition.name }}</a>
-                    ({{ registration.competition.game.name }}){% if registration.competition.heldAt %}
-                    {{ registration.competition.heldAt|toDateTimeLocal }}{% endif %}
-                </div>
-            </li>
-            {% endfor %}
-        </ul>
-        {% else %}
-        <p>No estás preinscrito a ningún torneo.</p>
-        {% endif %}
+            <h1>Inscripciones</h1>
+            {% if registrations|length > 0 %}
+                <ul class="list-group list-group-flush sport-text mb-3">
+                    {% for registration in registrations %}
+                    <li class="list-group-item d-flex justify-content-between w-100 {{ registration.competition.isfinished ? ' bg-light' : '' }}">
+                        <div class="pl-3 row d-flex align-items-center">
+                            <a class="mr-1" href="{{ path('competition_show', {id: registration.competition.id}) }}">{{ registration.competition.name }}</a>
+                            ({{ registration.competition.game.name }}){% if registration.competition.heldAt %}{{ registration.competition.heldAt|toDateTimeLocal }}{% endif %}
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No estás preinscrito a ningún torneo.</p>
+            {% endif %}
         {% endif %}
     </div>
 </div>

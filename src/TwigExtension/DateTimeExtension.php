@@ -30,16 +30,6 @@ class DateTimeExtension extends AbstractExtension
         return $date->format('H:i');
     }
 
-    public function toDateTimeFormat(\DateTime $datetime): string
-    {
-        return $datetime->format('Y-m-d\TH:i');
-    }
-
-    public function toDateLocal(\DateTime $date): string
-    {
-        return $date->format('d/m/Y');
-    }
-
     public function toDateTimeLocal(\DateTime $datetime): string
     {
         return $datetime->format('d/m/Y H:i');
