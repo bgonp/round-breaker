@@ -37,6 +37,7 @@
     - [Usuario autenticado](#usuario-autenticado)
     - [Administrador](#administrador)
     - [Recuperación de contraseña](#recuperacin-de-contraseña)
+    - [Conclusiones](#conclusiones)
 
 # Descripción del proyecto
 
