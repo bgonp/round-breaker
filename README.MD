@@ -9,6 +9,8 @@
 - Borja González Pereiro
 - Pedro González-Tarrío Polo
 
+## Índice
+
 # Descripción del proyecto
 
 ## ¿Qué es Round Breaker?
@@ -230,24 +232,23 @@ Carpeta pública hacia la que van las peticiones y las resuelve a través del fi
 Carpeta principal con el código fuente de la página, dividida en subcarpetas según la funcionalidad y el tipo de lógica de las clases que contiene:
 
 ### Migrations
+Contiene las migraciones de Doctrine de la base de datos. Las migraciones guardan los cambios a la base de datos y nos permiten actualizarla de forma segura a la vez de mantener un historial. Después de varios cambios hemos sustituido muchas de las migraciones que hemos ido generando por una migración con nuestras tablas principales y sus relaciones en su estado final, de forma que hay que ejecutar muchas menos instrucciones sobre la base de datos y agiliza el proceso de puesta en marcha.  
 
-Contiene las migraciones de Doctrine de la base de datos.
-Las migraciones guardan los cambios a la base de datos y nos permiten actualizarla de forma segura a la vez de mantener un historial.
 Se pueden ejecutar en orden en una base de datos vacía para tener todas las entidades requeridas por la aplicación.
 
 ### Entity
+Clases con las que crear objetos que representan cada uno de los registros de nuestras tablas principales de base de datos con sus relaciones entre ellas. Es importante que exista una fuerte sincronización entre los esquemas de base de datos y estas entidades, para que Doctrine pueda mapearlo todo correctamente. Las entidades principales con las que trabaja nuestra aplicación son: `Game`, `Competition`, `Player`, `Registration`, `Team` y `Round`.
 
-Clases requeridas por Doctrine para convertir nuestras tablas en entidades.
-Su función es disminuir la necesidad de queries de SQL y facilitar la adquisición de información.
+Al trabajar con entidades generadas con los datos de base de datos en lugar de directamente con la base de datos se consigue disminuir la necesidad de consultas y facilitar el manejo de información.
 
 ### Repository
+Los repositorios son clases destinadas a proporcionar instancias de entidades a partir de datos de la base de datos. Existe un repositorio para cada entidad que se encarga de gestionar el guardado, borrado y obtención de dichas entidades siguiendo diferentes directrices que difieren en cada caso concreto. Cada método de estas clases se encarga de uno de estos casos concretos, y usando estos métodos se consigue agilizar mucho el trabajo en los controladores y evitar la duplicación de código.
 
-Contiene métodos que hacen peticiones a base de datos.
-Utilizados para hacer queries más complicadas y evitar llamadas innecesarias al EntityManager.
-Su función es agilizar las peticiones y evitar duplicación de código en los controladores.
+Usando repositorios conseguimos desacoplar mucho el proyecto, evitando que los controladores tengan cualquier contacto directo con el tipo de consultas que se hacen a base de datos, haciéndolo mucho más escalable y mantenible.
+
+Los repositorios, además, son gestionados por defecto por el sistema de inyección de dependencias de Symfony, haciendo posible su uso en los controladores simplemente llamándolos en los parámetros de los métodos.
 
 ### Service
-
 Métodos que editan información de la base de datos.
 Llaman a métodos de repositorios y entidades, reciben objetos y los editan de la forma deseada.
 Tras la edición de la entidad actualizan la base de datos de la tabla correspondiente.
@@ -319,6 +320,11 @@ Hemos dividido el proyecto en áreas generales para organizar el equipo, cada un
 - Templates (Pedro)
 - Integración con Twitch (Borja)
 - Tests (Borja)
+
+### Flujo de trabajo
+Los tres somos autores del repositorio remoto alojado en **GitHub**, teniendo los tres permisos para editarlo. De esta forma, hemos organizado el flujo de trabajo para que cada uno de nosotros se crease una rama nueva para una característica de la aplicación, la desarrollara en ella y cuando estuviera suficientemente estable, hiciera un `pull` para traer el estado remoto actual y resolviera los posibles conflictos con la rama master. Una vez resueltos esos conflictos, `merge` para unir nuestra rama a la rama master y `push` al repositorio remoto.
+
+Haciéndolo así y estando en contacto en todo momento no hemos tenido demasiados problemas para trabajar todos simultáneamente en un mismo repositorio.
 
 # Tecnologías usadas
 
@@ -471,6 +477,4 @@ Haciendo click en el enlace proporcionado, podremos recuperar nuestra contraseñ
 
 ![manual-31](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-31.png)
 
-Esto concluye nuestro manual de usuario.
-
-
+# Conclusiones
