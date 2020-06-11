@@ -1,13 +1,15 @@
 # ROUND BREAKER
 
 #### Proyecto final Desarrollo de Aplicaciones Web
-#### Grupo DW2E 2020
-#### I.E.S. Clara del Rey
+#### I.E.S. Clara del Rey | Grupo DW2E 2020
 
 ## Autores
 - Lucas Ariel González Morales
 - Borja González Pereiro
 - Pedro González-Tarrío Polo
+
+## Tutor
+- Xabier Ganzábal García
 
 ## Índice
 - [Descripción del proyecto](#descripción-del-proyecto)
