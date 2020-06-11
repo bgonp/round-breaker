@@ -32,11 +32,12 @@
                     <input type="hidden" name="registration_id" value="{{ playerRegistration.id }}">
                     <input id="submit_delete" class="btn btn-dark sport-text mb-3" type="submit" value="Abandonar">
                 </form>
-            {% elseif is_granted('ROLE_USER') %}
-                <form action="{{ path('registration_new') }}" method="POST" class="d-inline">
-                    <input type="hidden" name="competition_id" value="{{ competition.id }}">
-                    <input id="submit_new" class="btn btn-dark sport-text mb-3" type="submit" value="Unirse">
-                </form>
+            {% elseif not is_granted('ROLE_ADMIN') %}
+                {% if is_granted('ROLE_USER') %}
+                    <form action="{{ path('registration_new') }}" method="POST" class="d-inline">
+                        <input type="hidden" name="competition_id" value="{{ competition.id }}">
+                        <input id="submit_new" class="btn btn-dark sport-text mb-3" type="submit" value="Unirse">
+                    </form>
                 {% else %}
                     <form method="post" action="{{ path('main') }}">
                         <input type="hidden" name="redirect_to" value="{{
@@ -46,6 +47,7 @@
                             Login/Registo para unirte
                         </button>
                     </form>
+                {% endif %}
             {% endif %}
         {% endif %}
 

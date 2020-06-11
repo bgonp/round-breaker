@@ -24,10 +24,12 @@ class RegistrationController extends BaseController
         Competition $competition,
         RegistrationRepository $registrationRepository
     ): Response {
-        if (!$competition->getIsOpen()) {
-            $this->addFlash('error', 'Esta competición esta cerrada');
-        } elseif (!($player = $this->getPlayer())) {
+        if (!($player = $this->getPlayer())) {
             $this->addFlash('error', 'Tienes que iniciar sesión para unirte a una competición');
+        } elseif ($this->isGranted('ROLE_ADMIN')) {
+            $this->addFlash('error', 'El administrador no puede unirse a competiciones');
+        } elseif (!$competition->getIsOpen()) {
+            $this->addFlash('error', 'Esta competición esta cerrada');
         } elseif (!$player->getTwitchName()) {
             $this->addFlash('error', 'Necesitas un nombre de usuario en Twitch para unirte');
         } else {
@@ -42,9 +44,11 @@ class RegistrationController extends BaseController
         }
 
         return $this->redirectToRoute(
-            $this->isGranted('ROLE_ADMIN') ? 'competition_edit' : 'competition_show', [
-            'id' => $competition->getId(),
-        ]);
+            $competition->getStreamer()->equals($player) || $this->isGranted('ROLE_ADMIN')
+                ? 'competition_edit'
+                : 'competition_show',
+            ['id' => $competition->getId()]
+        );
     }
 
     /**

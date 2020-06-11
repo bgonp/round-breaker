@@ -16,7 +16,7 @@
                     </form>
                 {% endif %}
             {% endfor %}
-            {% if player and not leave %}
+            {% if player and not is_granted('ROLE_ADMIN') and not leave %}
                 <form action="{{ path('registration_new') }}" method="POST" class="d-inline">
                     <input type="hidden" name="competition_id" value="{{ competition.id }}">
                     <input type="hidden" name="player_id" value="{{ player.id }}">

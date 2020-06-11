@@ -117,7 +117,7 @@ Puedes cargar datos de prueba en la aplicación para ver su funcionamiento ejecu
 ```
 $ php bin/console doctrine:fixtures:load
 ```
-La contraseña inicial de todos los usuarios generados (incluido admin) es `randompassword`
+La contraseña inicial de todos los usuarios generados (incluido administrator) es `randompassword`
 
 #### Usuario administrador
 Si no cargas los datos de prueba, puedes generar en base de datos un primer usuario con derechos de administrador a través de la ruta `/install`. Aquí aparece un formulario si en la base de datos no existe ningún usuario.
@@ -507,7 +507,7 @@ Una vez hayamos elegido todos nuestros ganadores, la competición quedará final
 
 ![manual-20](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-20.png)
 
-Esto cubre lo básico para usar nuestra plataforma como jugador o streamer, por lo tanto pasaremos a mostrar las funcionalidades de **admin**.
+Esto cubre lo básico para usar nuestra plataforma como jugador o streamer, por lo tanto pasaremos a mostrar las funcionalidades de **administrador**.
 
 ## Administrador
 
@@ -517,7 +517,7 @@ Esto cubre lo básico para usar nuestra plataforma como jugador o streamer, por 
 Desde la lista de juegos, podemos ver todos los juegos disponibles en la plataforma. Si hacemos click en uno, podemos ver más información y una lista de todas las competiciones que utilizan ese juego.
 
 Un admin puede crear torneos y editar todos los torneos de la plataforma, no solo los que haya creado él/ella.
-Además puede crear, editar y eliminar **Juegos**. Esto es una característica específica de admins. Un usuario normal puede ver la lista de juegos y acceder a ellos, pero no modificarlos de ninguna forma. Si hacemos click en el botón "Crear Juego", se nos presentará este formulario.
+Además puede crear, editar y eliminar **Juegos**. Esto es una característica específica del administrador. Un usuario normal puede ver la lista de juegos y acceder a ellos, pero no modificarlos de ninguna forma. Si hacemos click en el botón "Crear Juego", se nos presentará este formulario.
 
 ![manual-23](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-23.png)
 ![manual-24](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/manual/Screenshot-24.png)

@@ -238,17 +238,17 @@
                 value="Eliminar Torneo">
         </form>
         {% if showRegistrationButton %}
-        {% if playerRegistration %}
-        <form action="{{ path('registration_delete') }}" method="POST" class="d-inline">
-            <input type="hidden" name="registration_id" value="{{ playerRegistration.id }}">
-            <input id="submit-delete" class="btn btn-dark sport-text mb-3" type="submit" value="Abandonar">
-        </form>
-        {% else %}
-        <form action="{{ path('registration_new') }}" method="POST" class="d-inline">
-            <input type="hidden" name="competition_id" value="{{ competition.id }}">
-            <input id="submit-new" class="btn btn-dark sport-text mb-3" type="submit" value="Unirse">
-        </form>
-        {% endif %}
+            {% if playerRegistration %}
+                <form action="{{ path('registration_delete') }}" method="POST" class="d-inline">
+                    <input type="hidden" name="registration_id" value="{{ playerRegistration.id }}">
+                    <input id="submit-delete" class="btn btn-dark sport-text mb-3" type="submit" value="Abandonar">
+                </form>
+            {% elseif not is_granted('ROLE_ADMIN') %}
+                <form action="{{ path('registration_new') }}" method="POST" class="d-inline">
+                    <input type="hidden" name="competition_id" value="{{ competition.id }}">
+                    <input id="submit-new" class="btn btn-dark sport-text mb-3" type="submit" value="Unirse">
+                </form>
+            {% endif %}
         {% endif %}
     </div>
 </div>
