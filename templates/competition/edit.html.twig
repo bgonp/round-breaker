@@ -110,13 +110,18 @@
                         {% endfor %}
                     </select>
                 </div>
-
-                <div class="form-group">
-                    <label for="dateAndTime" class="sport-text-form ">Fecha y Hora<span
-                            class="text-danger">*</span></label>
-                    <input class="form-control  form-control-lg" type="datetime-local"
-                        value="{{ competition.heldAt|toDateTimeFormat }}" id="dateAndTime" name="heldAt">
-                </div>
+                    <div class="form-group">
+                        <label for="date" class="sport-text-form mb-3">Fecha<span
+                                    class="text-danger">*</span></label>
+                        <input class="form-control" type="date"
+                               value="{{ competition.heldAt|toDateFormat }}" id="date" name="heldAtDate">
+                    </div>
+                    <div class="form-group">
+                        <label for="time" class="sport-text-form mb-3">Hora<span
+                                    class="text-danger">*</span></label>
+                        <input class="form-control" type="time"
+                               value="{{ competition.heldAt|toTimeFormat }}"id="time" name="heldAtTime">
+                    </div>
                 {% endif %}
 
                 <div class="custom-control custom-checkbox check">

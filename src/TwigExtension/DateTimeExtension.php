@@ -13,6 +13,7 @@ class DateTimeExtension extends AbstractExtension
     {
         return [
             new TwigFilter('toDateFormat', [$this, 'toDateFormat']),
+            new TwigFilter('toTimeFormat', [$this, 'toTimeFormat']),
             new TwigFilter('toDateTimeFormat', [$this, 'toDateTimeFormat']),
             new TwigFilter('toDateLocal', [$this, 'toDateLocal']),
             new TwigFilter('toDateTimeLocal', [$this, 'toDateTimeLocal']),
@@ -22,6 +23,11 @@ class DateTimeExtension extends AbstractExtension
     public function toDateFormat(\DateTime $date): string
     {
         return $date->format('Y-m-d');
+    }
+
+    public function toTimeFormat(\DateTime $date): string
+    {
+        return $date->format('H:i');
     }
 
     public function toDateTimeFormat(\DateTime $datetime): string

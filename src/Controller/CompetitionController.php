@@ -78,7 +78,9 @@ class CompetitionController extends BaseController
         if ($request->isMethod('POST')) {
             if (!($name = $request->request->get('name'))) {
                 $this->addFlash('error', 'El campo nombre es obligatorio');
-            } elseif (!($heldAt = new \DateTime($request->request->get('heldAt')))) {
+            } elseif (!($heldAt = new \DateTime(
+                $request->request->get('heldAtDate').
+                $request->request->get('heldAtTime')))) {
                 $this->addFlash('error', 'El campo fecha y hora es obligatorio');
             } else {
                 $playersPerTeam = $request->request->get('playersPerTeam');
@@ -168,6 +170,9 @@ class CompetitionController extends BaseController
             } elseif (!($name = $request->request->get('name'))) {
                 $this->addFlash('error', 'El campo nombre es obligatorio');
             } else {
+                $heldAt = new \DateTime(
+                    $request->request->get('heldAtDate').
+                    $request->request->get('heldAtTime'));
                 $wasOpen = $competition->getIsOpen();
                 $competition
                     ->setName($name)
@@ -182,7 +187,7 @@ class CompetitionController extends BaseController
                         ->setMaxPlayers($playersPerTeam * $teamNum)
                         ->setPlayersPerTeam($playersPerTeam)
                         ->setGame($gameRepository->find($request->request->get('game')))
-                        ->setHeldAt(new \DateTime($request->request->get('heldAt')));
+                        ->setHeldAt($heldAt);
                 }
                 $competitionRepository->save($competition);
                 if (!$wasOpen && $competition->getIsOpen()) {

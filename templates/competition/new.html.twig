@@ -69,9 +69,14 @@
             </div>
 
             <div class="form-group">
-                <label for="dateAndTime" class="sport-text-form mb-3">Fecha y Hora<span
-                        class="text-danger">*</span></label>
-                <input class="form-control" type="datetime-local" id="dateAndTime" name="heldAt" required>
+                <label for="date" class="sport-text-form mb-3">Fecha<span
+                            class="text-danger">*</span></label>
+                <input class="form-control" type="date" id="date" name="heldAtDate" required>
+            </div>
+            <div class="form-group">
+                <label for="time" class="sport-text-form mb-3">Hora<span
+                            class="text-danger">*</span></label>
+                <input class="form-control" type="time" id="time" name="heldAtTime" required>
             </div>
 
             <button class="btn btn-lg btn-dark break-text-large mt-3" type="submit" id="submit-new">
