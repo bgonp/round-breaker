@@ -220,6 +220,39 @@ class CompetitionEditTest extends CompetitionBaseTest
         $this->assertCount(2, $crawler->filter('.team-item'));
     }
 
+    public function testKickPlayer(): void
+    {
+        $competition = $this->getCompetition(false, false);
+        $player = $competition->getTeams()[0]->getPlayers()[0];
+        $this->login($competition->getStreamer());
+        $crawler = $this->request('GET', 'competition_edit', ['id' => $competition->getId()]);
+        $form = $crawler->selectButton('submit-kick-'.$player->getId())->form();
+        $this->submitForm($form);
+
+        $this->assertResponseRedirects($this->getUrl('competition_edit', ['id' => $competition->getId()]));
+        $this->followRedirect();
+        $this->assertEquals(200, $this->response()->getStatusCode());
+        $competition = $this->getCompetition(false, false);
+        $this->assertFalse($competition->getTeams()[0]->getPlayers()->contains($player));
+
+        $this->reloadFixtures();
+    }
+
+    public function testKickPlayerForbidden(): void
+    {
+        $competition = $this->getCompetition(false, true);
+        $player = $competition->getTeams()[0]->getPlayers()[0];
+        $this->login($competition->getStreamer());
+        $crawler = $this->request('GET', 'competition_edit', ['id' => $competition->getId()]);
+        $form = $crawler->selectButton('submit-kick-'.$player->getId())->form();
+        $this->submitForm($form);
+
+        $this->assertResponseRedirects($this->getUrl('competition_edit', ['id' => $competition->getId()]));
+        $crawler = $this->followRedirect();
+        $this->assertEquals(200, $this->response()->getStatusCode());
+        $this->assertCount(1, $crawler->filter('.message.error'));
+    }
+
     private function getFieldsNames(bool $onlyHidden = false): array
     {
         if ($onlyHidden) {
