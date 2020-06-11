@@ -17,13 +17,15 @@ class CompetitionNewTest extends CompetitionBaseTest
 
     public function testSubmit(): void
     {
+        $datetime = new DateTime();
         $competitionData = [
             'name' => 'Test Name',
             'description' => 'Test Description',
             'game' => $this->getGame()->getId(),
             'playersPerTeam' => 3,
             'teamNum' => 8,
-            'heldAt' => (new DateTime())->format('Y-m-d\TH:i'),
+            'heldAtDate' => $datetime->format('Y-m-d'),
+            'heldAtTime' => $datetime->format('H:i'),
         ];
         $this->login();
         $this->request('GET', 'competition_new');

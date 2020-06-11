@@ -82,13 +82,15 @@ class CompetitionEditTest extends CompetitionBaseTest
     public function testSubmitEdit(): void
     {
         $competition = $this->getCompetition(true, false);
+        $datetime = new DateTime();
         $competitionData = [
             'name' => 'New Name',
             'description' => 'New Description',
             'game' => $this->getGame()->getId(),
             'playersPerTeam' => 3,
             'teamNum' => 8,
-            'heldAt' => (new DateTime())->format('Y-m-d\TH:i'),
+            'heldAtDate' => $datetime->format('Y-m-d'),
+            'heldAtTime' => $datetime->format('H:i'),
         ];
         $this->login($competition->getStreamer());
         $this->request('GET', 'competition_edit', ['id' => $competition->getId()]);
@@ -259,6 +261,6 @@ class CompetitionEditTest extends CompetitionBaseTest
             return ['game', 'playersPerTeam', 'teamNum', 'heldAt'];
         }
 
-        return ['name', 'description', 'game', 'playersPerTeam', 'teamNum', 'heldAt', 'open'];
+        return ['name', 'description', 'game', 'playersPerTeam', 'teamNum', 'heldAtDate', 'heldAtTime', 'open'];
     }
 }
