@@ -249,10 +249,12 @@ Usando repositorios conseguimos desacoplar mucho el proyecto, evitando que los c
 Los repositorios, además, son gestionados por defecto por el sistema de inyección de dependencias de Symfony, haciendo posible su uso en los controladores simplemente llamándolos en los parámetros de los métodos.
 
 ### Service
-Métodos que editan información de la base de datos.
-Llaman a métodos de repositorios y entidades, reciben objetos y los editan de la forma deseada.
-Tras la edición de la entidad actualizan la base de datos de la tabla correspondiente.
-Sirven para reestructurar y dividir los métodos de la aplicación en clases específicas.
+Son clases que contienen métodos con la lógica de funcionalidades concretas de la aplicación y en las que intervienen las entidades:
+- `CompetitionService`: Acciones sobre la entidad `Competition`. Tiene la responsabilidad de generar los equipos y las rondas al comenzar una competición (haciendo uso de `TeamService` y `RoundService`) y actualizar su estado en base de datos.
+- `TeamService`: Acciones sobre la entidad `Team`. Reside aquí la lógica para generar equipos al comenzar una competición y la de reemplazar jugadores de un equipo.
+- `RoundService`: Acciones sobre la entidad `Round`. Contiene la lógica para generar las rondas dada una competición con sus equipos y el hecho de marcar o desmarcar ganadores de rondas, actualizando resultados y siguientes rondas.
+- `PlayerService`: Contiene únicamente un método para editar los datos de un jugador, ya que es una acción que se repite en varios controladores.
+
 
 ### Controller
 

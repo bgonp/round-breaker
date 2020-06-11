@@ -19,29 +19,21 @@ class TeamService
 {
     private CompetitionRepository $competitionRepository;
 
-    private RoundService $competitionService;
-
     private TeamRepository $teamRepository;
 
     private RegistrationRepository $registrationRepository;
-
-    private RoundRepository $roundRepository;
 
     private PlayerRepository $playerRepository;
 
     public function __construct(
         CompetitionRepository $competitionRepository,
-        RoundService $competitionService,
         TeamRepository $teamRepository,
         RegistrationRepository $registrationRepository,
-        RoundRepository $roundRepository,
         PlayerRepository $playerRepository
     ) {
         $this->competitionRepository = $competitionRepository;
-        $this->competitionService = $competitionService;
         $this->teamRepository = $teamRepository;
         $this->registrationRepository = $registrationRepository;
-        $this->roundRepository = $roundRepository;
         $this->playerRepository = $playerRepository;
     }
 
