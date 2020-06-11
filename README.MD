@@ -314,6 +314,14 @@ dependiendo del tipo de usuario, sus permisos o el estado de la entidad que se e
 o editando (Competición abierta o cerrada, finalizada o no...)
 
 ## tests
+Para la revisión del correcto funcionamiento de nuestra aplicación hemos diseñado una batería de tests funcionales que comprueban las funcionalidades de cada página para cada caso que pueda ocurrir. Una de las razones por las que hemos migrado a Symfony 5.1 es que se añade un método `loginUser` a la clase `KernelBrowser` que facilita el inicio de sesión a realizar en el cliente proporcionado por `WebTestCase` para cada test y así poder probar las funcionalidades desde los diferentes roles posibles.
+
+Para facilitar la confección de los tests hemos creado una clase `TestBase` de la que heredarán todos nuestros tests case. Esta clase hereda de `WebTestCase` e implementa funcionalidades que usaremos durante toda nuestra batería de pruebas. Además de alias para acortar llamadas a los métodos de request, loginUser y followRedirect (entre otros), esta clase nos ofrece:
+- Un método `getRepository` que, al pasarle el nombre de una clase como string, nos proporciona su repositorio. Muy útil ya que hay muchas llamadas a repositorios durante los tests y no son de acceso trivial.
+- Un método `reloadFixtures` que, usando el bundle `liip/test-fixtures-bundle` que proporciona el trait `Fixturesrait`, permite recargar todas las fixtures. Este método es llamado al finalizar los tests que escriben en base de datos para asegurar el correcto funcionamiento de los tests posteriores.
+- Un método privado `initDatabase` ejecutado una sola vez que se encarga de inicializar la base de datos, con el esquema actual y con los datos de las fixtures.
+
+Los tests que realizamos comprueban, de cada página y desde cada rol posible, que se permite efectuar las operaciones solo cuando procede y que la ejecución de estas operaciones termina con el resultado esperado. Antes de cada push al repositorio remoto, cada uno de nosotros ejecuta estas pruebas para comprobar que todo sigue funcionando correctamente y diseñar nuevos tests si procede. 
 
 # Organización del equipo
 El código completo del proyecto se puede consultar en el repositorio de GitHub [bgonp/round-breaker](https://github.com/bgonp/round-breaker), donde puede consultarse tanto el código final como los diferentes commits y ramas que hemos ido haciendo los tres integrantes del equipo.
@@ -379,8 +387,7 @@ Para la integración con el chat de twitch hemos usado la librería [tmi.js](htt
 Herramienta para diseñar toda la parte front-end de la aplicación web responsive.
 
 #### fontawesome
-Set de iconos ligeros para mostrar y ayudar en la navegación.
-
+Set de iconos ligero para mostrar y ayudar en la navegación.
 
 ## Manual de usuario  
 Este manual cubrirá las dudas que puedan sugerir al navegar nuestra página por primera vez.  
