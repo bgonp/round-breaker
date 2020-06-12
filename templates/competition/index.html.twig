@@ -3,17 +3,16 @@
 {% block title %}Lista de torneos | Round Breaker{% endblock %}
 
 {% block content %}
-
-
     <h1>Torneos {% if player %}<a class="btn btn-dark sport-text" href="{{ path('competition_new') }}">Crear Torneo</a>{% endif %}</h1>
-
     <select id="filter-by-game" class="form-control col-12 mb-3 sport-text-form form-control-lg">
         <option value="">Filtrar por juegos</option>
         {% for gameOption in games %}
             <option value="{{ gameOption.id }}"{% if game and game.id == gameOption.id %} selected{% endif %}>{{ gameOption.name }}</option>
         {% endfor %}
     </select>
-
-    {% include('competition/list.html.twig') %}
-
+    {% if competitions|length > 0 %}
+        {% include('competition/list.html.twig') %}
+    {% else %}
+        <p>Aún no se han organizado competiciones.</p>
+    {% endif %}
 {% endblock %}

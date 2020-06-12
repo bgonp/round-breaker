@@ -11,7 +11,11 @@
 ## Tutor
 - Xabier Ganzábal García
 
-## Índice
+![Logo I.E.S. Clara del Rey](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/logos_1.png)
+
+![Logo Unión Europea](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/logos_2.png)
+
+# Índice
 - [Descripción del proyecto](#descripción-del-proyecto)
     - [¿Qué es Round Breaker?](#qué-es-round-breaker)
     - [Idea](#idea)

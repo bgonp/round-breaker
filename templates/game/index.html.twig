@@ -3,7 +3,8 @@
 {% block title %}Lista de juegos | Round Breaker{% endblock %}
 
 {% block content %}
-        <h1>Juegos {% if is_granted('ROLE_ADMIN') %}<a class="btn btn-dark sport-text" href="{{ path('game_new') }}">Crear Juego</a>{% endif %}</h1>
+    <h1>Juegos {% if is_granted('ROLE_ADMIN') %}<a class="btn btn-dark sport-text" href="{{ path('game_new') }}">Crear Juego</a>{% endif %}</h1>
+    {% if games|length > 0 %}
         <ul class="list-group list-group-flush sport-text">
             {% for game in games %}
             <li class="list-group-item d-flex justify-content-between col-12 col-xs-9 game-item">
@@ -22,4 +23,7 @@
             </li>
             {% endfor %}
         </ul>
+    {% else %}
+        <p>Aún no se han dado de alta juegos.</p>
+    {% endif %}
 {% endblock %}
