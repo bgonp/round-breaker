@@ -136,6 +136,7 @@ class CompetitionController extends BaseController
             'showRegistrationButton' => $competition->getIsOpen(),
             'playerRegistration' => $player ? $registrationRepository->findOneByPlayerAndCompetition($player, $competition) : null,
             'clickable' => false,
+            'player' => $this->getUser(),
             'showEditButtons' => $this->isGranted('ROLE_ADMIN'),
             'bracketType' => count($competition->getRounds()) < 1 ? 0 : $competition->getTeams()->count(),
         ]);
@@ -202,6 +203,7 @@ class CompetitionController extends BaseController
             'games' => $gameRepository->findAllOrdered(),
             'competition' => $competition,
             'clickable' => true,
+            'player' => $this->getUser(),
             'showRegistrationButton' => $competition->getIsOpen(),
             'playerRegistration' => $registrationRepository->findOneByPlayerAndCompetition($player, $competition),
             'bracketType' => count($competition->getRounds()) < 1 ? 0 : $competition->getTeams()->count(),
