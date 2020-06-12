@@ -4,7 +4,7 @@
 
 {% block content %}
 <div class="row">
-    <div class="col-md-6 mx-auto{% if competitions is defined %} col-lg-4 col-xl-5 py-3{% endif %}">
+    <div class="col-md-6 mx-auto{% if competitions is defined and not isAdmin %} col-lg-4 col-xl-5 py-3{% endif %}">
         <h1>Perfil</h1>
         <form method="post" action="">
             <input type="hidden" name="player_id" value="{{ player.id }}">
@@ -49,6 +49,7 @@
             </div>
         </form>
     </div>
+    {% if not isAdmin %}
     <div class="col-md-12 col-lg-8 col-xl-7 py-3">
         {% if competitions is defined %}
             <h1>Tus Torneos</h1>
@@ -102,5 +103,6 @@
             {% endif %}
         {% endif %}
     </div>
+    {% endif %}
 </div>
 {% endblock %}
