@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Exception;
 
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
-class RegistrationAlreadyExistsException extends BadRequestHttpException
+class RegistrationAlreadyExistsException extends BadRequestException
 {
-    const MESSAGE = 'El usuario ya esta inscrito a esta competición';
+    const MESSAGE = 'El usuario ya esta inscrito a esta competición.';
 
     public static function create(): self
     {

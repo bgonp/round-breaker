@@ -5,7 +5,12 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Entity\Player;
+use App\Exception\InvalidEmailException;
+use App\Exception\InvalidPasswordException;
 use App\Exception\InvalidPlayerDataException;
+use App\Exception\InvalidTwitchNameException;
+use App\Exception\InvalidUsernameException;
+use App\Exception\PlayerAlreadyExistsException;
 use App\Repository\PlayerRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -13,7 +18,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class PlayerService
 {
     /**
-     * @throws InvalidPlayerDataException
+     * @throws InvalidPlayerDataException|PlayerAlreadyExistsException
      */
     public function editPlayer(
         Player $player,
@@ -23,56 +28,66 @@ class PlayerService
         bool $new = false,
         bool $admin = false
     ): void {
-        $username = $request->request->get('username');
-        $plainPassword = $request->request->get('password');
-        $email = $request->request->get('email');
-        $twitchName = $request->request->get('twitch_name');
+        $username = $this->validUsername($request->request->get('username'));
+        $password = ($password = $request->request->get('password')) || $new ? $this->validPassword($password) : null;
+        $email = $this->validEmail($request->request->get('email'));
+        $twitchName = $admin ? '' : $this->validTwitchName($request->request->get('twitch_name'));
 
-        $invalidFields = [];
-        if (!$this->validUsername($username) || ($new && $playerRepository->findOneBy(['username' => $username]))) {
-            $invalidFields[] = 'username';
-        }
-        if (!$admin && ((!$this->validTwitchName($twitchName)) || ($new && $playerRepository->findOneBy(['twitchName' => $twitchName])))) {
-            $invalidFields[] = 'twitch name';
-        }
-        if (!$this->validEmail($email) || ($new && $playerRepository->findOneBy(['email' => $email]))) {
-            $invalidFields[] = 'e-mail';
-        }
-        if ($new && !$this->validPassword($plainPassword)) {
-            $invalidFields[] = 'password';
-        }
-
-        if ($invalidFields) {
-            throw InvalidPlayerDataException::create($invalidFields);
-        } else {
-            $player
-                ->setUsername($username)
-                ->setEmail($email)
-                ->setTwitchName($twitchName ?: '');
-            if ($plainPassword) {
-                $player->setPassword($passwordEncoder->encodePassword($player, $plainPassword));
+        if ($new) {
+            $existingFields = [];
+            if ($playerRepository->findOneBy(['username' => $username])) {
+                $existingFields[] = 'nombre de usuario';
             }
-            $playerRepository->save($player);
+            if ($playerRepository->findOneBy(['twitchName' => $twitchName])) {
+                $existingFields[] = 'nombre en Twitch';
+            }
+            if ($playerRepository->findOneBy(['email' => $email])) {
+                $existingFields[] = 'e-mail';
+            }
+            if ($existingFields) {
+                throw PlayerAlreadyExistsException::create($existingFields);
+            }
         }
+
+        $player
+            ->setUsername($username)
+            ->setEmail($email)
+            ->setTwitchName($twitchName);
+        if ($password) {
+            $player->setPassword($passwordEncoder->encodePassword($player, $password));
+        }
+        $playerRepository->save($player);
     }
 
-    private function validUsername(string $username = null): bool
+    private function validUsername(string $username = null): string
     {
-        return $username ? (bool) preg_match('/^.{6,}$/', $username) : false;
+        if (!preg_match('/^.{5,}$/', $username)) {
+            throw InvalidUsernameException::create();
+        }
+        return $username;
     }
 
-    private function validEmail(string $email = null): bool
+    private function validEmail(string $email = null): string
     {
-        return $email ? false !== filter_var($email, FILTER_VALIDATE_EMAIL) : false;
+        if (!$email = filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            throw InvalidEmailException::create();
+        }
+        return $email;
     }
 
-    private function validPassword(string $password = null): bool
+    private function validPassword(string $password = null): string
     {
-        return $password ? (bool) preg_match('/^.{6,}$/', $password) : false;
+        if (!preg_match('/^.{6,}$/', $password)) {
+            throw InvalidPasswordException::create();
+        }
+        return $password;
     }
 
-    private function validTwitchName(string $twitchName = null): bool
+    private function validTwitchName(string $twitchName = null): string
     {
-        return $twitchName ? (bool) preg_match('/^\w{6,}$/', $twitchName) : false;
+        if (!preg_match('/^\w{6,}$/', $twitchName)) {
+            throw InvalidTwitchNameException::create();
+        }
+        return $twitchName;
     }
 }

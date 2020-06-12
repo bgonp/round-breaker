@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Player;
 use App\Exception\InvalidPlayerDataException;
+use App\Exception\PlayerAlreadyExistsException;
 use App\Repository\PlayerRepository;
 use App\Service\PlayerService;
 use Symfony\Component\HttpFoundation\Request;
@@ -56,13 +57,13 @@ class SecurityController extends BaseController
         $player = new Player();
         try {
             $playerService->editPlayer($player, $request, $passwordEncoder, $playerRepository, true);
-        } catch (InvalidPlayerDataException $e) {
+        } catch (InvalidPlayerDataException | PlayerAlreadyExistsException $e) {
             $this->addFlash('error', $e->getMessage());
 
             return $this->redirectToRoute('main', [
                 'last_username' => $request->request->get('username'),
                 'last_email' => $request->request->get('email'),
-                'last_twitchname' => $request->request->get('twitchname'),
+                'last_twitchname' => $request->request->get('twitch_name'),
             ]);
         }
         $this->addFlash('success', '¡Felicidades! Ya eres parte de la comunidad Round Breaker, ahora puedes iniciar sesión y empezar a participar en los torneos.');

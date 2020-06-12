@@ -4,14 +4,9 @@ declare(strict_types=1);
 
 namespace App\Exception;
 
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
-class InvalidPlayerDataException extends BadRequestHttpException
+abstract class InvalidPlayerDataException extends BadRequestException
 {
-    const MESSAGE = 'Usuario existente o campos incorrectos: %s';
-
-    public static function create(array $invalidFields): self
-    {
-        return new self(sprintf(self::MESSAGE, implode(', ', $invalidFields)));
-    }
+    const TITLE = 'Datos de usuario incorrectos. ';
 }

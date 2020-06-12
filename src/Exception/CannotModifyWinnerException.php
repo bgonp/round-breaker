@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
 class CannotModifyWinnerException extends BadRequestException
 {
-    const MESSAGE = 'No se puede modificar una ronda si la siguiente ya ha finalizado';
+    const MESSAGE = 'No se puede modificar una ronda si la siguiente ya ha finalizado.';
 
     public static function create(): self
     {

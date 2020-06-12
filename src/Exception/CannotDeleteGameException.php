@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Exception;
 
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
-class CannotDeleteGameException extends BadRequestHttpException
+class CannotDeleteGameException extends BadRequestException
 {
-    const MESSAGE = 'No se puede borrar un juego si se han organizado torneos de éste';
+    const MESSAGE = 'No se puede borrar un juego si se han organizado torneos de éste.';
 
     public static function create(): self
     {

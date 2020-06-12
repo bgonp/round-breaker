@@ -60,6 +60,8 @@ class MainController extends BaseController
         PlayerService $playerService
     ): Response {
         if (0 < $playerRepository->count([])) {
+            $this->addFlash('error', 'Instalación permitida solo si no existe ningún usuario.');
+
             return $this->redirectToRoute('main');
         }
 
