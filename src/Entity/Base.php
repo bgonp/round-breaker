@@ -50,13 +50,15 @@ abstract class Base
     /** @ORM\PreUpdate */
     protected function updateNow(): self
     {
-        $this->setUpdatedAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
 
         return $this;
     }
 
     public function equals(?Base $object): bool
     {
-        return $object && get_class($object) === get_called_class() && $this->getId() === $object->getId();
+        return $object
+            && get_class($object) === get_called_class()
+            && $this->getId() === $object->getId();
     }
 }

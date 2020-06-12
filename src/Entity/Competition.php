@@ -286,9 +286,6 @@ class Competition extends Base
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
     public function getTwitchBotName(): ?string
     {
         return $this->twitchBotName;
