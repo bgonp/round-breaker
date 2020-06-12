@@ -554,7 +554,7 @@ Haciendo click en el enlace proporcionado, podremos recuperar nuestra contraseñ
 
 Durante el desarrollo de Round Breaker han ido surgiendo nuevas ideas, otras ideas las hemos descartado y en general el proyecto han ido cambiando algunas características según avanzábamos.
 
-Como ya hemos comentado en [descripción de entidades](#descripción-de-entidades), la relación entre `Round` y `Team` y `ManyToMay`, por lo que la limitación de dos equipos por ronda es prescindible y en un futuro nos gustaría dar soporte a competiciones en las que hay rondas con 3 o más equipos, ya que en varios juegos esto es habitual y nos daría capacidad para hacer competiciones con más gente en menos tiempo, ya que de cada ronda solo sale un ganador igualmente.
+Como ya hemos comentado en [descripción de entidades](#descripción-de-entidades), la relación entre `Round` y `Team` es `ManyToMay`, por lo que la limitación de dos equipos por ronda es prescindible y en un futuro nos gustaría dar soporte a competiciones en las que hay rondas con 3 o más equipos, ya que en varios juegos esto es habitual y nos daría capacidad para hacer competiciones con más gente en menos tiempo, ya que de cada ronda solo sale un ganador igualmente.
 
 Algo parecido pasa con la relación entre `Team` y `Player`, que aunque hemos limitado a 5 usuarios por equipo, podríamos hacerlos mucho más multitudinarios, aunque habría que estudiarlo bien porque al estar pensado para ser en directo podría llegar a ser incontrolable manejar a tanta gente.
 
