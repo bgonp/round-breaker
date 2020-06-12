@@ -35,12 +35,12 @@
                         id="inputEmail" class="form-control" placeholder="Email" required>
                 </div>
 
-                <div class="form-group">
+                {% if not isAdmin %}<div class="form-group">
                     <label for="inputTwitchname" class="sport-text">Twitchname</label>
                     <input type="text" name="twitch_name"
                         value="{{ player.twitchname }}" id="inputTwitchname"
                         class="form-control" placeholder="Twitchname" required>
-                </div>
+                </div>{% endif %}
 
                 <button class="btn btn-lg btn-primary btn-dark break-text-large form-control" type="submit"
                     id="submit-edit">

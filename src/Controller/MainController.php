@@ -68,7 +68,7 @@ class MainController extends BaseController
         if ($request->isMethod('POST')) {
             $player = (new Player())->setRoles(['ROLE_ADMIN']);
             try {
-                $playerService->editPlayer($player, $request, $passwordEncoder, $playerRepository, true, true);
+                $playerService->editPlayer($player, $request, $passwordEncoder, $playerRepository, true);
                 $this->addFlash('success', '¡Felicidades! Ahora inicia sesión y crea juegos para que los usuarios puedan organizar competiciones.');
 
                 return $this->redirectToRoute('main');

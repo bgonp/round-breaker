@@ -35,9 +35,9 @@ class PlayerFixtures extends Fixture
         $this->playerRepository->save($admin, false);
         for ($i = 1; $i < 100; ++$i) {
             $player = new Player();
-            $username = $faker->userName;
+            $username = str_replace('.', ' ', $faker->userName);
             $player->setUsername($username);
-            $player->setTwitchName($username);
+            $player->setTwitchName(str_replace(' ', '_', $username));
             $player->setEmail($faker->email);
             $player->setPassword($encodedPassword);
             $this->playerRepository->save($player, false);

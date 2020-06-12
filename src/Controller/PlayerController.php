@@ -61,6 +61,7 @@ class PlayerController extends BaseController
 
         return $this->render('player/edit.html.twig', [
             'player' => $player,
+            'isAdmin' => $this->isGranted('ROLE_ADMIN'),
             'competitions' => $competitionRepository->findByStreamer($player),
             'teams' => $teamRepository->findWithCompetitionAndGameByPlayer($player),
             'registrations' => $registrationRepository->findWithCompetitionAndGameByPlayer($player),
@@ -97,6 +98,7 @@ class PlayerController extends BaseController
 
         return $this->render('player/edit.html.twig', [
             'player' => $player,
+            'isAdmin' => in_array('ROLE_ADMIN', $player->getRoles()),
         ]);
     }
 }

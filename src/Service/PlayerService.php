@@ -25,13 +25,12 @@ class PlayerService
         Request $request,
         UserPasswordEncoderInterface $passwordEncoder,
         PlayerRepository $playerRepository,
-        bool $new = false,
-        bool $admin = false
+        bool $new = false
     ): void {
         $username = $this->validUsername($request->request->get('username'));
         $password = ($password = $request->request->get('password')) || $new ? $this->validPassword($password) : null;
         $email = $this->validEmail($request->request->get('email'));
-        $twitchName = $admin ? '' : $this->validTwitchName($request->request->get('twitch_name'));
+        $twitchName = in_array('ROLE_ADMIN', $player->getRoles()) ? '' : $this->validTwitchName($request->request->get('twitch_name'));
 
         if ($new) {
             $existingFields = [];
@@ -61,7 +60,7 @@ class PlayerService
 
     private function validUsername(string $username = null): string
     {
-        if (!preg_match('/^.{5,}$/', $username)) {
+        if (!$username || !preg_match('/^.{5,}$/', $username)) {
             throw InvalidUsernameException::create();
         }
         return $username;
@@ -69,7 +68,7 @@ class PlayerService
 
     private function validEmail(string $email = null): string
     {
-        if (!$email = filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        if (!$email || !$email = filter_var($email, FILTER_VALIDATE_EMAIL)) {
             throw InvalidEmailException::create();
         }
         return $email;
@@ -77,7 +76,7 @@ class PlayerService
 
     private function validPassword(string $password = null): string
     {
-        if (!preg_match('/^.{6,}$/', $password)) {
+        if (!$password || !preg_match('/^.{6,}$/', $password)) {
             throw InvalidPasswordException::create();
         }
         return $password;
@@ -85,7 +84,7 @@ class PlayerService
 
     private function validTwitchName(string $twitchName = null): string
     {
-        if (!preg_match('/^\w{6,}$/', $twitchName)) {
+        if (!$twitchName || !preg_match('/^\w{6,}$/', $twitchName)) {
             throw InvalidTwitchNameException::create();
         }
         return $twitchName;
