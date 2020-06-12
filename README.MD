@@ -13,7 +13,7 @@
 
 ![Logo I.E.S. Clara del Rey](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/logos_1.png)
 
-![Logo Unión Europea](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/logos_2.png)
+![Logo Unión Europea](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/logos_2.jpeg)
 
 # Índice
 - [Descripción del proyecto](#descripción-del-proyecto)
