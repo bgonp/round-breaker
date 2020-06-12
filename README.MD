@@ -25,6 +25,9 @@
 - [Controladores y páginas](#controladores-y-páginas)
     - [Controladores](#controladores)
     - [Mapa de navegación](#mapa-de-navegación)
+- [Plantillas y formularios](#plantillas-y-formularios)
+    - [Simplicidad del diseño: Bootstrap](#simplicidad-del-diseño:-Bootstrap)
+    - [Especificidad del diseño: Twig](#Especificidad-del-diseño:-Twig)
 - [Estructura del proyecto](#estructura-del-proyecto)
     - [config](#config)
     - [public](#public)
@@ -247,6 +250,18 @@ En [**este enlace**](https://raw.githubusercontent.com/bgonp/round-breaker/maste
 La navegación entre las citadas páginas puede realizarse siguiendo el siguiente mapa de navegación, donde se puede ver las rutas con las que tiene contacto directo cada página. Hemos indicado como restringido (en naranja) las páginas `competition_edit`, que necesita además de estar logueado ser el creador de la competición, y `team_show`, que necesita que seas miembro del equipo que intentas ver, también desde `team_show` el `captain` del equipo tendrá un pequeño formularo donde puede renombrarlo.
 
 ![mapa de navegación](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/sitemap.png)
+
+# Plantillas y formularios
+## Simplicidad del diseño: Bootstrap
+
+Para dotar a toda nuestra página web de un diseño responsive, simple, minimalista e intuitivo de navegar hemos hecho uso del framework de CSS bootstrap y del diseño GRID de 12 columnas lo que nos ha permitido que páginas más complejas y con varios formularios como `competition_edit` no parezcan excesivamente recargadas.
+
+## Especificidad del diseño: Twig
+A la hora de mostrar los datos procesados por los controladores de nuestra aplicación a los distintos usuarios que van a hacer uso de la misma aprovechamos la potencia del motor de plantillas Twig, desarrollado para PHP para facilitar el desarrollo de vistas en el patrón MVC.
+
+Gracias a él podemos, en función del tipo de usuario, o del estado de la entidad que se está consultando o editando, mostrar o no ciertas secciones de HTML. También nos facilita la creación de listas de competiciones o usuarios con enlaces mediante el uso de bucles en las plantillas.
+
+Otra ventaja que hemos aprovechado de Twig es su sistema de herencia, cuyo principal objetivo es la reutilización de código. Gracias a esto hemos podido crear una plantilla base de la cual el resto de plantillas del proyecto han heredado (`{% extends 'base.html.twig' %}`) mientras que alguna otra plantilla de ciertas vistas específicas han contenido en su interior otras plantillas (`{% include 'brackets/bracket_2.html.twig' %}`).
 
 # Estructura del proyecto
 
