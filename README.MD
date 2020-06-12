@@ -152,7 +152,7 @@ Hemos instalado la última versión de la aplicación en un servidor y está dis
 # Base de datos y entidades
 
 ## Diagrama entidad relación
-![diagrama entidad relación](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/DB_ER_model.png)
+![diagrama entidad relación](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/DB_ermodel.png)
 
 ## Diagrama lógico
 ![Diagrama lógico de base de datos](https://raw.githubusercontent.com/bgonp/round-breaker/master/docs/img/DB_logical_model.png)
