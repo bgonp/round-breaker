@@ -26,8 +26,8 @@
     - [Controladores](#controladores)
     - [Mapa de navegación](#mapa-de-navegación)
 - [Plantillas y formularios](#plantillas-y-formularios)
-    - [Simplicidad del diseño: Bootstrap](#simplicidad-del-diseño-Bootstrap)
-    - [Especificidad del diseño: Twig](#Especificidad-del-diseño-Twig)
+    - [Simplicidad del diseño: Bootstrap](#simplicidad-del-diseño-bootstrap)
+    - [Especificidad del diseño: Twig](#especificidad-del-diseño-Twig)
 - [Estructura del proyecto](#estructura-del-proyecto)
     - [config](#config)
     - [public](#public)
@@ -41,7 +41,7 @@
     - [Registro de usuario](#registro-de-usuario)
     - [Usuario autenticado](#usuario-autenticado)
     - [Administrador](#administrador)
-    - [Recuperación de contraseña](#recuperacin-de-contraseña)
+    - [Recuperación de contraseña](#recuperación-de-contraseña)
 - [Conclusiones](#conclusiones)
 
 # Descripción del proyecto
