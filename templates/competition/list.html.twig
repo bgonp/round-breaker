@@ -4,7 +4,7 @@
         <div class="pl-3 row d-flex align-items-center">
             <a class="mr-1" href="{{ path('competition_show', {id: competition.id}) }}">{{ competition.name }}</a>
             {% if not game %}({{ competition.game.name }}){% endif %} - {% if competition.heldAt %} {{ competition.heldAt|toDateTimeLocal }}{% endif %}
-            {% if competition.teams|length > 0 %} - Teams: {{ competition.teams|length }} {% endif %}
+            {% if not competition.isOpen %} - Teams: {{ competition|teamsNumber }} {% endif %}
         </div>
         {% if competition.isOpen %}
             {% set leave = false %}

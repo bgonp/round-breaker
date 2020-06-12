@@ -119,7 +119,7 @@ Puedes cargar datos de prueba en la aplicación para ver su funcionamiento ejecu
 ```
 $ php bin/console doctrine:fixtures:load
 ```
-La contraseña inicial de todos los usuarios generados (incluido administrator) es `randompassword`
+La contraseña inicial de todos los usuarios generados (incluido admin) es `randompassword`
 
 #### Usuario administrador
 Si no cargas los datos de prueba, puedes generar en base de datos un primer usuario con derechos de administrador a través de la ruta `/install`. Aquí aparece un formulario si en la base de datos no existe ningún usuario.

@@ -185,15 +185,15 @@
             <div class="card-body">
                 <h5 class="card-title sport-text">{% if player in team.players %}<a href="{{ path('team_show', {id: team.id}) }}">{{ team.name }}</a>{% else %}{{ team.name }}{% endif %}</h5>
                 <ul class="list-group">
-                    {% for player in team.players %}
-                    <li class="list-group-item sport-text"><a href="{{ path('player_show', { id: player.id }) }}">
-                            {{ player.username }}
-                        </a>{{player == team.captain ? '<i class="fa fa-star text-warning"></i>' : '' }}
+                    {% for teamPlayer in team.players %}
+                    <li class="list-group-item sport-text"><a href="{{ path('player_show', { id: teamPlayer.id }) }}">
+                            {{ teamPlayer.username }}
+                        </a>{{ teamPlayer.equals(team.captain) ? '<i class="fa fa-star text-warning"></i>' : '' }}
                         <form action="{{ path('kick_member') }}" method="post" class="float-right">
                             <input type="hidden" name="team_id" value="{{ team.id }}">
-                            <input type="hidden" name="player_id" value="{{ player.id }}">
+                            <input type="hidden" name="player_id" value="{{ teamPlayer.id }}">
                             <button class="fa fa-random controls confirmable" type="submit"
-                                title="cambiar jugador" id="submit-kick-{{ player.id }}"></button>
+                                title="cambiar jugador" id="submit-kick-{{ teamPlayer.id }}"></button>
                         </form>
                     </li>
                     {% endfor %}
@@ -205,7 +205,10 @@
     {% endif %}
 
     <div class="col-12 col-lg-6 {{ competition.isOpen ? 'offset-lg-3' : '' }}">
-        <div class="text-center"><h1 class="d-inline">Inscripciones </h1><h4 class="d-inline"><span class="badge badge-dark sport-text text-orange pl-2">{{competition.registrations|length}}</span></h4></div>
+        <div class="text-center">
+            <h1 class="d-inline-block align-middle">Inscripciones</h1>
+            <h4 class="d-inline-block align-middle"><span class="badge badge-dark sport-text text-orange pl-2 ml-2 mb-1">{{competition.registrations|length}}</span></h4>
+        </div>
         <ul class="list-group list-group-flush sport-text mb-3 registrations">
             {% for registration in competition.registrations %}
             <li id="registration-{{ registration.id }}"

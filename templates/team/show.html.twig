@@ -9,7 +9,7 @@
             <ul class="list-group mb-3">
                 {% for player in team.players %}
                 <li class="list-group-item sport-text"><a href="{{ path('player_show', { id: player.id }) }}">
-                        {{ player.username }}</a> {{ team.captain == player ? '<i class="fa fa-star text-warning"></i>' : '' }}<a href="http://www.twitch.tv/{{ player.twitchName }}">
+                        {{ player.username }}</a> {{ team.captain == player ? '<i class="fa fa-star text-warning"></i>' : '' }}<a href="http://www.twitch.tv/{{ player.twitchName }}" target="_blank">
                         <i class="fa fa-twitch"></i>
                     </a>
                 </li>

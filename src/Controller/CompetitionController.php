@@ -126,8 +126,8 @@ class CompetitionController extends BaseController
 
             return $this->redirectToRoute('competition_list', ['page' => 1]);
         }
-        $player = $this->getPlayer();
-        if ($player && $competition->getStreamer()->equals($player)) {
+
+        if (($player = $this->getPlayer()) && $competition->getStreamer()->equals($player)) {
             return $this->redirectToRoute('competition_edit', ['id' => $competition->getId()]);
         }
 
@@ -135,8 +135,8 @@ class CompetitionController extends BaseController
             'competition' => $competition,
             'showRegistrationButton' => $competition->getIsOpen(),
             'playerRegistration' => $player ? $registrationRepository->findOneByPlayerAndCompetition($player, $competition) : null,
+            'player' => $player,
             'clickable' => false,
-            'player' => $this->getUser(),
             'showEditButtons' => $this->isGranted('ROLE_ADMIN'),
             'bracketType' => count($competition->getRounds()) < 1 ? 0 : $competition->getTeams()->count(),
         ]);
@@ -203,7 +203,7 @@ class CompetitionController extends BaseController
             'games' => $gameRepository->findAllOrdered(),
             'competition' => $competition,
             'clickable' => true,
-            'player' => $this->getUser(),
+            'player' => $player,
             'showRegistrationButton' => $competition->getIsOpen(),
             'playerRegistration' => $registrationRepository->findOneByPlayerAndCompetition($player, $competition),
             'bracketType' => count($competition->getRounds()) < 1 ? 0 : $competition->getTeams()->count(),

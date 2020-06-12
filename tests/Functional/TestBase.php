@@ -86,7 +86,7 @@ abstract class TestBase extends WebTestCase
     protected function loginAsAdmin(): void
     {
         $playerRepository = self::$container->get('App\Repository\PlayerRepository');
-        $admin = $playerRepository->findOneBy(['username' => 'administrator']);
+        $admin = $playerRepository->findOneBy(['username' => 'admin']);
         $this->login($admin);
     }
 

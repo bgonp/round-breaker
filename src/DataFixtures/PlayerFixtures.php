@@ -26,7 +26,7 @@ class PlayerFixtures extends Fixture
         $admin = new Player();
         // Same encoded password to all users to prevent big loading fixture time.
         $encodedPassword = $this->encoder->encodePassword($admin, 'randompassword');
-        $admin->setUsername('administrator');
+        $admin->setUsername('admin');
         $admin->setEmail('admin@admin.com');
         $admin->setRoles(['ROLE_ADMIN']);
         $admin->setTwitchName('');
